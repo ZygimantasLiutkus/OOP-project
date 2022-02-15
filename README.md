@@ -12,7 +12,7 @@ Add your own name (do not add the names for others!) to the section below.
 |---|---|---|
 | ![](https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4753/avatar.png?width=400) | Adelina Cazacu | A.Cazacu@student.tudelft.nl |
 | ![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Jesse Vleeschdraager | J.C.Vleeschdraager@student.tudelft.nl |
-| ![](https://secure.gravatar.com/avatar/4ff61fe86150218c501e5c875eb5f6b3?s=800&d=identicon) | Violeta-Mara Macsim | V.M.Macsim@student.tudelft.nl |
+| ![](https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4754/avatar.png?width=400) | Violeta-Mara Macsim | V.M.Macsim@student.tudelft.nl |
 | ![](https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4874/avatar.png?width=400)|Petar Koev| P.P.Koev@student.tudelft.nl|
 | ![](https://en.gravatar.com/userimage/217262152/bc8d73f5a40430a7b47976564f0ee1a7.jpg?size=200) | Žygimantas Liutkus | Liutkus@student.tudelft.nl |
 
