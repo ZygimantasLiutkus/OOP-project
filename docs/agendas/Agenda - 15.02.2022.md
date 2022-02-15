@@ -60,5 +60,40 @@ In italics, you will find some additional explanations of the agenda points. You
 # Question round
 *If there are any questions, now is the time to ask them.*
 
+# Session notes
+ - Scrum: 
+	- Have meetings each week discussing what we did and what were going to do in the upcoming scrum sprint.
+ - Git: 
+	- A branch is a individual workspace, separate from other branches, where changes on one branch don’t change anything on other branches.
+	- Merging adds the contents of two branches into one of the branches. Possibly deletes the other branch.
+	- Committing changes the files locally while pushing uploads the changes to GitLab.
+	- Commit messages should be brief, specific, functional (add, fix, change, etc.).
+ - Gradle:
+	- automatically builds source code from java class files (set of specifications). Dependency manager, when you use external files (JavaFX, etc.), put them in the gradle file so that the compiler considers them.
+ - Scrum board:
+	- Make issue boards on GitLab every week so everyone knows what to do that week.
+ - Code structure: 
+	- Comment each method (brief description), use InteliJ checkstyle tool.
+ - Questions in the database:
+	- There are integrated database functions in spring.
+	- Depends on chosen design, can have a separate question repository or have questions with prepared answers. Images for questions can possibly be fetched from stored urls.
+ - Agenda:
+	- The template used for this lab session was fine. Add checking (everyone talks about what they did that week). 
+	- After the meeting update the agenda with the notes about it in a separate point.
+ - Teamwork assignment (1b):
+	Discussed the completion of the first teamwork assignment.
+ - Backlog:
+	- Decrease the amount of must haves (e.g. Joker cards not necessary for the game to work, so they can be in should have). 
+	- Functioning products is worth more than a few extra functionalities. 
+	- Backlog should be formulated as user stories.
+	- Have draft overview before making issues on GitLab.
+ - Deadlines:
+	- HCI draft – next Friday.
+	- Code of conduct – this Friday.
+	- Backlog – this Friday.
+	- Everyone put up a merge request before this Friday.
+ - Merge everything to main before the meeting so the TA can see the progress (Sunday evening).
+
+
 # Closing
 *Now you can start working on the project. Good luck!*
