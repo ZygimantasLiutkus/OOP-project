@@ -5,13 +5,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * An example controller that returns "Hello world" when entering the / path.
+ */
 @Controller
 @RequestMapping("/")
 public class SomeController {
 
-    @GetMapping("/")
-    @ResponseBody
-    public String index() {
-        return "Hello world!";
-    }
+  @GetMapping("/")
+  @ResponseBody
+  public String index() {
+    return "Hello world!";
+  }
 }

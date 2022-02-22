@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package client.scenes;
 
 import javafx.scene.Parent;
@@ -20,38 +21,54 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+/**
+ * The main controller of the client application.
+ */
 public class MainCtrl {
 
-    private Stage primaryStage;
+  private Stage primaryStage;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
+  private QuoteOverviewCtrl overviewCtrl;
+  private Scene overview;
 
-    private AddQuoteCtrl addCtrl;
-    private Scene add;
+  private AddQuoteCtrl addCtrl;
+  private Scene add;
 
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add) {
-        this.primaryStage = primaryStage;
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
+  /**
+   * Initializes the main controller.
+   *
+   * @param primaryStage The top level JavaFX container
+   * @param overview     A pair of the QuoteOverview controller and the parent
+   * @param add          A pair of the AddQuote controller and the parent
+   */
+  public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
+                         Pair<AddQuoteCtrl, Parent> add) {
+    this.primaryStage = primaryStage;
+    this.overviewCtrl = overview.getKey();
+    this.overview = new Scene(overview.getValue());
 
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
+    this.addCtrl = add.getKey();
+    this.add = new Scene(add.getValue());
 
-        showOverview();
-        primaryStage.show();
-    }
+    showOverview();
+    primaryStage.show();
+  }
 
-    public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
-    }
+  /**
+   * Shows the overview screen.
+   */
+  public void showOverview() {
+    primaryStage.setTitle("Quotes: Overview");
+    primaryStage.setScene(overview);
+    overviewCtrl.refresh();
+  }
 
-    public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
-    }
+  /**
+   * Shows the add quote screen.
+   */
+  public void showAdd() {
+    primaryStage.setTitle("Quotes: Adding Quote");
+    primaryStage.setScene(add);
+    add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+  }
 }

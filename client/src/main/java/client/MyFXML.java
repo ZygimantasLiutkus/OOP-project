@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package client;
 
+import com.google.inject.Injector;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-
-import com.google.inject.Injector;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.util.Builder;
@@ -29,46 +28,58 @@ import javafx.util.BuilderFactory;
 import javafx.util.Callback;
 import javafx.util.Pair;
 
+/**
+ * The MyFXML class of the client which is used to load the controllers.
+ */
 public class MyFXML {
 
-    private Injector injector;
+  private Injector injector;
 
-    public MyFXML(Injector injector) {
-        this.injector = injector;
+  public MyFXML(Injector injector) {
+    this.injector = injector;
+  }
+
+  /**
+   * Loads the scenes that are provided as parameters.
+   *
+   * @param c     The controller class
+   * @param parts The path to the fxml file from the java folder split in folder and file names
+   * @param <T>   Any controller class
+   * @return A pair containing the controller class and the corresponding object hierarchy
+   */
+  public <T> Pair<T, Parent> load(Class<T> c, String... parts) {
+    try {
+      var loader =
+          new FXMLLoader(getLocation(parts), null, null, new MyFactory(), StandardCharsets.UTF_8);
+      Parent parent = loader.load();
+      T ctrl = loader.getController();
+      return new Pair<>(ctrl, parent);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
+  }
 
-    public <T> Pair<T, Parent> load(Class<T> c, String... parts) {
-        try {
-            var loader = new FXMLLoader(getLocation(parts), null, null, new MyFactory(), StandardCharsets.UTF_8);
-            Parent parent = loader.load();
-            T ctrl = loader.getController();
-            return new Pair<>(ctrl, parent);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+  private URL getLocation(String... parts) {
+    var path = Path.of("", parts).toString();
+    return MyFXML.class.getClassLoader().getResource(path);
+  }
 
-    private URL getLocation(String... parts) {
-        var path = Path.of("", parts).toString();
-        return MyFXML.class.getClassLoader().getResource(path);
-    }
+  private class MyFactory implements BuilderFactory, Callback<Class<?>, Object> {
 
-    private class MyFactory implements BuilderFactory, Callback<Class<?>, Object> {
-
+    @Override
+    @SuppressWarnings("rawtypes")
+    public Builder<?> getBuilder(Class<?> type) {
+      return new Builder() {
         @Override
-        @SuppressWarnings("rawtypes")
-        public Builder<?> getBuilder(Class<?> type) {
-            return new Builder() {
-                @Override
-                public Object build() {
-                    return injector.getInstance(type);
-                }
-            };
+        public Object build() {
+          return injector.getInstance(type);
         }
-
-        @Override
-        public Object call(Class<?> type) {
-            return injector.getInstance(type);
-        }
+      };
     }
+
+    @Override
+    public Object call(Class<?> type) {
+      return injector.getInstance(type);
+    }
+  }
 }
