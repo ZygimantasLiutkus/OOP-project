@@ -9,6 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class PlayerTest {
 
+  /**
+   * Testing the class's constructor.
+   */
   @Test
   public void testConstructor() {
     Player p = new Player("A");
@@ -17,6 +20,9 @@ public class PlayerTest {
     assertEquals(p.getGameSessionId(), null);
   }
 
+  /**
+   * Testing to see if 2 players that are the same output the same hash code.
+   */
   @Test
   public void testEqualHashCode() {
     Player p = new Player("A");
@@ -25,6 +31,9 @@ public class PlayerTest {
     assertEquals(p.hashCode(), p1.hashCode());
   }
 
+  /**
+   * Testing to see if 2 different players output different hash codes.
+   */
   @Test
   public void testNotEqualsHashCode() {
     Player p = new Player("A");
@@ -33,6 +42,9 @@ public class PlayerTest {
     assertNotEquals(p.hashCode(), p1.hashCode());
   }
 
+  /**
+   * Testing to see if the string format contains out specified info
+   */
   @Test
   public void hasToString() {
     Player p = new Player("A");
@@ -42,6 +54,9 @@ public class PlayerTest {
     assertTrue(actual.contains("name"));
   }
 
+  /**
+   * Testing to see if a players score can be updated.
+   */
   @Test
   public void changeScoreTest() {
     Player p = new Player("Bob");

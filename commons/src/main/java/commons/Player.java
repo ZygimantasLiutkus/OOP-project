@@ -21,11 +21,11 @@ public class Player {
   private int score;
   @Column(name = "name", nullable = false)
   private String name;
+  /**
+   *  gameSessionID - the id of the game that a player had joined to;
+   *  If a player hasn't joined one, then it will be null
+   */
   @Column(name = "gameSessionId", nullable = true)
-
-
-  //  gameSessionID - the id of the game that a player had joined to;
-  //  If a player hasn't joined one, then it will be null
   private Long gameSessionId;
 
   @SuppressWarnings("unused")
@@ -117,16 +117,29 @@ public class Player {
     this.id = id;
   }
 
+  /**
+   * A method that uses an API supportive version of the "equals" method.
+   * @param obj -  a random type of object to be compared to
+   * @return a boolean whether these 2 objects are the same or not
+   */
   @Override
   public boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj);
   }
 
+  /**
+   * A method that uses an API supportive version of hashing.
+   * @return a hash code of the Player object
+   */
   @Override
   public int hashCode() {
     return HashCodeBuilder.reflectionHashCode(this);
   }
 
+  /**
+   * A method that uses an API supportive method of transforming data into a string.
+   * @return a string containing every detail about the player
+   */
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
