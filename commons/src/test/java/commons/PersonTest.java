@@ -27,6 +27,9 @@ import org.junit.jupiter.api.Test;
  */
 public class PersonTest {
 
+  /**
+   * Tests if the constructor of the Person class works as expected.
+   */
   @Test
   public void checkConstructor() {
     var p = new Person("f", "l");
@@ -34,6 +37,9 @@ public class PersonTest {
     assertEquals("l", p.lastName);
   }
 
+  /**
+   * Tests if two Persons with the same names have the same hash code.
+   */
   @Test
   public void equalsHashCode() {
     var a = new Person("a", "b");
@@ -42,6 +48,9 @@ public class PersonTest {
     assertEquals(a.hashCode(), b.hashCode());
   }
 
+  /**
+   * Tests if two different Persons have a different hash code.
+   */
   @Test
   public void notEqualsHashCode() {
     var a = new Person("a", "b");
@@ -50,6 +59,9 @@ public class PersonTest {
     assertNotEquals(a.hashCode(), b.hashCode());
   }
 
+  /**
+   * Tests if the toString method of the Person class has the expected output.
+   */
   @Test
   public void hasToString() {
     var actual = new Person("a", "b").toString();

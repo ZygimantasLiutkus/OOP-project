@@ -42,26 +42,46 @@ public class Quote {
   public Person person;
   public String quote;
 
+  /**
+   * Only used by the object mappers.
+   */
   @SuppressWarnings("unused")
   private Quote() {
     // for object mappers
   }
 
+  /**
+   * Initializes the quote with the given person and quote.
+   *
+   * @param person the person that created the quote
+   * @param quote  the quote of the person
+   */
   public Quote(Person person, String quote) {
     this.person = person;
     this.quote = quote;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public int hashCode() {
     return HashCodeBuilder.reflectionHashCode(this);
   }
 
+  /**
+   * Returns a string representation of the Quote.
+   *
+   * @return a string representation of the Quote
+   */
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);

@@ -40,26 +40,46 @@ public class Person {
   public String firstName;
   public String lastName;
 
+  /**
+   * Only used for the object mappers.
+   */
   @SuppressWarnings("unused")
   private Person() {
     // for object mapper
   }
 
+  /**
+   * Initializes the person with the given names.
+   *
+   * @param firstName the first name of the person
+   * @param lastName  the last name of the person
+   */
   public Person(String firstName, String lastName) {
     this.firstName = firstName;
     this.lastName = lastName;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public int hashCode() {
     return HashCodeBuilder.reflectionHashCode(this);
   }
 
+  /**
+   * Returns a string representation of the Person.
+   *
+   * @return a string representation of the Person
+   */
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);

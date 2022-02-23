@@ -26,11 +26,17 @@ public class MainCtrlTest {
 
   private MainCtrl sut;
 
+  /**
+   * Initializes the main controller.
+   */
   @BeforeEach
   public void setup() {
     sut = new MainCtrl();
   }
 
+  /**
+   * Some test.
+   */
   @Test
   public void writeSomeTests() {
     // TODO create replacement objects and write some tests

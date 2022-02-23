@@ -29,6 +29,9 @@ public class QuoteTest {
 
   private static final Person SOME_PERSON = new Person("a", "b");
 
+  /**
+   * Tests if the constructor of the Quote works as expected.
+   */
   @Test
   public void checkConstructor() {
     var q = new Quote(SOME_PERSON, "q");
@@ -36,6 +39,9 @@ public class QuoteTest {
     assertEquals("q", q.quote);
   }
 
+  /**
+   * Tests if two quotes with the same variables have the same hash code.
+   */
   @Test
   public void equalsHashCode() {
     var a = new Quote(new Person("a", "b"), "c");
@@ -44,6 +50,9 @@ public class QuoteTest {
     assertEquals(a.hashCode(), b.hashCode());
   }
 
+  /**
+   * Tests if two different quotes have a different hash code.
+   */
   @Test
   public void notEqualsHashCode() {
     var a = new Quote(new Person("a", "b"), "c");
@@ -52,6 +61,9 @@ public class QuoteTest {
     assertNotEquals(a.hashCode(), b.hashCode());
   }
 
+  /**
+   * Tests if the toString method of the Quote class works as expected.
+   */
   @Test
   public void hasToString() {
     var actual = new Quote(new Person("a", "b"), "c").toString();

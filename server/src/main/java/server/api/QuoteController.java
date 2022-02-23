@@ -38,15 +38,32 @@ public class QuoteController {
   private final Random random;
   private final QuoteRepository repo;
 
+  /**
+   * Initializes the QuoteController with the given / injected Random and QuoteRepository.
+   *
+   * @param random the Random to use
+   * @param repo   the QuoteRepository to use
+   */
   public QuoteController(Random random, QuoteRepository repo) {
     this.random = random;
     this.repo = repo;
   }
 
+  /**
+   * Returns if the supplied string is null or empty.
+   *
+   * @param s the string to check
+   * @return true iff the string is null or empty
+   */
   private static boolean isNullOrEmpty(String s) {
     return s == null || s.isEmpty();
   }
 
+  /**
+   * Returns all quotes from the repository.
+   *
+   * @return a list of all the quotes from the repository
+   */
   @GetMapping(path = {"", "/"})
   public List<Quote> getAll() {
     return repo.findAll();
@@ -55,8 +72,8 @@ public class QuoteController {
   /**
    * Returns the ResponseEntity of the quote of the get request to /api/quotes/{id}.
    *
-   * @param id The id of the quote
-   * @return The ResponseEntity of the quote that was asked for
+   * @param id the id of the quote
+   * @return the ResponseEntity of the quote that was asked for
    */
   @GetMapping("/{id}")
   public ResponseEntity<Quote> getById(@PathVariable("id") long id) {
@@ -69,8 +86,8 @@ public class QuoteController {
   /**
    * Returns the ResponseEntity of the added quote of the post request to /api/quotes.
    *
-   * @param quote The quote that needs to be added
-   * @return The ResponseEntity of the added quote
+   * @param quote the quote that needs to be added
+   * @return the ResponseEntity of the added quote
    */
   @PostMapping(path = {"", "/"})
   public ResponseEntity<Quote> add(@RequestBody Quote quote) {
@@ -85,6 +102,11 @@ public class QuoteController {
     return ResponseEntity.ok(saved);
   }
 
+  /**
+   * Returns a random quote from the repository.
+   *
+   * @return a random quote wrapped in a ResponseEntity
+   */
   @GetMapping("rnd")
   public ResponseEntity<Quote> getRandom() {
     var idx = random.nextInt((int) repo.count());

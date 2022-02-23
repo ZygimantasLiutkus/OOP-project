@@ -35,10 +35,20 @@ public class Main extends Application {
   private static final Injector INJECTOR = createInjector(new MyModule());
   private static final MyFXML FXML = new MyFXML(INJECTOR);
 
+  /**
+   * The start point of the client application.
+   *
+   * @param args the command line arguments passed to the application
+   * @throws URISyntaxException if a string could not be parsed as a URI reference
+   * @throws IOException        if an IOException occurred
+   */
   public static void main(String[] args) throws URISyntaxException, IOException {
     launch();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void start(Stage primaryStage) throws IOException {
 

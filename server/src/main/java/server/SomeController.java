@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/")
 public class SomeController {
 
+  /**
+   * The / path of the server.
+   *
+   * @return "Hello world!"
+   */
   @GetMapping("/")
   @ResponseBody
   public String index() {

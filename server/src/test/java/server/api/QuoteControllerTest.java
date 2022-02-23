@@ -37,6 +37,12 @@ public class QuoteControllerTest {
 
   private QuoteController sut;
 
+  /**
+   * Returns a new quote.
+   *
+   * @param q the string to initialize the person and the quote with
+   * @return a new quote
+   */
   private static Quote getQuote(String q) {
     return new Quote(new Person(q, q), q);
   }
@@ -51,12 +57,18 @@ public class QuoteControllerTest {
     sut = new QuoteController(random, repo);
   }
 
+  /**
+   * Tests if a bad request is returned after trying to add a quote with a null string.
+   */
   @Test
   public void cannotAddNullPerson() {
     var actual = sut.add(getQuote(null));
     assertEquals(BAD_REQUEST, actual.getStatusCode());
   }
 
+  /**
+   * Tests if the Random was called when asking for a random quote.
+   */
   @Test
   public void randomSelection() {
     sut.add(getQuote("q1"));
@@ -68,6 +80,9 @@ public class QuoteControllerTest {
     assertEquals("q2", actual.getBody().quote);
   }
 
+  /**
+   * Tests if the database was used after adding a quote.
+   */
   @Test
   public void databaseIsUsed() {
     sut.add(getQuote("q1"));
@@ -82,6 +97,12 @@ public class QuoteControllerTest {
 
     public boolean wasCalled = false;
 
+    /**
+     * Returns the integer that was set as nextInt, sets the wasCalled to true.
+     *
+     * @param bound not used in this version
+     * @return the next integer
+     */
     @Override
     public int nextInt(int bound) {
       wasCalled = true;

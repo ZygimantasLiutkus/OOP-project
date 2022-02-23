@@ -39,7 +39,7 @@ public class ServerUtils {
   /**
    * Getting quotes the hard way. Don't use this!
    *
-   * @throws IOException Throws an exception if the connection can't be made
+   * @throws IOException throws an exception if the connection can't be made
    */
   public void getQuotesTheHardWay() throws IOException {
     var url = new URL("http://localhost:8080/api/quotes");
@@ -54,7 +54,7 @@ public class ServerUtils {
   /**
    * Gets the quotes from the backend.
    *
-   * @return Returns a list of quotes
+   * @return a list of quotes
    */
   public List<Quote> getQuotes() {
     return ClientBuilder.newClient(new ClientConfig()) //
@@ -68,8 +68,8 @@ public class ServerUtils {
   /**
    * Sends a quote to the backend to process.
    *
-   * @param quote The quote that should be added
-   * @return The quote that was added
+   * @param quote the quote that should be added
+   * @return the quote that was added
    */
   public Quote addQuote(Quote quote) {
     return ClientBuilder.newClient(new ClientConfig()) //

@@ -28,6 +28,9 @@ import com.google.inject.Scopes;
  */
 public class MyModule implements Module {
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void configure(Binder binder) {
     binder.bind(MainCtrl.class).in(Scopes.SINGLETON);

@@ -37,9 +37,9 @@ public class MainCtrl {
   /**
    * Initializes the main controller.
    *
-   * @param primaryStage The top level JavaFX container
-   * @param overview     A pair of the QuoteOverview controller and the parent
-   * @param add          A pair of the AddQuote controller and the parent
+   * @param primaryStage the top level JavaFX container
+   * @param overview     a pair of the QuoteOverview controller and the parent
+   * @param add          a pair of the AddQuote controller and the parent
    */
   public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                          Pair<AddQuoteCtrl, Parent> add) {

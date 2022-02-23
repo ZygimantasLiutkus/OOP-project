@@ -35,6 +35,11 @@ public class MyFXML {
 
   private Injector injector;
 
+  /**
+   * Initializes the injector.
+   *
+   * @param injector the injector used in this class
+   */
   public MyFXML(Injector injector) {
     this.injector = injector;
   }
@@ -42,12 +47,13 @@ public class MyFXML {
   /**
    * Loads the scenes that are provided as parameters.
    *
-   * @param c     The controller class
-   * @param parts The path to the fxml file from the java folder split in folder and file names
-   * @param <T>   Any controller class
-   * @return A pair containing the controller class and the corresponding object hierarchy
+   * @param c     the controller class
+   * @param parts the path to the fxml file from the java folder split in folder and file names
+   * @param <T>   any controller class
+   * @return a pair containing the controller class and the corresponding object hierarchy
+   * @throws RuntimeException a RuntimeException if loading of the fxml went wrong
    */
-  public <T> Pair<T, Parent> load(Class<T> c, String... parts) {
+  public <T> Pair<T, Parent> load(Class<T> c, String... parts) throws RuntimeException {
     try {
       var loader =
           new FXMLLoader(getLocation(parts), null, null, new MyFactory(), StandardCharsets.UTF_8);
@@ -59,17 +65,35 @@ public class MyFXML {
     }
   }
 
+  /**
+   * Gets the resource from the specified path parts.
+   *
+   * @param parts those parts together build the path to the resource
+   * @return the resource at the given path
+   */
   private URL getLocation(String... parts) {
     var path = Path.of("", parts).toString();
     return MyFXML.class.getClassLoader().getResource(path);
   }
 
+  /**
+   * The custom factory builder used in the FXMLLoader.
+   */
   private class MyFactory implements BuilderFactory, Callback<Class<?>, Object> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("rawtypes")
     public Builder<?> getBuilder(Class<?> type) {
       return new Builder() {
+
+        /**
+         * Returns a new instance of the specified type.
+         *
+         * @return a new instance of the specified type
+         */
         @Override
         public Object build() {
           return injector.getInstance(type);
@@ -77,6 +101,12 @@ public class MyFXML {
       };
     }
 
+    /**
+     * Returns a new instance of the specified type.
+     *
+     * @param type the type of the class to get a new instance from
+     * @return a new instance of the specified type
+     */
     @Override
     public Object call(Class<?> type) {
       return injector.getInstance(type);
