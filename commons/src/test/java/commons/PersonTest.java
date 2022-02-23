@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package commons;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,36 +22,51 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tests for the Person.
+ */
 public class PersonTest {
 
-	@Test
-	public void checkConstructor() {
-		var p = new Person("f", "l");
-		assertEquals("f", p.firstName);
-		assertEquals("l", p.lastName);
-	}
+  /**
+   * Tests if the constructor of the Person class works as expected.
+   */
+  @Test
+  public void checkConstructor() {
+    var p = new Person("f", "l");
+    assertEquals("f", p.firstName);
+    assertEquals("l", p.lastName);
+  }
 
-	@Test
-	public void equalsHashCode() {
-		var a = new Person("a", "b");
-		var b = new Person("a", "b");
-		assertEquals(a, b);
-		assertEquals(a.hashCode(), b.hashCode());
-	}
+  /**
+   * Tests if two Persons with the same names have the same hash code.
+   */
+  @Test
+  public void equalsHashCode() {
+    var a = new Person("a", "b");
+    var b = new Person("a", "b");
+    assertEquals(a, b);
+    assertEquals(a.hashCode(), b.hashCode());
+  }
 
-	@Test
-	public void notEqualsHashCode() {
-		var a = new Person("a", "b");
-		var b = new Person("a", "c");
-		assertNotEquals(a, b);
-		assertNotEquals(a.hashCode(), b.hashCode());
-	}
+  /**
+   * Tests if two different Persons have a different hash code.
+   */
+  @Test
+  public void notEqualsHashCode() {
+    var a = new Person("a", "b");
+    var b = new Person("a", "c");
+    assertNotEquals(a, b);
+    assertNotEquals(a.hashCode(), b.hashCode());
+  }
 
-	@Test
-	public void hasToString() {
-		var actual = new Person("a", "b").toString();
-		assertTrue(actual.contains(Person.class.getSimpleName()));
-		assertTrue(actual.contains("\n"));
-		assertTrue(actual.contains("firstName"));
-	}
+  /**
+   * Tests if the toString method of the Person class has the expected output.
+   */
+  @Test
+  public void hasToString() {
+    var actual = new Person("a", "b").toString();
+    assertTrue(actual.contains(Person.class.getSimpleName()));
+    assertTrue(actual.contains("\n"));
+    assertTrue(actual.contains("firstName"));
+  }
 }
