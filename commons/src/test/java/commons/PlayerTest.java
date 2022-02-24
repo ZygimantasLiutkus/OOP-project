@@ -43,7 +43,7 @@ public class PlayerTest {
   }
 
   /**
-   * Testing to see if the string format contains out specified info
+   * Testing to see if the string format contains out specified info.
    */
   @Test
   public void hasToString() {

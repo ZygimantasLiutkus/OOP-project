@@ -1,11 +1,12 @@
 package commons;
 
-import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
-
-import javax.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.persistence.*;
+
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 /**
  * The players will be stored with the outline defined below inside a table with the same name.
@@ -22,15 +23,17 @@ public class Player {
   @Column(name = "name", nullable = false)
   private String name;
   /**
-   *  gameSessionID - the id of the game that a player had joined to;
-   *  If a player hasn't joined one, then it will be null
+   * gameSessionID - the id of the game that a player had joined to.
+   * If a player hasn't joined one, then it will be null
    */
   @Column(name = "gameSessionId", nullable = true)
   private Long gameSessionId;
 
+  /**
+   * For object mappers.
+   */
   @SuppressWarnings("unused")
   public Player() {
-    //for object mappers
   }
 
   /**
@@ -38,7 +41,7 @@ public class Player {
    * This is only used to initialise a player after they have connected to a server & added a name.
    * The score will be set to 0, and we will not change yet the game session ID
    *
-   * @param name - the name a player has chosen
+   * @param name the name a player has chosen
    */
   public Player(String name) {
     this.name = name;
@@ -57,7 +60,7 @@ public class Player {
   /**
    * A setter that so that we can change a name (not recommendable).
    *
-   * @param name - a new string that should represent the name
+   * @param name a new string that should represent the name
    */
   public void setName(String name) {
     this.name = name;
@@ -75,7 +78,7 @@ public class Player {
   /**
    * A setter for the player's score.
    *
-   * @param score - an integer that should be bigger than the previous number
+   * @param score an integer that should be bigger than the previous number
    */
   public void setScore(int score) {
     this.score = score;
@@ -84,7 +87,7 @@ public class Player {
   /**
    * A getter for the session a player is a part of.
    *
-   * @return - a long that represents an ID
+   * @return a long that represents an ID
    */
   public Long getGameSessionId() {
     return gameSessionId;
@@ -93,7 +96,7 @@ public class Player {
   /**
    * A setter method that signifies a player has connected to a game lobby.
    *
-   * @param gameSessionId - a long that represents a generated ID of a game session
+   * @param gameSessionId a long that represents a generated ID of a game session
    */
   public void setGameSessionId(Long gameSessionId) {
     this.gameSessionId = gameSessionId;
@@ -111,7 +114,7 @@ public class Player {
   /**
    * A setter that can change a player's id (not recommendable).
    *
-   * @param id - a long that is generated using Identity
+   * @param id a long that is generated using Identity
    */
   public void setId(Long id) {
     this.id = id;
@@ -119,7 +122,8 @@ public class Player {
 
   /**
    * A method that uses an API supportive version of the "equals" method.
-   * @param obj -  a random type of object to be compared to
+   *
+   * @param obj a random type of object to be compared to
    * @return a boolean whether these 2 objects are the same or not
    */
   @Override
@@ -129,6 +133,7 @@ public class Player {
 
   /**
    * A method that uses an API supportive version of hashing.
+   *
    * @return a hash code of the Player object
    */
   @Override
@@ -138,6 +143,7 @@ public class Player {
 
   /**
    * A method that uses an API supportive method of transforming data into a string.
+   *
    * @return a string containing every detail about the player
    */
   @Override
