@@ -62,6 +62,9 @@ public class MainCtrl {
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
+    /**
+     * Method to show the game scene
+     */
     public void showGame() {
         primaryStage.setTitle("Quizzzz");
         primaryStage.setScene(game);

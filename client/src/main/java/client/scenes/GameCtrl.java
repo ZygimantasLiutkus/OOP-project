@@ -9,7 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 
-
+/**
+ * A template controller for the GameScreen scene
+ */
 public class GameCtrl {
 
     private final ServerUtils server;
@@ -42,6 +44,11 @@ public class GameCtrl {
     @FXML
     private Label timeCounter;
 
+    /**
+     * Constructor for GameCtrl
+     * @param server reference to the server the game will run on
+     * @param mainCtrl reference to the main controller
+     */
     @Inject
     public GameCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
