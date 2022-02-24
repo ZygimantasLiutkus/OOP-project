@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * The players will be stored with the outline defined below inside a table with the same name.
  */
