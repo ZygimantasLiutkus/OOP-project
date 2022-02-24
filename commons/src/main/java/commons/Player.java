@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
+
 /**
  * The players will be stored with the outline defined below inside a table with the same name.
  */
