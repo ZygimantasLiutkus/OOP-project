@@ -1,8 +1,10 @@
 package commons;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 /**
  * Only tested methods that will be used the most.
@@ -43,7 +45,7 @@ public class PlayerTest {
   }
 
   /**
-   * Testing to see if the string format contains out specified info
+   * Testing to see if the string format contains out specified info.
    */
   @Test
   public void hasToString() {
