@@ -28,31 +28,39 @@ public class MainCtrl {
 
   private Stage primaryStage;
 
-    private GameCtrl gameCtrl;
-    private Scene game;
+  private GameCtrl gameCtrl;
+  private Scene game;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
+  private QuoteOverviewCtrl overviewCtrl;
+  private Scene overview;
 
   private AddQuoteCtrl addCtrl;
   private Scene add;
 
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add, Pair<GameCtrl, Parent> game) {
-        this.primaryStage = primaryStage;
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
+  /**
+   * Initializes the main controller.
+   *
+   * @param primaryStage the top level JavaFX container
+   * @param overview     a pair of the QuoteOverview controller and the parent
+   * @param add          a pair of the AddQuote controller and the parent
+   * @param game         a pair of the GameScreen controller and the parent
+   */
+  public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
+                         Pair<AddQuoteCtrl, Parent> add, Pair<GameCtrl, Parent> game) {
+    this.primaryStage = primaryStage;
+    this.overviewCtrl = overview.getKey();
+    this.overview = new Scene(overview.getValue());
 
     this.addCtrl = add.getKey();
     this.add = new Scene(add.getValue());
 
-        this.gameCtrl = game.getKey();
-        this.game = new Scene(game.getValue());
+    this.gameCtrl = game.getKey();
+    this.game = new Scene(game.getValue());
 
-        showGame();
-//        showOverview();
-        primaryStage.show();
-    }
+    showGame();
+    //    showOverview();
+    primaryStage.show();
+  }
 
   /**
    * Shows the overview screen.
@@ -63,18 +71,21 @@ public class MainCtrl {
     overviewCtrl.refresh();
   }
 
-    public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
-    }
+  /**
+   * Shows the add quote screen.
+   */
+  public void showAdd() {
+    primaryStage.setTitle("Quotes: Adding Quote");
+    primaryStage.setScene(add);
+    add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+  }
 
-    /**
-     * Method to show the game scene
-     */
-    public void showGame() {
-        primaryStage.setTitle("Quizzzz");
-        primaryStage.setScene(game);
+  /**
+   * Method to show the game scene.
+   */
+  public void showGame() {
+    primaryStage.setTitle("Quizzzz");
+    primaryStage.setScene(game);
 
-    }
+  }
 }

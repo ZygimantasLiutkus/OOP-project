@@ -1,31 +1,31 @@
 * {
-	-fx-font-family: Futura;
-	-fx-font-weight: bold;
+    -fx-font-family: Futura;
+    -fx-font-weight: bold;
 }
 
 .button {
-	-fx-background-color: #11AD31;
+    -fx-background-color: #11AD31;
 }
 
 #invalidIPLabel {
-	-fx-text-fill: #6EB7F5;
+    -fx-text-fill: #6EB7F5;
 }
 
 #takenNameLabel {
-	-fx-text-fill: #4891CF;
+    -fx-text-fill: #4891CF;
 }
 
 #gameBg,
 #entryBg {
-	-fx-background-color:  #6EB7F5;
+    -fx-background-color: #6EB7F5;
 }
 
 #namePopupBg {
-	-fx-background-color: #4891CF;
+    -fx-background-color: #4891CF;
 }
 
 #questionLabel {
-	-fx-background-color: #C4C4C4;
+    -fx-background-color: #C4C4C4;
 }
 
 #jokerTime,
@@ -33,6 +33,6 @@
 #jokerAnswer,
 #IPField,
 #nameField {
-	-fx-background-color: #C4C4C4;
+    -fx-background-color: #C4C4C4;
 }
 

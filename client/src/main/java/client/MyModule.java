@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package client;
 
-import client.scenes.GameCtrl;
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import com.google.inject.Scopes;
-
 import client.scenes.AddQuoteCtrl;
+import client.scenes.GameCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.QuoteOverviewCtrl;
 import com.google.inject.Binder;
@@ -31,12 +28,14 @@ import com.google.inject.Scopes;
  * The module class used to create an Injector.
  */
 public class MyModule implements Module {
-
-    @Override
-    public void configure(Binder binder) {
-        binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(AddQuoteCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(GameCtrl.class).in(Scopes.SINGLETON);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void configure(Binder binder) {
+    binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
+    binder.bind(AddQuoteCtrl.class).in(Scopes.SINGLETON);
+    binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
+    binder.bind(GameCtrl.class).in(Scopes.SINGLETON);
+  }
 }
