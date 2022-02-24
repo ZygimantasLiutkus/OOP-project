@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package client.scenes;
 
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
+import commons.Quote;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import com.google.inject.Inject;
-
-import client.utils.ServerUtils;
-import commons.Quote;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,42 +29,60 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+/**
+ * The quote overview controller.
+ */
 public class QuoteOverviewCtrl implements Initializable {
 
-    private final ServerUtils server;
-    private final MainCtrl mainCtrl;
+  private final ServerUtils server;
+  private final MainCtrl mainCtrl;
 
-    private ObservableList<Quote> data;
+  private ObservableList<Quote> data;
 
-    @FXML
-    private TableView<Quote> table;
-    @FXML
-    private TableColumn<Quote, String> colFirstName;
-    @FXML
-    private TableColumn<Quote, String> colLastName;
-    @FXML
-    private TableColumn<Quote, String> colQuote;
+  @FXML
+  private TableView<Quote> table;
+  @FXML
+  private TableColumn<Quote, String> colFirstName;
+  @FXML
+  private TableColumn<Quote, String> colLastName;
+  @FXML
+  private TableColumn<Quote, String> colQuote;
 
-    @Inject
-    public QuoteOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
-        this.server = server;
-        this.mainCtrl = mainCtrl;
-    }
+  /**
+   * Sets the ServerUtils and MainCtrl.
+   *
+   * @param server   the server to use
+   * @param mainCtrl the main controller to use
+   */
+  @Inject
+  public QuoteOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    this.server = server;
+    this.mainCtrl = mainCtrl;
+  }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        colFirstName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.firstName));
-        colLastName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.lastName));
-        colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    colFirstName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.firstName));
+    colLastName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.lastName));
+    colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
+  }
 
-    public void addQuote() {
-        mainCtrl.showAdd();
-    }
+  /**
+   * Shows the add quote screen.
+   */
+  public void addQuote() {
+    mainCtrl.showAdd();
+  }
 
-    public void refresh() {
-        var quotes = server.getQuotes();
-        data = FXCollections.observableList(quotes);
-        table.setItems(data);
-    }
+  /**
+   * Updates the quote list with the quotes that are stored in the database.
+   */
+  public void refresh() {
+    var quotes = server.getQuotes();
+    data = FXCollections.observableList(quotes);
+    table.setItems(data);
+  }
 }

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package client.scenes;
 
-import com.google.inject.Inject;
-
 import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import commons.Person;
 import commons.Quote;
 import jakarta.ws.rs.WebApplicationException;
@@ -27,70 +27,99 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
+/**
+ * The controller class of the AddQuote screen.
+ */
 public class AddQuoteCtrl {
 
-    private final ServerUtils server;
-    private final MainCtrl mainCtrl;
+  private final ServerUtils server;
+  private final MainCtrl mainCtrl;
 
-    @FXML
-    private TextField firstName;
+  @FXML
+  private TextField firstName;
 
-    @FXML
-    private TextField lastName;
+  @FXML
+  private TextField lastName;
 
-    @FXML
-    private TextField quote;
+  @FXML
+  private TextField quote;
 
-    @Inject
-    public AddQuoteCtrl(ServerUtils server, MainCtrl mainCtrl) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
+  /**
+   * Injects the server and main controller into this class.
+   *
+   * @param server   the serverUtils instance that is going to be injected
+   * @param mainCtrl the main controller instance that is going to be injected
+   */
+  @Inject
+  public AddQuoteCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    this.mainCtrl = mainCtrl;
+    this.server = server;
 
+  }
+
+  /**
+   * Clears the fields and shows the overview.
+   */
+  public void cancel() {
+    clearFields();
+    mainCtrl.showOverview();
+  }
+
+  /**
+   * Tries to send the quote to the server, clears the fields, shows the overview.
+   */
+  public void ok() {
+    try {
+      server.addQuote(getQuote());
+    } catch (WebApplicationException e) {
+
+      var alert = new Alert(Alert.AlertType.ERROR);
+      alert.initModality(Modality.APPLICATION_MODAL);
+      alert.setContentText(e.getMessage());
+      alert.showAndWait();
+      return;
     }
 
-    public void cancel() {
-        clearFields();
-        mainCtrl.showOverview();
+    clearFields();
+    mainCtrl.showOverview();
+  }
+
+  /**
+   * Returns a new quote that is made from the entered values.
+   *
+   * @return a new quote that is made from the entered values
+   */
+  private Quote getQuote() {
+    var p = new Person(firstName.getText(), lastName.getText());
+    var q = quote.getText();
+    return new Quote(p, q);
+  }
+
+
+  /**
+   * Clears all the fields.
+   */
+  private void clearFields() {
+    firstName.clear();
+    lastName.clear();
+    quote.clear();
+  }
+
+  /**
+   * Checks for an enter or escape key press.
+   *
+   * @param e the KeyEvent which indicates which key is pressed
+   */
+  public void keyPressed(KeyEvent e) {
+    switch (e.getCode()) {
+      case ENTER:
+        ok();
+        break;
+      case ESCAPE:
+        cancel();
+        break;
+      default:
+        break;
     }
-
-    public void ok() {
-        try {
-            server.addQuote(getQuote());
-        } catch (WebApplicationException e) {
-
-            var alert = new Alert(Alert.AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-            return;
-        }
-
-        clearFields();
-        mainCtrl.showOverview();
-    }
-
-    private Quote getQuote() {
-        var p = new Person(firstName.getText(), lastName.getText());
-        var q = quote.getText();
-        return new Quote(p, q);
-    }
-
-    private void clearFields() {
-        firstName.clear();
-        lastName.clear();
-        quote.clear();
-    }
-
-    public void keyPressed(KeyEvent e) {
-        switch (e.getCode()) {
-        case ENTER:
-            ok();
-            break;
-        case ESCAPE:
-            cancel();
-            break;
-        default:
-            break;
-        }
-    }
+  }
 }

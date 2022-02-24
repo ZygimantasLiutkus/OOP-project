@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package client.scenes;
 
 import javafx.scene.Parent;
@@ -20,9 +21,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+/**
+ * The main controller of the client application.
+ */
 public class MainCtrl {
 
-    private Stage primaryStage;
+  private Stage primaryStage;
 
     private GameCtrl gameCtrl;
     private Scene game;
@@ -30,8 +34,8 @@ public class MainCtrl {
     private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
 
-    private AddQuoteCtrl addCtrl;
-    private Scene add;
+  private AddQuoteCtrl addCtrl;
+  private Scene add;
 
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
             Pair<AddQuoteCtrl, Parent> add, Pair<GameCtrl, Parent> game) {
@@ -39,8 +43,8 @@ public class MainCtrl {
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
 
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
+    this.addCtrl = add.getKey();
+    this.add = new Scene(add.getValue());
 
         this.gameCtrl = game.getKey();
         this.game = new Scene(game.getValue());
@@ -50,11 +54,14 @@ public class MainCtrl {
         primaryStage.show();
     }
 
-    public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
-    }
+  /**
+   * Shows the overview screen.
+   */
+  public void showOverview() {
+    primaryStage.setTitle("Quotes: Overview");
+    primaryStage.setScene(overview);
+    overviewCtrl.refresh();
+  }
 
     public void showAdd() {
         primaryStage.setTitle("Quotes: Adding Quote");
