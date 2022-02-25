@@ -17,6 +17,7 @@
 package client;
 
 import client.scenes.AddQuoteCtrl;
+import client.scenes.GameCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.QuoteOverviewCtrl;
 import com.google.inject.Binder;
@@ -27,7 +28,6 @@ import com.google.inject.Scopes;
  * The module class used to create an Injector.
  */
 public class MyModule implements Module {
-
   /**
    * {@inheritDoc}
    */
@@ -36,5 +36,6 @@ public class MyModule implements Module {
     binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
     binder.bind(AddQuoteCtrl.class).in(Scopes.SINGLETON);
     binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
+    binder.bind(GameCtrl.class).in(Scopes.SINGLETON);
   }
 }

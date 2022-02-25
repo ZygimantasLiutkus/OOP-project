@@ -56,30 +56,36 @@ them then.*
 *Now you can start working on the project. Good luck!*
 
 # Notes
+
 1. Code of conduct feedback:
+
 - short assignment description
 - add some goals except for the grade
 - correct mention for “GitHub”
 - concrete standards
-- add how we set the deadlines 
+- add how we set the deadlines
 - make a person responsible for deliverables - a fixed person
 - elaborate the values of behavior and how we resolve discussions
-- add goals and preparations of meetings 
+- add goals and preparations of meetings
 - mention that everyone should adhere to the decisions
 
 2. Issues feedback:
+
 - missing basic parts of a game (ex.: connecting to a game)
 
 
 3. API endpoints:
+
 - at least one working endpoint by end of the week (ex.: GET, POST, DELETE, etc.)
 
 4. Good GitLab practices:
+
 - one feature per issue
 - independent and small tasks per issue
 - one issue should be done by a person in a week
 - edit one of the issue’s labels
-- the description should be longer and should be clearer and should include a detailed definition of when it should be done (can use Markdown to make checkboxes); suggested solutions; type of issue (feature or bug fix)
+- the description should be longer and should be clearer and should include a detailed definition of when it should be
+  done (can use Markdown to make checkboxes); suggested solutions; type of issue (feature or bug fix)
 - Gitlab issue board to keep track of everything
 - time estimation of each task
 - review merge request ( just comment it)
