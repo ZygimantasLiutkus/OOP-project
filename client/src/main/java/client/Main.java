@@ -19,6 +19,7 @@ package client;
 import static com.google.inject.Guice.createInjector;
 
 import client.scenes.AddQuoteCtrl;
+import client.scenes.GameCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.QuoteOverviewCtrl;
 import com.google.inject.Injector;
@@ -38,9 +39,9 @@ public class Main extends Application {
   /**
    * The start point of the client application.
    *
-   * @param args the command line arguments passed to the application
-   * @throws URISyntaxException if a string could not be parsed as a URI reference
-   * @throws IOException        if an IOException occurred
+   * @param args the command line arguments passed to the application.
+   * @throws URISyntaxException if a string could not be parsed as a URL reference.
+   * @throws IOException        if an IOException occurred.
    */
   public static void main(String[] args) throws URISyntaxException, IOException {
     launch();
@@ -54,8 +55,9 @@ public class Main extends Application {
 
     var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
     var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
+    var game = FXML.load(GameCtrl.class, "client", "scenes", "GameScreen.fxml");
 
     var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-    mainCtrl.initialize(primaryStage, overview, add);
+    mainCtrl.initialize(primaryStage, overview, add, game);
   }
 }
