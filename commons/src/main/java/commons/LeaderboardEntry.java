@@ -16,6 +16,7 @@ public class LeaderboardEntry {
 
   /**
    * A getter for the id.
+   *
    * @return a long generated using Identity
    */
   public Long getId() {
@@ -24,6 +25,7 @@ public class LeaderboardEntry {
 
   /**
    * A setter for id.
+   *
    * @param id a long generated using Identity
    */
   public void setId(Long id) {
@@ -32,17 +34,19 @@ public class LeaderboardEntry {
 
   /**
    * A getter for the username.
+   *
    * @return a unique name
    */
-  public String getName(){
+  public String getName() {
     return name;
   }
 
   /**
    * A getter for the score.
+   *
    * @return an integer
    */
-  public int getScore(){
+  public int getScore() {
     return score;
   }
 }
