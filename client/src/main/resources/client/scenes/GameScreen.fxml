@@ -43,7 +43,7 @@
         <ImageView fx:id="emoji1" fitHeight="30.0" fitWidth="30.0" layoutX="270.0" layoutY="361.0" pickOnBounds="true"
                    preserveRatio="true">
             <image>
-                <Image url="@/client/images/angryEmoji.png"/>
+                <Image url="@/client/images/laughingEmoji.png"/>
             </image>
         </ImageView>
         <ImageView fx:id="emoji2" fitHeight="30.0" fitWidth="30.0" layoutX="313.0" layoutY="361.0" pickOnBounds="true"
