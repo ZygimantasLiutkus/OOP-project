@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 
+
 /**
  * A template controller for the GameScreen scene.
  */
@@ -54,6 +55,4 @@ public class GameCtrl {
     this.server = server;
     this.mainCtrl = mainCtrl;
   }
-
-
 }
