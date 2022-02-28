@@ -5,7 +5,7 @@ you will also find some topics to cover in/after your first meeting.
 
 ---
 
-Date:           {29.02.2022}\
+Date:           {01.03.2022}\
 Main focus:     {Progress Check}\
 Chair:          {Petar Koev}\
 Note taker:     {Kees Blok}
