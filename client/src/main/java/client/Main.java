@@ -56,6 +56,8 @@ public class Main extends Application {
     var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
     var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
     var game = FXML.load(GameCtrl.class, "client", "scenes", "GameScreen.fxml");
+    primaryStage.setMinWidth(1145);
+    primaryStage.setMinHeight(540);
 
     var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
     mainCtrl.initialize(primaryStage, overview, add, game);

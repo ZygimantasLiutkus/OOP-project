@@ -3,8 +3,14 @@
     -fx-font-weight: bold;
 }
 
+#progressBar {
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+}
+
 .button {
     -fx-background-color: #11AD31;
+    -fx-max-height: 47;
 }
 
 #invalidIPLabel {
@@ -17,6 +23,11 @@
 
 #gameBg,
 #entryBg {
+    -fx-border-width: 0;
+    -fx-background-color: #6EB7F5;
+}
+
+#topPane, #rightPane, #leftPane, #centralPane, #bottomPane {
     -fx-background-color: #6EB7F5;
 }
 
