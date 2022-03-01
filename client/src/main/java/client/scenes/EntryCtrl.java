@@ -18,7 +18,7 @@ public class EntryCtrl {
   public Label invalidIPLabel;
 
   @FXML
-  public TextField IPField;
+  public TextField ipField;
 
   /**
    * Constructor for EntryCtrl.

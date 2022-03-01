@@ -15,7 +15,7 @@
                 <FlowPane layoutX="200.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="200.0" prefWidth="600.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
                     <children>
                         <Label prefHeight="46.0" prefWidth="195.0" text="Enter the IP address of the server you want to play on" textAlignment="CENTER" wrapText="true" />
-                        <TextField fx:id="IPField" alignment="CENTER" prefHeight="26.0" prefWidth="195.0" promptText="IP ADDRESS" />
+                        <TextField fx:id="ipField" alignment="CENTER" prefHeight="26.0" prefWidth="195.0" promptText="IP ADDRESS" />
                         <Label fx:id="invalidIPLabel" alignment="CENTER" prefHeight="18.0" prefWidth="195.0" text="This IP address is invalid" />
                         <Button fx:id="submitButton" mnemonicParsing="false" prefHeight="46.0" prefWidth="195.0" text="Submit" />
                     </children>
