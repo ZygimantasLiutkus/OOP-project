@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="gameBg" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="408.0" minWidth="900.0" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="gameBg" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="408.0" minWidth="900.0" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MultipleChoiceCtrl">
     <center>
         <AnchorPane fx:id="centralPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="745.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
