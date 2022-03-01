@@ -3,11 +3,16 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Player;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 
 /**
@@ -84,5 +89,34 @@ public class MultipleChoiceCtrl {
    */
   public void setSelectedAnswer3() {
     player.setSelectedAnswer(3);
+  }
+
+  /**
+   * Resets the timer.
+   */
+  public void resetTimer() {
+    progressBar.setProgress(1);
+  }
+
+  /**
+   * Starts the timer.
+   */
+  public void timerStart() {
+    Timeline timeline = new Timeline();
+    timeline.setCycleCount(1000);
+    timeline.setAutoReverse(false);
+    timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10),
+        new EventHandler<ActionEvent>() {
+          /**
+           * {@inheritDoc}
+           */
+          @Override
+          public void handle(ActionEvent event) {
+            if (progressBar.getProgress() > 0.001) {
+              progressBar.setProgress(progressBar.getProgress() - 0.001);
+            }
+          }
+        }));
+    timeline.play();
   }
 }
