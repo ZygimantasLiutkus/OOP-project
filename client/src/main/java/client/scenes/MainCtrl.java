@@ -28,7 +28,7 @@ public class MainCtrl {
 
   private Stage primaryStage;
 
-  private GameCtrl gameCtrl;
+  private MultipleChoiceCtrl multipleChoiceCtrl;
   private Scene game;
 
   private QuoteOverviewCtrl overviewCtrl;
@@ -46,7 +46,7 @@ public class MainCtrl {
    * @param game         a pair of the GameScreen controller and the parent
    */
   public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-                         Pair<AddQuoteCtrl, Parent> add, Pair<GameCtrl, Parent> game) {
+                         Pair<AddQuoteCtrl, Parent> add, Pair<MultipleChoiceCtrl, Parent> game) {
     this.primaryStage = primaryStage;
     this.overviewCtrl = overview.getKey();
     this.overview = new Scene(overview.getValue());
@@ -54,7 +54,7 @@ public class MainCtrl {
     this.addCtrl = add.getKey();
     this.add = new Scene(add.getValue());
 
-    this.gameCtrl = game.getKey();
+    this.multipleChoiceCtrl = game.getKey();
     this.game = new Scene(game.getValue());
 
     showGame();
@@ -86,6 +86,5 @@ public class MainCtrl {
   public void showGame() {
     primaryStage.setTitle("Quizzzz");
     primaryStage.setScene(game);
-
   }
 }

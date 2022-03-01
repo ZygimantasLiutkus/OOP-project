@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="gameBg" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="408.0" minWidth="900.0" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="gameBg" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="408.0" minWidth="900.0" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MultipleChoiceCtrl">
     <center>
         <AnchorPane fx:id="centralPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="745.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
@@ -36,9 +36,9 @@
                 </FlowPane>
                 <FlowPane hgap="75.0" layoutX="35.0" layoutY="297.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="94.0" prefWidth="695.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="16.0">
                     <children>
-                        <Button fx:id="answer1" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="46.0" prefWidth="180.0" text="answer1" />
-                        <Button fx:id="answer2" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="46.0" prefWidth="180.0" text="answer2" />
-                        <Button fx:id="answer3" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="46.0" prefWidth="180.0" text="answer3" />
+                        <Button fx:id="answer1" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setSelectedAnswer1" prefHeight="46.0" prefWidth="180.0" text="answer1" />
+                        <Button fx:id="answer2" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setSelectedAnswer2" prefHeight="46.0" prefWidth="180.0" text="answer2" />
+                        <Button fx:id="answer3" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setSelectedAnswer3" prefHeight="46.0" prefWidth="180.0" text="answer3" />
                     </children>
                     <padding>
                         <Insets top="20.0" />

@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,10 +13,11 @@ import javafx.scene.image.ImageView;
 /**
  * A template controller for the GameScreen scene.
  */
-public class GameCtrl {
+public class MultipleChoiceCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
+  private Player player;
 
   @FXML
   private Label questionLabel;
@@ -51,8 +53,36 @@ public class GameCtrl {
    * @param mainCtrl reference to the main controller
    */
   @Inject
-  public GameCtrl(ServerUtils server, MainCtrl mainCtrl) {
+  public MultipleChoiceCtrl(ServerUtils server, MainCtrl mainCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
+  }
+
+  /**
+   * Method to reset the selected answer by setting it to 0.
+   */
+  public void setSelectedAnswer0() {
+    player.setSelectedAnswer(0);
+  }
+
+  /**
+   * Method to set the selected answer to the first answer.
+   */
+  public void setSelectedAnswer1() {
+    player.setSelectedAnswer(1);
+  }
+
+  /**
+   * Method to set the selected answer to the second answer.
+   */
+  public void setSelectedAnswer2() {
+    player.setSelectedAnswer(2);
+  }
+
+  /**
+   * Method to set the selected answer to the third answer.
+   */
+  public void setSelectedAnswer3() {
+    player.setSelectedAnswer(3);
   }
 }

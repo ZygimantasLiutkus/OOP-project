@@ -19,8 +19,8 @@ package client;
 import static com.google.inject.Guice.createInjector;
 
 import client.scenes.AddQuoteCtrl;
-import client.scenes.GameCtrl;
 import client.scenes.MainCtrl;
+import client.scenes.MultipleChoiceCtrl;
 import client.scenes.QuoteOverviewCtrl;
 import com.google.inject.Injector;
 import java.io.IOException;
@@ -55,7 +55,7 @@ public class Main extends Application {
 
     var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
     var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
-    var game = FXML.load(GameCtrl.class, "client", "scenes", "GameScreen.fxml");
+    var game = FXML.load(MultipleChoiceCtrl.class, "client", "scenes", "GameScreen.fxml");
     primaryStage.setMinWidth(1145);
     primaryStage.setMinHeight(540);
 
