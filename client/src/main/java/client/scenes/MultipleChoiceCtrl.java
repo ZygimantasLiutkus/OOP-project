@@ -10,9 +10,9 @@ import javafx.scene.image.ImageView;
 
 
 /**
- * A template controller for the GameScreen scene.
+ * A template controller for the MultipleChoiceScreen scene.
  */
-public class GameCtrl {
+public class MultipleChoiceCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
@@ -45,13 +45,13 @@ public class GameCtrl {
   private Label timeCounter;
 
   /**
-   * Constructor for GameCtrl.
+   * Constructor for MultipleChoiceCtrl.
    *
    * @param server   reference to the server the game will run on
    * @param mainCtrl reference to the main controller
    */
   @Inject
-  public GameCtrl(ServerUtils server, MainCtrl mainCtrl) {
+  public MultipleChoiceCtrl(ServerUtils server, MainCtrl mainCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
   }
