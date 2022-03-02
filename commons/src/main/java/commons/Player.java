@@ -21,6 +21,8 @@ public class Player {
   private int score;
   @Column(name = "name", nullable = false)
   private String name;
+  @Column(name = "selectedAnswer", nullable = false)
+  private int selectedAnswer;
   /**
    * gameSessionID - the id of the game that a player had joined to.
    * If a player hasn't joined one, then it will be null
@@ -39,12 +41,14 @@ public class Player {
    * A constructor for the player.
    * This is only used to initialise a player after they have connected to a server & added a name.
    * The score will be set to 0, and we will not change yet the game session ID
+   * The selected answer will be set to 0, can change to 1, 2 or 3 mid-game
    *
    * @param name the name a player has chosen
    */
   public Player(String name) {
     this.name = name;
     this.score = 0;
+    this.selectedAnswer = 0;
   }
 
   /**
@@ -81,6 +85,24 @@ public class Player {
    */
   public void setScore(int score) {
     this.score = score;
+  }
+
+  /**
+   * A getter to obtain the player's selected answer.
+   *
+   * @return an integer that indicates the player's selected answer
+   */
+  public int getSelectedAnswer() {
+    return selectedAnswer;
+  }
+
+  /**
+   * A setter for the player's selected answer.
+   *
+   * @param selectedAnswer 0, 1, 2 or 3 indicating what answer is selected (0 if none)
+   */
+  public void setSelectedAnswer(int selectedAnswer) {
+    this.selectedAnswer = selectedAnswer;
   }
 
   /**

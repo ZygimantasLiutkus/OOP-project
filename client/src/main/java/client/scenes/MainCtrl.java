@@ -103,6 +103,5 @@ public class MainCtrl {
   public void showMultipleChoice() {
     primaryStage.setTitle("Quizzzz");
     primaryStage.setScene(multipleChoice);
-
   }
 }
