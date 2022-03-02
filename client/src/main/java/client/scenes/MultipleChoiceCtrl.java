@@ -11,7 +11,7 @@ import javafx.scene.image.ImageView;
 
 
 /**
- * A template controller for the GameScreen scene.
+ * A template controller for the MultipleChoiceScreen scene.
  */
 public class MultipleChoiceCtrl {
 
@@ -47,7 +47,7 @@ public class MultipleChoiceCtrl {
   private Label timeCounter;
 
   /**
-   * Constructor for GameCtrl.
+   * Constructor for MultipleChoiceCtrl.
    *
    * @param server   reference to the server the game will run on
    * @param mainCtrl reference to the main controller
