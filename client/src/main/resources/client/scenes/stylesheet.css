@@ -13,12 +13,9 @@
     -fx-max-height: 47;
 }
 
-#invalidIPLabel {
-    -fx-text-fill: #6EB7F5;
-}
-
-#takenNameLabel {
-    -fx-text-fill: #4891CF;
+#reconnectButton,
+#homeButton {
+    -fx-font-size: 20;
 }
 
 #gameBg,
@@ -33,6 +30,15 @@
 
 #namePopupBg {
     -fx-background-color: #4891CF;
+}
+
+#scoreLabel,
+#leaderboardTable {
+    -fx-background-color: #D7CC6B;
+}
+
+#scoreLabel {
+    -fx-text-fill: #165B24;
 }
 
 #questionLabel {

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ChooseScreenCtrl">
+    <top>
+        <AnchorPane fx:id="topPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
+            <children>
+                <FlowPane layoutX="400.0" prefHeight="200.0" prefWidth="200.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="400.0">
+                    <children>
+                        <Label text="Quizzzz">
+                            <font>
+                                <Font size="40.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </FlowPane>
+                <FlowPane layoutX="931.0" layoutY="14.0" prefHeight="50.0" prefWidth="50.0" style="-fx-alignment: top-right;" AnchorPane.bottomAnchor="135.6" AnchorPane.leftAnchor="931.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                    <children>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/client/images/homeIcon.png" />
+                     </image></ImageView>
+                    </children>
+                </FlowPane>
+            </children>
+        </AnchorPane>
+    </top>
+    <center>
+        <AnchorPane fx:id="centralPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
+            <children>
+                <FlowPane hgap="180.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="159.0" prefWidth="1000.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <children>
+                        <Button fx:id="singleplayerButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Play singleplayer" />
+                        <Button fx:id="leaderboardButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="LEADERBOARD" />
+                        <Button fx:id="multiplayerButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Play multiplayer" />
+                    </children>
+                </FlowPane>
+            </children>
+        </AnchorPane>
+    </center>
+</BorderPane>
