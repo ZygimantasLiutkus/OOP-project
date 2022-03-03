@@ -50,8 +50,8 @@
     <top>
         <AnchorPane fx:id="topPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="1000.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
-                <ProgressBar fx:id="progressBar" layoutX="369.0" layoutY="22.0" onMouseClicked="#timerStart" prefHeight="22.0" prefWidth="262.0" progress="1.0" style="-fx-accent: red;" AnchorPane.leftAnchor="369.0" AnchorPane.rightAnchor="369.0" AnchorPane.topAnchor="23.0" />
-                <Label fx:id="timeCounter" layoutX="643.0" layoutY="21.0" onMouseClicked="#resetTimer" prefHeight="18.0" prefWidth="30.0" text="20 s" AnchorPane.rightAnchor="326.6">
+                <ProgressBar fx:id="progressBar" layoutX="369.0" layoutY="22.0" onMouseClicked="#timerStart" prefHeight="22.0" prefWidth="262.0" progress="1.0" AnchorPane.leftAnchor="369.0" AnchorPane.rightAnchor="369.0" AnchorPane.topAnchor="23.0" />
+                <Label fx:id="timeCounter" layoutX="643.0" layoutY="21.0" onMouseClicked="#resetTimer" prefHeight="18.0" prefWidth="30.0" text="10 s" AnchorPane.rightAnchor="326.6">
                     <font>
                         <Font size="16.0" />
                     </font>

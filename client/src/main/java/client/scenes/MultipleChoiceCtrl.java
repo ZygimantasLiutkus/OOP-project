@@ -23,6 +23,7 @@ public class MultipleChoiceCtrl {
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
   private Player player;
+  private int startTime = 10;
 
   @FXML
   private Label questionLabel;
@@ -96,6 +97,9 @@ public class MultipleChoiceCtrl {
    */
   public void resetTimer() {
     progressBar.setProgress(1);
+    progressBar.setStyle("-fx-accent: #008057");
+    timeCounter.setText("10 s");
+    startTime = 10;
   }
 
   /**
@@ -112,11 +116,23 @@ public class MultipleChoiceCtrl {
            */
           @Override
           public void handle(ActionEvent event) {
-            if (progressBar.getProgress() > 0.001) {
+            if (progressBar.getProgress() >= 0.001) {
               progressBar.setProgress(progressBar.getProgress() - 0.001);
+            }
+            if (progressBar.getProgress() < 0.3) {
+              progressBar.setStyle("-fx-accent: red");
             }
           }
         }));
+
+    Timeline timeCount = new Timeline(
+        new KeyFrame(Duration.seconds(1), e -> {
+          startTime--;
+          timeCounter.setText(String.valueOf(startTime) + " s");
+        })
+    );
+    timeCount.setCycleCount(10);
     timeline.play();
+    timeCount.play();
   }
 }
