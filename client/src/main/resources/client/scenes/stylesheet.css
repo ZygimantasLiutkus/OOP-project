@@ -13,6 +13,11 @@
     -fx-max-height: 47;
 }
 
+#reconnectButton,
+#homeButton {
+    -fx-font-size: 20;
+}
+
 #gameBg,
 #entryBg {
     -fx-border-width: 0;
