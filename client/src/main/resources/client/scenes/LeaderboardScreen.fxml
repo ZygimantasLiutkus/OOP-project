@@ -27,16 +27,8 @@
       </FlowPane>
       <FlowPane hgap="250.0" layoutY="391.0" prefHeight="82.0" prefWidth="1000.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="26.599999999999994" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Button fx:id="reconnectButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="275.0" text="Reconnect">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Button>
-            <Button fx:id="homeButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="275.0" text="Go home">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Button>
+            <Button fx:id="reconnectButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="275.0" text="Reconnect" />
+            <Button fx:id="homeButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="275.0" text="Go home" />
          </children>
       </FlowPane>
    </children>
