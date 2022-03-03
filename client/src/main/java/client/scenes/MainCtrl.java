@@ -31,8 +31,17 @@ public class MainCtrl {
   private EntryCtrl entryCtrl;
   private Scene entry;
 
+  private NamePopupCtrl namePopupCtrl;
+  private Scene name;
+
+  private ChooseScreenCtrl chooseScreenCtrl;
+  private Scene choose;
+
   private MultipleChoiceCtrl multipleChoiceCtrl;
   private Scene multipleChoice;
+
+  private LeaderboardScreenCtrl leaderboardScreenCtrl;
+  private Scene leaderboard;
 
   private QuoteOverviewCtrl overviewCtrl;
   private Scene overview;
@@ -47,11 +56,16 @@ public class MainCtrl {
    * @param overview       a pair of the QuoteOverview controller and the parent.
    * @param add            a pair of the AddQuote controller and the parent.
    * @param entry          a pair of the EntryScreen controller and the parent.
+   * @param name           a pair of the NamePopup controller and the parent.
+   * @param choose         a pair of the ChooseScreen controller and the parent.
    * @param multipleChoice a pair of the MultipleChoiceScreen controller and the parent.
+   * @param leaderboard    a pair of the LeaderboardScreen controller and the parent.
    */
   public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                          Pair<AddQuoteCtrl, Parent> add, Pair<EntryCtrl, Parent> entry,
-                         Pair<MultipleChoiceCtrl, Parent> multipleChoice) {
+                         Pair<NamePopupCtrl, Parent> name, Pair<ChooseScreenCtrl, Parent> choose,
+                         Pair<MultipleChoiceCtrl, Parent> multipleChoice,
+                         Pair<LeaderboardScreenCtrl, Parent> leaderboard) {
     this.primaryStage = primaryStage;
     this.overviewCtrl = overview.getKey();
     this.overview = new Scene(overview.getValue());
@@ -62,12 +76,20 @@ public class MainCtrl {
     this.entryCtrl = entry.getKey();
     this.entry = new Scene(entry.getValue());
 
+    this.namePopupCtrl = name.getKey();
+    this.name = new Scene(name.getValue());
+
+    this.chooseScreenCtrl = choose.getKey();
+    this.choose = new Scene(choose.getValue());
+
     this.multipleChoiceCtrl = multipleChoice.getKey();
     this.multipleChoice = new Scene(multipleChoice.getValue());
 
+    this.leaderboardScreenCtrl = leaderboard.getKey();
+    this.leaderboard = new Scene(leaderboard.getValue());
+
+
     showEntry();
-    //    showMultipleChoice();
-    //    showOverview();
     primaryStage.show();
   }
 
@@ -98,10 +120,34 @@ public class MainCtrl {
   }
 
   /**
+   * Shows the name popup to enter the name.
+   */
+  public void showNamePopup() {
+    primaryStage.setTitle("Choose your name!");
+    primaryStage.setScene(name);
+  }
+
+  /**
+   * Shows the choose game style screen.
+   */
+  public void showChooseScreen() {
+    primaryStage.setTitle("Choose the game style!");
+    primaryStage.setScene(choose);
+  }
+
+  /**
    * Shows the multiple choice game screen.
    */
   public void showMultipleChoice() {
     primaryStage.setTitle("Quizzzz");
     primaryStage.setScene(multipleChoice);
+  }
+
+  /**
+   * Shows the leaderboard screen.
+   */
+  public void showLeaderboard() {
+    primaryStage.setTitle("Quizzzz Leaderboard");
+    primaryStage.setScene(leaderboard);
   }
 }

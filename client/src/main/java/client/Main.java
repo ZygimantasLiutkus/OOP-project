@@ -55,10 +55,15 @@ public class Main extends Application {
     var multipleChoice =
         FXML.load(MultipleChoiceCtrl.class, "client", "scenes", "MultipleChoiceScreen.fxml");
     var entry = FXML.load(EntryCtrl.class, "client", "scenes", "EntryScreen.fxml");
+    var choose = FXML.load(ChooseScreenCtrl.class, "client", "scenes", "ChooseScreen.fxml");
+    var name = FXML.load(NamePopupCtrl.class, "client", "scenes", "NamePopup.fxml");
+    var leaderboard =
+        FXML.load(LeaderboardScreenCtrl.class, "client", "scenes", "LeaderboardScreen.fxml");
     primaryStage.setMinWidth(1145);
     primaryStage.setMinHeight(540);
 
     var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-    mainCtrl.initialize(primaryStage, overview, add, entry, multipleChoice);
+    mainCtrl.initialize(primaryStage, overview, add, entry, name, choose, multipleChoice,
+        leaderboard);
   }
 }
