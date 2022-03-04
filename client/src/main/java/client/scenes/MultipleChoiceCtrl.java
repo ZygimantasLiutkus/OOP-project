@@ -119,9 +119,6 @@ public class MultipleChoiceCtrl {
             if (progressBar.getProgress() >= 0.001) {
               progressBar.setProgress(progressBar.getProgress() - 0.001);
             }
-            if (progressBar.getProgress() < 0.3) {
-              progressBar.setStyle("-fx-accent: red");
-            }
           }
         }));
 
@@ -129,6 +126,9 @@ public class MultipleChoiceCtrl {
         new KeyFrame(Duration.seconds(1), e -> {
           startTime--;
           timeCounter.setText(String.valueOf(startTime) + " s");
+          if (startTime <= 3) {
+            progressBar.setStyle("-fx-accent: red");
+          }
         })
     );
     timeCount.setCycleCount(10);
