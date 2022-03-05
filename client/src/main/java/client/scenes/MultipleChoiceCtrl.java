@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Player;
+import commons.Question;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -23,7 +24,12 @@ public class MultipleChoiceCtrl {
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
   private Player player;
+
   private int startTime = 10;
+  private double progress = 1;
+
+  //placeholder
+  private Question question = new Question("test", "answer2", "test");
 
   @FXML
   private Label questionLabel;
@@ -68,35 +74,36 @@ public class MultipleChoiceCtrl {
    * Method to reset the selected answer by setting it to 0.
    */
   public void setSelectedAnswer0() {
-    player.setSelectedAnswer(0);
+    player.setSelectedAnswer("none");
   }
 
   /**
    * Method to set the selected answer to the first answer.
    */
   public void setSelectedAnswer1() {
-    player.setSelectedAnswer(1);
+    player.setSelectedAnswer("answer1");
   }
 
   /**
    * Method to set the selected answer to the second answer.
    */
   public void setSelectedAnswer2() {
-    player.setSelectedAnswer(2);
+    player.setSelectedAnswer("answer2");
   }
 
   /**
    * Method to set the selected answer to the third answer.
    */
   public void setSelectedAnswer3() {
-    player.setSelectedAnswer(3);
+    player.setSelectedAnswer("answer3");
   }
 
   /**
    * Resets the timer.
    */
   public void resetTimer() {
-    progressBar.setProgress(1);
+    progress = 1;
+    progressBar.setProgress(progress);
     progressBar.setStyle("-fx-accent: #008057");
     timeCounter.setText("10 s");
     startTime = 10;
@@ -116,8 +123,9 @@ public class MultipleChoiceCtrl {
            */
           @Override
           public void handle(ActionEvent event) {
-            if (progressBar.getProgress() >= 0.001) {
-              progressBar.setProgress(progressBar.getProgress() - 0.001);
+            if (progress >= 0.001) {
+              progressBar.setProgress(progress);
+              progress -= 0.001;
             }
           }
         }));
@@ -134,5 +142,41 @@ public class MultipleChoiceCtrl {
     timeCount.setCycleCount(10);
     timeline.play();
     timeCount.play();
+
+    timeline.setOnFinished(e -> revealAnswer());
+  }
+
+  /**
+   * Reveals the correct answer to the players.
+   */
+  public void revealAnswer() {
+    answer1.setDisable(true);
+    answer2.setDisable(true);
+    answer3.setDisable(true);
+
+    if (!answer1.getText().equals(question.getAnswer())) {
+      answer1.setStyle("-fx-background-color: E50C0C");
+    }
+
+    if (!answer2.getText().equals(question.getAnswer())) {
+      answer2.setStyle("-fx-background-color: E50C0C");
+    }
+
+    if (!answer3.getText().equals(question.getAnswer())) {
+      answer3.setStyle("-fx-background-color: E50C0C");
+    }
+  }
+
+  /**
+   * Makes the client screen ready for the new question
+   */
+  public void nextQuestion() {
+    resetTimer();
+    answer1.setDisable(false);
+    answer1.setStyle("-fx-background-color: #11AD31");
+    answer2.setDisable(false);
+    answer2.setStyle("-fx-background-color: #11AD31");
+    answer3.setDisable(false);
+    answer3.setStyle("-fx-background-color: #11AD31");
   }
 }

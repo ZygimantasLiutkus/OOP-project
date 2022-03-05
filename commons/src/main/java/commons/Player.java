@@ -2,7 +2,12 @@ package commons;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -22,7 +27,7 @@ public class Player {
   @Column(name = "name", nullable = false)
   private String name;
   @Column(name = "selectedAnswer", nullable = false)
-  private int selectedAnswer;
+  private String selectedAnswer;
   /**
    * gameSessionID - the id of the game that a player had joined to.
    * If a player hasn't joined one, then it will be null
@@ -48,7 +53,7 @@ public class Player {
   public Player(String name) {
     this.name = name;
     this.score = 0;
-    this.selectedAnswer = 0;
+    this.selectedAnswer = "";
   }
 
   /**
@@ -92,16 +97,16 @@ public class Player {
    *
    * @return an integer that indicates the player's selected answer
    */
-  public int getSelectedAnswer() {
+  public String getSelectedAnswer() {
     return selectedAnswer;
   }
 
   /**
    * A setter for the player's selected answer.
    *
-   * @param selectedAnswer 0, 1, 2 or 3 indicating what answer is selected (0 if none)
+   * @param selectedAnswer none, answer1, answer2 or answer3 indicating what answer is selected (0 if none)
    */
-  public void setSelectedAnswer(int selectedAnswer) {
+  public void setSelectedAnswer(String selectedAnswer) {
     this.selectedAnswer = selectedAnswer;
   }
 
