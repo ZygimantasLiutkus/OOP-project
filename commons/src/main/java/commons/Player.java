@@ -104,7 +104,8 @@ public class Player {
   /**
    * A setter for the player's selected answer.
    *
-   * @param selectedAnswer none, answer1, answer2 or answer3 indicating what answer is selected (0 if none)
+   * @param selectedAnswer none, answer1, answer2 or answer3
+   *                       indicating what answer is selected (0 if none)
    */
   public void setSelectedAnswer(String selectedAnswer) {
     this.selectedAnswer = selectedAnswer;

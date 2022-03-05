@@ -168,7 +168,7 @@ public class MultipleChoiceCtrl {
   }
 
   /**
-   * Makes the client screen ready for the new question
+   * Makes the client screen ready for the new question.
    */
   public void nextQuestion() {
     resetTimer();
@@ -178,5 +178,59 @@ public class MultipleChoiceCtrl {
     answer2.setStyle("-fx-background-color: #11AD31");
     answer3.setDisable(false);
     answer3.setStyle("-fx-background-color: #11AD31");
+  }
+
+  /**
+   * Getter for answer1.
+   *
+   * @return value of answer1
+   */
+  public String getAnswer1() {
+    return answer1.getText();
+  }
+
+  /**
+   * Getter for answer2.
+   *
+   * @return value of answer2
+   */
+  public String getAnswer2() {
+    return answer2.getText();
+  }
+
+  /**
+   * Getter for answer3.
+   *
+   * @return value of answer3
+   */
+  public String getAnswer3() {
+    return answer3.getText();
+  }
+
+  /**
+   * Getter for the player points .
+   *
+   * @return value of the player points
+   */
+  public String getPlayerPoints() {
+    return playerPoints.getText();
+  }
+
+  /**
+   * Getter for progressbar.
+   *
+   * @return value of progressbar
+   */
+  public double getProgressBar() {
+    return progressBar.getProgress();
+  }
+
+  /**
+   * Getter for timer counter.
+   *
+   * @return value of the timer counter
+   */
+  public String getTimeCounter() {
+    return timeCounter.getText();
   }
 }
