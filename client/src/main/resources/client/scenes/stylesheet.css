@@ -6,6 +6,7 @@
 #progressBar {
     -fx-border-color: black;
     -fx-border-width: 2px;
+    -fx-accent: #008057;
 }
 
 .button {

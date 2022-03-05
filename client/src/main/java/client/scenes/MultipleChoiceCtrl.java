@@ -3,11 +3,16 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Player;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 
 /**
@@ -18,6 +23,7 @@ public class MultipleChoiceCtrl {
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
   private Player player;
+  private int startTime = 10;
 
   @FXML
   private Label questionLabel;
@@ -84,5 +90,49 @@ public class MultipleChoiceCtrl {
    */
   public void setSelectedAnswer3() {
     player.setSelectedAnswer(3);
+  }
+
+  /**
+   * Resets the timer.
+   */
+  public void resetTimer() {
+    progressBar.setProgress(1);
+    progressBar.setStyle("-fx-accent: #008057");
+    timeCounter.setText("10 s");
+    startTime = 10;
+  }
+
+  /**
+   * Starts the timer.
+   */
+  public void timerStart() {
+    Timeline timeline = new Timeline();
+    timeline.setCycleCount(1000);
+    timeline.setAutoReverse(false);
+    timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10),
+        new EventHandler<ActionEvent>() {
+          /**
+           * {@inheritDoc}
+           */
+          @Override
+          public void handle(ActionEvent event) {
+            if (progressBar.getProgress() >= 0.001) {
+              progressBar.setProgress(progressBar.getProgress() - 0.001);
+            }
+          }
+        }));
+
+    Timeline timeCount = new Timeline(
+        new KeyFrame(Duration.seconds(1), e -> {
+          startTime--;
+          timeCounter.setText(String.valueOf(startTime) + " s");
+          if (startTime <= 3) {
+            progressBar.setStyle("-fx-accent: red");
+          }
+        })
+    );
+    timeCount.setCycleCount(10);
+    timeline.play();
+    timeCount.play();
   }
 }
