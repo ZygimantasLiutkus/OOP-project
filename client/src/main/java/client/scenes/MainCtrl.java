@@ -28,8 +28,20 @@ public class MainCtrl {
 
   private Stage primaryStage;
 
-  private GameCtrl gameCtrl;
-  private Scene game;
+  private EntryCtrl entryCtrl;
+  private Scene entry;
+
+  private NamePopupCtrl namePopupCtrl;
+  private Scene name;
+
+  private ChooseScreenCtrl chooseScreenCtrl;
+  private Scene choose;
+
+  private MultipleChoiceCtrl multipleChoiceCtrl;
+  private Scene multipleChoice;
+
+  private LeaderboardScreenCtrl leaderboardScreenCtrl;
+  private Scene leaderboard;
 
   private QuoteOverviewCtrl overviewCtrl;
   private Scene overview;
@@ -40,13 +52,20 @@ public class MainCtrl {
   /**
    * Initializes the main controller.
    *
-   * @param primaryStage the top level JavaFX container
-   * @param overview     a pair of the QuoteOverview controller and the parent
-   * @param add          a pair of the AddQuote controller and the parent
-   * @param game         a pair of the GameScreen controller and the parent
+   * @param primaryStage   the top level JavaFX container.
+   * @param overview       a pair of the QuoteOverview controller and the parent.
+   * @param add            a pair of the AddQuote controller and the parent.
+   * @param entry          a pair of the EntryScreen controller and the parent.
+   * @param name           a pair of the NamePopup controller and the parent.
+   * @param choose         a pair of the ChooseScreen controller and the parent.
+   * @param multipleChoice a pair of the MultipleChoiceScreen controller and the parent.
+   * @param leaderboard    a pair of the LeaderboardScreen controller and the parent.
    */
   public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-                         Pair<AddQuoteCtrl, Parent> add, Pair<GameCtrl, Parent> game) {
+                         Pair<AddQuoteCtrl, Parent> add, Pair<EntryCtrl, Parent> entry,
+                         Pair<NamePopupCtrl, Parent> name, Pair<ChooseScreenCtrl, Parent> choose,
+                         Pair<MultipleChoiceCtrl, Parent> multipleChoice,
+                         Pair<LeaderboardScreenCtrl, Parent> leaderboard) {
     this.primaryStage = primaryStage;
     this.overviewCtrl = overview.getKey();
     this.overview = new Scene(overview.getValue());
@@ -54,11 +73,23 @@ public class MainCtrl {
     this.addCtrl = add.getKey();
     this.add = new Scene(add.getValue());
 
-    this.gameCtrl = game.getKey();
-    this.game = new Scene(game.getValue());
+    this.entryCtrl = entry.getKey();
+    this.entry = new Scene(entry.getValue());
 
-    showGame();
-    //    showOverview();
+    this.namePopupCtrl = name.getKey();
+    this.name = new Scene(name.getValue());
+
+    this.chooseScreenCtrl = choose.getKey();
+    this.choose = new Scene(choose.getValue());
+
+    this.multipleChoiceCtrl = multipleChoice.getKey();
+    this.multipleChoice = new Scene(multipleChoice.getValue());
+
+    this.leaderboardScreenCtrl = leaderboard.getKey();
+    this.leaderboard = new Scene(leaderboard.getValue());
+
+
+    showEntry();
     primaryStage.show();
   }
 
@@ -81,11 +112,42 @@ public class MainCtrl {
   }
 
   /**
-   * Method to show the game scene.
+   * Shows the game entry screen.
    */
-  public void showGame() {
+  public void showEntry() {
     primaryStage.setTitle("Quizzzz");
-    primaryStage.setScene(game);
+    primaryStage.setScene(entry);
+  }
 
+  /**
+   * Shows the name popup to enter the name.
+   */
+  public void showNamePopup() {
+    primaryStage.setTitle("Choose your name!");
+    primaryStage.setScene(name);
+  }
+
+  /**
+   * Shows the choose game style screen.
+   */
+  public void showChooseScreen() {
+    primaryStage.setTitle("Choose the game style!");
+    primaryStage.setScene(choose);
+  }
+
+  /**
+   * Shows the multiple choice game screen.
+   */
+  public void showMultipleChoice() {
+    primaryStage.setTitle("Quizzzz");
+    primaryStage.setScene(multipleChoice);
+  }
+
+  /**
+   * Shows the leaderboard screen.
+   */
+  public void showLeaderboard() {
+    primaryStage.setTitle("Quizzzz Leaderboard");
+    primaryStage.setScene(leaderboard);
   }
 }

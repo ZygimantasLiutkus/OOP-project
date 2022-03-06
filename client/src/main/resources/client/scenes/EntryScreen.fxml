@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="entryBg" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="408.0" minWidth="900.0" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EntryCtrl">
+    <center>
+        <AnchorPane fx:id="centralPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="1000.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
+            <children>
+                <FlowPane layoutX="200.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="200.0" prefWidth="600.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
+                    <children>
+                        <Label prefHeight="46.0" prefWidth="195.0" text="Enter the IP address of the server you want to play on" textAlignment="CENTER" wrapText="true" />
+                        <TextField fx:id="ipField" alignment="CENTER" prefHeight="26.0" prefWidth="195.0" promptText="IP ADDRESS" />
+                        <Label fx:id="invalidIPLabel" alignment="CENTER" prefHeight="18.0" prefWidth="195.0" text="This IP address is invalid" />
+                        <Button fx:id="submitButton" mnemonicParsing="false" prefHeight="46.0" prefWidth="195.0" text="Submit" />
+                    </children>
+                </FlowPane>
+            </children>
+        </AnchorPane>
+    </center>
+    <bottom>
+        <AnchorPane fx:id="bottomPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="158.0" prefWidth="1000.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
+            <children>
+                <FlowPane layoutX="200.0" layoutY="27.0" prefHeight="103.0" prefWidth="1000.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
+                    <children>
+                        <Label prefHeight="46.0" prefWidth="328.0" text="Ask your friend for the IP! If you want to connect to your local server, type “localhost”" textAlignment="CENTER" wrapText="true" />
+                    </children>
+                </FlowPane>
+            </children>
+        </AnchorPane>
+    </bottom>
+    <top>
+        <AnchorPane fx:id="topPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="142.0" prefWidth="1000.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
+            <children>
+                <FlowPane layoutY="40.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="101.0" prefWidth="1000.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <children>
+                        <Label text="Quizzzz">
+                            <font>
+                                <Font size="40.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </FlowPane>
+            </children>
+        </AnchorPane>
+    </top>
+</BorderPane>
