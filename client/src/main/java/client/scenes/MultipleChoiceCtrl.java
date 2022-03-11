@@ -117,7 +117,7 @@ public class MultipleChoiceCtrl {
     timeline.setCycleCount(1000);
     timeline.setAutoReverse(false);
     timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10),
-        new EventHandler<ActionEvent>() {
+        new EventHandler<>() {
           /**
            * {@inheritDoc}
            */
@@ -133,7 +133,7 @@ public class MultipleChoiceCtrl {
     Timeline timeCount = new Timeline(
         new KeyFrame(Duration.seconds(1), e -> {
           startTime--;
-          timeCounter.setText(String.valueOf(startTime) + " s");
+          timeCounter.setText(startTime + " s");
           if (startTime <= 3) {
             progressBar.setStyle("-fx-accent: red");
           }
