@@ -2,75 +2,80 @@ package commons;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
-import java.util.List;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-
 /**
- * A general class that contains identical attributes for every type of question.
- * Needs to change - import activities into question, dont hardcode info into it
+ * Class that holds every info from the activity JSON.
  */
-@Entity(name = "question")
-public abstract class Question {
+@Entity
+public class Activity {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
-  private Long id;
-  private String text;
-  @ManyToMany(cascade = CascadeType.PERSIST)
-  private List<Activity> activities;
+  private String id;
+  private String title;
+  private int consumption_in_wh;
+  private String image_path;
 
   /**
    * For object mappers.
    */
-  @SuppressWarnings("unused")
-  public Question() {
+  public Activity() {
   }
 
   /**
    * The constructor for the class.
    *
-   * @param activities the list of activities
+   * @param id          the activity id
+   * @param title       the title
+   * @param consumption_in_wh activity's consumption in watt
+   * @param path        the file path to the photo
    */
-  public Question(List<Activity> activities) {
-    this.activities = activities;
+  public Activity(String id, String title, int consumption_in_wh, String path) {
+    this.id = id;
+    this.title = title;
+    this.consumption_in_wh = consumption_in_wh;
+    this.image_path = path;
   }
 
   /**
-   * Abstract method that dictates the question text.
+   * A getter for the title.
    *
-   * @return a predefined question text.
+   * @return the activities title
    */
-  public abstract String getText();
+  public String getTitle() {
+    return title;
+  }
 
   /**
-   * A getter for the question's id.
+   * A getter for the path.
+   *
+   * @return the path to the photo
+   */
+  public String getImage_path() {
+    return image_path;
+  }
+
+  /**
+   * A getter for the consumption.
+   *
+   * @return an integer representing consumption
+   */
+  public int getConsumption_in_wh() {
+    return consumption_in_wh;
+  }
+
+  /**
+   * Getter for the id.
    *
    * @return a long generated using Identity
    */
-  public Long getId() {
+  public String getId() {
     return id;
-  }
-
-  /**
-   * A getter for the activities list.
-   *
-   * @return a list of activities
-   */
-  public List<Activity> getActivities() {
-    return activities;
-  }
-
-  /**
-   * A setter where we can change the question's id (not recommendable).
-   *
-   * @param id a long generated using Identity
-   */
-  public void setId(Long id) {
-    this.id = id;
   }
 
   /**
@@ -103,4 +108,5 @@ public abstract class Question {
   public String toString() {
     return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
   }
+
 }

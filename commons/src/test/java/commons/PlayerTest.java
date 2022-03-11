@@ -17,7 +17,6 @@ public class PlayerTest {
     Player p = new Player("A");
     assertEquals(p.getName(), "A");
     assertEquals(p.getScore(), 0);
-    assertEquals(p.getGameSessionId(), null);
   }
 
   /**

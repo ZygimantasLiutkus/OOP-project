@@ -27,13 +27,7 @@ public class Player {
   @Column(name = "name", nullable = false)
   private String name;
   @Column(name = "selectedAnswer", nullable = false)
-  private String selectedAnswer;
-  /**
-   * gameSessionID - the id of the game that a player had joined to.
-   * If a player hasn't joined one, then it will be null
-   */
-  @Column(name = "gameSessionId", nullable = true)
-  private Long gameSessionId;
+  private int selectedAnswer;
 
   /**
    * For object mappers.
@@ -109,24 +103,6 @@ public class Player {
    */
   public void setSelectedAnswer(String selectedAnswer) {
     this.selectedAnswer = selectedAnswer;
-  }
-
-  /**
-   * A getter for the session a player is a part of.
-   *
-   * @return a long that represents an ID
-   */
-  public Long getGameSessionId() {
-    return gameSessionId;
-  }
-
-  /**
-   * A setter method that signifies a player has connected to a game lobby.
-   *
-   * @param gameSessionId a long that represents a generated ID of a game session
-   */
-  public void setGameSessionId(Long gameSessionId) {
-    this.gameSessionId = gameSessionId;
   }
 
   /**
