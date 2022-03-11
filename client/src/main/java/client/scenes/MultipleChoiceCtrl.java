@@ -74,7 +74,7 @@ public class MultipleChoiceCtrl {
    * Method to reset the selected answer by setting it to 0.
    */
   public void setSelectedAnswer0() {
-    player.setSelectedAnswer("none");
+    player.setSelectedAnswer("0");
   }
 
   /**
