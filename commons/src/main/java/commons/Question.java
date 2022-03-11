@@ -2,33 +2,49 @@ package commons;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
+import java.util.List;
+import javax.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+
 /**
  * A general class that contains identical attributes for every type of question.
+ * Needs to change - import activities into question, dont hardcode info into it
  */
-
-public class Question {
-
+@Entity(name = "question")
+public abstract class Question {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false)
   private Long id;
   private String text;
-  private String answer;
-  private String image;
+  @ManyToMany(cascade = CascadeType.PERSIST)
+  private List<Activity> activities;
 
   /**
-   * A constructor for the class.
-   *
-   * @param text   - the question itself
-   * @param answer - the id of a numeric answer from the "Answer" database
-   * @param image  -  the file path towards a descriptive image
+   * For object mappers.
    */
-  public Question(String text, String answer, String image) {
-    this.text = text;
-    this.answer = answer;
-    this.image = image;
+  @SuppressWarnings("unused")
+  public Question() {
   }
+
+  /**
+   * The constructor for the class.
+   *
+   * @param activities the list of activities
+   */
+  public Question(List<Activity> activities) {
+    this.activities = activities;
+  }
+
+  /**
+   * Abstract method that dictates the question text.
+   *
+   * @return a predefined question text.
+   */
+  public abstract String getText();
 
   /**
    * A getter for the question's id.
@@ -40,72 +56,21 @@ public class Question {
   }
 
   /**
+   * A getter for the activities list.
+   *
+   * @return a list of activities
+   */
+  public List<Activity> getActivities() {
+    return activities;
+  }
+
+  /**
    * A setter where we can change the question's id (not recommendable).
    *
    * @param id a long generated using Identity
    */
   public void setId(Long id) {
     this.id = id;
-  }
-
-  /**
-   * A getter for the question's text.
-   *
-   * @return a string that represents the question
-   */
-  public String getText() {
-    return text;
-  }
-
-  /**
-   * A setter for the question's text.
-   *
-   * @param text - a valid interrogative sentence
-   */
-  public void setText(String text) {
-    if (text != null) {
-      this.text = text;
-    }
-  }
-
-  /**
-   * A getter for the answer id.
-   *
-   * @return a valid id take from the "Answer" database
-   */
-  public String getAnswer() {
-    return answer;
-  }
-
-  /**
-   * A method where we can change the answer id (not recommendable).
-   *
-   * @param answer - a long generated using Identity
-   */
-  public void setAnswer(String answer) {
-    if (answer != null) {
-      this.answer = answer;
-    }
-  }
-
-  /**
-   * A getter for the image URL.
-   *
-   * @return a file path corresponding to a location inside the "Images" file
-   */
-  public String getImage() {
-    return image;
-  }
-
-  /**
-   * A method where we can change the location of the question's photo.
-   *
-   * @param image - a valid file path inside the "Images" file
-   */
-  public void setImage(String image) {
-    if (image != null) {
-      this.image = image;
-    }
   }
 
   /**
