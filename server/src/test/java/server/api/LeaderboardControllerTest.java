@@ -59,7 +59,7 @@ public class LeaderboardControllerTest {
   @Test
   public void databaseIsUsed() {
     sut.add(getEntry("Bob", 0));
-    repo.calledMethods.contains("save");
+   assertTrue(repo.calledMethods.contains("save"));
   }
 
 }
