@@ -15,6 +15,23 @@ public class LeaderboardEntry {
   private int score;
 
   /**
+   * For object mappers.
+   */
+  public LeaderboardEntry() {
+  }
+
+  /**
+   * Constructor for the class.
+   *
+   * @param name  the username that was entered
+   * @param score the last obtained score
+   */
+  public LeaderboardEntry(String name, int score) {
+    this.name = name;
+    this.score = score;
+  }
+
+  /**
    * A getter for the id.
    *
    * @return a long generated using Identity
