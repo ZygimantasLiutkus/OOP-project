@@ -2,8 +2,8 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Activity;
 import commons.Player;
-import commons.Question;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -29,7 +29,7 @@ public class MultipleChoiceCtrl {
   private double progress = 1;
 
   //placeholder
-  private Question question = new Question("test", "answer2", "test");
+  private Activity test = new Activity("1", "answer2", 10, "test");
 
   @FXML
   private Label questionLabel;
@@ -154,15 +154,15 @@ public class MultipleChoiceCtrl {
     answer2.setDisable(true);
     answer3.setDisable(true);
 
-    if (!answer1.getText().equals(question.getAnswer())) {
+    if (!answer1.getText().equals(test.getTitle())) {
       answer1.setStyle("-fx-background-color: E50C0C");
     }
 
-    if (!answer2.getText().equals(question.getAnswer())) {
+    if (!answer2.getText().equals(test.getTitle())) {
       answer2.setStyle("-fx-background-color: E50C0C");
     }
 
-    if (!answer3.getText().equals(question.getAnswer())) {
+    if (!answer3.getText().equals(test.getTitle())) {
       answer3.setStyle("-fx-background-color: E50C0C");
     }
   }
@@ -230,7 +230,8 @@ public class MultipleChoiceCtrl {
    *
    * @return value of the timer counter
    */
-  public String getTimeCounter() {
-    return timeCounter.getText();
+  public int getTimeCounter() {
+    String[] time = timeCounter.getText().split(" s");
+    return Integer.parseInt(time[0]);
   }
 }

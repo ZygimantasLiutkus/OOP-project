@@ -27,7 +27,7 @@ public class Player {
   @Column(name = "name", nullable = false)
   private String name;
   @Column(name = "selectedAnswer", nullable = false)
-  private int selectedAnswer;
+  private String selectedAnswer;
 
   /**
    * For object mappers.
@@ -40,7 +40,7 @@ public class Player {
    * A constructor for the player.
    * This is only used to initialise a player after they have connected to a server & added a name.
    * The score will be set to 0, and we will not change yet the game session ID
-   * The selected answer will be set to 0, can change to 1, 2 or 3 mid-game
+   * The selected answer will be set to none, can change to answer1, answer2 or answer3 mid-game
    *
    * @param name the name a player has chosen
    */
