@@ -22,9 +22,10 @@ public class TestPlayerRepository implements PlayerRepository {
 
   /**
    * Adds a called method to the used list.
+   *
    * @param s the name of the method
    */
-  public void call(String s){
+  public void call(String s) {
     used.add(s);
   }
 
