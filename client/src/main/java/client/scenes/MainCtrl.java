@@ -89,7 +89,7 @@ public class MainCtrl {
     this.leaderboard = new Scene(leaderboard.getValue());
 
 
-    showEntry();
+    showMultipleChoice();
     primaryStage.show();
   }
 
