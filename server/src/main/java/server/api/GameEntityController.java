@@ -23,9 +23,9 @@ public class GameEntityController {
   /**
    * Constructor for the controller.
    *
-   * @param repo the game repository
+   * @param repo       the game repository
    * @param playerRepo the player repository
-   * @param service the service for questions
+   * @param service    the service for questions
    */
   public GameEntityController(GameEntityRepository repo, PlayerRepository playerRepo,
                               QuestionService service) {
@@ -102,27 +102,25 @@ public class GameEntityController {
    * PUT method that changes the status of a game.
    * Returns an error if the new status is earlier in the chain of possible statuses.
    *
-   * @param id the id of the game
-   * @param newStatus the wanted status for the game
-   * @return ResponseEntity of the game
+   * @param id        the id of the game
+   * @param newStatus the game with the wanted status
+   * @return ResponseEntity of the game with the edited status
    */
-  @PutMapping(path = "/{id}/status")
+  @PutMapping(path = "/{id}")
   public ResponseEntity<GameEntity> changeGameStatus(@PathVariable("id") long id,
-                                                 @RequestBody String newStatus) {
+                                                     @RequestBody GameEntity newStatus) {
     if (repo.findById(id).isEmpty()) {
       return ResponseEntity.badRequest().build();
     } else {
       GameEntity ge = repo.findById(id).get();
-      if ((ge.getStatus().equals("ABORTED") && !newStatus.equals("ABORTED"))
-              || (ge.getStatus().equals("FINISHED") && (newStatus.equals("WAITING")
-              || newStatus.equals("STARTED"))) || (ge.getStatus().equals("STARTED")
-              && newStatus.equals("WAITING"))) {
+      if ((ge.getStatus().equals("ABORTED") && !newStatus.getStatus().equals("ABORTED"))
+          || (ge.getStatus().equals("FINISHED") && (newStatus.getStatus().equals("WAITING")
+          || newStatus.getStatus().equals("STARTED"))) || (ge.getStatus().equals("STARTED")
+          && newStatus.getStatus().equals("WAITING"))) {
         return ResponseEntity.badRequest().build();
       }
-      ge.setStatus(newStatus);
-      repo.deleteById(id);
-      repo.save(ge);
-      return ResponseEntity.ok(repo.findById(id).get());
+      ge.setStatus(newStatus.getStatus());
+      return ResponseEntity.ok(repo.save(ge));
     }
   }
 
@@ -148,7 +146,7 @@ public class GameEntityController {
    * Returns an error if the game does not exist or a player with
    * the same name already exists in the game.
    *
-   * @param id the id of the game
+   * @param id         the id of the game
    * @param playerName the name of the new player
    * @return ResponseEntity of the new player
    */

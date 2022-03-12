@@ -19,6 +19,7 @@ public class ActivityController {
 
   /**
    * Constructor for the class.
+   *
    * @param repo the activity repository
    */
   public ActivityController(ActivityRepository repo) {
@@ -27,21 +28,25 @@ public class ActivityController {
 
   /**
    * GET request to retrieve all activities.
+   *
    * @return a list of activities
    */
   @GetMapping(path = {"", "/"})
-  public ResponseEntity<List<Activity>> getAll(){
+  public ResponseEntity<List<Activity>> getAll() {
     return ResponseEntity.ok(repo.findAll());
   }
 
   /**
    * POST request to add an activity.
+   *
    * @param activity the new activity
    * @return the contents of the new activity
    */
   @PostMapping(path = {"", "/"})
-  public ResponseEntity<Activity> add(@RequestBody Activity activity){
-    if(activity == null) return ResponseEntity.badRequest().build();
+  public ResponseEntity<Activity> add(@RequestBody Activity activity) {
+    if (activity == null) {
+      return ResponseEntity.badRequest().build();
+    }
     return ResponseEntity.ok(repo.save(activity));
   }
 
