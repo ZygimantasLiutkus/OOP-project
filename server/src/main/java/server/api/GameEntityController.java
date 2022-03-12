@@ -201,11 +201,12 @@ public class GameEntityController {
    * Checks if the game has started.
    * For "What's more expensive" the answer is the biggest consumption.
    * For the other type, the question will always talk about the first activity.
+   * The player's score will be updated.
    *
    * @param id     the game's id
    * @param idq    the question number
    * @param player the player that has answered
-   * @return code 202 if the answer is correct or code 403 otherwise
+   * @return an answer containing feedback about the submission
    */
   @PostMapping(path = "/{id}/question/{idQ}")
   public ResponseEntity<Answer> answer(@PathVariable("id") long id, @PathVariable("idQ") long idq,
@@ -262,5 +263,24 @@ public class GameEntityController {
       }
     }
     return ResponseEntity.badRequest().build();
+  }
+
+  /**
+   * GET request for a specific question.
+   *
+   * @param id the game's id
+   * @param q  the question number (1 - 20)
+   * @return the content of the question
+   */
+  @GetMapping(path = "/{id}/question/{idQ}")
+  public ResponseEntity<Question>
+  getQuestionById(@PathVariable("id") long id, @PathVariable("idQ") int q) {
+    if (!repo.existsById(id) || q <= 0 || q > 20) {
+      return ResponseEntity.badRequest().build();
+    }
+    if (!repo.existsById(id)) {
+      return ResponseEntity.badRequest().build();
+    }
+    return ResponseEntity.ok(repo.getById(id).getQuestions().get(q - 1));
   }
 }
