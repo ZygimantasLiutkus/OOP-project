@@ -98,6 +98,15 @@ public class GameEntity {
   }
 
   /**
+   * A setter for the list of players.
+   *
+   * @param players the list of players
+   */
+  public void setPlayers(List<Player> players) {
+    this.players = players;
+  }
+
+  /**
    * A method that uses an API supportive version of the "equals" method.
    *
    * @param obj a random type of object to be compared to
