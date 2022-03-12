@@ -157,6 +157,9 @@ public class GameEntityController {
     if (repo.findById(id).isEmpty()) {
       return ResponseEntity.badRequest().build();
     } else {
+      if (!repo.findById(id).get().getStatus().equals("WAITING")) {
+        return ResponseEntity.badRequest().build();
+      }
       for (Player p : repo.findById(id).get().getPlayers()) {
         if (p.getName().equals(playerName)) {
           return ResponseEntity.unprocessableEntity().build();
