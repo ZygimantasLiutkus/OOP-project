@@ -202,6 +202,7 @@ public class GameEntityController {
    * For "What's more expensive" the answer is the biggest consumption.
    * For the other type, the question will always talk about the first activity.
    * The player's score will be updated.
+   * (For now un "ugly" version of checking an answer)
    *
    * @param id     the game's id
    * @param idq    the question number
