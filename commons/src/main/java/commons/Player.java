@@ -22,7 +22,7 @@ public class Player {
   @Column(name = "name", nullable = false)
   private String name;
   @Column(name = "selectedAnswer", nullable = false)
-  private int selectedAnswer;
+  private String selectedAnswer;
 
   /**
    * For object mappers.
@@ -42,7 +42,7 @@ public class Player {
   public Player(String name) {
     this.name = name;
     this.score = 0;
-    this.selectedAnswer = 0;
+    this.selectedAnswer = "0";
   }
 
   /**
@@ -86,7 +86,7 @@ public class Player {
    *
    * @return an integer that indicates the player's selected answer
    */
-  public int getSelectedAnswer() {
+  public String getSelectedAnswer() {
     return selectedAnswer;
   }
 
@@ -95,7 +95,7 @@ public class Player {
    *
    * @param selectedAnswer 0, 1, 2 or 3 indicating what answer is selected (0 if none)
    */
-  public void setSelectedAnswer(int selectedAnswer) {
+  public void setSelectedAnswer(String selectedAnswer) {
     this.selectedAnswer = selectedAnswer;
   }
 

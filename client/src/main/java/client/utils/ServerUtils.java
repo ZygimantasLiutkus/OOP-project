@@ -18,6 +18,7 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import commons.Player;
 import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -35,6 +36,7 @@ import org.glassfish.jersey.client.ClientConfig;
 public class ServerUtils {
 
   private static final String SERVER = "http://localhost:8080/";
+  private Player player;
 
   /**
    * Getting quotes the hard way. Don't use this!
@@ -77,5 +79,23 @@ public class ServerUtils {
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
+  }
+
+  /**
+   * Returns the player.
+   *
+   * @return the player
+   */
+  public Player getPlayer() {
+    return this.player;
+  }
+
+  /**
+   * Sets the player.
+   *
+   * @param player the player
+   */
+  public void setPlayer(Player player) {
+    this.player = player;
   }
 }

@@ -2,7 +2,6 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,7 +16,6 @@ public class MultipleChoiceCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
-  private Player player;
 
   @FXML
   private Label questionLabel;
@@ -62,27 +60,30 @@ public class MultipleChoiceCtrl {
    * Method to reset the selected answer by setting it to 0.
    */
   public void setSelectedAnswer0() {
-    player.setSelectedAnswer(0);
+    server.getPlayer().setSelectedAnswer("0");
   }
 
   /**
    * Method to set the selected answer to the first answer.
    */
   public void setSelectedAnswer1() {
-    player.setSelectedAnswer(1);
+    String answer = answer1.getText();
+    server.getPlayer().setSelectedAnswer(answer);
   }
 
   /**
    * Method to set the selected answer to the second answer.
    */
   public void setSelectedAnswer2() {
-    player.setSelectedAnswer(2);
+    String answer = answer2.getText();
+    server.getPlayer().setSelectedAnswer(answer);
   }
 
   /**
    * Method to set the selected answer to the third answer.
    */
   public void setSelectedAnswer3() {
-    player.setSelectedAnswer(3);
+    String answer = answer3.getText();
+    server.getPlayer().setSelectedAnswer(answer);
   }
 }

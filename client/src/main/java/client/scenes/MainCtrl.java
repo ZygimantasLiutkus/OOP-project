@@ -88,7 +88,6 @@ public class MainCtrl {
     this.leaderboardScreenCtrl = leaderboard.getKey();
     this.leaderboard = new Scene(leaderboard.getValue());
 
-
     showEntry();
     primaryStage.show();
   }
