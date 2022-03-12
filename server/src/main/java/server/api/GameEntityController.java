@@ -1,9 +1,10 @@
 package server.api;
 
-import commons.GameEntity;
-import commons.Player;
+import commons.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.GameEntityRepository;
@@ -173,5 +174,93 @@ public class GameEntityController {
       repo.save(ge);
       return ResponseEntity.ok(newPlayer);
     }
+  }
+
+  /**
+   * GET endpoint for retrieving the list of questions.
+   *
+   * @param id the game id
+   * @return a list of all 20 questions (supposedly)
+   */
+  @GetMapping(path = "/{id}/question")
+  public ResponseEntity<List<Question>> getAllQuestions(@PathVariable("id") long id) {
+    if (repo.existsById(id)) {
+      Optional<GameEntity> game = repo.findById(id);
+      GameEntity entity = new GameEntity();
+      if (game.isPresent()) {
+        entity = game.get();
+      }
+      return ResponseEntity.ok(entity.getQuestions());
+    }
+    return ResponseEntity.badRequest().build();
+  }
+
+  /**
+   * POST request to map a player with an answer.
+   * Checks if the player is actually present in the game.
+   * Checks if the game has started.
+   * For "What's more expensive" the answer is the biggest consumption.
+   * For the other type, the question will always talk about the first activity.
+   *
+   * @param id     the game's id
+   * @param idq    the question number
+   * @param player the player that has answered
+   * @return code 202 if the answer is correct or code 403 otherwise
+   */
+  @PostMapping(path = "/{id}/question/{idQ}")
+  public ResponseEntity<Answer> answer(@PathVariable("id") long id, @PathVariable("idQ") long idq,
+                                       @RequestBody Player player) {
+    boolean found = false;
+    Player playerDummy = new Player();
+    for (GameEntity game : repo.findAll()) {
+      if (game.getId() == id) {
+        if (!game.getStatus().equals("STARTED")) {
+          return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        for (Player p : game.getPlayers()) {
+          if (p.getId() == player.getId()) {
+            playerDummy = p;
+            found = true;
+            break;
+          }
+        }
+        if (found == false) {
+          return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Question q = game.getQuestions().get((int) idq - 1);
+        if (q instanceof QuestionMoreExpensive) {
+          int maxim = 0;
+          for (Activity a : q.getActivities()) {
+            if (a.getConsumption_in_wh() > maxim) {
+              maxim = a.getConsumption_in_wh();
+            }
+          }
+          if (player.getSelectedAnswer() == maxim) {
+            playerDummy.setScore(playerDummy.getScore() + 100);
+            playerRepo.save(playerDummy);
+            return ResponseEntity.ok(
+                new Answer("CORRECT", playerDummy, playerDummy.getScore(), 100));
+          } else {
+            playerDummy.setScore(playerDummy.getScore());
+            playerRepo.save(playerDummy);
+            return ResponseEntity.ok(
+                new Answer("INCORRECT", playerDummy, playerDummy.getScore(), 0));
+          }
+        } else {
+          if (player.getSelectedAnswer() == q.getActivities().get(0).getConsumption_in_wh()) {
+            playerDummy.setScore(playerDummy.getScore() + 100);
+            playerRepo.save(playerDummy);
+            return ResponseEntity.ok(
+                new Answer("CORRECT", playerDummy, playerDummy.getScore() + 100, 100));
+          } else {
+            playerDummy.setScore(playerDummy.getScore());
+            playerRepo.save(playerDummy);
+            return ResponseEntity.ok(
+                new Answer("INCORRECT", playerDummy, playerDummy.getScore(), 0));
+          }
+        }
+      }
+    }
+    return ResponseEntity.badRequest().build();
   }
 }
