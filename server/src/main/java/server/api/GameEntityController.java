@@ -226,7 +226,7 @@ public class GameEntityController {
             break;
           }
         }
-        if (found == false) {
+        if (!found) {
           return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         Question q = game.getQuestions().get((int) idq - 1);
@@ -237,7 +237,7 @@ public class GameEntityController {
               maxim = a.getConsumption_in_wh();
             }
           }
-          if (player.getSelectedAnswer() == maxim) {
+          if (Integer.valueOf(player.getSelectedAnswer()) == maxim) {
             playerDummy.setScore(playerDummy.getScore() + 100);
             playerRepo.save(playerDummy);
             return ResponseEntity.ok(
@@ -249,7 +249,8 @@ public class GameEntityController {
                 new Answer("INCORRECT", playerDummy, playerDummy.getScore(), 0));
           }
         } else {
-          if (player.getSelectedAnswer() == q.getActivities().get(0).getConsumption_in_wh()) {
+          if (Integer.valueOf(player.getSelectedAnswer())
+              == q.getActivities().get(0).getConsumption_in_wh()) {
             playerDummy.setScore(playerDummy.getScore() + 100);
             playerRepo.save(playerDummy);
             return ResponseEntity.ok(
