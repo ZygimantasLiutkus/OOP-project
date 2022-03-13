@@ -2,7 +2,12 @@ package commons;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -35,7 +40,7 @@ public class Player {
    * A constructor for the player.
    * This is only used to initialise a player after they have connected to a server & added a name.
    * The score will be set to 0, and we will not change yet the game session ID
-   * The selected answer will be set to 0, can change to 1, 2 or 3 mid-game
+   * The selected answer will be set to 0, can change to answer1, answer2 or answer3 mid-game
    *
    * @param name the name a player has chosen
    */
@@ -93,7 +98,8 @@ public class Player {
   /**
    * A setter for the player's selected answer.
    *
-   * @param selectedAnswer 0, 1, 2 or 3 indicating what answer is selected (0 if none)
+   * @param selectedAnswer none, answer1, answer2 or answer3
+   *                       indicating what answer is selected (0 if none)
    */
   public void setSelectedAnswer(String selectedAnswer) {
     this.selectedAnswer = selectedAnswer;
