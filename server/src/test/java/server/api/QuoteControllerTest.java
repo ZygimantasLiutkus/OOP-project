@@ -86,7 +86,7 @@ public class QuoteControllerTest {
   @Test
   public void databaseIsUsed() {
     sut.add(getQuote("q1"));
-    repo.calledMethods.contains("save");
+    assertTrue(repo.calledMethods.contains("save"));
   }
 
   /**

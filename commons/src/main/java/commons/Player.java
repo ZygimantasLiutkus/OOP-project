@@ -2,7 +2,12 @@ package commons;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -16,19 +21,13 @@ public class Player {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
-  private Long id;
+  public Long id;
   @Column(name = "score", nullable = false)
   private int score;
   @Column(name = "name", nullable = false)
   private String name;
   @Column(name = "selectedAnswer", nullable = false)
-  private int selectedAnswer;
-  /**
-   * gameSessionID - the id of the game that a player had joined to.
-   * If a player hasn't joined one, then it will be null
-   */
-  @Column(name = "gameSessionId", nullable = true)
-  private Long gameSessionId;
+  private String selectedAnswer;
 
   /**
    * For object mappers.
@@ -41,14 +40,14 @@ public class Player {
    * A constructor for the player.
    * This is only used to initialise a player after they have connected to a server & added a name.
    * The score will be set to 0, and we will not change yet the game session ID
-   * The selected answer will be set to 0, can change to 1, 2 or 3 mid-game
+   * The selected answer will be set to 0, can change to answer1, answer2 or answer3 mid-game
    *
    * @param name the name a player has chosen
    */
   public Player(String name) {
     this.name = name;
     this.score = 0;
-    this.selectedAnswer = 0;
+    this.selectedAnswer = "0";
   }
 
   /**
@@ -92,35 +91,18 @@ public class Player {
    *
    * @return an integer that indicates the player's selected answer
    */
-  public int getSelectedAnswer() {
+  public String getSelectedAnswer() {
     return selectedAnswer;
   }
 
   /**
    * A setter for the player's selected answer.
    *
-   * @param selectedAnswer 0, 1, 2 or 3 indicating what answer is selected (0 if none)
+   * @param selectedAnswer none, answer1, answer2 or answer3
+   *                       indicating what answer is selected (0 if none)
    */
-  public void setSelectedAnswer(int selectedAnswer) {
+  public void setSelectedAnswer(String selectedAnswer) {
     this.selectedAnswer = selectedAnswer;
-  }
-
-  /**
-   * A getter for the session a player is a part of.
-   *
-   * @return a long that represents an ID
-   */
-  public Long getGameSessionId() {
-    return gameSessionId;
-  }
-
-  /**
-   * A setter method that signifies a player has connected to a game lobby.
-   *
-   * @param gameSessionId a long that represents a generated ID of a game session
-   */
-  public void setGameSessionId(Long gameSessionId) {
-    this.gameSessionId = gameSessionId;
   }
 
   /**
