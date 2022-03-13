@@ -60,7 +60,7 @@ public class LeaderboardScreenCtrl implements Initializable {
   }
 
   /**
-   * {@InheritDoc}
+   * {@inheritDoc}
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -104,6 +104,9 @@ public class LeaderboardScreenCtrl implements Initializable {
     this.scoreLabel.setText("Scores");
   }
 
+  /**
+   * Returns from the leaderboard screen to the home screen.
+   */
   public void home() {
     mainCtrl.showChooseScreen();
   }

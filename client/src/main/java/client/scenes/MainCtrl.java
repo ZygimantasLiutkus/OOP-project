@@ -145,6 +145,8 @@ public class MainCtrl {
 
   /**
    * Shows the leaderboard screen.
+   *
+   * @param type the type of leaderboard (global / multiplayer).
    */
   public void showLeaderboard(String type) {
     switch (type) {
