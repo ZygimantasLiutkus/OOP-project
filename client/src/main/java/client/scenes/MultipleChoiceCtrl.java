@@ -2,15 +2,12 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-<<<<<<< client/src/main/java/client/scenes/MultipleChoiceCtrl.java
-=======
 import commons.Activity;
 import commons.Player;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
->>>>>>> client/src/main/java/client/scenes/MultipleChoiceCtrl.java
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
