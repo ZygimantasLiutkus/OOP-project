@@ -18,6 +18,7 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import commons.LeaderboardEntry;
 import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -77,5 +78,33 @@ public class ServerUtils {
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
+  }
+
+  /**
+   * Gets the leaderboard entries from backend.
+   *
+   * @return a list of leaderboard entries.
+   */
+  public List<LeaderboardEntry> getLeaderboardEntries() {
+    return ClientBuilder.newClient(new ClientConfig()) //
+        .target(SERVER).path("api/leaderboard") //
+        .request(APPLICATION_JSON) //
+        .accept(APPLICATION_JSON) //
+        .get(new GenericType<List<LeaderboardEntry>>() {
+        });
+  }
+
+  /**
+   * Sends a leaderboard entry to the backend to process.
+   *
+   * @param leaderboardEntry a leaderboard entry that should be added.
+   * @return the leaderboard entry that was added.
+   */
+  public LeaderboardEntry addLeaderboardEntry(LeaderboardEntry leaderboardEntry) {
+    return ClientBuilder.newClient(new ClientConfig()) //
+        .target(SERVER).path("api/leaderboard") //
+        .request(APPLICATION_JSON) //
+        .accept(APPLICATION_JSON) //
+        .post(Entity.entity(leaderboardEntry, APPLICATION_JSON), LeaderboardEntry.class);
   }
 }

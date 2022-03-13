@@ -89,7 +89,7 @@ public class MainCtrl {
     this.leaderboard = new Scene(leaderboard.getValue());
 
 
-    showMultipleChoice();
+    showChooseScreen();
     primaryStage.show();
   }
 
@@ -146,8 +146,20 @@ public class MainCtrl {
   /**
    * Shows the leaderboard screen.
    */
-  public void showLeaderboard() {
-    primaryStage.setTitle("Quizzzz Leaderboard");
-    primaryStage.setScene(leaderboard);
+  public void showLeaderboard(String type) {
+    switch (type) {
+      case "global":
+        primaryStage.setTitle("Quizzzz Leaderboard");
+        leaderboardScreenCtrl.setSingleplayer();
+        primaryStage.setScene(leaderboard);
+        leaderboardScreenCtrl.refreshTop5();
+        break;
+      case "multiplayer":
+        primaryStage.setTitle("Match Leaderboard");
+        primaryStage.setScene(leaderboard);
+        break;
+      default:
+        break;
+    }
   }
 }
