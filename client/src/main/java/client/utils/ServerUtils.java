@@ -54,9 +54,9 @@ public class ServerUtils {
     }
 
     Invocation.Builder req = ClientBuilder.newClient(new ClientConfig()) //
-            .target(server) //
-            .request(APPLICATION_JSON) //
-            .accept(APPLICATION_JSON);
+        .target(server) //
+        .request(APPLICATION_JSON) //
+        .accept(APPLICATION_JSON);
 
     try {
       String resp = req.get(new GenericType<>() {
@@ -134,4 +134,23 @@ public class ServerUtils {
   public void setPlayer(Player player) {
     this.player = player;
   }
+
+  /**
+   * Gives 0 points to the player if no answer was selected.
+   * If true, there is no answer
+   *
+   * @return returns a boolean to indicate whether the user selected an answer.
+   */
+  public boolean noAnswer() {
+    //return this.player.getSelectedAnswer().equals("0");
+    return false; //testing purposes
+  }
+
+  /**
+   * Resets the chosen answer of the player for the next round.
+   */
+  public void resetAnswer() {
+    this.player.setSelectedAnswer("0");
+  }
+
 }

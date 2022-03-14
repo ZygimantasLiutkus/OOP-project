@@ -22,13 +22,12 @@ public class MultipleChoiceCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
-
+  private boolean singePl = true; //should be replaced
   private int startTime = 10;
+  private int questionNum = 17;
   private double progress = 1;
-
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
-
   @FXML
   private Label questionLabel;
 
@@ -55,6 +54,9 @@ public class MultipleChoiceCtrl {
 
   @FXML
   private Label timeCounter;
+
+  @FXML
+  private Label questionNo;
 
   /**
    * Constructor for MultipleChoiceCtrl.
@@ -143,7 +145,7 @@ public class MultipleChoiceCtrl {
     timeCount.setCycleCount(10);
     timeline.play();
     timeCount.play();
-
+    questionNum++;
     timeline.setOnFinished(e -> revealAnswer());
   }
 
@@ -166,19 +168,57 @@ public class MultipleChoiceCtrl {
     if (!answer3.getText().equals(test.getTitle())) {
       answer3.setStyle("-fx-background-color: E50C0C");
     }
+    if (!server.noAnswer()) {
+      addPoints.setText("+0");
+      addPoints.setVisible(true);
+    }
+    Timeline cooldown = new Timeline();
+    cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(3000), e -> {
+    }));
+    cooldown.play();
+    cooldown.setOnFinished(e -> cooldownAnswer());
   }
 
   /**
-   * Makes the client screen ready for the new question.
+   * Checks if the game type is single player and does the associated methods.
    */
-  public void nextQuestion() {
+  public void cooldownAnswer() {
+    if (questionNum <= 20) {
+      if (singePl) {
+        nextQuestionSingle();
+        timerStart();
+      } else {
+        nextQuestionMultiple();
+      }
+    } else {
+      mainCtrl.showLeaderboard();
+    }
+  }
+
+  /**
+   * Makes the client screen ready for the new question. FOR SINGLE PLAYER ONLY
+   */
+  public void nextQuestionSingle() {
     resetTimer();
+    addPoints.setVisible(false);
+    questionNo.setText(questionNum + "/20");
     answer1.setDisable(false);
     answer1.setStyle("-fx-background-color: #11AD31");
     answer2.setDisable(false);
     answer2.setStyle("-fx-background-color: #11AD31");
     answer3.setDisable(false);
     answer3.setStyle("-fx-background-color: #11AD31");
+    //server.resetAnswer(); commented out because of bug
+
+
+  }
+
+  /**
+   * Makes the client ready for the new question. FOR MULTIPLAYER ONLY
+   */
+  public void nextQuestionMultiple() {
+    nextQuestionSingle();
+
   }
 
   /**
