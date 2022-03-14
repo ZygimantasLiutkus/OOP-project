@@ -143,37 +143,33 @@ public class GameEntityController {
   }
 
   /**
-   * POST method that adds a new player to a game.
-   * Returns an error if the game does not exist or a player with
-   * the same name already exists in the game.
+   * POST method that adds a new player to a game with waiting status.
+   * Returns an error if a player with the same name already exists in the game.
+   * If there is no game with waiting status, one is created and the player is
+   * added.
    *
-   * @param id         the id of the game
-   * @param playerName the name of the new player
+   * @param player the player that has to be added
    * @return ResponseEntity of the new player
    */
   @PostMapping(path = "/{id}/player")
-  public ResponseEntity<Player> addPlayerToGame(@PathVariable("id") long id, String playerName) {
-    if (repo.findById(id).isEmpty()) {
-      return ResponseEntity.badRequest().build();
-    } else {
-      if (!repo.findById(id).get().getStatus().equals("WAITING")) {
+  public ResponseEntity<GameEntity> addPlayerToGame(@RequestBody Player player) {
+    List<GameEntity> list = repo.findByStatus("WAITING");
+    if (list.size() == 0) {
+      GameEntity game = repo.save(new GameEntity());
+      game.setQuestions(service.generateQuestion());
+      playerRepo.save(player);
+      game.addPlayer(player);
+      return ResponseEntity.ok(repo.save(game));
+    }
+
+    GameEntity game = list.get(0);
+    for (Player p : game.getPlayers()) {
+      if (p.getName().equals(player.getName())) {
         return ResponseEntity.badRequest().build();
       }
-      for (Player p : repo.findById(id).get().getPlayers()) {
-        if (p.getName().equals(playerName)) {
-          return ResponseEntity.unprocessableEntity().build();
-        }
-      }
-      Player newPlayer = new Player(playerName);
-      playerRepo.save(newPlayer);
-      GameEntity ge = repo.findById(id).get();
-      List<Player> playersList = ge.getPlayers();
-      playersList.add(newPlayer);
-      ge.setPlayers(playersList);
-      repo.deleteById(id);
-      repo.save(ge);
-      return ResponseEntity.ok(newPlayer);
     }
+    game.addPlayer(player);
+    return ResponseEntity.ok(repo.save(game));
   }
 
   /**
