@@ -90,7 +90,7 @@ public class LeaderboardScreenCtrl implements Initializable {
   }
 
   /**
-   * Setter for the label for a singleplayer / global leaderboard.
+   * Setter for the settings of a singleplayer / global leaderboard.
    */
   public void setSingleplayer() {
     this.scoreLabel.setText("Global Scores");
@@ -99,10 +99,12 @@ public class LeaderboardScreenCtrl implements Initializable {
   }
 
   /**
-   * Setter for the label for a multiplayer leaderboard.
+   * Setter for the settings of a multiplayer leaderboard.
    */
   public void setMultiplayer() {
     this.scoreLabel.setText("Scores");
+    this.reconnectButton.setVisible(true);
+    this.homeButton.setVisible(true);
   }
 
   /**

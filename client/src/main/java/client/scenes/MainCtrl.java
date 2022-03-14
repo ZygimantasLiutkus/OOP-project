@@ -158,6 +158,7 @@ public class MainCtrl {
         break;
       case "multiplayer":
         primaryStage.setTitle("Match Leaderboard");
+        leaderboardScreenCtrl.setMultiplayer();
         primaryStage.setScene(leaderboard);
         break;
       default:
