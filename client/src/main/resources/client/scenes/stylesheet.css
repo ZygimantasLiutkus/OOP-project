@@ -18,6 +18,13 @@
     -fx-max-height: 47;
 }
 
+.button:pressed {
+    -fx-background-color: #11AD31;
+    -fx-max-height: 47;
+    -fx-border-color: #EFDB22;
+    -fx-border-width: 4px;
+}
+
 #reconnectButton,
 #homeButton {
     -fx-font-size: 20;

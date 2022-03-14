@@ -18,10 +18,15 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+
 import commons.LeaderboardEntry;
+
+import commons.Player;
+
 import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.core.GenericType;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,7 +40,43 @@ import org.glassfish.jersey.client.ClientConfig;
  */
 public class ServerUtils {
 
-  private static final String SERVER = "http://localhost:8080/";
+  private String server = "http://localhost:8080/";
+  private Player player;
+
+  /**
+   * Sets the server to connect to in later requests.
+   *
+   * @param server the ip address (and port) to connect to
+   * @return true if the server is a game server, false otherwise
+   */
+  public boolean setServer(String server) {
+    if (!(server.startsWith("http://") || server.startsWith("https://"))) {
+      server = "http://" + server;
+    }
+    if (!server.endsWith("/")) {
+      server = server + "/";
+    }
+
+    Invocation.Builder req = ClientBuilder.newClient(new ClientConfig()) //
+            .target(server) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON);
+
+    try {
+      String resp = req.get(new GenericType<>() {
+      });
+
+      if (resp.equals("Hello world!")) {
+        this.server = server;
+        return true;
+      }
+
+    } catch (Exception e) {
+      return false;
+    }
+
+    return false;
+  }
 
   /**
    * Getting quotes the hard way. Don't use this!
@@ -43,7 +84,7 @@ public class ServerUtils {
    * @throws IOException throws an exception if the connection can't be made
    */
   public void getQuotesTheHardWay() throws IOException {
-    var url = new URL("http://localhost:8080/api/quotes");
+    var url = new URL(server + "/api/quotes");
     var is = url.openConnection().getInputStream();
     var br = new BufferedReader(new InputStreamReader(is));
     String line;
@@ -59,7 +100,7 @@ public class ServerUtils {
    */
   public List<Quote> getQuotes() {
     return ClientBuilder.newClient(new ClientConfig()) //
-        .target(SERVER).path("api/quotes") //
+        .target(server).path("api/quotes") //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .get(new GenericType<List<Quote>>() {
@@ -74,7 +115,7 @@ public class ServerUtils {
    */
   public Quote addQuote(Quote quote) {
     return ClientBuilder.newClient(new ClientConfig()) //
-        .target(SERVER).path("api/quotes") //
+        .target(server).path("api/quotes") //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
@@ -106,5 +147,21 @@ public class ServerUtils {
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .post(Entity.entity(leaderboardEntry, APPLICATION_JSON), LeaderboardEntry.class);
+  }
+   * Returns the player.
+   *
+   * @return the player
+   */
+  public Player getPlayer() {
+    return this.player;
+  }
+
+  /**
+   * Sets the player.
+   *
+   * @param player the player
+   */
+  public void setPlayer(Player player) {
+    this.player = player;
   }
 }

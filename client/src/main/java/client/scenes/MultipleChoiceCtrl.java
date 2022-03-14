@@ -3,7 +3,6 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
-import commons.Player;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -23,7 +22,6 @@ public class MultipleChoiceCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
-  private Player player;
 
   private int startTime = 10;
   private double progress = 1;
@@ -74,28 +72,31 @@ public class MultipleChoiceCtrl {
    * Method to reset the selected answer by setting it to 0.
    */
   public void setSelectedAnswer0() {
-    player.setSelectedAnswer("0");
+    server.getPlayer().setSelectedAnswer("0");
   }
 
   /**
    * Method to set the selected answer to the first answer.
    */
   public void setSelectedAnswer1() {
-    player.setSelectedAnswer("answer1");
+    String answer = answer1.getText();
+    server.getPlayer().setSelectedAnswer(answer);
   }
 
   /**
    * Method to set the selected answer to the second answer.
    */
   public void setSelectedAnswer2() {
-    player.setSelectedAnswer("answer2");
+    String answer = answer2.getText();
+    server.getPlayer().setSelectedAnswer(answer);
   }
 
   /**
    * Method to set the selected answer to the third answer.
    */
   public void setSelectedAnswer3() {
-    player.setSelectedAnswer("answer3");
+    String answer = answer3.getText();
+    server.getPlayer().setSelectedAnswer(answer);
   }
 
   /**
