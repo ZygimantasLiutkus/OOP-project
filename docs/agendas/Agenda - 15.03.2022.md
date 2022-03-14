@@ -31,9 +31,9 @@ next agendas.
 ##Planning
 
 - Currently, there are 19 solved issues
-- There are still 4 "MUST HAVE" issues from previous weeks
+- There are still 6 "MUST HAVE" issues from previous weeks
 - Set stricter deadlines for each sprint
-- Everyone should have their issue(s) merged in Development at the end of the week
+- Everyone should have their issue(s) merged into Development at the end of the week
 
 # Action points for next week (Scrum board)
 
