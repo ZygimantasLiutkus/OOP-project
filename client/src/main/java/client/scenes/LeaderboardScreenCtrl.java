@@ -76,8 +76,8 @@ public class LeaderboardScreenCtrl implements Initializable {
     Collections.sort(entries, (e1, e2) -> Integer.compare(e2.getScore(), e1.getScore()));
 
     List<LeaderboardEntry> leaders = new ArrayList<>();
-    if (entries.size() >= 5) {
-      leaders = entries.subList(0, 5);
+    if (entries.size() >= 10) {
+      leaders = entries.subList(0, 10);
     } else {
       for (int i = 0; i < entries.size(); i++) {
         leaders.add(entries.get(i));

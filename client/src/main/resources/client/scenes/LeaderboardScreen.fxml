@@ -19,7 +19,7 @@
                         <Font size="40.0" />
                     </font>
                 </Label>
-                <TableView fx:id="leaderboardTable" prefHeight="290.0" prefWidth="700.0">
+                <TableView fx:id="leaderboardTable" prefHeight="290.0" prefWidth="700.0" stylesheets="@/client/scenes/stylesheet.css">
                     <columns>
                         <TableColumn fx:id="name" editable="false" prefWidth="500.0" sortable="false" text="Player" />
                         <TableColumn fx:id="score" editable="false" prefWidth="200.0" sortable="false" text="Score" />

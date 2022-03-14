@@ -58,3 +58,8 @@
     -fx-background-color: #C4C4C4;
 }
 
+.table-row-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
