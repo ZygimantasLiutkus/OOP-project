@@ -18,6 +18,7 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import commons.Player;
 import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -36,6 +37,7 @@ import org.glassfish.jersey.client.ClientConfig;
 public class ServerUtils {
 
   private String server = "http://localhost:8080/";
+  private Player player;
 
   /**
    * Sets the server to connect to in later requests.
@@ -52,9 +54,9 @@ public class ServerUtils {
     }
 
     Invocation.Builder req = ClientBuilder.newClient(new ClientConfig()) //
-        .target(server) //
-        .request(APPLICATION_JSON) //
-        .accept(APPLICATION_JSON);
+            .target(server) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON);
 
     try {
       String resp = req.get(new GenericType<>() {
@@ -113,5 +115,23 @@ public class ServerUtils {
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
+  }
+
+  /**
+   * Returns the player.
+   *
+   * @return the player
+   */
+  public Player getPlayer() {
+    return this.player;
+  }
+
+  /**
+   * Sets the player.
+   *
+   * @param player the player
+   */
+  public void setPlayer(Player player) {
+    this.player = player;
   }
 }
