@@ -2,12 +2,10 @@ package commons;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -16,17 +14,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * The players will be stored with the outline defined below inside a table with the same name.
  */
 @Entity(name = "Player")
-@Table(name = "Player")
 public class Player {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
   public Long id;
-  @Column(name = "score", nullable = false)
   private int score;
-  @Column(name = "name", nullable = false)
   private String name;
-  @Column(name = "selectedAnswer", nullable = false)
   private String selectedAnswer;
 
   /**

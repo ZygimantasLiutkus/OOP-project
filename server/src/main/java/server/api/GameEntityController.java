@@ -285,4 +285,19 @@ public class GameEntityController {
     }
     return ResponseEntity.ok(repo.getById(id).getQuestions().get(q - 1));
   }
+
+  /**
+   * Creates a new single player game.
+   *
+   * @param player the player that has submitted the request
+   * @return a new game with the player inside it and a poll of questions
+   */
+  @PostMapping(path = "/singleplayer")
+  public ResponseEntity<GameEntity> createSinglePlayer(@RequestBody Player player) {
+    playerRepo.save(player);
+    GameEntity game = repo.save(new GameEntity());
+    game.setQuestions(service.generateQuestion());
+    game.addPlayer(player);
+    return ResponseEntity.ok(repo.save(game));
+  }
 }
