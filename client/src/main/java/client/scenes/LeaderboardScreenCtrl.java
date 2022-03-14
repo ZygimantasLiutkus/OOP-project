@@ -71,7 +71,7 @@ public class LeaderboardScreenCtrl implements Initializable {
   /**
    * Updates the global leaderboard with stored leaderboard entries.
    */
-  public void refreshTop5() {
+  public void refreshTop10() {
     List<LeaderboardEntry> entries = server.getLeaderboardEntries();
     Collections.sort(entries, (e1, e2) -> Integer.compare(e2.getScore(), e1.getScore()));
 

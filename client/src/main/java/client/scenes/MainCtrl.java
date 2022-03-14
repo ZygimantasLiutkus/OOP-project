@@ -154,7 +154,7 @@ public class MainCtrl {
         primaryStage.setTitle("Quizzzz Leaderboard");
         leaderboardScreenCtrl.setSingleplayer();
         primaryStage.setScene(leaderboard);
-        leaderboardScreenCtrl.refreshTop5();
+        leaderboardScreenCtrl.refreshTop10();
         break;
       case "multiplayer":
         primaryStage.setTitle("Match Leaderboard");
