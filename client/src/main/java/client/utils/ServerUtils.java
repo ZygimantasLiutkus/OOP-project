@@ -18,11 +18,8 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-
 import commons.LeaderboardEntry;
-
 import commons.Player;
-
 import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -58,9 +55,9 @@ public class ServerUtils {
     }
 
     Invocation.Builder req = ClientBuilder.newClient(new ClientConfig()) //
-            .target(server) //
-            .request(APPLICATION_JSON) //
-            .accept(APPLICATION_JSON);
+        .target(server) //
+        .request(APPLICATION_JSON) //
+        .accept(APPLICATION_JSON);
 
     try {
       String resp = req.get(new GenericType<>() {
@@ -128,7 +125,7 @@ public class ServerUtils {
    */
   public List<LeaderboardEntry> getLeaderboardEntries() {
     return ClientBuilder.newClient(new ClientConfig()) //
-        .target(SERVER).path("api/leaderboard") //
+        .target(server).path("api/leaderboard") //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .get(new GenericType<List<LeaderboardEntry>>() {
@@ -143,11 +140,13 @@ public class ServerUtils {
    */
   public LeaderboardEntry addLeaderboardEntry(LeaderboardEntry leaderboardEntry) {
     return ClientBuilder.newClient(new ClientConfig()) //
-        .target(SERVER).path("api/leaderboard") //
+        .target(server).path("api/leaderboard") //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .post(Entity.entity(leaderboardEntry, APPLICATION_JSON), LeaderboardEntry.class);
   }
+
+  /**
    * Returns the player.
    *
    * @return the player
