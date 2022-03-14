@@ -149,7 +149,7 @@ public class GameEntityController {
    * added.
    *
    * @param player the player that has to be added
-   * @return ResponseEntity of the new player
+   * @return ResponseEntity of the game in which the player was added
    */
   @PostMapping(path = "/addPlayer")
   public ResponseEntity<GameEntity> addPlayerToGame(@RequestBody Player player) {
