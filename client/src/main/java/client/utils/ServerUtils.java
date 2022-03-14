@@ -22,6 +22,7 @@ import commons.Player;
 import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.core.GenericType;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,7 +45,7 @@ public class ServerUtils {
    * @throws IOException throws an exception if the connection can't be made
    */
   public void getQuotesTheHardWay() throws IOException {
-    var url = new URL("http://localhost:8080/api/quotes");
+    var url = new URL(server + "/api/quotes");
     var is = url.openConnection().getInputStream();
     var br = new BufferedReader(new InputStreamReader(is));
     String line;
@@ -60,7 +61,7 @@ public class ServerUtils {
    */
   public List<Quote> getQuotes() {
     return ClientBuilder.newClient(new ClientConfig()) //
-        .target(SERVER).path("api/quotes") //
+        .target(server).path("api/quotes") //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .get(new GenericType<List<Quote>>() {
@@ -75,7 +76,7 @@ public class ServerUtils {
    */
   public Quote addQuote(Quote quote) {
     return ClientBuilder.newClient(new ClientConfig()) //
-        .target(SERVER).path("api/quotes") //
+        .target(server).path("api/quotes") //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);

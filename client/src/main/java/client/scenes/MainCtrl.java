@@ -18,6 +18,7 @@ package client.scenes;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -116,14 +117,21 @@ public class MainCtrl {
   public void showEntry() {
     primaryStage.setTitle("Quizzzz");
     primaryStage.setScene(entry);
+    entry.setOnKeyPressed(e -> entryCtrl.keyPressed(e));
   }
 
   /**
    * Shows the name popup to enter the name.
    */
   public void showNamePopup() {
-    primaryStage.setTitle("Choose your name!");
-    primaryStage.setScene(name);
+    Stage nameStage = new Stage();
+    nameStage.setMinWidth(500);
+    nameStage.setMinHeight(280);
+    nameStage.initModality(Modality.APPLICATION_MODAL);
+    nameStage.initOwner(primaryStage);
+    nameStage.setTitle("Choose your name!");
+    nameStage.setScene(name);
+    nameStage.show();
   }
 
   /**

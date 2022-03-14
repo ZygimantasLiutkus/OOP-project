@@ -16,7 +16,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class Activity {
   @Id
   @Column(name = "id", nullable = false)
-  private String id;
+  public String id;
   private String title;
   private int consumption_in_wh;
   private String image_path;
