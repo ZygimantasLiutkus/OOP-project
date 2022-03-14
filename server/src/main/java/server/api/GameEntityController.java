@@ -169,6 +169,7 @@ public class GameEntityController {
     if (list.size() == 0) {
       GameEntity game = repo.save(new GameEntity());
       game.setQuestions(service.generateQuestion());
+      repo.save(game);
       game.addPlayer(player);
       return ResponseEntity.ok(repo.save(game));
     }
