@@ -1,12 +1,23 @@
 package server.api;
 
-import commons.*;
+import commons.Activity;
+import commons.Answer;
+import commons.GameEntity;
+import commons.Player;
+import commons.Question;
+import commons.QuestionMoreExpensive;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import server.database.GameEntityRepository;
 import server.database.PlayerRepository;
 import server.services.QuestionService;
@@ -36,6 +47,17 @@ public class GameEntityController {
   }
 
   /**
+   * Returns if the supplied string is null or empty.
+   *
+   * @param s the string to check
+   * @return true iff the string is null or empty
+   */
+  @SuppressWarnings("unused")
+  private static boolean isNullOrEmpty(String s) {
+    return s == null || s.isEmpty();
+  }
+
+  /**
    * GET request that responds with all games.
    *
    * @return a list of all games
@@ -54,17 +76,6 @@ public class GameEntityController {
   @GetMapping(path = "/{id}")
   public ResponseEntity<GameEntity> getGameById(@PathVariable("id") long id) {
     return ResponseEntity.of(repo.findById(id));
-  }
-
-  /**
-   * Returns if the supplied string is null or empty.
-   *
-   * @param s the string to check
-   * @return true iff the string is null or empty
-   */
-  @SuppressWarnings("unused")
-  private static boolean isNullOrEmpty(String s) {
-    return s == null || s.isEmpty();
   }
 
   /**
@@ -153,11 +164,11 @@ public class GameEntityController {
    */
   @PostMapping(path = "/addPlayer")
   public ResponseEntity<GameEntity> addPlayerToGame(@RequestBody Player player) {
+    playerRepo.save(player);
     List<GameEntity> list = repo.findByStatus("WAITING");
     if (list.size() == 0) {
       GameEntity game = repo.save(new GameEntity());
       game.setQuestions(service.generateQuestion());
-      playerRepo.save(player);
       game.addPlayer(player);
       return ResponseEntity.ok(repo.save(game));
     }
@@ -272,7 +283,7 @@ public class GameEntityController {
    */
   @GetMapping(path = "/{id}/question/{idQ}")
   public ResponseEntity<Question>
-      getQuestionById(@PathVariable("id") long id, @PathVariable("idQ") int q) {
+  getQuestionById(@PathVariable("id") long id, @PathVariable("idQ") int q) {
     if (!repo.existsById(id) || q <= 0 || q > 20) {
       return ResponseEntity.badRequest().build();
     }

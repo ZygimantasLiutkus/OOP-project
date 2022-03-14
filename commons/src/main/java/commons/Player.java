@@ -21,12 +21,12 @@ public class Player {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
-  public Long id;
+  private Long id;
   @Column(name = "score", nullable = false)
   private int score;
   @Column(name = "name", nullable = false)
   private String name;
-  @Column(name = "selectedAnswer", nullable = false)
+  @Column(name = "selectedAnswer")
   private String selectedAnswer;
 
   /**
