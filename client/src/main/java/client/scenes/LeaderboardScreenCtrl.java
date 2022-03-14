@@ -64,6 +64,7 @@ public class LeaderboardScreenCtrl implements Initializable {
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+    leaderboardTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     name.setCellValueFactory(new PropertyValueFactory<LeaderboardEntry, String>("name"));
     score.setCellValueFactory(new PropertyValueFactory<LeaderboardEntry, Integer>("score"));
   }
