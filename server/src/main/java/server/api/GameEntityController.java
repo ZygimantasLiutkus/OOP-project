@@ -151,7 +151,7 @@ public class GameEntityController {
    * @param player the player that has to be added
    * @return ResponseEntity of the new player
    */
-  @PostMapping(path = "/{id}/player")
+  @PostMapping(path = "/addPlayer")
   public ResponseEntity<GameEntity> addPlayerToGame(@RequestBody Player player) {
     List<GameEntity> list = repo.findByStatus("WAITING");
     if (list.size() == 0) {
