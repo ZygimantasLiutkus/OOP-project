@@ -36,8 +36,43 @@ import org.glassfish.jersey.client.ClientConfig;
  */
 public class ServerUtils {
 
-  private static final String SERVER = "http://localhost:8080/";
+  private String server = "http://localhost:8080/";
   private Player player;
+
+  /**
+   * Sets the server to connect to in later requests.
+   *
+   * @param server the ip address (and port) to connect to
+   * @return true if the server is a game server, false otherwise
+   */
+  public boolean setServer(String server) {
+    if (!(server.startsWith("http://") || server.startsWith("https://"))) {
+      server = "http://" + server;
+    }
+    if (!server.endsWith("/")) {
+      server = server + "/";
+    }
+
+    Invocation.Builder req = ClientBuilder.newClient(new ClientConfig()) //
+            .target(server) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON);
+
+    try {
+      String resp = req.get(new GenericType<>() {
+      });
+
+      if (resp.equals("Hello world!")) {
+        this.server = server;
+        return true;
+      }
+
+    } catch (Exception e) {
+      return false;
+    }
+
+    return false;
+  }
 
   /**
    * Getting quotes the hard way. Don't use this!
