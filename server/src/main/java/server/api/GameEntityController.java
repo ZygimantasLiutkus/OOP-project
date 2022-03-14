@@ -283,8 +283,8 @@ public class GameEntityController {
    * @return the content of the question
    */
   @GetMapping(path = "/{id}/question/{idQ}")
-  public ResponseEntity<Question>
-  getQuestionById(@PathVariable("id") long id, @PathVariable("idQ") int q) {
+  public ResponseEntity<Question> getQuestionById(@PathVariable("id") long id,
+                                                  @PathVariable("idQ") int q) {
     if (!repo.existsById(id) || q <= 0 || q > 20) {
       return ResponseEntity.badRequest().build();
     }
