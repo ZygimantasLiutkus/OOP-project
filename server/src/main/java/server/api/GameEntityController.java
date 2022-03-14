@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.GameEntityRepository;
 import server.database.PlayerRepository;
+import server.database.QuestionRepository;
 import server.services.QuestionService;
 
 /**
@@ -20,6 +21,7 @@ public class GameEntityController {
   private final GameEntityRepository repo;
   private final PlayerRepository playerRepo;
   private final QuestionService service;
+  private final QuestionRepository qRepo;
 
   /**
    * Constructor for the controller.
@@ -27,12 +29,14 @@ public class GameEntityController {
    * @param repo       the game repository
    * @param playerRepo the player repository
    * @param service    the service for questions
+   * @param qRepo      the question repository
    */
   public GameEntityController(GameEntityRepository repo, PlayerRepository playerRepo,
-                              QuestionService service) {
+                              QuestionService service, QuestionRepository qRepo) {
     this.repo = repo;
     this.playerRepo = playerRepo;
     this.service = service;
+    this.qRepo = qRepo;
   }
 
   /**
@@ -143,37 +147,34 @@ public class GameEntityController {
   }
 
   /**
-   * POST method that adds a new player to a game.
-   * Returns an error if the game does not exist or a player with
-   * the same name already exists in the game.
+   * POST method that adds a new player to a game with waiting status.
+   * Returns an error if a player with the same name already exists in the game.
+   * If there is no game with waiting status, one is created and the player is
+   * added.
    *
-   * @param id         the id of the game
-   * @param playerName the name of the new player
-   * @return ResponseEntity of the new player
+   * @param player the player that has to be added
+   * @return ResponseEntity of the game in which the player was added
    */
-  @PostMapping(path = "/{id}/player")
-  public ResponseEntity<Player> addPlayerToGame(@PathVariable("id") long id, String playerName) {
-    if (repo.findById(id).isEmpty()) {
-      return ResponseEntity.badRequest().build();
-    } else {
-      if (!repo.findById(id).get().getStatus().equals("WAITING")) {
+  @PostMapping(path = "/addPlayer")
+  public ResponseEntity<GameEntity> addPlayerToGame(@RequestBody Player player) {
+    playerRepo.save(player);
+    List<GameEntity> list = repo.findByStatus("WAITING");
+    if (list.size() == 0) {
+      GameEntity game = repo.save(new GameEntity());
+      List<Question> questions = qRepo.saveAll(service.generateQuestion());
+      game.getQuestions().addAll(questions);
+      game.addPlayer(player);
+      return ResponseEntity.ok(repo.save(game));
+    }
+
+    GameEntity game = list.get(0);
+    for (Player p : game.getPlayers()) {
+      if (p.getName().equals(player.getName())) {
         return ResponseEntity.badRequest().build();
       }
-      for (Player p : repo.findById(id).get().getPlayers()) {
-        if (p.getName().equals(playerName)) {
-          return ResponseEntity.unprocessableEntity().build();
-        }
-      }
-      Player newPlayer = new Player(playerName);
-      playerRepo.save(newPlayer);
-      GameEntity ge = repo.findById(id).get();
-      List<Player> playersList = ge.getPlayers();
-      playersList.add(newPlayer);
-      ge.setPlayers(playersList);
-      repo.deleteById(id);
-      repo.save(ge);
-      return ResponseEntity.ok(newPlayer);
     }
+    game.addPlayer(player);
+    return ResponseEntity.ok(repo.save(game));
   }
 
   /**
@@ -287,16 +288,17 @@ public class GameEntityController {
   }
 
   /**
-   * Creates a new single player game.
+   * POST request to create a single player game.
    *
-   * @param player the player that has submitted the request
-   * @return a new game with the player inside it and a poll of questions
+   * @param player the player that has requested
+   * @return the newly created game
    */
   @PostMapping(path = "/singleplayer")
-  public ResponseEntity<GameEntity> createSinglePlayer(@RequestBody Player player) {
+  public ResponseEntity<GameEntity> addSingleplayer(@RequestBody Player player) {
     playerRepo.save(player);
     GameEntity game = repo.save(new GameEntity());
-    game.setQuestions(service.generateQuestion());
+    List<Question> questions = qRepo.saveAll(service.generateQuestion());
+    game.getQuestions().addAll(questions);
     game.addPlayer(player);
     return ResponseEntity.ok(repo.save(game));
   }

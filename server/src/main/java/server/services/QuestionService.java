@@ -38,7 +38,7 @@ public class QuestionService {
   public List<Question> generateQuestion() {
     List<Question> list = new ArrayList<>();
     List<Integer> used = new ArrayList<>();
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 1; i++) {
       list.add(make(used));
     }
     return list;
