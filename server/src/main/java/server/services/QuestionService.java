@@ -33,6 +33,7 @@ public class QuestionService {
   /**
    * Method that creates a poll of questions.
    *
+   * @param amount the amount of questions that needs to be created
    * @return a list of different types of question
    */
   public List<Question> generateQuestion(int amount) {
