@@ -35,10 +35,13 @@ public class QuestionService {
    *
    * @return a list of different types of question
    */
-  public List<Question> generateQuestion() {
+  public List<Question> generateQuestion(int amount) {
+    if (amount * 3 > repo.count()) {
+      return new ArrayList<Question>();
+    }
     List<Question> list = new ArrayList<>();
     List<Integer> used = new ArrayList<>();
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < amount; i++) {
       list.add(make(used));
     }
     return list;
@@ -64,7 +67,7 @@ public class QuestionService {
    * Method that generates a number of activities to create a question.
    * Each activity is only chosen once.
    *
-   * @param n the number of wanted activities
+   * @param n    the number of wanted activities
    * @param used the list of all used ids
    * @return a list of n activities
    */
