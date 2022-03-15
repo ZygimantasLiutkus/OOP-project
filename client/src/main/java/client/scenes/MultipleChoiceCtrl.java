@@ -26,7 +26,7 @@ public class MultipleChoiceCtrl {
   private final MainCtrl mainCtrl;
   private boolean singePl = true; //should be replaced
   private int startTime = 10;
-  private int questionNum = 0;
+  private int questionNum = 19;
   private double progress = 1;
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
@@ -188,7 +188,12 @@ public class MultipleChoiceCtrl {
       addPoints.setVisible(true);
     }
 
-    cooldownAnswer();
+
+    Timeline cooldown = new Timeline();
+    cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(3000), e -> {
+    }));
+    cooldown.play();
+    cooldown.setOnFinished(e -> cooldownAnswer());
   }
 
   /**
@@ -197,21 +202,13 @@ public class MultipleChoiceCtrl {
   public void cooldownAnswer() {
     if (singePl) {
       if (questionNum < 20) {
-        Timeline cooldown = new Timeline();
-        cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(3000), e -> {
-        }));
-        cooldown.play();
-        cooldown.setOnFinished(e -> timerStart());
+        timerStart();
       } else {
         mainCtrl.showLeaderboard("global");
       }
     } else {
       if (questionNum <= 20) {
-        Timeline cooldown = new Timeline();
-        cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(3000), e -> {
-        }));
-        cooldown.play();
-        cooldown.setOnFinished(e -> timerStart()); // TEMPORARY
+        timerStart();
         //nextQuestionMultiple();
       } else {
         mainCtrl.showLeaderboard("multiplayer");
