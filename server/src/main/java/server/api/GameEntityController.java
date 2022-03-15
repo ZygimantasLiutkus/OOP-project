@@ -171,6 +171,9 @@ public class GameEntityController {
     if (list.size() == 0) { // Create a new game
       GameEntity game = new GameEntity();
       List<Question> questions = service.generateQuestion(questionAmount);
+      if (questions.size() != questionAmount) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      }
       game.setQuestions(questions);
       playerRepo.save(player);
       game.addPlayer(player);

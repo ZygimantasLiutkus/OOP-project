@@ -67,7 +67,7 @@ public class TestActivityRepository implements ActivityRepository {
    */
   @Override
   public long count() {
-    return 0;
+    return activities.size();
   }
 
   /**
