@@ -207,7 +207,7 @@ public class MultipleChoiceCtrl {
         mainCtrl.showLeaderboard("global");
       }
     } else {
-      if (questionNum <= 20) {
+      if (questionNum < 20) {
         timerStart();
         //nextQuestionMultiple();
       } else {
