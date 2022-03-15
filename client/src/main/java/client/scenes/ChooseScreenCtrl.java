@@ -23,4 +23,10 @@ public class ChooseScreenCtrl {
     this.mainCtrl = mainCtrl;
   }
 
+  /**
+   * Shows the global (singleplayer) leaderboard of current server.
+   */
+  public void leaderboard() {
+    mainCtrl.showLeaderboard("global");
+  }
 }
