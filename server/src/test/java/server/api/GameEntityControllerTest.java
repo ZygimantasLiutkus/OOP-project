@@ -53,7 +53,7 @@ public class GameEntityControllerTest {
   @BeforeEach
   public void setUp() {
     repo = new TestGameRepository();
-    playerRepo =  new TestPlayerRepository();
+    playerRepo = new TestPlayerRepository();
     activityRepo = new TestActivityRepository();
     for (int i = 0; i < 10; ++i) {
       activityRepo.save(getActivity(Integer.toString(i), "activity5", 17, "path3"));
