@@ -36,6 +36,17 @@ public class GameEntityController {
   }
 
   /**
+   * Returns if the supplied string is null or empty.
+   *
+   * @param s the string to check
+   * @return true iff the string is null or empty
+   */
+  @SuppressWarnings("unused")
+  private static boolean isNullOrEmpty(String s) {
+    return s == null || s.isEmpty();
+  }
+
+  /**
    * GET request that responds with all games.
    *
    * @return a list of all games
@@ -54,17 +65,6 @@ public class GameEntityController {
   @GetMapping(path = "/{id}")
   public ResponseEntity<GameEntity> getGameById(@PathVariable("id") long id) {
     return ResponseEntity.of(repo.findById(id));
-  }
-
-  /**
-   * Returns if the supplied string is null or empty.
-   *
-   * @param s the string to check
-   * @return true iff the string is null or empty
-   */
-  @SuppressWarnings("unused")
-  private static boolean isNullOrEmpty(String s) {
-    return s == null || s.isEmpty();
   }
 
   /**
@@ -169,6 +169,7 @@ public class GameEntityController {
       }
     }
     game.addPlayer(player);
+    playerRepo.save(player);
     return ResponseEntity.ok(repo.save(game));
   }
 
