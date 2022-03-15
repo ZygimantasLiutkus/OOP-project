@@ -7,13 +7,9 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import commons.Activity;
 import commons.GameEntity;
 import commons.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.ResponseEntity;
 import server.services.QuestionService;
 
 /**
@@ -179,11 +175,43 @@ public class GameEntityControllerTest {
     assertEquals(game, sut.getGameByStatus("WAITING").getBody().get(0));
   }
 
+  /**
+   * Test for changing the status of a game.
+   */
   @Test
   public void testChangeGameStatus() {
     Player alice = getPlayer("Alice");
     GameEntity game = sut.addPlayerToGame(alice).getBody();
     assertEquals("WAITING", game.getStatus());
-    sut.changeGameStatus(game.getId())
+    GameEntity newStatus = new GameEntity();
+    newStatus.setStatus("STARTED");
+    assertEquals("STARTED", sut.changeGameStatus(game.getId(), newStatus).getBody().getStatus());
+  }
+
+  /**
+   * Test for changing the status of a game to a forbidden one.
+   */
+  @Test
+  public void testChangeGameStatusForbidden() {
+    Player alice = getPlayer("Alice");
+    GameEntity game = sut.addPlayerToGame(alice).getBody();
+    assertEquals("WAITING", game.getStatus());
+    GameEntity newStatus = new GameEntity();
+    newStatus.setStatus("STARTED");
+    game.setStatus("FINISHED");
+    assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId(), newStatus).getStatusCode());
+  }
+
+  /**
+   * Test for changing the status of a non-existing game.
+   */
+  @Test
+  public void testChangeGameStatusNonEx() {
+    Player alice = getPlayer("Alice");
+    GameEntity game = sut.addPlayerToGame(alice).getBody();
+    assertEquals("WAITING", game.getStatus());
+    GameEntity newStatus = new GameEntity();
+    newStatus.setStatus("STARTED");
+    assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId() + 1, newStatus).getStatusCode());
   }
 }

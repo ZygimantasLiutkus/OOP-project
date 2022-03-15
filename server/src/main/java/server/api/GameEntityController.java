@@ -113,10 +113,10 @@ public class GameEntityController {
   @PutMapping(path = "/{id}")
   public ResponseEntity<GameEntity> changeGameStatus(@PathVariable("id") long id,
                                                      @RequestBody GameEntity newStatus) {
-    if (repo.findById(id).isEmpty()) {
+    if (!repo.existsById(id)) {
       return ResponseEntity.badRequest().build();
     } else {
-      GameEntity ge = repo.findById(id).get();
+      GameEntity ge = repo.getById(id);
       if ((ge.getStatus().equals("ABORTED") && !newStatus.getStatus().equals("ABORTED"))
           || (ge.getStatus().equals("FINISHED") && (newStatus.getStatus().equals("WAITING")
           || newStatus.getStatus().equals("STARTED"))) || (ge.getStatus().equals("STARTED")
@@ -141,7 +141,7 @@ public class GameEntityController {
     if (repo.existsById(id)) {
       return ResponseEntity.ok(repo.getById(id).getPlayers());
     }
-      return ResponseEntity.badRequest().build();
+    return ResponseEntity.badRequest().build();
   }
 
   /**
