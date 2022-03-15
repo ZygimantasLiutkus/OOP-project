@@ -76,7 +76,10 @@ public class TestGameRepository implements GameEntityRepository {
    */
   @Override
   public void deleteById(Long aLong) {
-
+    call("deleteById");
+    if (find(aLong).isPresent()) {
+      games.remove(find(aLong).get());
+    }
   }
 
   /**

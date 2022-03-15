@@ -64,7 +64,10 @@ public class GameEntityController {
    */
   @GetMapping(path = "/{id}")
   public ResponseEntity<GameEntity> getGameById(@PathVariable("id") long id) {
-    return ResponseEntity.of(repo.findById(id));
+    if (repo.existsById(id)) {
+      return ResponseEntity.ok(repo.getById(id));
+    }
+    return ResponseEntity.badRequest().build();
   }
 
   /**
@@ -74,14 +77,14 @@ public class GameEntityController {
    * @return a list of all the games with said status
    */
   @GetMapping(path = "?status={status}")
-  public List<GameEntity> getGameByStatus(@PathVariable("status") String status) {
+  public ResponseEntity<List<GameEntity>> getGameByStatus(@PathVariable("status") String status) {
     List<GameEntity> response = new ArrayList<>();
     for (GameEntity ge : repo.findAll()) {
       if (ge.getStatus().equals(status)) {
         response.add(ge);
       }
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
   /**
@@ -91,11 +94,11 @@ public class GameEntityController {
    * @return a ResponseEntity of the requested status.
    */
   @GetMapping(path = "/{id}/status")
-  public ResponseEntity<String> getGameStatusById(@PathVariable("id") Long id) {
-    if (repo.findById(id).isEmpty()) {
-      return ResponseEntity.badRequest().build();
+  public ResponseEntity<String> getGameStatusById(@PathVariable("id") long id) {
+    if (repo.existsById(id)) {
+      return ResponseEntity.ok(repo.getById(id).getStatus());
     } else {
-      return ResponseEntity.ok(repo.findById(id).get().getStatus());
+      return ResponseEntity.badRequest().build();
     }
   }
 
@@ -134,12 +137,11 @@ public class GameEntityController {
    * @return ResponseEntity of the list of players
    */
   @GetMapping(path = "/{id}/player")
-  public ResponseEntity<List<Player>> getAllPlayers(@PathVariable("id") long id) {
-    if (repo.findById(id).isEmpty()) {
-      return ResponseEntity.badRequest().build();
-    } else {
-      return ResponseEntity.ok(repo.findById(id).get().getPlayers());
+  public ResponseEntity<List<Player>> getAllPlayers(@PathVariable("id") Long id) {
+    if (repo.existsById(id)) {
+      return ResponseEntity.ok(repo.getById(id).getPlayers());
     }
+      return ResponseEntity.badRequest().build();
   }
 
   /**
@@ -154,22 +156,26 @@ public class GameEntityController {
   @PostMapping(path = "/addPlayer")
   public ResponseEntity<GameEntity> addPlayerToGame(@RequestBody Player player) {
     List<GameEntity> list = repo.findByStatus("WAITING");
-    if (list.size() == 0) {
-      GameEntity game = repo.save(new GameEntity());
+    if (list.size() == 0) { // Create a new game
+      GameEntity game = new GameEntity();
       game.setQuestions(service.generateQuestion());
       playerRepo.save(player);
       game.addPlayer(player);
       return ResponseEntity.ok(repo.save(game));
     }
-
+    // Get the first multiplayer game with the status WAITING
     GameEntity game = list.get(0);
+    // Check if the provided name is already in use in this game
     for (Player p : game.getPlayers()) {
       if (p.getName().equals(player.getName())) {
         return ResponseEntity.badRequest().build();
       }
     }
-    game.addPlayer(player);
+    // Save the player and add it to the game
     playerRepo.save(player);
+    game.setQuestions(service.generateQuestion());
+    game.addPlayer(player);
+    repo.deleteById(game.getId());
     return ResponseEntity.ok(repo.save(game));
   }
 
