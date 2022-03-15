@@ -22,9 +22,9 @@ public class MultipleChoiceCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
-  private boolean singePl = true; //should be replaced
+  private boolean singePl = false; //should be replaced
   private int startTime = 10;
-  private int questionNum = 17;
+  private int questionNum = 0;
   private double progress = 1;
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
@@ -116,6 +116,7 @@ public class MultipleChoiceCtrl {
    * Starts the timer.
    */
   public void timerStart() {
+    nextQuestionSingle();
     Timeline timeline = new Timeline();
     timeline.setCycleCount(1000);
     timeline.setAutoReverse(false);
@@ -145,7 +146,6 @@ public class MultipleChoiceCtrl {
     timeCount.setCycleCount(10);
     timeline.play();
     timeCount.play();
-    questionNum++;
     timeline.setOnFinished(e -> revealAnswer());
   }
 
@@ -172,26 +172,29 @@ public class MultipleChoiceCtrl {
       addPoints.setText("+0");
       addPoints.setVisible(true);
     }
-    Timeline cooldown = new Timeline();
-    cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(3000), e -> {
-    }));
-    cooldown.play();
-    cooldown.setOnFinished(e -> cooldownAnswer());
+    cooldownAnswer();
   }
 
   /**
    * Checks if the game type is single player and does the associated methods.
    */
   public void cooldownAnswer() {
-    if (questionNum <= 20) {
-      if (singePl) {
-        nextQuestionSingle();
-        timerStart();
+    if (singePl) {
+      if (questionNum < 20) {
+        Timeline cooldown = new Timeline();
+        cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(3000), e -> {
+        }));
+        cooldown.play();
+        cooldown.setOnFinished(e -> timerStart());
       } else {
-        nextQuestionMultiple();
+        mainCtrl.showLeaderboard("global");
       }
     } else {
-      mainCtrl.showLeaderboard();
+      if (questionNum <= 20) {
+        //nextQuestionMultiple();
+      } else {
+        mainCtrl.showLeaderboard("multiplayer");
+      }
     }
   }
 
@@ -200,6 +203,7 @@ public class MultipleChoiceCtrl {
    */
   public void nextQuestionSingle() {
     resetTimer();
+    questionNum++;
     addPoints.setVisible(false);
     questionNo.setText(questionNum + "/20");
     answer1.setDisable(false);
@@ -209,16 +213,13 @@ public class MultipleChoiceCtrl {
     answer3.setDisable(false);
     answer3.setStyle("-fx-background-color: #11AD31");
     //server.resetAnswer(); commented out because of bug
-
-
   }
 
   /**
    * Makes the client ready for the new question. FOR MULTIPLAYER ONLY
    */
   public void nextQuestionMultiple() {
-    nextQuestionSingle();
-
+    revealAnswer();
   }
 
   /**

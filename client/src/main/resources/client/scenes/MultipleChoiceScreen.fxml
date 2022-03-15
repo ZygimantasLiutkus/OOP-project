@@ -61,7 +61,7 @@
                         <Font size="16.0" />
                     </font>
                 </Label>
-                <Label fx:id="questionNo" layoutX="14.0" layoutY="18.0" text="1/20" AnchorPane.leftAnchor="14.0">
+                <Label fx:id="questionNo" layoutX="14.0" layoutY="18.0" text="0/20" AnchorPane.leftAnchor="14.0">
                     <font>
                         <Font size="16.0" />
                     </font>
