@@ -55,7 +55,7 @@ public class GameEntityControllerTest {
     repo = new TestGameRepository();
     playerRepo = new TestPlayerRepository();
     activityRepo = new TestActivityRepository();
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 60; ++i) {
       activityRepo.save(getActivity(Integer.toString(i), "activity5", 17, "path3"));
     }
     random = new Random();
