@@ -164,22 +164,26 @@ public class GameEntityController {
    */
   @PostMapping(path = "/addPlayer")
   public ResponseEntity<GameEntity> addPlayerToGame(@RequestBody Player player) {
-    playerRepo.save(player);
     List<GameEntity> list = repo.findByStatus("WAITING");
-    if (list.size() == 0) {
-      GameEntity game = repo.save(new GameEntity());
+    if (list.size() == 0) { // Create a new game
+      GameEntity game = new GameEntity();
       game.setQuestions(service.generateQuestion());
       repo.save(game);
+      playerRepo.save(player);
       game.addPlayer(player);
       return ResponseEntity.ok(repo.save(game));
     }
 
+    // Get the first multiplayer game with the status WAITING
     GameEntity game = list.get(0);
+    // Check if the provided name is already in use in this game
     for (Player p : game.getPlayers()) {
       if (p.getName().equals(player.getName())) {
         return ResponseEntity.badRequest().build();
       }
     }
+    // Save the player and add it to the game
+    playerRepo.save(player);
     game.addPlayer(player);
     return ResponseEntity.ok(repo.save(game));
   }
