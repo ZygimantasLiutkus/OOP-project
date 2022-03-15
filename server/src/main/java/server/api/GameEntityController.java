@@ -173,7 +173,7 @@ public class GameEntityController {
     }
     // Save the player and add it to the game
     playerRepo.save(player);
-    //game.setQuestions(service.generateQuestion());
+    game.setQuestions(service.generateQuestion());
     game.addPlayer(player);
     repo.deleteById(game.getId());
     return ResponseEntity.ok(repo.save(game));
