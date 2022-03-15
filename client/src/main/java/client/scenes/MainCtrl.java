@@ -152,9 +152,24 @@ public class MainCtrl {
 
   /**
    * Shows the leaderboard screen.
+   *
+   * @param type the type of leaderboard (global / multiplayer).
    */
-  public void showLeaderboard() {
-    primaryStage.setTitle("Quizzzz Leaderboard");
-    primaryStage.setScene(leaderboard);
+  public void showLeaderboard(String type) {
+    switch (type) {
+      case "global":
+        primaryStage.setTitle("Quizzzz Leaderboard");
+        leaderboardScreenCtrl.setSingleplayer();
+        primaryStage.setScene(leaderboard);
+        leaderboardScreenCtrl.refreshTop10();
+        break;
+      case "multiplayer":
+        primaryStage.setTitle("Match Leaderboard");
+        leaderboardScreenCtrl.setMultiplayer();
+        primaryStage.setScene(leaderboard);
+        break;
+      default:
+        break;
+    }
   }
 }

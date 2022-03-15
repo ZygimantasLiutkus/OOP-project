@@ -26,7 +26,7 @@ public class Player {
   private int score;
   @Column(name = "name", nullable = false)
   private String name;
-  @Column(name = "selectedAnswer", nullable = false)
+  @Column(name = "selectedAnswer")
   private String selectedAnswer;
 
   /**
