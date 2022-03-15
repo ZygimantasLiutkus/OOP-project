@@ -317,7 +317,8 @@ public class GameEntityController {
   public ResponseEntity<GameEntity> addSingleplayer(@RequestBody Player player) {
     playerRepo.save(player);
     GameEntity game = repo.save(new GameEntity());
-    List<Question> questions = qRepo.saveAll(service.generateQuestion());
+    //TODO: change amount to 20
+    List<Question> questions = qRepo.saveAll(service.generateQuestion(3));
     game.getQuestions().addAll(questions);
     game.addPlayer(player);
     return ResponseEntity.ok(repo.save(game));
