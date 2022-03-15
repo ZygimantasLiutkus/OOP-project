@@ -1,8 +1,10 @@
 package client.utils;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import commons.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +21,8 @@ public class ServerUtilsTest {
   @BeforeEach
   public void setup() {
     sut = new ServerUtils();
+    Player pl = new Player("test");
+    sut.setPlayer(pl);
   }
 
   /**
@@ -40,5 +44,23 @@ public class ServerUtilsTest {
     assertFalse(sut.setServer("http//localhost:8080"));
     assertFalse(sut.setServer("https//localhost:8080"));
     assertFalse(sut.setServer("wss://localhost:8080"));
+  }
+
+  /**
+   * Tests the noAnwer method.
+   */
+  @Test
+  public void noAnswerTest() {
+    assertFalse(sut.noAnswer());
+  }
+
+  /**
+   * Tests reset answer method.
+   */
+  @Test
+  public void resetAnswer() {
+    sut.getPlayer().setSelectedAnswer("3");
+    sut.resetAnswer();
+    assertEquals("0", sut.getPlayer().getSelectedAnswer());
   }
 }

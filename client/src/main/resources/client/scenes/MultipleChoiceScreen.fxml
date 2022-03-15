@@ -85,7 +85,7 @@
     <bottom>
         <AnchorPane fx:id="bottomPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="1000.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
-                <FlowPane hgap="10.0" layoutX="293.0" layoutY="-14.0" prefHeight="91.0" prefWidth="413.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="-13.42857142857143" AnchorPane.leftAnchor="293.0" AnchorPane.rightAnchor="294.0" AnchorPane.topAnchor="-14.0">
+                <FlowPane fx:id="emojiPane" hgap="10.0" layoutX="293.0" layoutY="-14.0" prefHeight="91.0" prefWidth="413.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="-13.42857142857143" AnchorPane.leftAnchor="293.0" AnchorPane.rightAnchor="294.0" AnchorPane.topAnchor="-14.0">
                     <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -123,9 +123,9 @@
     <right>
         <AnchorPane fx:id="rightPane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="150.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
-                <VBox layoutX="14.0" layoutY="110.0" prefHeight="179.0" prefWidth="106.0" spacing="20.0" AnchorPane.bottomAnchor="110.80000000000001" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="110.0">
+                <VBox fx:id="jokerEl" layoutX="14.0" layoutY="110.0" prefHeight="179.0" prefWidth="106.0" spacing="20.0" AnchorPane.bottomAnchor="110.80000000000001" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="110.0">
                     <children>
-                        <Label prefHeight="18.0" prefWidth="70.0" text="Joker cards:" />
+                        <Label fx:id="jokerLabel" prefHeight="18.0" prefWidth="70.0" text="Joker cards:" />
                         <Button fx:id="jokerTime" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" style="-fx-alignment: center;" text="Decrease Time" />
                         <Button fx:id="jokerPoints" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" text="Double Points" />
                         <Button fx:id="jokerAnswer" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" text="Discard Answer" />

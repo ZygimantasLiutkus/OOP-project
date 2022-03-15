@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 
@@ -22,7 +24,7 @@ public class MultipleChoiceCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
-  private boolean singePl = false; //should be replaced
+  private boolean singePl = true; //should be replaced
   private int startTime = 10;
   private int questionNum = 0;
   private double progress = 1;
@@ -57,6 +59,12 @@ public class MultipleChoiceCtrl {
 
   @FXML
   private Label questionNo;
+
+  @FXML
+  private VBox jokerEl;
+
+  @FXML
+  private FlowPane emojiPane;
 
   /**
    * Constructor for MultipleChoiceCtrl.
@@ -146,6 +154,9 @@ public class MultipleChoiceCtrl {
     timeCount.setCycleCount(10);
     timeline.play();
     timeCount.play();
+    if (singePl) {
+      emojiPane.setVisible(false);
+    }
     timeline.setOnFinished(e -> revealAnswer());
   }
 
@@ -156,6 +167,10 @@ public class MultipleChoiceCtrl {
     answer1.setDisable(true);
     answer2.setDisable(true);
     answer3.setDisable(true);
+
+
+    jokerEl.setVisible(false);
+
 
     if (!answer1.getText().equals(test.getTitle())) {
       answer1.setStyle("-fx-background-color: E50C0C");
@@ -172,6 +187,7 @@ public class MultipleChoiceCtrl {
       addPoints.setText("+0");
       addPoints.setVisible(true);
     }
+
     cooldownAnswer();
   }
 
@@ -191,6 +207,11 @@ public class MultipleChoiceCtrl {
       }
     } else {
       if (questionNum <= 20) {
+        Timeline cooldown = new Timeline();
+        cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(3000), e -> {
+        }));
+        cooldown.play();
+        cooldown.setOnFinished(e -> timerStart()); // TEMPORARY
         //nextQuestionMultiple();
       } else {
         mainCtrl.showLeaderboard("multiplayer");
@@ -203,6 +224,7 @@ public class MultipleChoiceCtrl {
    */
   public void nextQuestionSingle() {
     resetTimer();
+    jokerEl.setVisible(true);
     questionNum++;
     addPoints.setVisible(false);
     questionNo.setText(questionNum + "/20");
