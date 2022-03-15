@@ -1,15 +1,14 @@
 package server.api;
 
-import commons.Player;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import server.services.QuestionService;
-
-import java.util.Random;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
+import commons.Player;
+import java.util.Random;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import server.services.QuestionService;
 
 /**
  * Tests for the GameEntity Controller.
@@ -23,6 +22,12 @@ public class GameEntityControllerTest {
   private TestActivityRepository activityRepo;
   private Random random;
 
+  /**
+   * Method to create a player.
+   *
+   * @param s the name of the player
+   * @return a new player
+   */
   private static Player getPlayer(String s) {
     return new Player(s);
   }
@@ -33,7 +38,7 @@ public class GameEntityControllerTest {
   @BeforeEach
   public void setUp() {
     repo = new TestGameRepository();
-    playerRepo =  new TestPlayerRepository();
+    playerRepo = new TestPlayerRepository();
     activityRepo = new TestActivityRepository();
     random = new Random();
     System.out.println(random.nextInt());
@@ -51,6 +56,9 @@ public class GameEntityControllerTest {
     assertEquals(BAD_REQUEST, actual.getStatusCode());
   }
 
+  /**
+   * Tests if the database is used when adding a player to a game.
+   */
   @Test
   public void databaseIsUsed() {
     sut.addPlayerToGame(getPlayer("Alice"));
