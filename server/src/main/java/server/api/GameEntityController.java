@@ -168,10 +168,15 @@ public class GameEntityController {
    */
   @PostMapping(path = "/addPlayer")
   public ResponseEntity<GameEntity> addPlayerToGame(@RequestBody Player player) {
+    final int questionAmount = 3; // TODO: change amount to 20
     List<GameEntity> list = repo.findByStatus("WAITING");
     if (list.size() == 0) { // Create a new game
       GameEntity game = new GameEntity();
-      game.setQuestions(service.generateQuestion());
+      List<Question> questions = service.generateQuestion(questionAmount);
+      if (questions.size() != questionAmount) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      }
+      game.setQuestions(questions);
       repo.save(game);
       playerRepo.save(player);
       game.addPlayer(player);
