@@ -47,11 +47,11 @@ public class ServerUtilsTest {
   }
 
   /**
-   * Tests the noAnwer method.
+   * Tests the noAnwer method. 0 by default so test should return true!
    */
   @Test
   public void noAnswerTest() {
-    assertFalse(sut.noAnswer());
+    assertTrue(sut.noAnswer());
   }
 
   /**

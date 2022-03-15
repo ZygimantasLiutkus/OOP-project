@@ -39,6 +39,7 @@ public class ServerUtils {
 
   private String server = "http://localhost:8080/";
   private Player player;
+  // = new Player("test"); for testing purposes. If we want to test client uncomment.
 
   /**
    * Sets the server to connect to in later requests.
@@ -171,8 +172,7 @@ public class ServerUtils {
    * @return returns a boolean to indicate whether the user selected an answer.
    */
   public boolean noAnswer() {
-    //return this.player.getSelectedAnswer().equals("0");
-    return false; //testing purposes
+    return this.player.getSelectedAnswer().equals("0");
   }
 
   /**

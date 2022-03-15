@@ -234,7 +234,7 @@ public class MultipleChoiceCtrl {
     answer2.setStyle("-fx-background-color: #11AD31");
     answer3.setDisable(false);
     answer3.setStyle("-fx-background-color: #11AD31");
-    //server.resetAnswer(); commented out because of bug
+    server.resetAnswer();
   }
 
   /**
