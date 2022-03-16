@@ -17,6 +17,7 @@
 package client;
 
 import client.scenes.*;
+import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -35,5 +36,6 @@ public class MyModule implements Module {
     binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
     binder.bind(MultipleChoiceCtrl.class).in(Scopes.SINGLETON);
     binder.bind(EntryCtrl.class).in(Scopes.SINGLETON);
+    binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
   }
 }
