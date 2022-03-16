@@ -53,14 +53,14 @@ public class MainCtrl {
   /**
    * Initializes the main controller.
    *
-   * @param primaryStage   the top level JavaFX container.
-   * @param overview       a pair of the QuoteOverview controller and the parent.
-   * @param add            a pair of the AddQuote controller and the parent.
-   * @param entry          a pair of the EntryScreen controller and the parent.
-   * @param name           a pair of the NamePopup controller and the parent.
-   * @param choose         a pair of the ChooseScreen controller and the parent.
+   * @param primaryStage  the top level JavaFX container.
+   * @param overview      a pair of the QuoteOverview controller and the parent.
+   * @param add           a pair of the AddQuote controller and the parent.
+   * @param entry         a pair of the EntryScreen controller and the parent.
+   * @param name          a pair of the NamePopup controller and the parent.
+   * @param choose        a pair of the ChooseScreen controller and the parent.
    * @param moreExpensive a pair of the MultipleChoiceScreen controller and the parent.
-   * @param leaderboard    a pair of the LeaderboardScreen controller and the parent.
+   * @param leaderboard   a pair of the LeaderboardScreen controller and the parent.
    */
   public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                          Pair<AddQuoteCtrl, Parent> add, Pair<EntryCtrl, Parent> entry,
@@ -89,7 +89,7 @@ public class MainCtrl {
     this.leaderboardScreenCtrl = leaderboard.getKey();
     this.leaderboard = new Scene(leaderboard.getValue());
 
-   // showChooseScreen();
+    //showChooseScreen();
     showMoreExpensive();
     primaryStage.show();
   }
