@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import server.database.GameEntityRepository;
 import server.database.PlayerRepository;
+import server.database.QuestionRepository;
 import server.services.QuestionService;
 
 /**
@@ -31,6 +32,7 @@ public class GameEntityController {
   private final GameEntityRepository repo;
   private final PlayerRepository playerRepo;
   private final QuestionService service;
+  private final QuestionRepository qRepo;
 
   /**
    * Constructor for the controller.
@@ -38,12 +40,14 @@ public class GameEntityController {
    * @param repo       the game repository
    * @param playerRepo the player repository
    * @param service    the service for questions
+   * @param qRepo      the question repository
    */
   public GameEntityController(GameEntityRepository repo, PlayerRepository playerRepo,
-                              QuestionService service) {
+                              QuestionService service, QuestionRepository qRepo) {
     this.repo = repo;
     this.playerRepo = playerRepo;
     this.service = service;
+    this.qRepo = qRepo;
   }
 
   /**
@@ -302,5 +306,22 @@ public class GameEntityController {
       return ResponseEntity.badRequest().build();
     }
     return ResponseEntity.ok(repo.getById(id).getQuestions().get(q - 1));
+  }
+
+  /**
+   * POST request to create a single player game.
+   *
+   * @param player the player that has requested
+   * @return the newly created game
+   */
+  @PostMapping(path = "/singleplayer")
+  public ResponseEntity<GameEntity> addSingleplayer(@RequestBody Player player) {
+    playerRepo.save(player);
+    GameEntity game = repo.save(new GameEntity());
+    //TODO: change amount to 20
+    List<Question> questions = qRepo.saveAll(service.generateQuestion(3));
+    game.getQuestions().addAll(questions);
+    game.addPlayer(player);
+    return ResponseEntity.ok(repo.save(game));
   }
 }
