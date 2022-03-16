@@ -11,166 +11,124 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="gameBg" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-            minHeight="408.0" minWidth="900.0" prefHeight="500.0" prefWidth="1000.0"
-            xmlns="http://javafx.com/javafx/11.0.2" fx:controller="client.scenes.MultipleChoiceCtrl">
+
+<BorderPane fx:id="gameBg" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="408.0" minWidth="900.0" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MultipleChoiceCtrl">
     <center>
-        <AnchorPane fx:id="centralPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                    minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="745.0"
-                    stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
+        <AnchorPane fx:id="centralPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="745.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
-                <FlowPane layoutX="161.0" layoutY="28.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="161.0"
-                          AnchorPane.rightAnchor="151.80000000000007">
+                <FlowPane layoutX="161.0" layoutY="28.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="161.0" AnchorPane.rightAnchor="151.80000000000007">
                     <children>
-                        <Label fx:id="questionLabel" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
-                               minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="446.0"
-                               text="questionLabel" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                        <Label fx:id="questionLabel" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="446.0" text="questionLabel" textOverrun="WORD_ELLIPSIS" wrapText="true">
                             <font>
-                                <Font size="20.0"/>
+                                <Font size="20.0" />
                             </font>
                         </Label>
                     </children>
                 </FlowPane>
-                <FlowPane layoutX="143.0" layoutY="106.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="130.0"
-                          AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="144.20000000000005"
-                          AnchorPane.topAnchor="106.0">
+                <FlowPane layoutX="143.0" layoutY="106.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="144.20000000000005" AnchorPane.topAnchor="106.0">
                     <children>
-                        <ImageView fx:id="questionImage" fitHeight="183.0" fitWidth="458.0" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <ImageView fx:id="questionImage" fitHeight="183.0" fitWidth="458.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@/client/images/defaultImage.png"/>
+                                <Image url="@/client/images/defaultImage.png" />
                             </image>
                         </ImageView>
                     </children>
                 </FlowPane>
-                <FlowPane hgap="75.0" layoutX="35.0" layoutY="297.0" minHeight="-Infinity" minWidth="-Infinity"
-                          prefHeight="94.0" prefWidth="695.0" style="-fx-alignment: center;"
-                          AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="16.0">
+                <FlowPane hgap="75.0" layoutX="35.0" layoutY="297.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="94.0" prefWidth="695.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="16.0">
                     <children>
-                        <Button fx:id="answer1" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity"
-                                minWidth="-Infinity" mnemonicParsing="false" onAction="#setSelectedAnswer1"
-                                prefHeight="46.0" prefWidth="180.0" text="answer1"/>
-                        <Button fx:id="answer2" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity"
-                                maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
-                                onAction="#setSelectedAnswer2" prefHeight="46.0" prefWidth="180.0" text="answer2"/>
-                        <Button fx:id="answer3" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity"
-                                minWidth="-Infinity" mnemonicParsing="false" onAction="#setSelectedAnswer3"
-                                prefHeight="46.0" prefWidth="180.0" text="answer3"/>
+                        <Button fx:id="answer1" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setSelectedAnswer1" prefHeight="46.0" prefWidth="180.0" text="answer1" />
+                        <Button fx:id="answer2" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setSelectedAnswer2" prefHeight="46.0" prefWidth="180.0" text="answer2" />
+                        <Button fx:id="answer3" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setSelectedAnswer3" prefHeight="46.0" prefWidth="180.0" text="answer3" />
                     </children>
                     <padding>
-                        <Insets top="20.0"/>
+                        <Insets top="20.0" />
                     </padding>
                 </FlowPane>
             </children>
         </AnchorPane>
     </center>
     <top>
-        <AnchorPane fx:id="topPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-                    minWidth="-Infinity" prefHeight="80.0" prefWidth="1000.0"
-                    stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
+        <AnchorPane fx:id="topPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="1000.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
-                <ProgressBar fx:id="progressBar" layoutX="369.0" layoutY="22.0" prefHeight="22.0" prefWidth="262.0"
-                             progress="1.0" style="-fx-accent: red;" AnchorPane.leftAnchor="369.0"
-                             AnchorPane.rightAnchor="369.0" AnchorPane.topAnchor="23.0"/>
-                <Label fx:id="timeCounter" layoutX="643.0" layoutY="21.0" prefHeight="18.0" prefWidth="30.0" text="20 s"
-                       AnchorPane.rightAnchor="326.6">
+                <ProgressBar fx:id="progressBar" layoutX="369.0" layoutY="22.0" onMouseClicked="#timerStart" prefHeight="22.0" prefWidth="262.0" progress="1.0" AnchorPane.leftAnchor="369.0" AnchorPane.rightAnchor="369.0" AnchorPane.topAnchor="23.0" />
+                <Label fx:id="timeCounter" layoutX="643.0" layoutY="21.0" prefHeight="18.0" prefWidth="30.0" text="10 s" AnchorPane.rightAnchor="326.6">
                     <font>
-                        <Font size="16.0"/>
+                        <Font size="16.0" />
                     </font>
                 </Label>
-                <Label fx:id="playerPoints" layoutX="927.0" layoutY="37.0" text="0 points"
-                       AnchorPane.rightAnchor="15.399999999999977">
+                <Label fx:id="playerPoints" layoutX="927.0" layoutY="37.0" text="0 points" AnchorPane.rightAnchor="15.399999999999977">
                     <font>
-                        <Font size="16.0"/>
+                        <Font size="16.0" />
                     </font>
                 </Label>
                 <Label fx:id="questionNo" layoutX="14.0" layoutY="18.0" text="0/20" AnchorPane.leftAnchor="14.0">
                     <font>
-                        <Font size="16.0"/>
+                        <Font size="16.0" />
                     </font>
                 </Label>
-                <FlowPane layoutX="956.0" layoutY="3.0" prefHeight="30.0" prefWidth="30.0"
-                          style="-fx-alignment: center;" AnchorPane.rightAnchor="13.600000000000023"
-                          AnchorPane.topAnchor="3.0">
+                <FlowPane layoutX="956.0" layoutY="3.0" prefHeight="30.0" prefWidth="30.0" style="-fx-alignment: center;" AnchorPane.rightAnchor="13.600000000000023" AnchorPane.topAnchor="3.0">
                     <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@/client/images/homeIcon.png"/>
+                                <Image url="@/client/images/homeIcon.png" />
                             </image>
                         </ImageView>
                     </children>
                 </FlowPane>
+            <Label fx:id="addPoints" layoutX="917.0" layoutY="14.0" text="add" visible="false" AnchorPane.rightAnchor="62.200000000000045" AnchorPane.topAnchor="14.0" />
             </children>
         </AnchorPane>
     </top>
     <left>
-        <AnchorPane fx:id="leftPane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity"
-                    minWidth="-Infinity" prefHeight="400.0" prefWidth="150.0"
-                    stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER"/>
+        <AnchorPane fx:id="leftPane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="150.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER" />
     </left>
     <bottom>
-        <AnchorPane fx:id="bottomPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-                    minWidth="-Infinity" prefHeight="64.0" prefWidth="1000.0"
-                    stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
+        <AnchorPane fx:id="bottomPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="1000.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
-                <FlowPane hgap="10.0" layoutX="293.0" layoutY="-14.0" prefHeight="91.0" prefWidth="413.0"
-                          style="-fx-alignment: center;" AnchorPane.bottomAnchor="-13.42857142857143"
-                          AnchorPane.leftAnchor="293.0" AnchorPane.rightAnchor="294.0" AnchorPane.topAnchor="-14.0">
+                <FlowPane fx:id="emojiPane" hgap="10.0" layoutX="293.0" layoutY="-14.0" prefHeight="91.0" prefWidth="413.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="-13.42857142857143" AnchorPane.leftAnchor="293.0" AnchorPane.rightAnchor="294.0" AnchorPane.topAnchor="-14.0">
                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" nodeOrientation="INHERIT" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@/client/images/laughingEmoji.png"/>
+                                <Image url="@/client/images/laughingEmoji.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" nodeOrientation="INHERIT" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@/client/images/okHandEmoji.png"/>
+                                <Image url="@/client/images/okHandEmoji.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" nodeOrientation="INHERIT" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@/client/images/thumbsUpEmoji.png"/>
+                                <Image url="@/client/images/thumbsUpEmoji.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" nodeOrientation="INHERIT" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@/client/images/flatFaceEmoji.png"/>
+                                <Image url="@/client/images/flatFaceEmoji.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" nodeOrientation="INHERIT" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@/client/images/angryEmoji.png"/>
+                                <Image url="@/client/images/angryEmoji.png" />
                             </image>
                         </ImageView>
                     </children>
                     <padding>
-                        <Insets left="95.0" right="75.0"/>
+                        <Insets left="95.0" right="75.0" />
                     </padding>
                 </FlowPane>
             </children>
         </AnchorPane>
     </bottom>
     <right>
-        <AnchorPane fx:id="rightPane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity"
-                    minWidth="-Infinity" prefHeight="400.0" prefWidth="150.0"
-                    stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
+        <AnchorPane fx:id="rightPane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="150.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
-                <VBox layoutX="14.0" layoutY="110.0" prefHeight="179.0" prefWidth="106.0" spacing="20.0"
-                      AnchorPane.bottomAnchor="110.80000000000001" AnchorPane.rightAnchor="30.0"
-                      AnchorPane.topAnchor="110.0">
+                <VBox fx:id="jokerEl" layoutX="14.0" layoutY="110.0" prefHeight="179.0" prefWidth="106.0" spacing="20.0" AnchorPane.bottomAnchor="110.80000000000001" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="110.0">
                     <children>
-                        <Label prefHeight="18.0" prefWidth="70.0" text="Joker cards:"/>
-                        <Button fx:id="jokerTime" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0"
-                                style="-fx-alignment: center;" text="Decrease Time"/>
-                        <Button fx:id="jokerPoints" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0"
-                                text="Double Points"/>
-                        <Button fx:id="jokerAnswer" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0"
-                                text="Discard Answer"/>
+                        <Label fx:id="jokerLabel" prefHeight="18.0" prefWidth="70.0" text="Joker cards:" />
+                        <Button fx:id="jokerTime" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" style="-fx-alignment: center;" text="Decrease Time" />
+                        <Button fx:id="jokerPoints" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" text="Double Points" />
+                        <Button fx:id="jokerAnswer" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" text="Discard Answer" />
                     </children>
                 </VBox>
             </children>

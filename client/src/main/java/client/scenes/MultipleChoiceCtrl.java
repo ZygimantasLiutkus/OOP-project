@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 
@@ -22,13 +24,12 @@ public class MultipleChoiceCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
-
+  private boolean singePl = true; //should be replaced
   private int startTime = 10;
+  private int questionNum = 19;
   private double progress = 1;
-
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
-
   @FXML
   private Label questionLabel;
 
@@ -55,6 +56,15 @@ public class MultipleChoiceCtrl {
 
   @FXML
   private Label timeCounter;
+
+  @FXML
+  private Label questionNo;
+
+  @FXML
+  private VBox jokerEl;
+
+  @FXML
+  private FlowPane emojiPane;
 
   /**
    * Constructor for MultipleChoiceCtrl.
@@ -114,6 +124,7 @@ public class MultipleChoiceCtrl {
    * Starts the timer.
    */
   public void timerStart() {
+    nextQuestionSingle();
     Timeline timeline = new Timeline();
     timeline.setCycleCount(1000);
     timeline.setAutoReverse(false);
@@ -143,7 +154,9 @@ public class MultipleChoiceCtrl {
     timeCount.setCycleCount(10);
     timeline.play();
     timeCount.play();
-
+    if (singePl) {
+      emojiPane.setVisible(false);
+    }
     timeline.setOnFinished(e -> revealAnswer());
   }
 
@@ -154,6 +167,10 @@ public class MultipleChoiceCtrl {
     answer1.setDisable(true);
     answer2.setDisable(true);
     answer3.setDisable(true);
+
+
+    jokerEl.setVisible(false);
+
 
     if (!answer1.getText().equals(test.getTitle())) {
       answer1.setStyle("-fx-background-color: E50C0C");
@@ -166,19 +183,62 @@ public class MultipleChoiceCtrl {
     if (!answer3.getText().equals(test.getTitle())) {
       answer3.setStyle("-fx-background-color: E50C0C");
     }
+    if (!server.noAnswer()) {
+      addPoints.setText("+0");
+      addPoints.setVisible(true);
+    }
+
+
+    Timeline cooldown = new Timeline();
+    cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(3000), e -> {
+    }));
+    cooldown.play();
+    cooldown.setOnFinished(e -> cooldownAnswer());
   }
 
   /**
-   * Makes the client screen ready for the new question.
+   * Checks if the game type is single player and does the associated methods.
    */
-  public void nextQuestion() {
+  public void cooldownAnswer() {
+    if (singePl) {
+      if (questionNum < 20) {
+        timerStart();
+      } else {
+        mainCtrl.showLeaderboard("global");
+      }
+    } else {
+      if (questionNum < 20) {
+        timerStart();
+        //nextQuestionMultiple();
+      } else {
+        mainCtrl.showLeaderboard("multiplayer");
+      }
+    }
+  }
+
+  /**
+   * Makes the client screen ready for the new question. FOR SINGLE PLAYER ONLY
+   */
+  public void nextQuestionSingle() {
     resetTimer();
+    jokerEl.setVisible(true);
+    questionNum++;
+    addPoints.setVisible(false);
+    questionNo.setText(questionNum + "/20");
     answer1.setDisable(false);
     answer1.setStyle("-fx-background-color: #11AD31");
     answer2.setDisable(false);
     answer2.setStyle("-fx-background-color: #11AD31");
     answer3.setDisable(false);
     answer3.setStyle("-fx-background-color: #11AD31");
+    server.resetAnswer();
+  }
+
+  /**
+   * Makes the client ready for the new question. FOR MULTIPLAYER ONLY
+   */
+  public void nextQuestionMultiple() {
+    revealAnswer();
   }
 
   /**
