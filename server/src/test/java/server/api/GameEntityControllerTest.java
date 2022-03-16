@@ -10,6 +10,7 @@ import commons.Player;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import server.database.QuestionRepository;
 import server.services.QuestionService;
 
 /**
@@ -23,6 +24,7 @@ public class GameEntityControllerTest {
   private TestPlayerRepository playerRepo;
   private TestActivityRepository activityRepo;
   private Random random;
+  private QuestionRepository qRepo;
 
   /**
    * Returns a new player.
@@ -60,7 +62,8 @@ public class GameEntityControllerTest {
     }
     random = new Random();
     qService = new QuestionService(activityRepo, random);
-    sut = new GameEntityController(repo, playerRepo, qService);
+    qRepo = new TestQuestionRepository();
+    sut = new GameEntityController(repo, playerRepo, qService, qRepo);
   }
 
   /**
