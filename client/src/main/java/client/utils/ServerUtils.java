@@ -38,7 +38,7 @@ import org.glassfish.jersey.client.ClientConfig;
 public class ServerUtils {
 
   private String server = "http://localhost:8080/";
-  private Player player;
+  private Player player = new Player("");
   // = new Player("test"); for testing purposes. If we want to test client uncomment.
 
   /**
