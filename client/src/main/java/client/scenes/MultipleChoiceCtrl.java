@@ -34,7 +34,13 @@ public class MultipleChoiceCtrl {
   private Label questionLabel;
 
   @FXML
-  private ImageView questionImage;
+  private ImageView questionImage1;
+
+  @FXML
+  private ImageView questionImage2;
+
+  @FXML
+  private ImageView questionImage3;
 
   @FXML
   private Button answer1;

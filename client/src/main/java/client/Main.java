@@ -52,18 +52,18 @@ public class Main extends Application {
 
     var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
     var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
-    var multipleChoice =
-        FXML.load(MultipleChoiceCtrl.class, "client", "scenes", "MultipleChoiceScreen.fxml");
+    var moreExpensive =
+        FXML.load(MultipleChoiceCtrl.class, "client", "scenes", "MoreExpensiveScreen.fxml");
     var entry = FXML.load(EntryCtrl.class, "client", "scenes", "EntryScreen.fxml");
     var choose = FXML.load(ChooseScreenCtrl.class, "client", "scenes", "ChooseScreen.fxml");
     var name = FXML.load(NamePopupCtrl.class, "client", "scenes", "NamePopup.fxml");
     var leaderboard =
         FXML.load(LeaderboardScreenCtrl.class, "client", "scenes", "LeaderboardScreen.fxml");
-    primaryStage.setMinWidth(1145);
+    primaryStage.setMinWidth(1200);
     primaryStage.setMinHeight(540);
 
     var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-    mainCtrl.initialize(primaryStage, overview, add, entry, name, choose, multipleChoice,
+    mainCtrl.initialize(primaryStage, overview, add, entry, name, choose, moreExpensive,
         leaderboard);
   }
 }
