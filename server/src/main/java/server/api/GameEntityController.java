@@ -275,7 +275,7 @@ public class GameEntityController {
             playerDummy.setScore(playerDummy.getScore() + 100);
             playerRepo.save(playerDummy);
             return ResponseEntity.ok(
-                new Answer("CORRECT", playerDummy, playerDummy.getScore() + 100, 100));
+                new Answer("CORRECT", playerDummy, playerDummy.getScore(), 100));
           } else {
             playerDummy.setScore(playerDummy.getScore());
             playerRepo.save(playerDummy);
