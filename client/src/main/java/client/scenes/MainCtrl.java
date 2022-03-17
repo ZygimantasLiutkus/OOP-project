@@ -16,8 +16,10 @@
 
 package client.scenes;
 
+import client.utils.NextScreen;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -28,6 +30,8 @@ public class MainCtrl {
 
   private Stage primaryStage;
 
+  private Stage popup;
+
   private EntryCtrl entryCtrl;
   private Scene entry;
 
@@ -37,8 +41,8 @@ public class MainCtrl {
   private ChooseScreenCtrl chooseScreenCtrl;
   private Scene choose;
 
-  private MultipleChoiceCtrl multipleChoiceCtrl;
-  private Scene multipleChoice;
+  private MultipleChoiceCtrl moreExpensiveCtrl;
+  private Scene moreExpensive;
 
   private LeaderboardScreenCtrl leaderboardScreenCtrl;
   private Scene leaderboard;
@@ -52,19 +56,19 @@ public class MainCtrl {
   /**
    * Initializes the main controller.
    *
-   * @param primaryStage   the top level JavaFX container.
-   * @param overview       a pair of the QuoteOverview controller and the parent.
-   * @param add            a pair of the AddQuote controller and the parent.
-   * @param entry          a pair of the EntryScreen controller and the parent.
-   * @param name           a pair of the NamePopup controller and the parent.
-   * @param choose         a pair of the ChooseScreen controller and the parent.
-   * @param multipleChoice a pair of the MultipleChoiceScreen controller and the parent.
-   * @param leaderboard    a pair of the LeaderboardScreen controller and the parent.
+   * @param primaryStage  the top level JavaFX container.
+   * @param overview      a pair of the QuoteOverview controller and the parent.
+   * @param add           a pair of the AddQuote controller and the parent.
+   * @param entry         a pair of the EntryScreen controller and the parent.
+   * @param name          a pair of the NamePopup controller and the parent.
+   * @param choose        a pair of the ChooseScreen controller and the parent.
+   * @param moreExpensive a pair of the MultipleChoiceScreen controller and the parent.
+   * @param leaderboard   a pair of the LeaderboardScreen controller and the parent.
    */
   public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                          Pair<AddQuoteCtrl, Parent> add, Pair<EntryCtrl, Parent> entry,
                          Pair<NamePopupCtrl, Parent> name, Pair<ChooseScreenCtrl, Parent> choose,
-                         Pair<MultipleChoiceCtrl, Parent> multipleChoice,
+                         Pair<MultipleChoiceCtrl, Parent> moreExpensive,
                          Pair<LeaderboardScreenCtrl, Parent> leaderboard) {
     this.primaryStage = primaryStage;
     this.overviewCtrl = overview.getKey();
@@ -82,15 +86,20 @@ public class MainCtrl {
     this.chooseScreenCtrl = choose.getKey();
     this.choose = new Scene(choose.getValue());
 
-    this.multipleChoiceCtrl = multipleChoice.getKey();
-    this.multipleChoice = new Scene(multipleChoice.getValue());
+    this.moreExpensiveCtrl = moreExpensive.getKey();
+    this.moreExpensive = new Scene(moreExpensive.getValue());
 
     this.leaderboardScreenCtrl = leaderboard.getKey();
     this.leaderboard = new Scene(leaderboard.getValue());
 
-
-    showMultipleChoice();
+    showEntry();
     primaryStage.show();
+
+    this.popup = new Stage();
+    this.popup.setMinWidth(500);
+    this.popup.setMinHeight(280);
+    this.popup.initModality(Modality.APPLICATION_MODAL);
+    this.popup.initOwner(primaryStage);
   }
 
   /**
@@ -117,14 +126,27 @@ public class MainCtrl {
   public void showEntry() {
     primaryStage.setTitle("Quizzzz");
     primaryStage.setScene(entry);
+    entry.setOnKeyPressed(e -> entryCtrl.keyPressed(e));
   }
 
   /**
-   * Shows the name popup to enter the name.
+   * Shows the name popup.
+   *
+   * @param nextScreen the screen to be shown after the name is entered
    */
-  public void showNamePopup() {
-    primaryStage.setTitle("Choose your name!");
-    primaryStage.setScene(name);
+  public void showNamePopup(NextScreen nextScreen) {
+    popup.setTitle("Choose your name!");
+    popup.setScene(name);
+    name.setOnKeyPressed(e -> namePopupCtrl.keyPressed(e));
+    namePopupCtrl.setNextScreen(nextScreen);
+    popup.show();
+  }
+
+  /**
+   * Closes the name popup.
+   */
+  public void closeNamePopup() {
+    popup.close();
   }
 
   /**
@@ -138,16 +160,31 @@ public class MainCtrl {
   /**
    * Shows the multiple choice game screen.
    */
-  public void showMultipleChoice() {
+  public void showMoreExpensive() {
     primaryStage.setTitle("Quizzzz");
-    primaryStage.setScene(multipleChoice);
+    primaryStage.setScene(moreExpensive);
   }
 
   /**
    * Shows the leaderboard screen.
+   *
+   * @param type the type of leaderboard (global / multiplayer).
    */
-  public void showLeaderboard() {
-    primaryStage.setTitle("Quizzzz Leaderboard");
-    primaryStage.setScene(leaderboard);
+  public void showLeaderboard(String type) {
+    switch (type) {
+      case "global":
+        primaryStage.setTitle("Quizzzz Leaderboard");
+        leaderboardScreenCtrl.setSingleplayer();
+        primaryStage.setScene(leaderboard);
+        leaderboardScreenCtrl.refreshTop10();
+        break;
+      case "multiplayer":
+        primaryStage.setTitle("Match Leaderboard");
+        leaderboardScreenCtrl.setMultiplayer();
+        primaryStage.setScene(leaderboard);
+        break;
+      default:
+        break;
+    }
   }
 }

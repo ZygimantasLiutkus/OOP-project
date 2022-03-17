@@ -12,8 +12,8 @@
             <children>
                 <Label prefHeight="65.0" prefWidth="168.0" text="Enter the name that you want" />
                 <TextField fx:id="nameField" alignment="CENTER" prefHeight="26.0" prefWidth="215.0" promptText="Name" />
-                <Label fx:id="takenNameLabel" prefHeight="36.0" prefWidth="170.0" text="This name is already taken, please choose another name" textAlignment="CENTER" wrapText="true" />
-                <Button fx:id="nameButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="120.0" text="Enter" />
+                <Label fx:id="takenNameLabel" prefHeight="36.0" prefWidth="170.0" text="This name is already taken, please choose another name" textAlignment="CENTER" textFill="RED" visible="false" wrapText="true" />
+                <Button fx:id="nameButton" mnemonicParsing="false" onMouseClicked="#submit" onTouchPressed="#submit" prefHeight="31.0" prefWidth="120.0" text="Enter" />
             </children>
         </FlowPane>
     </children>

@@ -1,14 +1,26 @@
 package server.api;
 
-import commons.*;
+import commons.Activity;
+import commons.Answer;
+import commons.GameEntity;
+import commons.Player;
+import commons.Question;
+import commons.QuestionMoreExpensive;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import server.database.GameEntityRepository;
 import server.database.PlayerRepository;
+import server.database.QuestionRepository;
 import server.services.QuestionService;
 
 /**
@@ -20,6 +32,7 @@ public class GameEntityController {
   private final GameEntityRepository repo;
   private final PlayerRepository playerRepo;
   private final QuestionService service;
+  private final QuestionRepository qRepo;
 
   /**
    * Constructor for the controller.
@@ -27,12 +40,25 @@ public class GameEntityController {
    * @param repo       the game repository
    * @param playerRepo the player repository
    * @param service    the service for questions
+   * @param qRepo      the question repository
    */
   public GameEntityController(GameEntityRepository repo, PlayerRepository playerRepo,
-                              QuestionService service) {
+                              QuestionService service, QuestionRepository qRepo) {
     this.repo = repo;
     this.playerRepo = playerRepo;
     this.service = service;
+    this.qRepo = qRepo;
+  }
+
+  /**
+   * Returns if the supplied string is null or empty.
+   *
+   * @param s the string to check
+   * @return true iff the string is null or empty
+   */
+  @SuppressWarnings("unused")
+  private static boolean isNullOrEmpty(String s) {
+    return s == null || s.isEmpty();
   }
 
   /**
@@ -53,18 +79,10 @@ public class GameEntityController {
    */
   @GetMapping(path = "/{id}")
   public ResponseEntity<GameEntity> getGameById(@PathVariable("id") long id) {
-    return ResponseEntity.of(repo.findById(id));
-  }
-
-  /**
-   * Returns if the supplied string is null or empty.
-   *
-   * @param s the string to check
-   * @return true iff the string is null or empty
-   */
-  @SuppressWarnings("unused")
-  private static boolean isNullOrEmpty(String s) {
-    return s == null || s.isEmpty();
+    if (repo.existsById(id)) {
+      return ResponseEntity.ok(repo.getById(id));
+    }
+    return ResponseEntity.badRequest().build();
   }
 
   /**
@@ -74,14 +92,14 @@ public class GameEntityController {
    * @return a list of all the games with said status
    */
   @GetMapping(path = "?status={status}")
-  public List<GameEntity> getGameByStatus(@PathVariable("status") String status) {
+  public ResponseEntity<List<GameEntity>> getGameByStatus(@PathVariable("status") String status) {
     List<GameEntity> response = new ArrayList<>();
     for (GameEntity ge : repo.findAll()) {
       if (ge.getStatus().equals(status)) {
         response.add(ge);
       }
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
   /**
@@ -91,11 +109,11 @@ public class GameEntityController {
    * @return a ResponseEntity of the requested status.
    */
   @GetMapping(path = "/{id}/status")
-  public ResponseEntity<String> getGameStatusById(@PathVariable("id") Long id) {
-    if (repo.findById(id).isEmpty()) {
-      return ResponseEntity.badRequest().build();
+  public ResponseEntity<String> getGameStatusById(@PathVariable("id") long id) {
+    if (repo.existsById(id)) {
+      return ResponseEntity.ok(repo.getById(id).getStatus());
     } else {
-      return ResponseEntity.ok(repo.findById(id).get().getStatus());
+      return ResponseEntity.badRequest().build();
     }
   }
 
@@ -110,10 +128,10 @@ public class GameEntityController {
   @PutMapping(path = "/{id}")
   public ResponseEntity<GameEntity> changeGameStatus(@PathVariable("id") long id,
                                                      @RequestBody GameEntity newStatus) {
-    if (repo.findById(id).isEmpty()) {
+    if (!repo.existsById(id)) {
       return ResponseEntity.badRequest().build();
     } else {
-      GameEntity ge = repo.findById(id).get();
+      GameEntity ge = repo.getById(id);
       if ((ge.getStatus().equals("ABORTED") && !newStatus.getStatus().equals("ABORTED"))
           || (ge.getStatus().equals("FINISHED") && (newStatus.getStatus().equals("WAITING")
           || newStatus.getStatus().equals("STARTED"))) || (ge.getStatus().equals("STARTED")
@@ -134,46 +152,50 @@ public class GameEntityController {
    * @return ResponseEntity of the list of players
    */
   @GetMapping(path = "/{id}/player")
-  public ResponseEntity<List<Player>> getAllPlayers(@PathVariable("id") long id) {
-    if (repo.findById(id).isEmpty()) {
-      return ResponseEntity.badRequest().build();
-    } else {
-      return ResponseEntity.ok(repo.findById(id).get().getPlayers());
+  public ResponseEntity<List<Player>> getAllPlayers(@PathVariable("id") Long id) {
+    if (repo.existsById(id)) {
+      return ResponseEntity.ok(repo.getById(id).getPlayers());
     }
+    return ResponseEntity.badRequest().build();
   }
 
   /**
-   * POST method that adds a new player to a game.
-   * Returns an error if the game does not exist or a player with
-   * the same name already exists in the game.
+   * POST method that adds a new player to a game with waiting status.
+   * Returns an error if a player with the same name already exists in the game.
+   * If there is no game with waiting status, one is created and the player is
+   * added.
    *
-   * @param id         the id of the game
-   * @param playerName the name of the new player
-   * @return ResponseEntity of the new player
+   * @param player the player that has to be added
+   * @return ResponseEntity of the game in which the player was added
    */
-  @PostMapping(path = "/{id}/player")
-  public ResponseEntity<Player> addPlayerToGame(@PathVariable("id") long id, String playerName) {
-    if (repo.findById(id).isEmpty()) {
-      return ResponseEntity.badRequest().build();
-    } else {
-      if (!repo.findById(id).get().getStatus().equals("WAITING")) {
+  @PostMapping(path = "/addPlayer")
+  public ResponseEntity<GameEntity> addPlayerToGame(@RequestBody Player player) {
+    final int questionAmount = 20; // TODO: change amount to 20
+    List<GameEntity> list = repo.findByStatus("WAITING");
+    if (list.size() == 0) { // Create a new game
+      GameEntity game = new GameEntity();
+      List<Question> questions = service.generateQuestion(questionAmount);
+      if (questions.size() != questionAmount) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      }
+      game.setQuestions(questions);
+      playerRepo.save(player);
+      game.addPlayer(player);
+      return ResponseEntity.ok(repo.save(game));
+    }
+    // Get the first multiplayer game with the status WAITING
+    GameEntity game = list.get(0);
+    // Check if the provided name is already in use in this game
+    for (Player p : game.getPlayers()) {
+      if (p.getName().equals(player.getName())) {
         return ResponseEntity.badRequest().build();
       }
-      for (Player p : repo.findById(id).get().getPlayers()) {
-        if (p.getName().equals(playerName)) {
-          return ResponseEntity.unprocessableEntity().build();
-        }
-      }
-      Player newPlayer = new Player(playerName);
-      playerRepo.save(newPlayer);
-      GameEntity ge = repo.findById(id).get();
-      List<Player> playersList = ge.getPlayers();
-      playersList.add(newPlayer);
-      ge.setPlayers(playersList);
-      repo.deleteById(id);
-      repo.save(ge);
-      return ResponseEntity.ok(newPlayer);
     }
+    // Save the player and add it to the game
+    playerRepo.save(player);
+    game.addPlayer(player);
+    repo.deleteById(game.getId());
+    return ResponseEntity.ok(repo.save(game));
   }
 
   /**
@@ -275,8 +297,8 @@ public class GameEntityController {
    * @return the content of the question
    */
   @GetMapping(path = "/{id}/question/{idQ}")
-  public ResponseEntity<Question>
-      getQuestionById(@PathVariable("id") long id, @PathVariable("idQ") int q) {
+  public ResponseEntity<Question> getQuestionById(@PathVariable("id") long id,
+                                                  @PathVariable("idQ") int q) {
     if (!repo.existsById(id) || q <= 0 || q > 20) {
       return ResponseEntity.badRequest().build();
     }
@@ -284,5 +306,22 @@ public class GameEntityController {
       return ResponseEntity.badRequest().build();
     }
     return ResponseEntity.ok(repo.getById(id).getQuestions().get(q - 1));
+  }
+
+  /**
+   * POST request to create a single player game.
+   *
+   * @param player the player that has requested
+   * @return the newly created game
+   */
+  @PostMapping(path = "/singleplayer")
+  public ResponseEntity<GameEntity> addSingleplayer(@RequestBody Player player) {
+    playerRepo.save(player);
+    GameEntity game = repo.save(new GameEntity());
+    //TODO: change amount to 20
+    List<Question> questions = qRepo.saveAll(service.generateQuestion(3));
+    game.getQuestions().addAll(questions);
+    game.addPlayer(player);
+    return ResponseEntity.ok(repo.save(game));
   }
 }

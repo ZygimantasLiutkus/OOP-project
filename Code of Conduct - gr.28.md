@@ -22,8 +22,8 @@ During the whole time the game is ongoing, the players can send emojis to commun
 
 *What grade are you working for?*
 
-In regards to a grade, we strive to get a 9. Moreover, the common goal of the team is to improve teamwork skills,
-properly use feedback from our colleagues to increase efficiency. We wish for constant, rewarding communication
+In regard to a grade, we strive to get a 7.5 minimal. Moreover, the common goal of the team is to improve teamwork
+skills, properly use feedback from our colleagues to increase efficiency. We wish for constant, rewarding communication
 throughout the entire project and working final product - an application with all the basic features listed in the
 backlog and as many additional features as we can implement in the given timeframe.
 
@@ -94,6 +94,11 @@ The quality will be discussed at every meeting.
 The commitments of the chairman are measured by how many points on the agenda were talked about and by how well the
 meeting went on. The note taker should always upload a file after every meeting.
 
+Whenever there is a new merge request to be reviewed, the person that created the merge request should assign two team
+members to review the merge request. Those reviewers should be notified by a WhatsApp message, so they know that they
+have to review something. The reviewing of a merge request should be done within 24 hours after the notification was
+sent. The creator of the merge request should make sure the reviewer is available in this timeslot as is noted below.
+
 ## Meetings:
 
 *How often will you meet as a group? What preparation is needed for the meetings?*
@@ -111,6 +116,10 @@ Meetings are **mandatory**.
 *Chairman* : Adelina – Jesse – Petar – Kees – Violeta - Žygimantas
 
 *Note Taker* : Žygimantas – Violeta – Kees – Petar – Jesse - Adelina
+
+*Planner* :  Violeta - Adelina - Žygimantas – Kees – Petar – Jesse\
+The planner prepares the next sprint by adding the most important issues to a new sprint in GitLab. The deadline is
+before the Monday meeting (so before 14:00 on Monday)
 
 Preferred hours for meetings, working on the project in pairs (if needed) and answering messages:
 
@@ -160,7 +169,7 @@ Available to respond outside the hours.
 
     - Thursday before 15:00
 
-    - Sunday any time is possible but I usually like to keep that afternoon free
+    - Sunday any time is possible, but I usually like to keep that afternoon free
 
     - Available to respond anytime except for during football practice / work (Monday/Wednesday 19:15-20:15, Thursday
       16:00-20:00, Saturday 18:00-20:00)
@@ -206,7 +215,9 @@ Even those against the final decision must follow it. Make sure to come to an ag
 
 *How do you handle conflicts within the group?*
 
-Discuss every issue as soon as it occurs. Talk to the group members. Unless it doesn’t work, talk to the TA.
+Discuss every issue as soon as it occurs. Talk to the other group members. If there is a conflict between some group
+members, talk to the rest of the team and try to solve the conflict first within the team itself. Unless this doesn’t
+work, talk to the TA.
 
 ## Guidance:
 
@@ -221,7 +232,9 @@ correlate with the project but not the product.
 *What are the consequences if a participant in the group does not keep the agreements?*
 
 If someone does not keep up the agreements once, we will have to discuss it in the next meeting to solve that. If after
-this meeting things don’t sort out, we will use the TA’s help.
+this meeting things don’t sort out, we will use the TA’s help. If someone didn't finish an issue within the specified
+sprint, this person is accountable for this. If this ever happens, we will talk about it with the TA in the first next
+meeting.
 
 ## Succesfactors:
 

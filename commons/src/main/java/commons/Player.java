@@ -22,12 +22,9 @@ public class Player {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   public Long id;
-  @Column(name = "score", nullable = false)
-  private int score;
-  @Column(name = "name", nullable = false)
+  private int score = 0;
   private String name;
-  @Column(name = "selectedAnswer", nullable = false)
-  private String selectedAnswer;
+  private String selectedAnswer = "0";
 
   /**
    * For object mappers.
@@ -46,8 +43,6 @@ public class Player {
    */
   public Player(String name) {
     this.name = name;
-    this.score = 0;
-    this.selectedAnswer = "0";
   }
 
   /**

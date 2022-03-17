@@ -2,6 +2,7 @@ package commons;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -21,7 +22,7 @@ public abstract class Question {
   private Long id;
   private String text;
   @ManyToMany(cascade = CascadeType.PERSIST)
-  private List<Activity> activities;
+  private List<Activity> activities = new ArrayList<>();
 
   /**
    * For object mappers.
