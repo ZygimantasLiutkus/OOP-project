@@ -184,30 +184,62 @@ public class MultipleChoiceCtrl {
 
     jokerEl.setVisible(false);
 
-
-    if (!answer1.getText().equals(test.getTitle())) {
-      answer1.setStyle("-fx-background-color: E50C0C");
+    if (question.getText().equals("How big is the consumption per hour for this activity?")) {
+      computeAnswerChoice();
+    }
+    if (question.getText().equals("Which is more expensive?")) {
+      computeAnswerExpensive();
     }
 
-    if (!answer2.getText().equals(test.getTitle())) {
-      answer2.setStyle("-fx-background-color: E50C0C");
-    }
-
-    if (!answer3.getText().equals(test.getTitle())) {
-      answer3.setStyle("-fx-background-color: E50C0C");
-    }
     if (!server.noAnswer()) {
       addPoints.setText("+0");
       addPoints.setVisible(true);
     }
 
     Timeline cooldown = new Timeline();
-    cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(2000), e -> {
+    cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(1500), e -> {
     }));
     cooldown.play();
     cooldown.setOnFinished(e -> {
       cooldownAnswer();
     });
+  }
+
+  /**
+   * Changes buttons' colour according to the computed answer.
+   */
+  public void computeAnswerChoice() {
+    int answer = question.getActivities().get(0).getConsumption_in_wh();
+    if (mapButtons.get(1).getConsumption_in_wh() != answer) {
+      answer1.setStyle("-fx-background-color: E50C0C");
+    }
+    if (mapButtons.get(2).getConsumption_in_wh() != answer) {
+      answer2.setStyle("-fx-background-color: E50C0C");
+    }
+    if (mapButtons.get(3).getConsumption_in_wh() != answer) {
+      answer3.setStyle("-fx-background-color: E50C0C");
+    }
+  }
+
+  /**
+   * Changes buttons' colour according to the computed answer.
+   */
+  public void computeAnswerExpensive() {
+    int max = 0;
+    for (int i = 0; i < 3; i++) {
+      if (question.getActivities().get(i).getConsumption_in_wh() > max) {
+        max = question.getActivities().get(i).getConsumption_in_wh();
+      }
+    }
+    if (mapButtons.get(1).getConsumption_in_wh() != max) {
+      answer1.setStyle("-fx-background-color: E50C0C");
+    }
+    if (mapButtons.get(2).getConsumption_in_wh() != max) {
+      answer2.setStyle("-fx-background-color: E50C0C");
+    }
+    if (mapButtons.get(3).getConsumption_in_wh() != max) {
+      answer3.setStyle("-fx-background-color: E50C0C");
+    }
   }
 
   /**
@@ -321,11 +353,15 @@ public class MultipleChoiceCtrl {
     this.questionLabel.setText(question.getText());
     if (this.question.getText().equals("Which is more expensive?")) {
       prepareMoreExpensive();
-    } else if(this.question.getText().equals("How big is the consumption per hour for this activity?")){
+    } else if (this.question.getText()
+        .equals("How big is the consumption per hour for this activity?")) {
       prepareMultipleChoice();
     }
   }
 
+  /**
+   * Prepare the screen for a more expensive question.
+   */
   public void prepareMoreExpensive() {
     this.answer1.setText(mapButtons.get(1).getTitle());
     this.answer2.setText(mapButtons.get(2).getTitle());
@@ -335,6 +371,9 @@ public class MultipleChoiceCtrl {
     this.questionImage3.setVisible(true);
   }
 
+  /**
+   * Prepare screen for a multiple choice question.
+   */
   public void prepareMultipleChoice() {
     this.answer1.setText(String.valueOf(mapButtons.get(1).getConsumption_in_wh()) + " wh");
     this.answer2.setText(String.valueOf(mapButtons.get(2).getConsumption_in_wh()) + " wh");
