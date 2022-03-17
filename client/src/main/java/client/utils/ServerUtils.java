@@ -189,7 +189,7 @@ public class ServerUtils {
   public Question getQuestion(String idx) {
 
     Question q = ClientBuilder.newClient(new ClientConfig()) //
-        .target(server).path("api/game/2/question/" + idx) //
+        .target(server).path("api/game/1/question/" + idx) //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .get(new GenericType<Question>() {

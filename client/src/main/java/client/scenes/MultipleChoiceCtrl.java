@@ -191,13 +191,11 @@ public class MultipleChoiceCtrl {
       computeAnswerExpensive();
     }
 
-    if (!server.noAnswer()) {
-      addPoints.setText("+0");
-      addPoints.setVisible(true);
-    }
+    addPoints.setText("+0");
+    addPoints.setVisible(true);
 
     Timeline cooldown = new Timeline();
-    cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(1500), e -> {
+    cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(3000), e -> {
     }));
     cooldown.play();
     cooldown.setOnFinished(e -> {
@@ -227,7 +225,7 @@ public class MultipleChoiceCtrl {
   public void computeAnswerExpensive() {
     int max = 0;
     for (int i = 0; i < 3; i++) {
-      if (question.getActivities().get(i).getConsumption_in_wh() > max) {
+      if (question.getActivities().get(i).getConsumption_in_wh() >= max) {
         max = question.getActivities().get(i).getConsumption_in_wh();
       }
     }
@@ -351,7 +349,6 @@ public class MultipleChoiceCtrl {
     setMapButtons();
     //TODO: delete the line below (created for testing)
     this.questionImage3.setImage(new Image("client/images/flatFaceEmoji.png"));
-    this.questionLabel.setText(question.getText());
     if (this.question.getText().equals("Which is more expensive?")) {
       prepareMoreExpensive();
     } else if (this.question.getText()
@@ -364,6 +361,7 @@ public class MultipleChoiceCtrl {
    * Prepare the screen for a more expensive question.
    */
   public void prepareMoreExpensive() {
+    this.questionLabel.setText(question.getText());
     this.answer1.setText(mapButtons.get(1).getTitle());
     try {
       this.questionImage1.setImage((new Image(mapButtons.get(1).getImage_path())));
@@ -391,6 +389,8 @@ public class MultipleChoiceCtrl {
    * Prepare screen for a multiple choice question.
    */
   public void prepareMultipleChoice() {
+    this.questionLabel.setText(
+        question.getText() + "\n" + question.getActivities().get(0).getTitle());
     this.answer1.setText(String.valueOf(mapButtons.get(1).getConsumption_in_wh()) + " wh");
     this.answer2.setText(String.valueOf(mapButtons.get(2).getConsumption_in_wh()) + " wh");
     this.answer3.setText(String.valueOf(mapButtons.get(3).getConsumption_in_wh()) + " wh");
