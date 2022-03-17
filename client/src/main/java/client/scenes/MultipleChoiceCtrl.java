@@ -365,6 +365,24 @@ public class MultipleChoiceCtrl {
    */
   public void prepareMoreExpensive() {
     this.answer1.setText(mapButtons.get(1).getTitle());
+    try{
+      this.questionImage1.setImage((new Image(mapButtons.get(1).getImage_path())));
+    }
+    catch (IllegalArgumentException e){
+      this.questionImage1.setImage(new Image("client/images/defaultImage.png"));
+    }
+    try{
+      this.questionImage2.setImage((new Image(mapButtons.get(2).getImage_path())));
+    }
+    catch (IllegalArgumentException e){
+      this.questionImage2.setImage(new Image("client/images/flatFaceEmoji.png"));
+    }
+    try{
+      this.questionImage3.setImage((new Image(mapButtons.get(3).getImage_path())));
+    }
+    catch (IllegalArgumentException e){
+      this.questionImage3.setImage(new Image("client/images/defaultImage.png"));
+    }
     this.answer2.setText(mapButtons.get(2).getTitle());
     this.answer3.setText(mapButtons.get(3).getTitle());
     this.questionImage1.setVisible(true);
@@ -379,8 +397,12 @@ public class MultipleChoiceCtrl {
     this.answer1.setText(String.valueOf(mapButtons.get(1).getConsumption_in_wh()) + " wh");
     this.answer2.setText(String.valueOf(mapButtons.get(2).getConsumption_in_wh()) + " wh");
     this.answer3.setText(String.valueOf(mapButtons.get(3).getConsumption_in_wh()) + " wh");
-    //TODO: uncomment this when activity bank is imported
-    //this.questionImage2.setImage(new Image(mapButtons.get(1).getImage_path()));
+    try{
+      this.questionImage2.setImage((new Image(mapButtons.get(1).getImage_path())));
+    }
+    catch (IllegalArgumentException e){
+      this.questionImage2.setImage(new Image("client/images/defaultImage.png"));
+    }
     this.questionImage1.setVisible(false);
     this.questionImage3.setVisible(false);
   }

@@ -25,7 +25,7 @@
                         </Label>
                     </children>
                 </FlowPane>
-                <FlowPane hgap="50.0" layoutX="-110.0" layoutY="106.0" prefHeight="183.0" prefWidth="887.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="-110.0" AnchorPane.rightAnchor="-32.0" AnchorPane.topAnchor="106.0">
+                <FlowPane hgap="75.0" layoutX="-110.0" layoutY="106.0" prefHeight="183.0" prefWidth="887.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="-110.0" AnchorPane.rightAnchor="-32.0" AnchorPane.topAnchor="106.0">
                     <children>
                         <ImageView fx:id="questionImage1" fitHeight="170.0" fitWidth="230.0" pickOnBounds="true" preserveRatio="true">
                             <image>
