@@ -320,18 +320,29 @@ public class MultipleChoiceCtrl {
     this.questionImage3.setImage(new Image("client/images/flatFaceEmoji.png"));
     this.questionLabel.setText(question.getText());
     if (this.question.getText().equals("Which is more expensive?")) {
-      this.answer1.setText(mapButtons.get(1).getTitle());
-      this.answer2.setText(mapButtons.get(2).getTitle());
-      this.answer3.setText(mapButtons.get(3).getTitle());
-    } else {
-      this.answer1.setText(String.valueOf(mapButtons.get(1).getConsumption_in_wh()) + " wh");
-      this.answer2.setText(String.valueOf(mapButtons.get(2).getConsumption_in_wh()) + " wh");
-      this.answer3.setText(String.valueOf(mapButtons.get(3).getConsumption_in_wh()) + " wh");
-      //TODO uncomment this when activity bank is imported
-      //this.questionImage2.setImage(new Image(mapButtons.get(1).getImage_path()));
-      this.questionImage1.setVisible(false);
-      this.questionImage3.setVisible(false);
+      prepareMoreExpensive();
+    } else if(this.question.getText().equals("How big is the consumption per hour for this activity?")){
+      prepareMultipleChoice();
     }
+  }
+
+  public void prepareMoreExpensive() {
+    this.answer1.setText(mapButtons.get(1).getTitle());
+    this.answer2.setText(mapButtons.get(2).getTitle());
+    this.answer3.setText(mapButtons.get(3).getTitle());
+    this.questionImage1.setVisible(true);
+    this.questionImage2.setVisible(true);
+    this.questionImage3.setVisible(true);
+  }
+
+  public void prepareMultipleChoice() {
+    this.answer1.setText(String.valueOf(mapButtons.get(1).getConsumption_in_wh()) + " wh");
+    this.answer2.setText(String.valueOf(mapButtons.get(2).getConsumption_in_wh()) + " wh");
+    this.answer3.setText(String.valueOf(mapButtons.get(3).getConsumption_in_wh()) + " wh");
+    //TODO: uncomment this when activity bank is imported
+    //this.questionImage2.setImage(new Image(mapButtons.get(1).getImage_path()));
+    this.questionImage1.setVisible(false);
+    this.questionImage3.setVisible(false);
   }
 
   /**
