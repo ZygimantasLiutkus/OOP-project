@@ -36,13 +36,5 @@ public class QuestionMultipleChoice extends Question {
     return "How big is the consumption per hour for this activity?";
   }
 
-  /**
-   * Method to obtain the question type.
-   *
-   * @return an enum
-   */
-  public QuestionTypes.QuestionType getType() {
-    return QuestionTypes.QuestionType.MUTIPLE_CHOICE;
-  }
 }
 
