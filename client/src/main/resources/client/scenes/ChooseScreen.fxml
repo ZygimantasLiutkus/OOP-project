@@ -38,9 +38,9 @@
             <children>
                 <FlowPane hgap="180.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="159.0" prefWidth="1000.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <children>
-                        <Button fx:id="singleplayerButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Play singleplayer" />
+                        <Button fx:id="singleplayerButton" mnemonicParsing="false" onMouseClicked="#playSinglePlayer" onTouchPressed="#playSinglePlayer" prefHeight="50.0" prefWidth="200.0" text="Play singleplayer" />
                         <Button fx:id="leaderboardButton" mnemonicParsing="false" onMouseClicked="#leaderboard" onTouchPressed="#leaderboard" prefHeight="50.0" prefWidth="200.0" text="LEADERBOARD" />
-                        <Button fx:id="multiplayerButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Play multiplayer" />
+                        <Button fx:id="multiplayerButton" mnemonicParsing="false" onMouseClicked="#playMultiplayer" onTouchPressed="#playMultiplayer" prefHeight="50.0" prefWidth="200.0" text="Play multiplayer" />
                     </children>
                 </FlowPane>
             </children>

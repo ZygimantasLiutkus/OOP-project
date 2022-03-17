@@ -16,6 +16,7 @@
 
 package client.scenes;
 
+import client.utils.NextScreen;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -28,6 +29,8 @@ import javafx.util.Pair;
 public class MainCtrl {
 
   private Stage primaryStage;
+
+  private Stage popup;
 
   private EntryCtrl entryCtrl;
   private Scene entry;
@@ -89,9 +92,14 @@ public class MainCtrl {
     this.leaderboardScreenCtrl = leaderboard.getKey();
     this.leaderboard = new Scene(leaderboard.getValue());
 
-    //showChooseScreen();
-    showMoreExpensive();
+    showEntry();
     primaryStage.show();
+
+    this.popup = new Stage();
+    this.popup.setMinWidth(500);
+    this.popup.setMinHeight(280);
+    this.popup.initModality(Modality.APPLICATION_MODAL);
+    this.popup.initOwner(primaryStage);
   }
 
   /**
@@ -122,17 +130,23 @@ public class MainCtrl {
   }
 
   /**
-   * Shows the name popup to enter the name.
+   * Shows the name popup.
+   *
+   * @param nextScreen the screen to be shown after the name is entered
    */
-  public void showNamePopup() {
-    Stage nameStage = new Stage();
-    nameStage.setMinWidth(500);
-    nameStage.setMinHeight(280);
-    nameStage.initModality(Modality.APPLICATION_MODAL);
-    nameStage.initOwner(primaryStage);
-    nameStage.setTitle("Choose your name!");
-    nameStage.setScene(name);
-    nameStage.show();
+  public void showNamePopup(NextScreen nextScreen) {
+    popup.setTitle("Choose your name!");
+    popup.setScene(name);
+    name.setOnKeyPressed(e -> namePopupCtrl.keyPressed(e));
+    namePopupCtrl.setNextScreen(nextScreen);
+    popup.show();
+  }
+
+  /**
+   * Closes the name popup.
+   */
+  public void closeNamePopup() {
+    popup.close();
   }
 
   /**

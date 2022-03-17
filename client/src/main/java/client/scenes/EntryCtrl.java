@@ -42,7 +42,7 @@ public class EntryCtrl {
     boolean success = server.setServer(ip);
     if (success) {
       invalidIPLabel.setVisible(false);
-      mainCtrl.showNamePopup();
+      mainCtrl.showChooseScreen();
     } else {
       invalidIPLabel.setVisible(true);
       ipField.textProperty().addListener((observable) -> {

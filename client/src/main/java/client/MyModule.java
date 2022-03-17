@@ -16,7 +16,14 @@
 
 package client;
 
-import client.scenes.*;
+import client.scenes.AddQuoteCtrl;
+import client.scenes.ChooseScreenCtrl;
+import client.scenes.EntryCtrl;
+import client.scenes.LeaderboardScreenCtrl;
+import client.scenes.MainCtrl;
+import client.scenes.MultipleChoiceCtrl;
+import client.scenes.NamePopupCtrl;
+import client.scenes.QuoteOverviewCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -31,11 +38,14 @@ public class MyModule implements Module {
    */
   @Override
   public void configure(Binder binder) {
-    binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
     binder.bind(AddQuoteCtrl.class).in(Scopes.SINGLETON);
-    binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
-    binder.bind(MultipleChoiceCtrl.class).in(Scopes.SINGLETON);
+    binder.bind(ChooseScreenCtrl.class).in(Scopes.SINGLETON);
     binder.bind(EntryCtrl.class).in(Scopes.SINGLETON);
+    binder.bind(LeaderboardScreenCtrl.class).in(Scopes.SINGLETON);
+    binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
+    binder.bind(MultipleChoiceCtrl.class).in(Scopes.SINGLETON);
+    binder.bind(NamePopupCtrl.class).in(Scopes.SINGLETON);
+    binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
     binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
   }
 }
