@@ -2,6 +2,7 @@ package commons;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -23,6 +24,8 @@ public class Question {
   public String text;
   @ManyToMany(cascade = CascadeType.PERSIST)
   public List<Activity> activities = new ArrayList<>();
+  @JsonIgnore
+  public QuestionTypes type;
 
   /**
    * For object mappers.
@@ -45,7 +48,7 @@ public class Question {
    *
    * @return a predefined question text.
    */
-  public String getText(){
+  public String getText() {
     return text;
   }
 

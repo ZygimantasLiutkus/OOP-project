@@ -18,7 +18,6 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.*;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -181,11 +180,16 @@ public class ServerUtils {
     this.player.setSelectedAnswer("0");
   }
 
-
+  /**
+   * Requests a question and gives it to the client.
+   *
+   * @param idx the index of the question
+   * @return a question from a poll
+   */
   public Question getQuestion(String idx) {
 
     Question q = ClientBuilder.newClient(new ClientConfig()) //
-        .target(server).path("api/game/1/question/" + idx) //
+        .target(server).path("api/game/2/question/" + idx) //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .get(new GenericType<Question>() {

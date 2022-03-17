@@ -36,4 +36,13 @@ public class QuestionMoreExpensive extends Question {
   public String getText() {
     return "Which is more expensive?";
   }
+
+  /**
+   * Method to obtain question type.
+   *
+   * @return an enum component
+   */
+  public QuestionTypes.QuestionType getType() {
+    return QuestionTypes.QuestionType.MORE_EXPENSIVE;
+  }
 }

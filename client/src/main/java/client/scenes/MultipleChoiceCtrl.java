@@ -4,9 +4,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
 import commons.Question;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import commons.QuestionMultipleChoice;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -18,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
@@ -140,7 +137,7 @@ public class MultipleChoiceCtrl {
   /**
    * Starts the timer.
    */
-  public void timerStart() throws FileNotFoundException {
+  public void timerStart() {
     nextQuestionSingle();
     Timeline timeline = new Timeline();
     timeline.setCycleCount(1000);
@@ -211,17 +208,14 @@ public class MultipleChoiceCtrl {
     }));
     cooldown.play();
     cooldown.setOnFinished(e -> {
-      try {
-        cooldownAnswer();
-      } catch (FileNotFoundException ex) {
-      }
+      cooldownAnswer();
     });
   }
 
   /**
    * Checks if the game type is single player and does the associated methods.
    */
-  public void cooldownAnswer() throws FileNotFoundException {
+  public void cooldownAnswer() {
     if (singePl) {
       if (questionNum < 20) {
         timerStart();
@@ -241,7 +235,7 @@ public class MultipleChoiceCtrl {
   /**
    * Makes the client screen ready for the new question. FOR SINGLE PLAYER ONLY
    */
-  public void nextQuestionSingle() throws FileNotFoundException {
+  public void nextQuestionSingle() {
     setText();
     resetTimer();
     jokerEl.setVisible(true);
@@ -322,9 +316,13 @@ public class MultipleChoiceCtrl {
   /**
    * Set the texts of the texts fields by question data.
    */
-  public void setText() throws FileNotFoundException {
-    setQuestion(server.getQuestion("1"));
+  public void setText() {
+    setQuestion(server.getQuestion(String.valueOf(questionNum + 1)));
     setMapButtons();
+    if (this.question instanceof QuestionMultipleChoice) {
+      this.questionImage3.setVisible(false);
+      this.questionImage1.setVisible(false);
+    }
     this.questionLabel.setText(question.getText());
     this.answer1.setText(mapButtons.get(1).getTitle());
     this.answer2.setText(mapButtons.get(2).getTitle());
@@ -346,6 +344,7 @@ public class MultipleChoiceCtrl {
 
   /**
    * Setter for the question.
+   *
    * @param q the question got from the server
    */
   public void setQuestion(Question q) {

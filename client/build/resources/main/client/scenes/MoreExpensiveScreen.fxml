@@ -18,7 +18,7 @@
             <children>
                 <FlowPane layoutX="161.0" layoutY="28.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="161.0" AnchorPane.rightAnchor="151.80000000000007">
                     <children>
-                        <Label fx:id="questionLabel" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="446.0" text="questionLabel" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                        <Label fx:id="questionLabel" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="550.0" text="questionLabel" textOverrun="WORD_ELLIPSIS" wrapText="true">
                             <font>
                                 <Font size="20.0" />
                             </font>
