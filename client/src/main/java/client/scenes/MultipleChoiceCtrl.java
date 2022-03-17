@@ -349,6 +349,7 @@ public class MultipleChoiceCtrl {
   public void setText() {
     setQuestion(server.getQuestion(String.valueOf(questionNum + 1)));
     setMapButtons();
+    //TODO: delete the line below (created for testing)
     this.questionImage3.setImage(new Image("client/images/flatFaceEmoji.png"));
     this.questionLabel.setText(question.getText());
     if (this.question.getText().equals("Which is more expensive?")) {
