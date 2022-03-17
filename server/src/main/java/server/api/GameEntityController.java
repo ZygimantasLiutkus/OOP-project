@@ -170,7 +170,7 @@ public class GameEntityController {
    */
   @PostMapping(path = "/addPlayer")
   public ResponseEntity<GameEntity> addPlayerToGame(@RequestBody Player player) {
-    final int questionAmount = 20; // TODO: change amount to 20
+    final int questionAmount = 2; // TODO: change amount to 20
     List<GameEntity> list = repo.findByStatus("WAITING");
     if (list.size() == 0) { // Create a new game
       GameEntity game = new GameEntity();
@@ -194,7 +194,6 @@ public class GameEntityController {
     // Save the player and add it to the game
     playerRepo.save(player);
     game.addPlayer(player);
-    repo.deleteById(game.getId());
     return ResponseEntity.ok(repo.save(game));
   }
 

@@ -15,14 +15,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Needs to change - import activities into question, dont hardcode info into it
  */
 @Entity(name = "question")
-public abstract class Question {
+public class Question {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Long id;
-  private String text;
+  public String text;
   @ManyToMany(cascade = CascadeType.PERSIST)
-  private List<Activity> activities = new ArrayList<>();
+  public List<Activity> activities = new ArrayList<>();
 
   /**
    * For object mappers.
@@ -45,7 +45,9 @@ public abstract class Question {
    *
    * @return a predefined question text.
    */
-  public abstract String getText();
+  public String getText(){
+    return text;
+  }
 
   /**
    * A getter for the question's id.

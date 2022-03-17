@@ -3,6 +3,13 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
+import commons.Question;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -11,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
@@ -26,8 +34,11 @@ public class MultipleChoiceCtrl {
   private final MainCtrl mainCtrl;
   private boolean singePl = true; //should be replaced
   private int startTime = 10;
-  private int questionNum = 19;
+  private int questionNum = 0;
   private double progress = 1;
+  public Question question;
+  public Random random = new Random();
+  public Map<Integer, Activity> mapButtons = new HashMap<>();
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
   @FXML
@@ -129,7 +140,7 @@ public class MultipleChoiceCtrl {
   /**
    * Starts the timer.
    */
-  public void timerStart() {
+  public void timerStart() throws FileNotFoundException {
     nextQuestionSingle();
     Timeline timeline = new Timeline();
     timeline.setCycleCount(1000);
@@ -199,13 +210,18 @@ public class MultipleChoiceCtrl {
     cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(3000), e -> {
     }));
     cooldown.play();
-    cooldown.setOnFinished(e -> cooldownAnswer());
+    cooldown.setOnFinished(e -> {
+      try {
+        cooldownAnswer();
+      } catch (FileNotFoundException ex) {
+      }
+    });
   }
 
   /**
    * Checks if the game type is single player and does the associated methods.
    */
-  public void cooldownAnswer() {
+  public void cooldownAnswer() throws FileNotFoundException {
     if (singePl) {
       if (questionNum < 20) {
         timerStart();
@@ -215,7 +231,7 @@ public class MultipleChoiceCtrl {
     } else {
       if (questionNum < 20) {
         timerStart();
-        //nextQuestionMultiple();
+        nextQuestionMultiple();
       } else {
         mainCtrl.showLeaderboard("multiplayer");
       }
@@ -225,7 +241,8 @@ public class MultipleChoiceCtrl {
   /**
    * Makes the client screen ready for the new question. FOR SINGLE PLAYER ONLY
    */
-  public void nextQuestionSingle() {
+  public void nextQuestionSingle() throws FileNotFoundException {
+    setText();
     resetTimer();
     jokerEl.setVisible(true);
     questionNum++;
@@ -300,5 +317,38 @@ public class MultipleChoiceCtrl {
   public int getTimeCounter() {
     String[] time = timeCounter.getText().split(" s");
     return Integer.parseInt(time[0]);
+  }
+
+  /**
+   * Set the texts of the texts fields by question data.
+   */
+  public void setText() throws FileNotFoundException {
+    setQuestion(server.getQuestion("1"));
+    setMapButtons();
+    this.questionLabel.setText(question.getText());
+    this.answer1.setText(mapButtons.get(1).getTitle());
+    this.answer2.setText(mapButtons.get(2).getTitle());
+    this.answer3.setText(mapButtons.get(3).getTitle());
+  }
+
+  /**
+   * Map a button with an activity to ease feedback process.
+   */
+  public void setMapButtons() {
+    for (int i = 0; i < 3; i++) {
+      // int index = random.nextInt(3);
+      // while(mapButtons.containsKey(index)){
+      // index = random.nextInt(3);
+      // }
+      mapButtons.put(i + 1, question.getActivities().get(i));
+    }
+  }
+
+  /**
+   * Setter for the question.
+   * @param q the question got from the server
+   */
+  public void setQuestion(Question q) {
+    this.question = q;
   }
 }
