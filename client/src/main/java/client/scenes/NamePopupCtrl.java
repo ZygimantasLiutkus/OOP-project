@@ -50,12 +50,12 @@ public class NamePopupCtrl {
       switch (nextScreen) {
         case SinglePlayerWaitingRoom:
           // TODO: Change to singleplayer waiting room
-          mainCtrl.showMultipleChoice();
+          mainCtrl.showMoreExpensive();
           break;
         case MultiPlayerWaitingRoom:
           // TODO: Add check if this name is valid to enter the multiplayer waiting room
           // TODO: Show multiplayer waiting room
-          mainCtrl.showMultipleChoice();
+          mainCtrl.showMoreExpensive();
           break;
         default:
           break;

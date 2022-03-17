@@ -43,7 +43,7 @@ public class ChooseScreenCtrl {
     if (server.getPlayer().getName().equals("")) {
       mainCtrl.showNamePopup(NextScreen.SinglePlayerWaitingRoom);
     } else {
-      mainCtrl.showMultipleChoice(); // TODO: Change to singleplayer waiting room
+      mainCtrl.showMoreExpensive(); // TODO: Change to singleplayer waiting room
     }
   }
 
@@ -61,7 +61,7 @@ public class ChooseScreenCtrl {
     if (server.getPlayer().getName().equals("")) {
       mainCtrl.showNamePopup(NextScreen.MultiPlayerWaitingRoom);
     } else {
-      mainCtrl.showMultipleChoice(); // TODO: Change to singleplayer waiting room
+      mainCtrl.showMoreExpensive(); // TODO: Change to singleplayer waiting room
     }
   }
 }
