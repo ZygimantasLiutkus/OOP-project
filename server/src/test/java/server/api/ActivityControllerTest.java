@@ -136,6 +136,31 @@ public class ActivityControllerTest {
   }
 
   /**
+   * Tests that failed because of negative consumption.
+   */
+  @Test
+  public void getAllActivitiesBadRequestCannotHaveNegativeConsumption() {
+    List<Activity> activityList = new ArrayList<>();
+    activityList.add(getActivity("s", -1));
+    activityList.add(getActivity("x", 2));
+    var actual = sut.addAll(activityList);
+    assertEquals(BAD_REQUEST, actual.getStatusCode());
+  }
+
+  /**
+   * Test that fails for no id.
+   */
+  @Test
+  public void getAllActivitiesBadRequestCannotHaveEmptyID() {
+    List<Activity> activityList = new ArrayList<>();
+    activityList.add(getActivity("", 1));
+    activityList.add(getActivity("x", 2));
+    var actual = sut.addAll(activityList);
+    assertEquals(BAD_REQUEST, actual.getStatusCode());
+  }
+
+
+  /**
    * Extends the implementation of the Random class.
    */
   @SuppressWarnings("serial")
