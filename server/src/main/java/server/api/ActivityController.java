@@ -78,7 +78,7 @@ public class ActivityController {
   /**
    * GET method that returns the image path of the activity with a specific ID.
    *
-   * @param id the ID of the game
+   * @param id the ID of the activity
    * @return a ResponseEntity of the requested image path.
    */
   @GetMapping(path = "/{id}/imagePath")
