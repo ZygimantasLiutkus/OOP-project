@@ -1,9 +1,13 @@
 package server.api;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import commons.Activity;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -99,6 +103,36 @@ public class ActivityControllerTest {
     var actual = sut.getRandom();
 
     assertTrue(random.wasCalled);
+  }
+
+  /**
+   * Passing tests getAll activities method.
+   */
+  @Test
+  public void getAllActivitiesPass() {
+    List<Activity> activityList = new ArrayList<>();
+    activityList.add(getActivity("a", 1));
+    activityList.add(getActivity("s", 2));
+    var actual = sut.addAll(activityList);
+    assertEquals(1, actual.getBody().get(0).getConsumption_in_wh());
+    assertEquals(2, actual.getBody().get(1).getConsumption_in_wh());
+    assertEquals("s", actual.getBody().get(1).getTitle());
+    assertEquals(2, actual.getBody().size());
+  }
+
+  /**
+   * Failing tests getALl activities method.
+   */
+  @Test
+  public void getAllActivitiesFail() {
+    List<Activity> activityList = new ArrayList<>();
+    activityList.add(getActivity("s", 1));
+    activityList.add(getActivity("x", 2));
+    var actual = sut.addAll(activityList);
+
+    assertNotEquals(0, actual.getBody().size());
+    assertNotEquals(getActivity("s", 1), actual.getBody().get(1));
+    assertNotEquals(2, actual.getBody().get(0).getConsumption_in_wh());
   }
 
   /**
