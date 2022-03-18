@@ -23,12 +23,12 @@ next agendas.
 
 # Points of action
 
-##Progress check:
+## Progress check:
 
 - How close are we to achieving the minimum expectation from the course?
 - Does anyone have any remaining issues from previous sprints?
 
-##Planning
+## Planning
 
 - Currently, there are 19 solved issues
 - There are still 6 "MUST HAVE" issues from previous weeks
@@ -56,4 +56,48 @@ he/she should bring that up now so that it can be discussed after all.*
 # Closing
 
 - Don't forget about this week's deadlines to submit the issues
-*Now you can start working on the project. Good luck!*
+  *Now you can start working on the project. Good luck!*
+
+# Notes
+
+### Progress Check
+
+* 3 issues remaining from sprint 3; one just needs to be merged, one almost done (only testing remains) and one
+  depending on the one that just needs to be tested.
+* 12 must haves remaining.
+
+### Planning
+
+* Stick to 1 merge request before Sunday, merge into main if everyone has finished at least 1 issue.
+* Don’t try to cover up someone else’s unfinished issue, that’s their problem.
+* Make sure to estimate times of issues.
+* Don’t worry too much about the amount of issues left.
+
+### Deadlines
+
+* Sprint 4
+
+### Tips
+
+* Communicate more about ideas (idea input not evenly distributed).
+* Be a bit more involved in the process of planning.
+* Stick more to the deadlines of the sprints.
+* Do merge requests faster.
+* Keep up the standards of distributing work.
+* Rotate who creates the sprint and add issues to it, mark merge request as draft when you have to fix something, so
+  it’s clear if it can be approved or not.
+
+### Tops
+
+* Good progress on the work load.
+* Better communication in last 1-2 weeks.
+* Handled the Friday meeting’s issue well.
+* Better communication than at the start.
+* Better distribution after Friday (actually dividing the work instead of just taking issues personally).
+* Handled Friday’s situation well, did more in the previous couple days, more organized issue list.
+
+### Other
+
+* We can decide on our own implementation for storing the images.
+* For the presentation: Most likely we have to make a video explaining all features, and then further explain the video
+  during the presentation. We will also get an official announcement about this later.
