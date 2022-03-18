@@ -3,6 +3,10 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
+import commons.Question;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -11,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
@@ -26,8 +31,11 @@ public class MultipleChoiceCtrl {
   private final MainCtrl mainCtrl;
   private boolean singePl = true; //should be replaced
   private int startTime = 10;
-  private int questionNum = 19;
+  private int questionNum = 0;
   private double progress = 1;
+  public Question question;
+  public Random random = new Random();
+  public Map<Integer, Activity> mapButtons;
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
   @FXML
@@ -174,32 +182,62 @@ public class MultipleChoiceCtrl {
     answer2.setDisable(true);
     answer3.setDisable(true);
 
-
     jokerEl.setVisible(false);
 
-
-    if (!answer1.getText().equals(test.getTitle())) {
-      answer1.setStyle("-fx-background-color: E50C0C");
+    if (question.getText().equals("How big is the consumption per hour for this activity?")) {
+      computeAnswerChoice();
+    }
+    if (question.getText().equals("Which is more expensive?")) {
+      computeAnswerExpensive();
     }
 
-    if (!answer2.getText().equals(test.getTitle())) {
-      answer2.setStyle("-fx-background-color: E50C0C");
-    }
-
-    if (!answer3.getText().equals(test.getTitle())) {
-      answer3.setStyle("-fx-background-color: E50C0C");
-    }
-    if (!server.noAnswer()) {
-      addPoints.setText("+0");
-      addPoints.setVisible(true);
-    }
-
+    addPoints.setText("+0");
+    addPoints.setVisible(true);
 
     Timeline cooldown = new Timeline();
     cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(3000), e -> {
     }));
     cooldown.play();
-    cooldown.setOnFinished(e -> cooldownAnswer());
+    cooldown.setOnFinished(e -> {
+      cooldownAnswer();
+    });
+  }
+
+  /**
+   * Changes buttons' colour according to the computed answer.
+   */
+  public void computeAnswerChoice() {
+    int answer = question.getActivities().get(0).getConsumption_in_wh();
+    if (mapButtons.get(1).getConsumption_in_wh() != answer) {
+      answer1.setStyle("-fx-background-color: E50C0C");
+    }
+    if (mapButtons.get(2).getConsumption_in_wh() != answer) {
+      answer2.setStyle("-fx-background-color: E50C0C");
+    }
+    if (mapButtons.get(3).getConsumption_in_wh() != answer) {
+      answer3.setStyle("-fx-background-color: E50C0C");
+    }
+  }
+
+  /**
+   * Changes buttons' colour according to the computed answer.
+   */
+  public void computeAnswerExpensive() {
+    int max = 0;
+    for (int i = 0; i < 3; i++) {
+      if (question.getActivities().get(i).getConsumption_in_wh() >= max) {
+        max = question.getActivities().get(i).getConsumption_in_wh();
+      }
+    }
+    if (mapButtons.get(1).getConsumption_in_wh() != max) {
+      answer1.setStyle("-fx-background-color: E50C0C");
+    }
+    if (mapButtons.get(2).getConsumption_in_wh() != max) {
+      answer2.setStyle("-fx-background-color: E50C0C");
+    }
+    if (mapButtons.get(3).getConsumption_in_wh() != max) {
+      answer3.setStyle("-fx-background-color: E50C0C");
+    }
   }
 
   /**
@@ -215,7 +253,7 @@ public class MultipleChoiceCtrl {
     } else {
       if (questionNum < 20) {
         timerStart();
-        //nextQuestionMultiple();
+        nextQuestionMultiple();
       } else {
         mainCtrl.showLeaderboard("multiplayer");
       }
@@ -226,6 +264,7 @@ public class MultipleChoiceCtrl {
    * Makes the client screen ready for the new question. FOR SINGLE PLAYER ONLY
    */
   public void nextQuestionSingle() {
+    setText();
     resetTimer();
     jokerEl.setVisible(true);
     questionNum++;
@@ -300,5 +339,90 @@ public class MultipleChoiceCtrl {
   public int getTimeCounter() {
     String[] time = timeCounter.getText().split(" s");
     return Integer.parseInt(time[0]);
+  }
+
+  /**
+   * Set the texts of the texts fields by question data.
+   */
+  public void setText() {
+    setQuestion(server.getQuestion(String.valueOf(questionNum + 1)));
+    setMapButtons();
+    //TODO: delete the line below (created for testing)
+    this.questionImage3.setImage(new Image("client/images/flatFaceEmoji.png"));
+    if (this.question.getText().equals("Which is more expensive?")) {
+      prepareMoreExpensive();
+    } else if (this.question.getText()
+        .equals("How big is the consumption per hour for this activity?")) {
+      prepareMultipleChoice();
+    }
+  }
+
+  /**
+   * Prepare the screen for a more expensive question.
+   */
+  public void prepareMoreExpensive() {
+    this.questionLabel.setText(question.getText());
+    this.answer1.setText(mapButtons.get(1).getTitle());
+    try {
+      this.questionImage1.setImage((new Image(mapButtons.get(1).getImage_path())));
+    } catch (IllegalArgumentException e) {
+      this.questionImage1.setImage(new Image("client/images/defaultImage.png"));
+    }
+    try {
+      this.questionImage2.setImage((new Image(mapButtons.get(2).getImage_path())));
+    } catch (IllegalArgumentException e) {
+      this.questionImage2.setImage(new Image("client/images/flatFaceEmoji.png"));
+    }
+    try {
+      this.questionImage3.setImage((new Image(mapButtons.get(3).getImage_path())));
+    } catch (IllegalArgumentException e) {
+      this.questionImage3.setImage(new Image("client/images/defaultImage.png"));
+    }
+    this.answer2.setText(mapButtons.get(2).getTitle());
+    this.answer3.setText(mapButtons.get(3).getTitle());
+    this.questionImage1.setVisible(true);
+    this.questionImage2.setVisible(true);
+    this.questionImage3.setVisible(true);
+  }
+
+  /**
+   * Prepare screen for a multiple choice question.
+   */
+  public void prepareMultipleChoice() {
+    this.questionLabel.setText(
+        question.getText() + "\n" + question.getActivities().get(0).getTitle());
+    this.answer1.setText(String.valueOf(mapButtons.get(1).getConsumption_in_wh()) + " wh");
+    this.answer2.setText(String.valueOf(mapButtons.get(2).getConsumption_in_wh()) + " wh");
+    this.answer3.setText(String.valueOf(mapButtons.get(3).getConsumption_in_wh()) + " wh");
+    try {
+      this.questionImage2.setImage((new Image(mapButtons.get(1).getImage_path())));
+    } catch (IllegalArgumentException e) {
+      this.questionImage2.setImage(new Image("client/images/defaultImage.png"));
+    }
+    this.questionImage1.setVisible(false);
+    this.questionImage3.setVisible(false);
+  }
+
+  /**
+   * Map a button with an activity to ease feedback process.
+   */
+  public void setMapButtons() {
+    mapButtons = new HashMap<>();
+    for (int i = 0; i < 3; i++) {
+      int index = random.nextInt(4);
+      while (mapButtons.containsKey(index) || index == 0) {
+        index = random.nextInt(4);
+      }
+      mapButtons.put(index, question.getActivities().get(i));
+    }
+  }
+
+  /**
+   * Setter for the question.
+   *
+   * @param q the question got from the server
+   */
+  public void setQuestion(Question q) {
+    this.question = q;
   }
 }

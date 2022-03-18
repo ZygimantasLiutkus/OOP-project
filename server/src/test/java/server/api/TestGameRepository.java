@@ -120,8 +120,15 @@ public class TestGameRepository implements GameEntityRepository {
   @Override
   public <S extends GameEntity> S save(S entity) {
     call("save");
-    entity.id = (long) games.size();
-    games.add(entity);
+    if (entity.id == null) {
+      entity.id = (long) games.size();
+    }
+    if (games.contains(entity)) {
+      games.remove(entity);
+      games.add(entity);
+    } else {
+      games.add(entity);
+    }
     return entity;
   }
 

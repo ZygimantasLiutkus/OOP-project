@@ -35,5 +35,6 @@ public class QuestionMultipleChoice extends Question {
   public String getText() {
     return "How big is the consumption per hour for this activity?";
   }
+
 }
 

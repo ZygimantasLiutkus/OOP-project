@@ -176,6 +176,7 @@ public class GameEntityControllerTest {
     //game is being returned.
     assertTrue(sut.getGameByStatus("WAITING").getBody().size() == 1);
     assertEquals(game, sut.getGameByStatus("WAITING").getBody().get(0));
+    assertEquals(game.getPlayers().get(0).getName(), "Alice");
   }
 
   /**
