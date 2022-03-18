@@ -158,6 +158,16 @@ public class GameEntityControllerTest {
   }
 
   /**
+   * Test for getting all the players of a non-existent game.
+   */
+  @Test
+  public void testGetAllPlayersBadId() {
+    sut.addPlayerToGame(getPlayer("Alice"));
+    GameEntity game = sut.addPlayerToGame(getPlayer("Bob")).getBody();
+    assertEquals(BAD_REQUEST, sut.getAllPlayers(game.getId() + 1).getStatusCode());
+  }
+
+  /**
    * Test for getting a list of games with a specified status.
    */
   @Test
@@ -203,6 +213,9 @@ public class GameEntityControllerTest {
     newStatus.setStatus("STARTED");
     game.setStatus("FINISHED");
     assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId(), newStatus).getStatusCode());
+    game.setStatus("STARTED");
+    newStatus.setStatus("WAITING");
+    assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId(), newStatus).getStatusCode());
   }
 
   /**
@@ -216,5 +229,20 @@ public class GameEntityControllerTest {
     GameEntity newStatus = new GameEntity();
     newStatus.setStatus("STARTED");
     assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId() + 1, newStatus).getStatusCode());
+  }
+
+  /**
+   * Test for getting all the games in repository.
+   */
+  @Test
+  public void testGetAllGames() {
+    GameEntity game1 = sut.addPlayerToGame(getPlayer("Alice")).getBody();
+    assertTrue(sut.getAllGames().getBody().size() == 1);
+    assertEquals(sut.getAllGames().getBody().get(0), game1);
+    game1.setStatus("STARTED");
+    GameEntity game2 = sut.addPlayerToGame(getPlayer("Bob")).getBody();
+    assertTrue(sut.getAllGames().getBody().size() == 2);
+    assertEquals(sut.getAllGames().getBody().get(0), game1);
+    assertEquals(sut.getAllGames().getBody().get(1), game2);
   }
 }
