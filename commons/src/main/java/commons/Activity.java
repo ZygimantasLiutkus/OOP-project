@@ -30,10 +30,10 @@ public class Activity {
   /**
    * The constructor for the class.
    *
-   * @param id          the activity id
-   * @param title       the title
+   * @param id                the activity id
+   * @param title             the title
    * @param consumption_in_wh activity's consumption in watt
-   * @param path        the file path to the photo
+   * @param path              the file path to the photo
    */
   public Activity(String id, String title, int consumption_in_wh, String path) {
     this.id = id;
