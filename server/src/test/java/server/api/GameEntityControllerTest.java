@@ -210,13 +210,13 @@ public class GameEntityControllerTest {
     GameEntity game = sut.addPlayerToGame(alice).getBody();
     assertEquals("WAITING", game.getStatus());
     GameEntity newStatus = new GameEntity();
-    //finished -> started
-    newStatus.setStatus("STARTED");
-    game.setStatus("FINISHED");
-    assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId(), newStatus).getStatusCode());
     //started -> waiting
     game.setStatus("STARTED");
     newStatus.setStatus("WAITING");
+    assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId(), newStatus).getStatusCode());
+    //finished -> started
+    newStatus.setStatus("STARTED");
+    game.setStatus("FINISHED");
     assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId(), newStatus).getStatusCode());
     //finished -> waiting
     game.setStatus("FINISHED");
