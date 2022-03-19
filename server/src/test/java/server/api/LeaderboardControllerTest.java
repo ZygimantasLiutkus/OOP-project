@@ -63,4 +63,34 @@ public class LeaderboardControllerTest {
     assertTrue(repo.calledMethods.contains("save"));
   }
 
+  /**
+   * Tests whether the findAll method is used when calling getAll.
+   */
+  @Test
+  public void findAllIsUsed() {
+    sut.add(getEntry("Bob", 0));
+    sut.getAll();
+    assertTrue(repo.calledMethods.contains("findAll"));
+  }
+
+  /**
+   * Tests whether the correct name is created when adding a second entry with the same name.
+   */
+  @Test
+  public void testNameTwice() {
+    sut.add(getEntry("name1", 100));
+    LeaderboardEntry e = sut.add(getEntry("name1", 200)).getBody();
+    assertEquals(e.getName(), "name1#1");
+  }
+
+  /**
+   * Tests whether the correct name is created when adding a third entry with the same name.
+   */
+  @Test
+  public void testNameTrice() {
+    sut.add(getEntry("name1", 100));
+    sut.add(getEntry("name1", 200));
+    LeaderboardEntry e = sut.add(getEntry("name1", 300)).getBody();
+    assertEquals(e.getName(), "name1#2");
+  }
 }
