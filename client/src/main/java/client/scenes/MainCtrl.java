@@ -17,6 +17,7 @@
 package client.scenes;
 
 import client.utils.NextScreen;
+import commons.LeaderboardEntry;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -166,25 +167,23 @@ public class MainCtrl {
   }
 
   /**
-   * Shows the leaderboard screen.
+   * Shows the global leaderboard with the entry of the current player.
    *
-   * @param type the type of leaderboard (global / multiplayer).
+   * @param entry the leaderboardEntry of the current player
    */
-  public void showLeaderboard(String type) {
-    switch (type) {
-      case "global":
-        primaryStage.setTitle("Quizzzz Leaderboard");
-        leaderboardScreenCtrl.setSingleplayer();
-        primaryStage.setScene(leaderboard);
-        leaderboardScreenCtrl.refreshTop10();
-        break;
-      case "multiplayer":
-        primaryStage.setTitle("Match Leaderboard");
-        leaderboardScreenCtrl.setMultiplayer();
-        primaryStage.setScene(leaderboard);
-        break;
-      default:
-        break;
-    }
+  public void showSPLeaderboard(LeaderboardEntry entry) {
+    primaryStage.setTitle("Quizzzz Leaderboard");
+    leaderboardScreenCtrl.setSingleplayer(entry);
+    primaryStage.setScene(leaderboard);
+    leaderboardScreenCtrl.refreshTop10();
+  }
+
+  /**
+   * Shows the leaderboard screen as multiplayer leaderboard.
+   */
+  public void showMPLeaderboard() {
+    primaryStage.setTitle("Match Leaderboard");
+    leaderboardScreenCtrl.setMultiplayer();
+    primaryStage.setScene(leaderboard);
   }
 }

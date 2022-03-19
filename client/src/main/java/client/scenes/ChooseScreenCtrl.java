@@ -51,7 +51,7 @@ public class ChooseScreenCtrl {
    * Shows the global (singleplayer) leaderboard of current server.
    */
   public void leaderboard() {
-    mainCtrl.showLeaderboard("global");
+    mainCtrl.showSPLeaderboard(null);
   }
 
   /**

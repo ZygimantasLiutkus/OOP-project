@@ -3,7 +3,11 @@ package server.api;
 import commons.LeaderboardEntry;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import server.database.LeaderboardRepository;
 
 
@@ -46,14 +50,23 @@ public class LeaderboardController {
     if (entry.getName() == null || entry.getScore() < 0) {
       return ResponseEntity.badRequest().build();
     }
+    int count = 0;
     for (LeaderboardEntry e : repo.findAll()) {
-      if (e.getName().equals(entry.getName())) {
-        return ResponseEntity.badRequest().build();
+      // Checks if this name is already in the database
+      String name = e.getName();
+      int index = name.lastIndexOf("#");
+      if (index > 0) {
+        name = e.getName().substring(0, index);
       }
+      if (name.equals(entry.getName())) {
+        count++;
+      }
+    }
+    if (count > 0) {
+      // Adds #times after the name with 'times' being the amount of times this username is used
+      entry.setName(entry.getName() + "#" + (count));
     }
     LeaderboardEntry saved = repo.save(entry);
     return ResponseEntity.ok(saved);
   }
-
-
 }
