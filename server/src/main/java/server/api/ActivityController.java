@@ -29,6 +29,16 @@ public class ActivityController {
   }
 
   /**
+   * Returns if the supplied string is null or empty.
+   *
+   * @param s the string to check
+   * @return true iff the string is null or empty
+   */
+  private static boolean isNullOrEmpty(String s) {
+    return s == null || s.isEmpty();
+  }
+
+  /**
    * GET request to retrieve all activities.
    *
    * @return a list of activities
@@ -66,13 +76,17 @@ public class ActivityController {
   }
 
   /**
-   * Returns if the supplied string is null or empty.
+   * GET method that returns the image path of the activity with a specific ID.
    *
-   * @param s the string to check
-   * @return true iff the string is null or empty
+   * @param id the ID of the activity
+   * @return a ResponseEntity of the requested image path.
    */
-  private static boolean isNullOrEmpty(String s) {
-    return s == null || s.isEmpty();
+  @GetMapping(path = "/{id}/imagePath")
+  public ResponseEntity<String> getImagePathById(@PathVariable("id") String id) {
+    if (repo.existsById(id)) {
+      return ResponseEntity.ok(repo.getById(id).getImage_path());
+    } else {
+      return ResponseEntity.badRequest().build();
+    }
   }
-
 }

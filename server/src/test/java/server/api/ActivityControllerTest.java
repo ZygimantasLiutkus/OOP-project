@@ -1,6 +1,7 @@
 package server.api;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import commons.Activity;
@@ -99,6 +100,28 @@ public class ActivityControllerTest {
     var actual = sut.getRandom();
 
     assertTrue(random.wasCalled);
+  }
+
+  /**
+   * Test if getImagePathById() retrieves the correct image path.
+   */
+  @Test
+  public void testGetImagePathById() {
+    repo.deleteAll();
+    Activity testActivity = new Activity("09-shower", "Taking a hot shower for 6 minutes",
+        4000, "00/shower.png");
+    repo.save(testActivity);
+    String imagePath = sut.getImagePathById(testActivity.getId()).getBody();
+    assertEquals("00/shower.png", imagePath);
+  }
+
+  /**
+   * Test if getImagePathById() returns an error for an id that doesn't exist.
+   */
+  @Test
+  public void testGetImagePathByIDNonexistent() {
+    repo.deleteAll();
+    assertEquals(BAD_REQUEST, sut.getImagePathById("0").getStatusCode());
   }
 
   /**
