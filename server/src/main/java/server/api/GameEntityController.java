@@ -1,23 +1,13 @@
 package server.api;
 
-import commons.Activity;
-import commons.Answer;
-import commons.GameEntity;
-import commons.Player;
-import commons.Question;
-import commons.QuestionMoreExpensive;
+import commons.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.database.GameEntityRepository;
 import server.database.PlayerRepository;
 import server.database.QuestionRepository;
@@ -171,13 +161,16 @@ public class GameEntityController {
   @PostMapping(path = "/addPlayer")
   public ResponseEntity<GameEntity> addPlayerToGame(@RequestBody Player player) {
     final int questionAmount = 4; // TODO: change amount to 20
-    List<GameEntity> list = repo.findByStatus("WAITING");
+    List<GameEntity> status = repo.findByStatus("WAITING");
+    List<GameEntity> type = repo.findByType(GameEntity.Type.MULTIPLAYER);
+    List<GameEntity> list = status.stream().filter(type::contains).collect(Collectors.toList());
     if (list.size() == 0) { // Create a new game
       GameEntity game = new GameEntity();
       List<Question> questions = service.generateQuestion(questionAmount);
       if (questions.size() != questionAmount) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
       }
+      game.setType(GameEntity.Type.MULTIPLAYER);
       game.setQuestions(questions);
       playerRepo.save(player);
       game.addPlayer(player);
@@ -319,6 +312,7 @@ public class GameEntityController {
     GameEntity game = repo.save(new GameEntity());
     //TODO: change amount to 20
     List<Question> questions = qRepo.saveAll(service.generateQuestion(3));
+    game.setType(GameEntity.Type.SINGLEPLAYER);
     game.getQuestions().addAll(questions);
     game.addPlayer(player);
     return ResponseEntity.ok(repo.save(game));

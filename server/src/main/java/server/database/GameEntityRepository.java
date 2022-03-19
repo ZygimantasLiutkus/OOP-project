@@ -17,4 +17,12 @@ public interface GameEntityRepository extends JpaRepository<GameEntity, Long> {
    * @return the list of all games that are found
    */
   public List<GameEntity> findByStatus(String status);
+
+  /**
+   * Method to filter the games by type.
+   *
+   * @param type the type we want to filter
+   * @return the list of all games that are found
+   */
+  public List<GameEntity> findByType(GameEntity.Type type);
 }

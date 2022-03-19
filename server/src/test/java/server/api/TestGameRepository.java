@@ -301,4 +301,15 @@ public class TestGameRepository implements GameEntityRepository {
   public List<GameEntity> findByStatus(String status) {
     return games.stream().filter(x -> x.getStatus().equals(status)).collect(Collectors.toList());
   }
+
+  /**
+   * Method to filter games by type.
+   *
+   * @param type the type we want to filter by
+   * @return the list of found games
+   */
+  @Override
+  public List<GameEntity> findByType(GameEntity.Type type) {
+    return games.stream().filter(x -> x.getType().equals(type)).collect(Collectors.toList());
+  }
 }
