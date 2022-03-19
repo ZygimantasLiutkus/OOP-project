@@ -1,6 +1,6 @@
 package commons;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,4 +19,43 @@ public class LeaderboardTest {
     assertEquals(e.getName(), "Bob");
   }
 
+  /**
+   * Tests whether the id works properly.
+   */
+  @Test
+  public void testID() {
+    LeaderboardEntry e = new LeaderboardEntry("Bob", 44);
+    e.setId((long) 1);
+    assertEquals(e.getId(), 1);
+  }
+
+  /**
+   * Tests whether the name works properly.
+   */
+  @Test
+  public void testName() {
+    LeaderboardEntry e = new LeaderboardEntry("Bob", 44);
+    e.setName("Bobbie");
+    assertEquals(e.getName(), "Bobbie");
+  }
+
+  /**
+   * Tests whether the ranking works properly.
+   */
+  @Test
+  public void testRanking() {
+    LeaderboardEntry e = new LeaderboardEntry("Bob", 44);
+    e.setRanking(5);
+    assertEquals(e.getRanking(), 5);
+  }
+
+  /**
+   * Tests whether the equals works properly.
+   */
+  @Test
+  public void testEquals() {
+    LeaderboardEntry e1 = new LeaderboardEntry("Bob", 44);
+    LeaderboardEntry e2 = new LeaderboardEntry("Bob", 44);
+    assertEquals(e1, e2);
+  }
 }

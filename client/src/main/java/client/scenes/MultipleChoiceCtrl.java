@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
+import commons.LeaderboardEntry;
 import commons.Question;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,13 +30,13 @@ public class MultipleChoiceCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
+  public Question question;
+  public Random random = new Random();
+  public Map<Integer, Activity> mapButtons;
   private boolean singePl = true; //should be replaced
   private int startTime = 10;
   private int questionNum = 0;
   private double progress = 1;
-  public Question question;
-  public Random random = new Random();
-  public Map<Integer, Activity> mapButtons;
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
   @FXML
@@ -248,14 +249,18 @@ public class MultipleChoiceCtrl {
       if (questionNum < 20) {
         timerStart();
       } else {
-        mainCtrl.showLeaderboard("global");
+        String name = server.getPlayer().getName();
+        int points = server.getPlayer().getScore();
+        LeaderboardEntry entry = new LeaderboardEntry(name, points);
+        entry = server.addLeaderboardEntry(entry);
+        mainCtrl.showSPLeaderboard(entry);
       }
     } else {
       if (questionNum < 20) {
         timerStart();
         nextQuestionMultiple();
       } else {
-        mainCtrl.showLeaderboard("multiplayer");
+        mainCtrl.showMPLeaderboard();
       }
     }
   }
