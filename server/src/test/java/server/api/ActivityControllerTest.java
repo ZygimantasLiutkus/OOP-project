@@ -159,6 +159,16 @@ public class ActivityControllerTest {
     assertEquals(BAD_REQUEST, actual.getStatusCode());
   }
 
+  /**
+   * Tests for adding an empty list.
+   */
+  @Test
+  public void addAllEmptyList() {
+    List<Activity> activityList = new ArrayList<>();
+    var actual = sut.addAll(activityList);
+    assertEquals(BAD_REQUEST, actual.getStatusCode());
+  }
+
 
   /**
    * Extends the implementation of the Random class.
