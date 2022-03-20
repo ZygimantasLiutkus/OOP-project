@@ -16,9 +16,9 @@ class AnswerTest {
   @Test
   void getFeedback() {
     Player player = new Player("test");
-    Answer ans = new Answer("OK", player, 1, 2);
+    Answer ans = new Answer("CORRECT", player, 1, 2);
 
-    assertEquals("OK", ans.getFeedback());
+    assertEquals("CORRECT", ans.getFeedback());
   }
 
   /**
@@ -27,9 +27,9 @@ class AnswerTest {
   @Test
   void getFeedBackFail() {
     Player player = new Player("test");
-    Answer ans = new Answer("OK", player, 1, 2);
+    Answer ans = new Answer("INCORRECT", player, 1, 2);
 
-    assertNotEquals("400 ERROR", ans.getFeedback());
+    assertNotEquals("CORRECT", ans.getFeedback());
   }
 
   /**
