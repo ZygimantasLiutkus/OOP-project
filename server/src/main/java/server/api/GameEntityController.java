@@ -69,7 +69,7 @@ public class GameEntityController {
    */
   @GetMapping(path = "/{id}")
   public ResponseEntity<GameEntity> getGameById(@PathVariable("id") long id) {
-    for (long i = 1; i < repo.findAll().size(); i++) {
+    for (long i = 1; i <= repo.findAll().size(); i++) {
       if (i == id) {
         return ResponseEntity.ok(repo.getById(id));
       }
