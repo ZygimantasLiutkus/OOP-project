@@ -5,11 +5,7 @@ import commons.Activity;
 import java.util.List;
 import java.util.Random;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.database.ActivityRepository;
 
 /**
@@ -98,6 +94,21 @@ public class ActivityController {
   public ResponseEntity<Activity> getRandom() {
     var idx = random.nextInt((int) repo.count());
     return ResponseEntity.ok(repo.findAll().get(idx));
+  }
+
+  /**
+   * GET method that returns the image path of the activity with a specific ID.
+   *
+   * @param id the ID of the activity
+   * @return a ResponseEntity of the requested image path.
+   */
+  @GetMapping(path = "/{id}/imagePath")
+  public ResponseEntity<String> getImagePathById(@PathVariable("id") String id) {
+    if (repo.existsById(id)) {
+      return ResponseEntity.ok(repo.getById(id).getImage_path());
+    } else {
+      return ResponseEntity.badRequest().build();
+    }
   }
 
 }
