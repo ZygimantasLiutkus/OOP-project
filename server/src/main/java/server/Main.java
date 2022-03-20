@@ -16,9 +16,19 @@
 
 package server;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import commons.Activity;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Bean;
+import server.services.ActivityService;
 
 /**
  * The main class of the server application.
@@ -34,5 +44,32 @@ public class Main {
    */
   public static void main(String[] args) {
     SpringApplication.run(Main.class, args);
+  }
+
+  /**
+   * Imports activities from json file.
+   *
+   * @param activityService service for adding activities.
+   * @return returns the added activities.
+   */
+  @Bean
+  CommandLineRunner runner(ActivityService activityService) {
+    return args -> {
+      ObjectMapper mapper = new ObjectMapper();
+      mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+      TypeReference<List<Activity>> typeReference = new TypeReference<List<Activity>>() {
+      };
+
+      InputStream inputStream =
+          Activity.class.getClassLoader()
+              .getResourceAsStream("activitiesEdited.json");
+      try {
+        List<Activity> activityList = mapper.readValue(inputStream, typeReference);
+        activityService.save(activityList);
+        System.out.println("Activities added");
+      } catch (IOException e) {
+        System.out.println("Unable to save activities" + e.getMessage());
+      }
+    };
   }
 }

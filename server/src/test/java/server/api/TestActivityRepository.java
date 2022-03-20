@@ -125,7 +125,11 @@ public class TestActivityRepository implements ActivityRepository {
    */
   @Override
   public <S extends Activity> List<S> saveAll(Iterable<S> entities) {
-    return null;
+    List<S> list = new ArrayList<S>();
+    for (S a : entities) {
+      list.add(a);
+    }
+    return list;
   }
 
   /**

@@ -1,5 +1,6 @@
 package server.api;
 
+
 import commons.Activity;
 import java.util.List;
 import java.util.Random;
@@ -61,6 +62,26 @@ public class ActivityController {
       return ResponseEntity.badRequest().build();
     }
     return ResponseEntity.ok(repo.save(activity));
+  }
+
+  /**
+   * POST request to add a list of activities.
+   *
+   * @param activities a list of activities.
+   * @return the list of activities.
+   */
+  @PostMapping(path = {"/import"})
+  public ResponseEntity<List<Activity>> addAll(@RequestBody List<Activity> activities) {
+    for (Activity a : activities) {
+      if (isNullOrEmpty(a.getId()) || a.getConsumption_in_wh() <= 0
+          || isNullOrEmpty(a.getTitle()) || isNullOrEmpty(a.getImage_path())) {
+        return ResponseEntity.badRequest().build();
+      }
+      if (a.getConsumption_in_wh() == (int) a.getConsumption_in_wh()) {
+        return ResponseEntity.ok(repo.saveAll(activities));
+      }
+    }
+    return ResponseEntity.badRequest().build();
   }
 
   /**
