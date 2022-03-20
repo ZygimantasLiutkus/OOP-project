@@ -44,7 +44,7 @@ he/she should bring that up now so that it can be discussed after all.*
 
 - Is it bad to have high cyclomatic complexity?
 
-#Tips / tops round
+# Tips / tops round
 
 *Here everyone gives a tip and a top to another group member or the group as a whole.*
 
