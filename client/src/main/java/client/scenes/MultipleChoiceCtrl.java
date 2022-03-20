@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
+import commons.LeaderboardEntry;
 import commons.Question;
 import java.util.HashMap;
 import java.util.Map;
@@ -250,14 +251,18 @@ public class MultipleChoiceCtrl {
       if (questionNum < 20) {
         timerStart();
       } else {
-        mainCtrl.showLeaderboard("global");
+        String name = server.getPlayer().getName();
+        int points = server.getPlayer().getScore();
+        LeaderboardEntry entry = new LeaderboardEntry(name, points);
+        entry = server.addLeaderboardEntry(entry);
+        mainCtrl.showSPLeaderboard(entry);
       }
     } else {
       if (questionNum < 20) {
         timerStart();
         nextQuestionMultiple();
       } else {
-        mainCtrl.showLeaderboard("multiplayer");
+        mainCtrl.showMPLeaderboard();
       }
     }
   }

@@ -110,5 +110,4 @@ public class ActivityController {
       return ResponseEntity.badRequest().build();
     }
   }
-
 }

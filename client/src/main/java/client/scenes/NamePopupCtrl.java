@@ -48,9 +48,8 @@ public class NamePopupCtrl {
     if (!nameField.getText().equals("")) {
       server.setPlayer(new Player(nameField.getText()));
       switch (nextScreen) {
-        case SinglePlayerWaitingRoom:
-          // TODO: Change to singleplayer waiting room
-          mainCtrl.showMoreExpensive();
+        case WaitingRoomScreen:
+          mainCtrl.showWaitingRoomScreenSP();
           break;
         case MultiPlayerWaitingRoom:
           // TODO: Add check if this name is valid to enter the multiplayer waiting room
