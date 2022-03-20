@@ -170,7 +170,7 @@ public class GameEntityController {
    */
   @PostMapping(path = "/addPlayer")
   public ResponseEntity<GameEntity> addPlayerToGame(@RequestBody Player player) {
-    final int questionAmount = 4; // TODO: change amount to 20
+    final int questionAmount = 20;
     List<GameEntity> list = repo.findByStatus("WAITING");
     if (list.size() == 0) { // Create a new game
       GameEntity game = new GameEntity();
