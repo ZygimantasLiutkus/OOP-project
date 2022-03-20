@@ -41,9 +41,9 @@ public class ChooseScreenCtrl {
    */
   public void playSinglePlayer() {
     if (server.getPlayer().getName().equals("")) {
-      mainCtrl.showNamePopup(NextScreen.SinglePlayerWaitingRoom);
+      mainCtrl.showNamePopup(NextScreen.WaitingRoomScreen);
     } else {
-      mainCtrl.showMoreExpensive(); // TODO: Change to singleplayer waiting room
+      mainCtrl.showWaitingRoomScreenSP();
     }
   }
 
