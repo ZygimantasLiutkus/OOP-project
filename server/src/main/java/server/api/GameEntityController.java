@@ -71,8 +71,9 @@ public class GameEntityController {
   public ResponseEntity<GameEntity> getGameById(@PathVariable("id") long id) {
     if (repo.existsById(id)) {
       return ResponseEntity.ok(repo.getById(id));
+    } else {
+      return ResponseEntity.badRequest().build();
     }
-    return ResponseEntity.badRequest().build();
   }
 
   /**
