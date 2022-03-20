@@ -37,6 +37,7 @@ public class MultipleChoiceCtrl {
   private int startTime = 10;
   private int questionNum = 0;
   private double progress = 1;
+  private Timeline timeline, timeCount;
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
   @FXML
@@ -106,6 +107,7 @@ public class MultipleChoiceCtrl {
   public void setSelectedAnswer1() {
     String answer = answer1.getText();
     server.getPlayer().setSelectedAnswer(answer);
+    revealAnswer();
   }
 
   /**
@@ -114,6 +116,7 @@ public class MultipleChoiceCtrl {
   public void setSelectedAnswer2() {
     String answer = answer2.getText();
     server.getPlayer().setSelectedAnswer(answer);
+    revealAnswer();
   }
 
   /**
@@ -122,6 +125,7 @@ public class MultipleChoiceCtrl {
   public void setSelectedAnswer3() {
     String answer = answer3.getText();
     server.getPlayer().setSelectedAnswer(answer);
+    revealAnswer();
   }
 
   /**
@@ -140,7 +144,8 @@ public class MultipleChoiceCtrl {
    */
   public void timerStart() {
     nextQuestionSingle();
-    Timeline timeline = new Timeline();
+    timeCounter.setVisible(true);
+    timeline = new Timeline();
     timeline.setCycleCount(1000);
     timeline.setAutoReverse(false);
     timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10),
@@ -157,7 +162,7 @@ public class MultipleChoiceCtrl {
           }
         }));
 
-    Timeline timeCount = new Timeline(
+    timeCount = new Timeline(
         new KeyFrame(Duration.seconds(1), e -> {
           startTime--;
           timeCounter.setText(startTime + " s");
@@ -183,16 +188,31 @@ public class MultipleChoiceCtrl {
     answer2.setDisable(true);
     answer3.setDisable(true);
 
+    int time = startTime;
+
     jokerEl.setVisible(false);
 
+    boolean answerCorrectness = false;
+
     if (question.getText().equals("How big is the consumption per hour for this activity?")) {
-      computeAnswerChoice();
+      answerCorrectness = computeAnswerChoice();
     }
     if (question.getText().equals("Which is more expensive?")) {
-      computeAnswerExpensive();
+      answerCorrectness = computeAnswerExpensive();
     }
 
-    addPoints.setText("+0");
+    timeline.stop();
+    timeCount.stop();
+    timeCounter.setVisible(false);
+    resetTimer();
+
+    if (!answerCorrectness) {
+      addPoints.setText("+0");
+    } else {
+      int points = 5 * time;
+      addPoints.setText("+" + Integer.toString(points));
+    }
+
     addPoints.setVisible(true);
 
     Timeline cooldown = new Timeline();
@@ -207,7 +227,7 @@ public class MultipleChoiceCtrl {
   /**
    * Changes buttons' colour according to the computed answer.
    */
-  public void computeAnswerChoice() {
+  public boolean computeAnswerChoice() {
     int answer = question.getActivities().get(0).getConsumption_in_wh();
     if (mapButtons.get(1).getConsumption_in_wh() != answer) {
       answer1.setStyle("-fx-background-color: E50C0C");
@@ -218,16 +238,18 @@ public class MultipleChoiceCtrl {
     if (mapButtons.get(3).getConsumption_in_wh() != answer) {
       answer3.setStyle("-fx-background-color: E50C0C");
     }
+    return server.getPlayer().getSelectedAnswer().equals(question.getActivities().get(0).getTitle());
   }
 
   /**
    * Changes buttons' colour according to the computed answer.
    */
-  public void computeAnswerExpensive() {
-    int max = 0;
+  public boolean computeAnswerExpensive() {
+    int max = 0, imax = 1;
     for (int i = 0; i < 3; i++) {
       if (question.getActivities().get(i).getConsumption_in_wh() >= max) {
         max = question.getActivities().get(i).getConsumption_in_wh();
+        imax = i;
       }
     }
     if (mapButtons.get(1).getConsumption_in_wh() != max) {
@@ -239,6 +261,7 @@ public class MultipleChoiceCtrl {
     if (mapButtons.get(3).getConsumption_in_wh() != max) {
       answer3.setStyle("-fx-background-color: E50C0C");
     }
+    return server.getPlayer().getSelectedAnswer().equals(question.getActivities().get(imax).getTitle());
   }
 
   /**
@@ -247,6 +270,7 @@ public class MultipleChoiceCtrl {
   public void cooldownAnswer() {
     if (singePl) {
       if (questionNum < 20) {
+        resetTimer();
         timerStart();
       } else {
         String name = server.getPlayer().getName();
