@@ -39,10 +39,10 @@ public class GameEntityControllerTest {
   /**
    * Returns a new activity.
    *
-   * @param id the activity's id
-   * @param title the title
+   * @param id                the activity's id
+   * @param title             the title
    * @param consumption_in_wh the consumption
-   * @param path the path of the activity
+   * @param path              the path of the activity
    * @return the new activity
    */
   private static Activity getActivity(String id, String title, int consumption_in_wh, String path) {
@@ -118,7 +118,8 @@ public class GameEntityControllerTest {
   @Test
   public void testGetGameByIDNonexistent() {
     GameEntity game = sut.addPlayerToGame(getPlayer("Bob")).getBody();
-    Long id = game.getId() + 1;
+    Long id = game.getId() + 2;
+    var test = sut.getGameById(id).getStatusCode();
     assertEquals(BAD_REQUEST, sut.getGameById(id).getStatusCode());
   }
 
@@ -152,7 +153,7 @@ public class GameEntityControllerTest {
     sut.addPlayerToGame(alice);
     sut.addPlayerToGame(bob);
     GameEntity game = repo.findAll().get(0);
-    Long id  = game.getId();
+    Long id = game.getId();
     assertEquals(alice, sut.getAllPlayers(id).getBody().get(0));
     assertEquals(bob, sut.getAllPlayers(id).getBody().get(1));
   }
