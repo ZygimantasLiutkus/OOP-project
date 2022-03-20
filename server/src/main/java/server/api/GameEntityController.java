@@ -170,7 +170,7 @@ public class GameEntityController {
    */
   @PostMapping(path = "/addPlayer")
   public ResponseEntity<GameEntity> addPlayerToGame(@RequestBody Player player) {
-    final int questionAmount = 4; // TODO: change amount to 20
+    final int questionAmount = 20;
     List<GameEntity> list = repo.findByStatus("WAITING");
     if (list.size() == 0) { // Create a new game
       GameEntity game = new GameEntity();
@@ -317,8 +317,7 @@ public class GameEntityController {
   public ResponseEntity<GameEntity> addSingleplayer(@RequestBody Player player) {
     playerRepo.save(player);
     GameEntity game = repo.save(new GameEntity());
-    //TODO: change amount to 20
-    List<Question> questions = qRepo.saveAll(service.generateQuestion(3));
+    List<Question> questions = qRepo.saveAll(service.generateQuestion(20));
     game.getQuestions().addAll(questions);
     game.addPlayer(player);
     return ResponseEntity.ok(repo.save(game));
