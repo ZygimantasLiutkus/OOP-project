@@ -40,6 +40,25 @@ class QuestionTest {
   }
 
   /**
+   * Tests hashCode() method.
+   */
+  @Test
+  void testHashCode() {
+    Activity ac = new Activity("x", "x", 1, "x");
+    List<Activity> actList = new ArrayList<>();
+    actList.add(ac);
+    Question q = new Question(actList);
+
+    Activity ac1 = new Activity("s", "x", 1, "x");
+    List<Activity> actList1 = new ArrayList<>();
+    actList1.add(ac1);
+    Question q1 = new Question(actList1);
+
+    assertNotEquals(q, q1);
+    assertNotEquals(q.hashCode(), q1.hashCode());
+  }
+
+  /**
    * Failing getId() test.
    */
   @Test
