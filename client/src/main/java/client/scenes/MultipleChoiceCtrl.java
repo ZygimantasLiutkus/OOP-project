@@ -37,7 +37,8 @@ public class MultipleChoiceCtrl {
   private int startTime = 10;
   private int questionNum = 0;
   private double progress = 1;
-  private Timeline timeline, timeCount;
+  private Timeline timeline;
+  private Timeline timeCount;
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
   @FXML
@@ -194,7 +195,7 @@ public class MultipleChoiceCtrl {
 
     boolean answerCorrectness = false;
 
-    if (question.getText().equals("How big is the consumption per hour for this activity?")) {
+    if (question.getText().contains("How big is the consumption per hour for this activity?")) {
       answerCorrectness = computeAnswerChoice();
     }
     if (question.getText().equals("Which is more expensive?")) {
@@ -210,6 +211,7 @@ public class MultipleChoiceCtrl {
       addPoints.setText("+0");
     } else {
       int points = 5 * time;
+      server.getPlayer().setScore(server.getPlayer().getScore() + points);
       addPoints.setText("+" + Integer.toString(points));
     }
 
@@ -226,6 +228,8 @@ public class MultipleChoiceCtrl {
 
   /**
    * Changes buttons' colour according to the computed answer.
+   *
+   * @return correct/incorrect selected answer
    */
   public boolean computeAnswerChoice() {
     int answer = question.getActivities().get(0).getConsumption_in_wh();
@@ -238,14 +242,17 @@ public class MultipleChoiceCtrl {
     if (mapButtons.get(3).getConsumption_in_wh() != answer) {
       answer3.setStyle("-fx-background-color: E50C0C");
     }
-    return server.getPlayer().getSelectedAnswer().equals(question.getActivities().get(0).getTitle());
+    return server.getPlayer().getSelectedAnswer().equals(Integer.toString(answer) + " wh");
   }
 
   /**
    * Changes buttons' colour according to the computed answer.
+   *
+   * @return correct/incorrect selected answer
    */
   public boolean computeAnswerExpensive() {
-    int max = 0, imax = 1;
+    int max = 0;
+    int imax = 1;
     for (int i = 0; i < 3; i++) {
       if (question.getActivities().get(i).getConsumption_in_wh() >= max) {
         max = question.getActivities().get(i).getConsumption_in_wh();
@@ -261,7 +268,8 @@ public class MultipleChoiceCtrl {
     if (mapButtons.get(3).getConsumption_in_wh() != max) {
       answer3.setStyle("-fx-background-color: E50C0C");
     }
-    return server.getPlayer().getSelectedAnswer().equals(question.getActivities().get(imax).getTitle());
+    return server.getPlayer().getSelectedAnswer()
+            .equals(question.getActivities().get(imax).getTitle());
   }
 
   /**
@@ -306,6 +314,7 @@ public class MultipleChoiceCtrl {
     answer3.setDisable(false);
     answer3.setStyle("-fx-background-color: #11AD31");
     server.resetAnswer();
+    playerPoints.setText(Integer.toString(server.getPlayer().getScore()) + " points");
   }
 
   /**
