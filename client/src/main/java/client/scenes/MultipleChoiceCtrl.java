@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
+import commons.GameEntity;
 import commons.LeaderboardEntry;
 import commons.Question;
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class MultipleChoiceCtrl {
   public Question question;
   public Random random = new Random();
   public Map<Integer, Activity> mapButtons;
-  private boolean singePl = true; //should be replaced
+  private GameEntity.Type type;
   private int startTime = 10;
   private int questionNum = 0;
   private double progress = 1;
@@ -93,6 +94,7 @@ public class MultipleChoiceCtrl {
   public MultipleChoiceCtrl(ServerUtils server, MainCtrl mainCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
+    this.type = server.getType();
   }
 
   /**
@@ -175,7 +177,7 @@ public class MultipleChoiceCtrl {
     timeCount.setCycleCount(10);
     timeline.play();
     timeCount.play();
-    if (singePl) {
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       emojiPane.setVisible(false);
     }
     timeline.setOnFinished(e -> revealAnswer());
@@ -279,7 +281,7 @@ public class MultipleChoiceCtrl {
    * Checks if the game type is single player and does the associated methods.
    */
   public void cooldownAnswer() {
-    if (singePl) {
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       if (questionNum < 20) {
         resetTimer();
         timerStart();

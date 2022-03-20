@@ -19,6 +19,7 @@ public class GameEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   public Long id;
+  private Type type;
   private String status;
   @OneToMany(cascade = CascadeType.PERSIST)
   private List<Player> players = new ArrayList<>();
@@ -36,11 +37,31 @@ public class GameEntity {
   /**
    * The constructor of the class.
    *
+   * @param type      the type of the game (singleplayer or multiplayer).
    * @param questions the list of 20 chosen questions
    */
-  public GameEntity(List<Question> questions) {
+  public GameEntity(Type type, List<Question> questions) {
+    this.type = type;
     this.status = "WAITING";
     this.questions = questions;
+  }
+
+  /**
+   * A getter for the type.
+   *
+   * @return a string value of the game type.
+   */
+  public Type getType() {
+    return this.type;
+  }
+
+  /**
+   * A setter for the type.
+   *
+   * @param t an enum of the game type.
+   */
+  public void setType(Type t) {
+    this.type = t;
   }
 
   /**
@@ -71,12 +92,30 @@ public class GameEntity {
   }
 
   /**
+   * A setter for the list of players.
+   *
+   * @param players the list of players
+   */
+  public void setPlayers(List<Player> players) {
+    this.players = players;
+  }
+
+  /**
    * A getter for the list of all selected questions.
    *
    * @return a list containing 20 questions selected by the server.
    */
   public List<Question> getQuestions() {
     return questions;
+  }
+
+  /**
+   * A setter for the question list.
+   *
+   * @param q a list of questions.
+   */
+  public void setQuestions(List<Question> q) {
+    this.questions = q;
   }
 
   /**
@@ -95,15 +134,6 @@ public class GameEntity {
    */
   public void setId(Long id) {
     this.id = id;
-  }
-
-  /**
-   * A setter for the list of players.
-   *
-   * @param players the list of players
-   */
-  public void setPlayers(List<Player> players) {
-    this.players = players;
   }
 
   /**
@@ -156,11 +186,10 @@ public class GameEntity {
   }
 
   /**
-   * A setter for the question list.
-   *
-   * @param q a list of questions.
+   * An enum describing the type of the game.
    */
-  public void setQuestions(List<Question> q) {
-    this.questions = q;
+  public enum Type {
+    SINGLEPLAYER,
+    MULTIPLAYER
   }
 }
