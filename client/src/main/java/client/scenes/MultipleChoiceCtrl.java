@@ -4,6 +4,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
 import commons.GameEntity;
+import commons.LeaderboardEntry;
 import commons.Question;
 import java.util.HashMap;
 import java.util.Map;
@@ -193,8 +194,10 @@ public class MultipleChoiceCtrl {
       computeAnswerExpensive();
     }
 
-    addPoints.setText("+0");
-    addPoints.setVisible(true);
+    if (server.noAnswer()) {
+      addPoints.setText("+0");
+      addPoints.setVisible(true);
+    }
 
     Timeline cooldown = new Timeline();
     cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(3000), e -> {
@@ -250,14 +253,18 @@ public class MultipleChoiceCtrl {
       if (questionNum < 20) {
         timerStart();
       } else {
-        mainCtrl.showLeaderboard("global");
+        String name = server.getPlayer().getName();
+        int points = server.getPlayer().getScore();
+        LeaderboardEntry entry = new LeaderboardEntry(name, points);
+        entry = server.addLeaderboardEntry(entry);
+        mainCtrl.showSPLeaderboard(entry);
       }
     } else {
       if (questionNum < 20) {
         timerStart();
         nextQuestionMultiple();
       } else {
-        mainCtrl.showLeaderboard("multiplayer");
+        mainCtrl.showMPLeaderboard();
       }
     }
   }
@@ -349,8 +356,6 @@ public class MultipleChoiceCtrl {
   public void setText() {
     setQuestion(server.getQuestion(String.valueOf(questionNum + 1)));
     setMapButtons();
-    //TODO: delete the line below (created for testing)
-    this.questionImage3.setImage(new Image("client/images/flatFaceEmoji.png"));
     if (this.question.getText().equals("Which is more expensive?")) {
       prepareMoreExpensive();
     } else if (this.question.getText()
@@ -366,17 +371,20 @@ public class MultipleChoiceCtrl {
     this.questionLabel.setText(question.getText());
     this.answer1.setText(mapButtons.get(1).getTitle());
     try {
-      this.questionImage1.setImage((new Image(mapButtons.get(1).getImage_path())));
+      this.questionImage1.setImage(
+          (new Image("client/images/" + mapButtons.get(1).getImage_path())));
     } catch (IllegalArgumentException e) {
       this.questionImage1.setImage(new Image("client/images/defaultImage.png"));
     }
     try {
-      this.questionImage2.setImage((new Image(mapButtons.get(2).getImage_path())));
+      this.questionImage2.setImage(
+          (new Image("client/images/" + mapButtons.get(2).getImage_path())));
     } catch (IllegalArgumentException e) {
       this.questionImage2.setImage(new Image("client/images/flatFaceEmoji.png"));
     }
     try {
-      this.questionImage3.setImage((new Image(mapButtons.get(3).getImage_path())));
+      this.questionImage3.setImage(
+          (new Image("client/images/" + mapButtons.get(3).getImage_path())));
     } catch (IllegalArgumentException e) {
       this.questionImage3.setImage(new Image("client/images/defaultImage.png"));
     }
@@ -397,7 +405,8 @@ public class MultipleChoiceCtrl {
     this.answer2.setText(String.valueOf(mapButtons.get(2).getConsumption_in_wh()) + " wh");
     this.answer3.setText(String.valueOf(mapButtons.get(3).getConsumption_in_wh()) + " wh");
     try {
-      this.questionImage2.setImage((new Image(mapButtons.get(1).getImage_path())));
+      this.questionImage2.setImage(
+          (new Image("client/images/" + question.getActivities().get(0).getImage_path())));
     } catch (IllegalArgumentException e) {
       this.questionImage2.setImage(new Image("client/images/defaultImage.png"));
     }

@@ -41,9 +41,9 @@ public class ChooseScreenCtrl {
    */
   public void playSinglePlayer() {
     if (server.getPlayer().getName().equals("")) {
-      mainCtrl.showNamePopup(NextScreen.SinglePlayerWaitingRoom);
+      mainCtrl.showNamePopup(NextScreen.WaitingRoomScreen);
     } else {
-      mainCtrl.showMoreExpensive(); // TODO: Change to singleplayer waiting room
+      mainCtrl.showWaitingRoomScreenSP();
     }
   }
 
@@ -51,7 +51,7 @@ public class ChooseScreenCtrl {
    * Shows the global (singleplayer) leaderboard of current server.
    */
   public void leaderboard() {
-    mainCtrl.showLeaderboard("global");
+    mainCtrl.showSPLeaderboard(null);
   }
 
   /**

@@ -1,9 +1,13 @@
 package server.api;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import commons.Activity;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -100,6 +104,93 @@ public class ActivityControllerTest {
 
     assertTrue(random.wasCalled);
   }
+
+  /**
+   * Test if getImagePathById() retrieves the correct image path.
+   */
+  @Test
+  public void testGetImagePathById() {
+    repo.deleteAll();
+    Activity testActivity = new Activity("09-shower", "Taking a hot shower for 6 minutes",
+            4000, "00/shower.png");
+    repo.save(testActivity);
+    String imagePath = sut.getImagePathById(testActivity.getId()).getBody();
+    assertEquals("00/shower.png", imagePath);
+  }
+
+  /**
+   * Test if getImagePathById() returns an error for an id that doesn't exist.
+   */
+  @Test
+  public void testGetImagePathByIDNonexistent() {
+    repo.deleteAll();
+    assertEquals(BAD_REQUEST, sut.getImagePathById("0").getStatusCode());
+  }
+
+  /**
+   * Passing tests getAll activities method.
+   */
+  @Test
+  public void getAllActivitiesPass() {
+    List<Activity> activityList = new ArrayList<>();
+    activityList.add(getActivity("a", 1));
+    activityList.add(getActivity("s", 2));
+    var actual = sut.addAll(activityList);
+    assertEquals(1, actual.getBody().get(0).getConsumption_in_wh());
+    assertEquals(2, actual.getBody().get(1).getConsumption_in_wh());
+    assertEquals("s", actual.getBody().get(1).getTitle());
+    assertEquals(2, actual.getBody().size());
+  }
+
+  /**
+   * Failing tests getALl activities method.
+   */
+  @Test
+  public void getAllActivitiesFail() {
+    List<Activity> activityList = new ArrayList<>();
+    activityList.add(getActivity("s", 1));
+    activityList.add(getActivity("x", 2));
+    var actual = sut.addAll(activityList);
+
+    assertNotEquals(0, actual.getBody().size());
+    assertNotEquals(getActivity("s", 1), actual.getBody().get(1));
+    assertNotEquals(2, actual.getBody().get(0).getConsumption_in_wh());
+  }
+
+  /**
+   * Tests that failed because of negative consumption.
+   */
+  @Test
+  public void getAllActivitiesBadRequestCannotHaveNegativeConsumption() {
+    List<Activity> activityList = new ArrayList<>();
+    activityList.add(getActivity("s", -1));
+    activityList.add(getActivity("x", 2));
+    var actual = sut.addAll(activityList);
+    assertEquals(BAD_REQUEST, actual.getStatusCode());
+  }
+
+  /**
+   * Test that fails for no id.
+   */
+  @Test
+  public void getAllActivitiesBadRequestCannotHaveEmptyID() {
+    List<Activity> activityList = new ArrayList<>();
+    activityList.add(getActivity("", 1));
+    activityList.add(getActivity("x", 2));
+    var actual = sut.addAll(activityList);
+    assertEquals(BAD_REQUEST, actual.getStatusCode());
+  }
+
+  /**
+   * Tests for adding an empty list.
+   */
+  @Test
+  public void addAllEmptyList() {
+    List<Activity> activityList = new ArrayList<>();
+    var actual = sut.addAll(activityList);
+    assertEquals(BAD_REQUEST, actual.getStatusCode());
+  }
+
 
   /**
    * Extends the implementation of the Random class.
