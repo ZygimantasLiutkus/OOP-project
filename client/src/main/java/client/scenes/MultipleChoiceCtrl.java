@@ -210,7 +210,10 @@ public class MultipleChoiceCtrl {
     if (!answerCorrectness) {
       addPoints.setText("+0");
     } else {
-      int points = 5 * time;
+      int points = 10 * (time + 1);
+      if (time == 10) {
+        points -= 10;
+      }
       server.getPlayer().setScore(server.getPlayer().getScore() + points);
       addPoints.setText("+" + Integer.toString(points));
     }
