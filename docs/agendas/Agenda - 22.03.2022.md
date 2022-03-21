@@ -43,6 +43,8 @@ he/she should bring that up now so that it can be discussed after all.*
 # Questions for the TA
 
 - Is it bad to have high cyclomatic complexity?
+- How to correctly import activities?
+- Should files stored locally also be commited to main (json/images)?
 
 # Tips / tops round
 
