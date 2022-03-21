@@ -23,6 +23,7 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -184,12 +185,12 @@ public class ServerUtils {
    * Requests a question and gives it to the client.
    *
    * @param idx the index of the question
+   * @param game the id of the game
    * @return a question from a poll
    */
-  public Question getQuestion(String idx) {
-
+  public Question getQuestion(String game, String idx) {
     Question q = ClientBuilder.newClient(new ClientConfig()) //
-        .target(server).path("api/game/1/question/" + idx) //
+        .target(server).path("api/game/" + game + "/question/" + idx) //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .get(new GenericType<Question>() {
@@ -211,5 +212,34 @@ public class ServerUtils {
         .get(new GenericType<GameEntity>() {
         }).getType();
   }
+
+  /**
+   * Method to add a player to the waiting room (single player).
+   *
+   * @param player the added player
+   * @return the data of the respective player
+   */
+  public Player addSingleplayer(Player player) {
+    Response response = ClientBuilder.newClient(new ClientConfig())
+        .target(server + "api/game/singleplayer")
+        .request()
+        .post(Entity.json(player));
+    Player p = response.readEntity(GameEntity.class).getPlayers().get(0);
+    return p;
+  }
+
+  /**
+   * Method to change the status of the game.
+   *
+   * @param game   the nr of the game
+   * @param status a dummy game only with status
+   */
+  public void changeStatus(String game, GameEntity status) {
+    ClientBuilder.newClient(new ClientConfig())
+        .target(server + "api/game/" + game)
+        .request()
+        .put(Entity.json(status));
+  }
+
 
 }

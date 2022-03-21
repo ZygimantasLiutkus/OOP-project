@@ -25,6 +25,7 @@ public class Player {
   private int score = 0;
   private String name;
   private String selectedAnswer = "0";
+  private Long gameId;
 
   /**
    * For object mappers.
@@ -116,6 +117,24 @@ public class Player {
    */
   public void setId(Long id) {
     this.id = id;
+  }
+
+  /**
+   * Setter for the game id.
+   *
+   * @param id the id of the game the player has joined.
+   */
+  public void setGameId(Long id) {
+    this.gameId = id;
+  }
+
+  /**
+   * Getter for the game.
+   *
+   * @return a long representing the id of the last joined game.
+   */
+  public Long getGameId() {
+    return gameId;
   }
 
   /**

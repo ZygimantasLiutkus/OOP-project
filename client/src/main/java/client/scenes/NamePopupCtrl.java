@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.NextScreen;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.GameEntity;
 import commons.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,6 +18,7 @@ public class NamePopupCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
+  private final MultipleChoiceCtrl multipleCtrl;
 
   private NextScreen nextScreen;
 
@@ -32,13 +34,16 @@ public class NamePopupCtrl {
   /**
    * Constructor for NamePopupCtrl.
    *
-   * @param server   reference to the server the game will run on.
-   * @param mainCtrl reference to the main controller.
+   * @param server       reference to the server the game will run on.
+   * @param mainCtrl     reference to the main controller.
+   * @param multipleCtrl reference to multiple controller.
    */
   @Inject
-  public NamePopupCtrl(ServerUtils server, MainCtrl mainCtrl) {
+  public NamePopupCtrl(ServerUtils server, MainCtrl mainCtrl,
+                       MultipleChoiceCtrl multipleCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
+    this.multipleCtrl = multipleCtrl;
   }
 
   /**
@@ -46,7 +51,9 @@ public class NamePopupCtrl {
    */
   public void submit() {
     if (!nameField.getText().equals("")) {
-      server.setPlayer(new Player(nameField.getText()));
+      Player p = new Player(nameField.getText());
+      server.setPlayer(p);
+      multipleCtrl.setPlayer(server.addSingleplayer(p));
       switch (nextScreen) {
         case WaitingRoomScreen:
           mainCtrl.showWaitingRoomScreenSP();
@@ -54,7 +61,7 @@ public class NamePopupCtrl {
         case MultiPlayerWaitingRoom:
           // TODO: Add check if this name is valid to enter the multiplayer waiting room
           // TODO: Show multiplayer waiting room
-          mainCtrl.showMoreExpensive();
+          mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
           break;
         default:
           break;

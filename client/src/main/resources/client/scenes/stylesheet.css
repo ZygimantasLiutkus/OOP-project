@@ -70,3 +70,7 @@
     -fx-border-color: transparent;
 }
 
+.table-column {
+    -fx-alignment: CENTER;
+}
+

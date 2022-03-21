@@ -2,10 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Activity;
-import commons.GameEntity;
-import commons.LeaderboardEntry;
-import commons.Question;
+import commons.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -40,6 +37,9 @@ public class MultipleChoiceCtrl {
   private double progress = 1;
   private Timeline timeline;
   private Timeline timeCount;
+  public GameEntity dummyGameStarted = new GameEntity("STARTED");
+  public GameEntity dummyGameFinished = new GameEntity("FINISHED");
+  public Player player;
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
   @FXML
@@ -98,6 +98,24 @@ public class MultipleChoiceCtrl {
   }
 
   /**
+   * Setter for the player.
+   *
+   * @param player the respective player added to game
+   */
+  public void setPlayer(Player player) {
+    this.player = player;
+  }
+
+  /**
+   * A setter for the game type.
+   *
+   * @param type the game type
+   */
+  public void setType(GameEntity.Type type) {
+    this.type = type;
+  }
+
+  /**
    * Method to reset the selected answer by setting it to 0.
    */
   public void setSelectedAnswer0() {
@@ -146,6 +164,7 @@ public class MultipleChoiceCtrl {
    * Starts the timer.
    */
   public void timerStart() {
+    server.changeStatus(String.valueOf(player.getGameId()), dummyGameStarted);
     nextQuestionSingle();
     timeCounter.setVisible(true);
     timeline = new Timeline();
@@ -274,7 +293,7 @@ public class MultipleChoiceCtrl {
       answer3.setStyle("-fx-background-color: E50C0C");
     }
     return server.getPlayer().getSelectedAnswer()
-            .equals(question.getActivities().get(imax).getTitle());
+        .equals(question.getActivities().get(imax).getTitle());
   }
 
   /**
@@ -295,7 +314,11 @@ public class MultipleChoiceCtrl {
     } else {
       if (questionNum < 20) {
         timerStart();
-        nextQuestionMultiple();
+        if (type.equals("SINGLEPLAYER")) {
+          nextQuestionSingle();
+        } else {
+          nextQuestionMultiple();
+        }
       } else {
         mainCtrl.showMPLeaderboard();
       }
@@ -388,7 +411,8 @@ public class MultipleChoiceCtrl {
    * Set the texts of the texts fields by question data.
    */
   public void setText() {
-    setQuestion(server.getQuestion(String.valueOf(questionNum + 1)));
+    setQuestion(server.getQuestion(String.valueOf(player.getGameId()),
+        String.valueOf(questionNum + 1)));
     setMapButtons();
     if (this.question.getText().equals("Which is more expensive?")) {
       prepareMoreExpensive();

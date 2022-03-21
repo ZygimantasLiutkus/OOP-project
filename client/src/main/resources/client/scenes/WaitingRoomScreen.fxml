@@ -4,21 +4,30 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.WaitingRoomCtrl">
-   <center>
-        <AnchorPane fx:id="centralPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+            minHeight="408.0"
+            minWidth="900.0" prefHeight="500.0" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/11.0.2" fx:controller="client.scenes.WaitingRoomCtrl">
+    <center>
+        <AnchorPane fx:id="centralPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                    minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0"
+                    stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
-                 <Button fx:id="startButton" layoutX="420.0" layoutY="256.0" maxHeight="59.0" mnemonicParsing="false" onMouseClicked="#startSinglePlayer" onTouchPressed="#startSinglePlayer" prefHeight="59.0" prefWidth="174.0" text="START" textAlignment="CENTER">
-                     <font>
-                         <Font size="22.0" />
-                     </font>
-                 </Button>
-                  <Label alignment="CENTER" layoutX="388.0" layoutY="192.0" prefHeight="46.0" prefWidth="239.0" text="Waiting to start...">
-                      <font>
-                          <Font size="28.0" />
-                      </font>
-                  </Label>
+                <Button fx:id="startButton" layoutX="420.0" layoutY="256.0" maxHeight="59.0" mnemonicParsing="false"
+                        onMouseClicked="#startSinglePlayer" onTouchPressed="#startSinglePlayer" prefHeight="59.0"
+                        prefWidth="174.0" text="START" textAlignment="CENTER">
+                    <font>
+                        <Font size="22.0"/>
+                    </font>
+                </Button>
+                <Label alignment="CENTER" layoutX="388.0" layoutY="192.0" prefHeight="46.0" prefWidth="239.0"
+                       text="Waiting to start...">
+                    <font>
+                        <Font size="28.0"/>
+                    </font>
+                </Label>
             </children>
         </AnchorPane>
-   </center>
+    </center>
 </BorderPane>

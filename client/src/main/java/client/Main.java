@@ -61,8 +61,8 @@ public class Main extends Application {
         FXML.load(LeaderboardScreenCtrl.class, "client", "scenes", "LeaderboardScreen.fxml");
     var waitingRoomSP =
             FXML.load(WaitingRoomCtrl.class, "client", "scenes", "WaitingRoomScreen.fxml");
-    primaryStage.setMinWidth(1200);
-    primaryStage.setMinHeight(540);
+    primaryStage.setMinWidth(900);
+    primaryStage.setMinHeight(408);
 
     var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
     mainCtrl.initialize(primaryStage, overview, add, entry, name, choose, moreExpensive,
