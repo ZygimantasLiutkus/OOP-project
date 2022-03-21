@@ -96,6 +96,11 @@ public class MultipleChoiceCtrl {
     this.mainCtrl = mainCtrl;
   }
 
+  /**
+   * A setter for the game type.
+   *
+   * @param type the game type
+   */
   public void setType(GameEntity.Type type) {
     this.type = type;
   }

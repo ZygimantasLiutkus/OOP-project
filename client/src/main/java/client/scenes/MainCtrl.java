@@ -169,6 +169,8 @@ public class MainCtrl {
 
   /**
    * Shows the multiple choice game screen.
+   *
+   * @param type the type of the game
    */
   public void showMoreExpensive(GameEntity.Type type) {
     primaryStage.setTitle("Quizzzz");
