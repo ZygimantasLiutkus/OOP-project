@@ -17,6 +17,7 @@
 package client.scenes;
 
 import client.utils.NextScreen;
+import commons.GameEntity;
 import commons.LeaderboardEntry;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -169,8 +170,9 @@ public class MainCtrl {
   /**
    * Shows the multiple choice game screen.
    */
-  public void showMoreExpensive() {
+  public void showMoreExpensive(GameEntity.Type type) {
     primaryStage.setTitle("Quizzzz");
+    moreExpensiveCtrl.setType(type);
     primaryStage.setScene(moreExpensive);
   }
 

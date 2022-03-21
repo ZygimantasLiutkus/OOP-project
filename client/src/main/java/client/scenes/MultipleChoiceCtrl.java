@@ -94,7 +94,10 @@ public class MultipleChoiceCtrl {
   public MultipleChoiceCtrl(ServerUtils server, MainCtrl mainCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
-    this.type = server.getType();
+  }
+
+  public void setType(GameEntity.Type type) {
+    this.type = type;
   }
 
   /**
@@ -274,7 +277,7 @@ public class MultipleChoiceCtrl {
       answer3.setStyle("-fx-background-color: E50C0C");
     }
     return server.getPlayer().getSelectedAnswer()
-            .equals(question.getActivities().get(imax).getTitle());
+        .equals(question.getActivities().get(imax).getTitle());
   }
 
   /**

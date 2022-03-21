@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.NextScreen;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.GameEntity;
 import commons.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -54,7 +55,7 @@ public class NamePopupCtrl {
         case MultiPlayerWaitingRoom:
           // TODO: Add check if this name is valid to enter the multiplayer waiting room
           // TODO: Show multiplayer waiting room
-          mainCtrl.showMoreExpensive();
+          mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
           break;
         default:
           break;

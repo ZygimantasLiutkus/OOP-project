@@ -18,7 +18,10 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import commons.*;
+import commons.LeaderboardEntry;
+import commons.Player;
+import commons.Question;
+import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
@@ -196,20 +199,4 @@ public class ServerUtils {
         });
     return q;
   }
-
-  /**
-   * Gets the type of the game and gives it to the client.
-   *
-   * @return type of a game
-   */
-  public GameEntity.Type getType() {
-    return ClientBuilder.newClient(new ClientConfig())  //
-        .target(server).path(//TODO: change the id to return
-            "api/game/1")    // type of current game instead of game with id = 1.
-        .request(APPLICATION_JSON) //
-        .accept(APPLICATION_JSON) //
-        .get(new GenericType<GameEntity>() {
-        }).getType();
-  }
-
 }
