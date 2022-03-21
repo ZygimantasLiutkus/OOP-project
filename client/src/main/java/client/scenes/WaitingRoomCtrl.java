@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
+import commons.GameEntity;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javax.inject.Inject;
@@ -19,7 +20,7 @@ public class WaitingRoomCtrl {
   /**
    * Construct for the Waiting Room Controller.
    *
-   * @param server reference to the server the game will run on.
+   * @param server   reference to the server the game will run on.
    * @param mainCtrl reference to the main controller.
    */
   @Inject
@@ -32,6 +33,6 @@ public class WaitingRoomCtrl {
    * Starts the game in single-player mode.
    */
   public void startSinglePlayer() {
-    mainCtrl.showMoreExpensive();
+    mainCtrl.showMoreExpensive(GameEntity.Type.SINGLEPLAYER);
   }
 }

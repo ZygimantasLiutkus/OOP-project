@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.NextScreen;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.GameEntity;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -61,7 +62,8 @@ public class ChooseScreenCtrl {
     if (server.getPlayer().getName().equals("")) {
       mainCtrl.showNamePopup(NextScreen.MultiPlayerWaitingRoom);
     } else {
-      mainCtrl.showMoreExpensive(); // TODO: Change to singleplayer waiting room
+      mainCtrl.showMoreExpensive(
+          GameEntity.Type.SINGLEPLAYER); // TODO: Change to singleplayer waiting room
     }
   }
 }
