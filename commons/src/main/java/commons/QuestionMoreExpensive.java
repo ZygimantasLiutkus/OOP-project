@@ -36,4 +36,5 @@ public class QuestionMoreExpensive extends Question {
   public String getText() {
     return "Which is more expensive?";
   }
+
 }

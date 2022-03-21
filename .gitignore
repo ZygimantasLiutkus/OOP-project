@@ -9,6 +9,9 @@ build/
 
 **/*.swp
 
+**/images/*
+**/*.json
+
 ### STS ###
 .apt_generated
 .classpath

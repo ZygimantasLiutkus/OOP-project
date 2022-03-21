@@ -120,8 +120,15 @@ public class TestGameRepository implements GameEntityRepository {
   @Override
   public <S extends GameEntity> S save(S entity) {
     call("save");
-    entity.id = (long) games.size();
-    games.add(entity);
+    if (entity.id == null) {
+      entity.id = (long) games.size();
+    }
+    if (games.contains(entity)) {
+      games.remove(entity);
+      games.add(entity);
+    } else {
+      games.add(entity);
+    }
     return entity;
   }
 
@@ -293,5 +300,16 @@ public class TestGameRepository implements GameEntityRepository {
   @Override
   public List<GameEntity> findByStatus(String status) {
     return games.stream().filter(x -> x.getStatus().equals(status)).collect(Collectors.toList());
+  }
+
+  /**
+   * Method to filter games by type.
+   *
+   * @param type the type we want to filter by
+   * @return the list of found games
+   */
+  @Override
+  public List<GameEntity> findByType(GameEntity.Type type) {
+    return games.stream().filter(x -> x.getType().equals(type)).collect(Collectors.toList());
   }
 }

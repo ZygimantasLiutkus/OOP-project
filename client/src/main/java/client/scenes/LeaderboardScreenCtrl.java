@@ -5,7 +5,6 @@ import com.google.inject.Inject;
 import commons.LeaderboardEntry;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -15,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -27,9 +27,13 @@ public class LeaderboardScreenCtrl implements Initializable {
   private final MainCtrl mainCtrl;
 
   private ObservableList<LeaderboardEntry> data;
+  private LeaderboardEntry ownEntry;
 
   @FXML
   private TableView leaderboardTable;
+
+  @FXML
+  private TableColumn ranking;
 
   @FXML
   private TableColumn name;
@@ -65,6 +69,7 @@ public class LeaderboardScreenCtrl implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     leaderboardTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    ranking.setCellValueFactory(new PropertyValueFactory<LeaderboardEntry, Integer>("ranking"));
     name.setCellValueFactory(new PropertyValueFactory<LeaderboardEntry, String>("name"));
     score.setCellValueFactory(new PropertyValueFactory<LeaderboardEntry, Integer>("score"));
   }
@@ -74,28 +79,65 @@ public class LeaderboardScreenCtrl implements Initializable {
    */
   public void refreshTop10() {
     List<LeaderboardEntry> entries = server.getLeaderboardEntries();
-    Collections.sort(entries, (e1, e2) -> Integer.compare(e2.getScore(), e1.getScore()));
+    entries.sort((e1, e2) -> Integer.compare(e2.getScore(), e1.getScore()));
 
-    List<LeaderboardEntry> leaders = new ArrayList<>();
-    if (entries.size() >= 10) {
-      leaders = entries.subList(0, 10);
-    } else {
-      for (int i = 0; i < entries.size(); i++) {
-        leaders.add(entries.get(i));
+    for (int i = 0; i < entries.size(); i++) {
+      LeaderboardEntry entry = entries.get(i);
+      entry.setRanking(i + 1);
+      if (ownEntry != null && ownEntry.getId().equals(entry.getId())) {
+        ownEntry = entry;
       }
     }
 
+    List<LeaderboardEntry> leaders;
+
+    if (entries.size() > 10) {
+      leaders = entries.subList(0, 10);
+      if (ownEntry != null && !leaders.contains(ownEntry)) {
+        leaders.add(ownEntry);
+      }
+    } else {
+      leaders = new ArrayList<>(entries);
+    }
+
     data = FXCollections.observableList(leaders);
+    this.updateRowFactory();
     leaderboardTable.setItems(data);
   }
 
   /**
-   * Setter for the settings of a singleplayer / global leaderboard.
+   * Updates the rowFactory of the leaderboard table.
+   * This sets the background colour of the current player's entry in the table to red.
    */
-  public void setSingleplayer() {
+  private void updateRowFactory() {
+    leaderboardTable.setRowFactory(tv -> new TableRow<LeaderboardEntry>() {
+      /**
+       * {@inheritDoc}
+       */
+      @Override
+      public void updateItem(LeaderboardEntry item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty || item == null) {
+          setStyle("");
+        } else if (ownEntry != null && item.getId().equals(ownEntry.getId())) {
+          setStyle("-fx-background-color: tomato;");
+        } else {
+          setStyle("");
+        }
+      }
+    });
+  }
+
+  /**
+   * Setter for the settings of a singleplayer / global leaderboard.
+   *
+   * @param entry the leaderboardEntry of the current player (null if the player didn't play a game)
+   */
+  public void setSingleplayer(LeaderboardEntry entry) {
     this.scoreLabel.setText("Global Scores");
     this.reconnectButton.setVisible(false);
     this.homeButton.setVisible(false);
+    this.ownEntry = entry;
   }
 
   /**
@@ -105,6 +147,7 @@ public class LeaderboardScreenCtrl implements Initializable {
     this.scoreLabel.setText("Scores");
     this.reconnectButton.setVisible(true);
     this.homeButton.setVisible(true);
+    this.ownEntry = null;
   }
 
   /**

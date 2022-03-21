@@ -1,5 +1,6 @@
 package server.api;
 
+
 import commons.Activity;
 import java.util.List;
 import java.util.Random;
@@ -29,6 +30,16 @@ public class ActivityController {
   }
 
   /**
+   * Returns if the supplied string is null or empty.
+   *
+   * @param s the string to check
+   * @return true iff the string is null or empty
+   */
+  private static boolean isNullOrEmpty(String s) {
+    return s == null || s.isEmpty();
+  }
+
+  /**
    * GET request to retrieve all activities.
    *
    * @return a list of activities
@@ -54,6 +65,26 @@ public class ActivityController {
   }
 
   /**
+   * POST request to add a list of activities.
+   *
+   * @param activities a list of activities.
+   * @return the list of activities.
+   */
+  @PostMapping(path = {"/import"})
+  public ResponseEntity<List<Activity>> addAll(@RequestBody List<Activity> activities) {
+    for (Activity a : activities) {
+      if (isNullOrEmpty(a.getId()) || a.getConsumption_in_wh() <= 0
+          || isNullOrEmpty(a.getTitle()) || isNullOrEmpty(a.getImage_path())) {
+        return ResponseEntity.badRequest().build();
+      }
+      if (a.getConsumption_in_wh() == (int) a.getConsumption_in_wh()) {
+        return ResponseEntity.ok(repo.saveAll(activities));
+      }
+    }
+    return ResponseEntity.badRequest().build();
+  }
+
+  /**
    * Get a random activity from the list.
    * (Cannot be done without accessing the whole list)
    *
@@ -66,13 +97,17 @@ public class ActivityController {
   }
 
   /**
-   * Returns if the supplied string is null or empty.
+   * GET method that returns the image path of the activity with a specific ID.
    *
-   * @param s the string to check
-   * @return true iff the string is null or empty
+   * @param id the ID of the activity
+   * @return a ResponseEntity of the requested image path.
    */
-  private static boolean isNullOrEmpty(String s) {
-    return s == null || s.isEmpty();
+  @GetMapping(path = "/{id}/imagePath")
+  public ResponseEntity<String> getImagePathById(@PathVariable("id") String id) {
+    if (repo.existsById(id)) {
+      return ResponseEntity.ok(repo.getById(id).getImage_path());
+    } else {
+      return ResponseEntity.badRequest().build();
+    }
   }
-
 }

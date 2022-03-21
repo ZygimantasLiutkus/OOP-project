@@ -39,10 +39,10 @@ public class GameEntityControllerTest {
   /**
    * Returns a new activity.
    *
-   * @param id the activity's id
-   * @param title the title
+   * @param id                the activity's id
+   * @param title             the title
    * @param consumption_in_wh the consumption
-   * @param path the path of the activity
+   * @param path              the path of the activity
    * @return the new activity
    */
   private static Activity getActivity(String id, String title, int consumption_in_wh, String path) {
@@ -118,7 +118,8 @@ public class GameEntityControllerTest {
   @Test
   public void testGetGameByIDNonexistent() {
     GameEntity game = sut.addPlayerToGame(getPlayer("Bob")).getBody();
-    Long id = game.getId() + 1;
+    Long id = game.getId() + 2;
+    var test = sut.getGameById(id).getStatusCode();
     assertEquals(BAD_REQUEST, sut.getGameById(id).getStatusCode());
   }
 
@@ -152,9 +153,19 @@ public class GameEntityControllerTest {
     sut.addPlayerToGame(alice);
     sut.addPlayerToGame(bob);
     GameEntity game = repo.findAll().get(0);
-    Long id  = game.getId();
+    Long id = game.getId();
     assertEquals(alice, sut.getAllPlayers(id).getBody().get(0));
     assertEquals(bob, sut.getAllPlayers(id).getBody().get(1));
+  }
+
+  /**
+   * Test for getting all the players of a non-existent game.
+   */
+  @Test
+  public void testGetAllPlayersBadId() {
+    sut.addPlayerToGame(getPlayer("Alice"));
+    GameEntity game = sut.addPlayerToGame(getPlayer("Bob")).getBody();
+    assertEquals(BAD_REQUEST, sut.getAllPlayers(game.getId() + 1).getStatusCode());
   }
 
   /**
@@ -176,6 +187,7 @@ public class GameEntityControllerTest {
     //game is being returned.
     assertTrue(sut.getGameByStatus("WAITING").getBody().size() == 1);
     assertEquals(game, sut.getGameByStatus("WAITING").getBody().get(0));
+    assertEquals(game.getPlayers().get(0).getName(), "Alice");
   }
 
   /**
@@ -200,8 +212,29 @@ public class GameEntityControllerTest {
     GameEntity game = sut.addPlayerToGame(alice).getBody();
     assertEquals("WAITING", game.getStatus());
     GameEntity newStatus = new GameEntity();
+    //started -> waiting
+    game.setStatus("STARTED");
+    newStatus.setStatus("WAITING");
+    assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId(), newStatus).getStatusCode());
+    //finished -> started
     newStatus.setStatus("STARTED");
     game.setStatus("FINISHED");
+    assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId(), newStatus).getStatusCode());
+    //finished -> waiting
+    game.setStatus("FINISHED");
+    newStatus.setStatus("WAITING");
+    assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId(), newStatus).getStatusCode());
+    //aborted -> waiting
+    game.setStatus("ABORTED");
+    newStatus.setStatus("WAITING");
+    assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId(), newStatus).getStatusCode());
+    //aborted -> started
+    game.setStatus("ABORTED");
+    newStatus.setStatus("STARTED");
+    assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId(), newStatus).getStatusCode());
+    //aborted -> finished
+    game.setStatus("ABORTED");
+    newStatus.setStatus("FINISHED");
     assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId(), newStatus).getStatusCode());
   }
 
@@ -216,5 +249,20 @@ public class GameEntityControllerTest {
     GameEntity newStatus = new GameEntity();
     newStatus.setStatus("STARTED");
     assertEquals(BAD_REQUEST, sut.changeGameStatus(game.getId() + 1, newStatus).getStatusCode());
+  }
+
+  /**
+   * Test for getting all the games in repository.
+   */
+  @Test
+  public void testGetAllGames() {
+    GameEntity game1 = sut.addPlayerToGame(getPlayer("Alice")).getBody();
+    assertTrue(sut.getAllGames().getBody().size() == 1);
+    assertEquals(sut.getAllGames().getBody().get(0), game1);
+    game1.setStatus("STARTED");
+    GameEntity game2 = sut.addPlayerToGame(getPlayer("Bob")).getBody();
+    assertTrue(sut.getAllGames().getBody().size() == 2);
+    assertEquals(sut.getAllGames().getBody().get(0), game1);
+    assertEquals(sut.getAllGames().getBody().get(1), game2);
   }
 }

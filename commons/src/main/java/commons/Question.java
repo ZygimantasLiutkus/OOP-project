@@ -4,7 +4,13 @@ import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -15,7 +21,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Needs to change - import activities into question, dont hardcode info into it
  */
 @Entity(name = "question")
-public abstract class Question {
+public class Question {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
@@ -45,7 +51,9 @@ public abstract class Question {
    *
    * @return a predefined question text.
    */
-  public abstract String getText();
+  public String getText() {
+    return text;
+  }
 
   /**
    * A getter for the question's id.
@@ -57,21 +65,21 @@ public abstract class Question {
   }
 
   /**
-   * A getter for the activities list.
-   *
-   * @return a list of activities
-   */
-  public List<Activity> getActivities() {
-    return activities;
-  }
-
-  /**
    * A setter where we can change the question's id (not recommendable).
    *
    * @param id a long generated using Identity
    */
   public void setId(Long id) {
     this.id = id;
+  }
+
+  /**
+   * A getter for the activities list.
+   *
+   * @return a list of activities
+   */
+  public List<Activity> getActivities() {
+    return activities;
   }
 
   /**

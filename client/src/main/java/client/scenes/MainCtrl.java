@@ -17,6 +17,7 @@
 package client.scenes;
 
 import client.utils.NextScreen;
+import commons.LeaderboardEntry;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -47,6 +48,9 @@ public class MainCtrl {
   private LeaderboardScreenCtrl leaderboardScreenCtrl;
   private Scene leaderboard;
 
+  private WaitingRoomCtrl waitingRoomCtrl;
+  private Scene waitingRoomSP;
+
   private QuoteOverviewCtrl overviewCtrl;
   private Scene overview;
 
@@ -64,12 +68,14 @@ public class MainCtrl {
    * @param choose        a pair of the ChooseScreen controller and the parent.
    * @param moreExpensive a pair of the MultipleChoiceScreen controller and the parent.
    * @param leaderboard   a pair of the LeaderboardScreen controller and the parent.
+   * @param waitingRoomSP a pair of the (single-player) WaitingRoomScreen controller and the parent.
    */
   public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                          Pair<AddQuoteCtrl, Parent> add, Pair<EntryCtrl, Parent> entry,
                          Pair<NamePopupCtrl, Parent> name, Pair<ChooseScreenCtrl, Parent> choose,
                          Pair<MultipleChoiceCtrl, Parent> moreExpensive,
-                         Pair<LeaderboardScreenCtrl, Parent> leaderboard) {
+                         Pair<LeaderboardScreenCtrl, Parent> leaderboard,
+                         Pair<WaitingRoomCtrl, Parent> waitingRoomSP) {
     this.primaryStage = primaryStage;
     this.overviewCtrl = overview.getKey();
     this.overview = new Scene(overview.getValue());
@@ -91,6 +97,9 @@ public class MainCtrl {
 
     this.leaderboardScreenCtrl = leaderboard.getKey();
     this.leaderboard = new Scene(leaderboard.getValue());
+
+    this.waitingRoomCtrl = waitingRoomSP.getKey();
+    this.waitingRoomSP = new Scene(waitingRoomSP.getValue());
 
     showEntry();
     primaryStage.show();
@@ -166,25 +175,31 @@ public class MainCtrl {
   }
 
   /**
-   * Shows the leaderboard screen.
+   * Shows the global leaderboard with the entry of the current player.
    *
-   * @param type the type of leaderboard (global / multiplayer).
+   * @param entry the leaderboardEntry of the current player
    */
-  public void showLeaderboard(String type) {
-    switch (type) {
-      case "global":
-        primaryStage.setTitle("Quizzzz Leaderboard");
-        leaderboardScreenCtrl.setSingleplayer();
-        primaryStage.setScene(leaderboard);
-        leaderboardScreenCtrl.refreshTop10();
-        break;
-      case "multiplayer":
-        primaryStage.setTitle("Match Leaderboard");
-        leaderboardScreenCtrl.setMultiplayer();
-        primaryStage.setScene(leaderboard);
-        break;
-      default:
-        break;
-    }
+  public void showSPLeaderboard(LeaderboardEntry entry) {
+    primaryStage.setTitle("Quizzzz Leaderboard");
+    leaderboardScreenCtrl.setSingleplayer(entry);
+    primaryStage.setScene(leaderboard);
+    leaderboardScreenCtrl.refreshTop10();
+  }
+
+  /**
+   * Shows the leaderboard screen as multiplayer leaderboard.
+   */
+  public void showMPLeaderboard() {
+    primaryStage.setTitle("Match Leaderboard");
+    leaderboardScreenCtrl.setMultiplayer();
+    primaryStage.setScene(leaderboard);
+  }
+
+  /**
+   * Shows the single-player waiting room.
+   */
+  public void showWaitingRoomScreenSP() {
+    primaryStage.setTitle("Waiting...");
+    primaryStage.setScene(waitingRoomSP);
   }
 }
