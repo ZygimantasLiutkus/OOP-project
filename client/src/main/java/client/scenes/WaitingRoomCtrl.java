@@ -12,6 +12,7 @@ public class WaitingRoomCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
+  private final MultipleChoiceCtrl multipleCtrl;
 
   @FXML
   private Button startButton;
