@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
-import commons.GameEntity;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javax.inject.Inject;
@@ -13,7 +12,6 @@ public class WaitingRoomCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
-  private final MultipleChoiceCtrl multipleCtrl;
 
   @FXML
   private Button startButton;

@@ -62,8 +62,8 @@ public class ChooseScreenCtrl {
     if (server.getPlayer().getName().equals("")) {
       mainCtrl.showNamePopup(NextScreen.MultiPlayerWaitingRoom);
     } else {
-      mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
-      // TODO: Change to singleplayer waiting room
+      mainCtrl.showMoreExpensive(
+          GameEntity.Type.SINGLEPLAYER); // TODO: Change to singleplayer waiting room
     }
   }
 }
