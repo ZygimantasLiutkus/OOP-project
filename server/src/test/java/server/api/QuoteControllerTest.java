@@ -25,6 +25,7 @@ import commons.Quote;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import server.database.TestQuoteRepository;
 
 /**
  * Tests for the QuoteController.

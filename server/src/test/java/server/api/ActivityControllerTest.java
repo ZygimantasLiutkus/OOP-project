@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import server.database.TestActivityRepository;
 
 /**
  * Tests for the activity controller.
@@ -112,7 +113,7 @@ public class ActivityControllerTest {
   public void testGetImagePathById() {
     repo.deleteAll();
     Activity testActivity = new Activity("09-shower", "Taking a hot shower for 6 minutes",
-            4000, "00/shower.png");
+        4000, "00/shower.png");
     repo.save(testActivity);
     String imagePath = sut.getImagePathById(testActivity.getId()).getBody();
     assertEquals("00/shower.png", imagePath);

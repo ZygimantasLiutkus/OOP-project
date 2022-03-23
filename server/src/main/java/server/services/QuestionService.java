@@ -37,7 +37,7 @@ public class QuestionService {
    * @return a list of different types of question
    */
   public List<Question> generateQuestion(int amount) {
-    if (amount * 3 > repo.count()) {
+    if (amount * 3L > repo.count()) {
       return new ArrayList<Question>();
     }
     List<Question> list = new ArrayList<>();

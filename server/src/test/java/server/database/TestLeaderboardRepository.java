@@ -1,4 +1,4 @@
-package server.api;
+package server.database;
 
 import commons.LeaderboardEntry;
 import java.util.ArrayList;
@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
-import server.database.LeaderboardRepository;
 
 /**
  * Tests for the leaderboard repository.
