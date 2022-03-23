@@ -318,9 +318,9 @@ public class MultipleChoiceCtrl {
       } else {
         String name = server.getPlayer().getName();
         int points = server.getPlayer().getScore();
-        if(!server.getGame().getStatus().equals("ABORTED")){
-        LeaderboardEntry entry = new LeaderboardEntry(name, points);
-        entry = server.addLeaderboardEntry(entry);
+        if (!server.getGame().getStatus().equals("ABORTED")) {
+          LeaderboardEntry entry = new LeaderboardEntry(name, points);
+          entry = server.addLeaderboardEntry(entry);
           mainCtrl.showSPLeaderboard(entry);
         }
       }

@@ -198,7 +198,12 @@ public class ServerUtils {
     return q;
   }
 
-  public GameEntity getGame(){
+  /**
+   * Returns a game specified by the player's id.
+   *
+   * @return a created game
+   */
+  public GameEntity getGame() {
     return ClientBuilder.newClient(new ClientConfig()) //
         .target(server).path("api/game/" + String.valueOf(player.getGameId())) //
         .request(APPLICATION_JSON) //
@@ -225,7 +230,6 @@ public class ServerUtils {
   /**
    * Method to add a player to the waiting room (single player).
    *
-   * @param player the added player
    * @return the data of the respective player
    */
   public Player addSingleplayer() {
@@ -268,8 +272,12 @@ public class ServerUtils {
     return dummyPlayer;
   }
 
-
-  public Player addPlayer(){
+  /**
+   * Method to add a player to a multiplayer game.
+   *
+   * @return the added player.
+   */
+  public Player addPlayer() {
     Response response = ClientBuilder.newClient(new ClientConfig())
         .target(server + "api/game/addPlayer")
         .request()
