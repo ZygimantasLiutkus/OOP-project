@@ -149,6 +149,7 @@ public class MultipleChoiceCtrl {
    */
   public void timerStart() {
     server.changeStatus(server.getIdGame(), dummyGameStarted);
+    if(this.questionNum == 20) this.questionNum = 0;
     nextQuestionSingle();
     timeCounter.setVisible(true);
     timeline = new Timeline();
