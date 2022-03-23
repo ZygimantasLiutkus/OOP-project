@@ -44,6 +44,7 @@ public class ChooseScreenCtrl {
     if (server.getPlayer().getName().equals("")) {
       mainCtrl.showNamePopup(NextScreen.WaitingRoomScreen);
     } else {
+      server.setPlayer(server.addSingleplayer(server.getDummyPlayer()));
       mainCtrl.showWaitingRoomScreenSP();
     }
   }

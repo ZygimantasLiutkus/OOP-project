@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
+import commons.GameEntity;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javax.inject.Inject;

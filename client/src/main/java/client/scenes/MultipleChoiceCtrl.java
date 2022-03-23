@@ -2,10 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Activity;
-import commons.GameEntity;
-import commons.LeaderboardEntry;
-import commons.Question;
+import commons.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -40,6 +37,8 @@ public class MultipleChoiceCtrl {
   private double progress = 1;
   private Timeline timeline;
   private Timeline timeCount;
+  public GameEntity dummyGameStarted = new GameEntity("STARTED");
+  public GameEntity dummyGameFinished = new GameEntity("FINISHED");
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
   @FXML
@@ -149,6 +148,7 @@ public class MultipleChoiceCtrl {
    * Starts the timer.
    */
   public void timerStart() {
+    server.changeStatus(server.getIdGame(), dummyGameStarted);
     nextQuestionSingle();
     timeCounter.setVisible(true);
     timeline = new Timeline();
@@ -298,7 +298,11 @@ public class MultipleChoiceCtrl {
     } else {
       if (questionNum < 20) {
         timerStart();
-        nextQuestionMultiple();
+        if (type.equals("SINGLEPLAYER")) {
+          nextQuestionSingle();
+        } else {
+          nextQuestionMultiple();
+        }
       } else {
         mainCtrl.showMPLeaderboard();
       }
@@ -391,7 +395,8 @@ public class MultipleChoiceCtrl {
    * Set the texts of the texts fields by question data.
    */
   public void setText() {
-    setQuestion(server.getQuestion(String.valueOf(questionNum + 1)));
+    setQuestion(server.getQuestion(server.getIdGame(),
+        String.valueOf(questionNum + 1)));
     setMapButtons();
     if (this.question.getText().equals("Which is more expensive?")) {
       prepareMoreExpensive();

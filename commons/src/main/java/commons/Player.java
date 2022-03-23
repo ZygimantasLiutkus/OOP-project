@@ -25,7 +25,7 @@ public class Player {
   private int score = 0;
   private String name;
   private String selectedAnswer = "0";
-  private Long gameId;
+  private Long gameId = 0L;
 
   /**
    * For object mappers.

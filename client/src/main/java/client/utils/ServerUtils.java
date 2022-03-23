@@ -38,6 +38,7 @@ public class ServerUtils {
 
   private String server = "http://localhost:8080/";
   private Player player = new Player("");
+  private Player dummyPlayer = new Player("");
   // = new Player("test"); for testing purposes. If we want to test client uncomment.
 
   /**
@@ -184,7 +185,7 @@ public class ServerUtils {
   /**
    * Requests a question and gives it to the client.
    *
-   * @param idx the index of the question
+   * @param idx  the index of the question
    * @param game the id of the game
    * @return a question from a poll
    */
@@ -241,5 +242,29 @@ public class ServerUtils {
         .put(Entity.json(status));
   }
 
+  public void setDummy(Player player) {
+    this.dummyPlayer = player;
+  }
+
+  public Player getDummyPlayer(){
+    return dummyPlayer;
+  }
+
+  public String getIdGame() {
+    return String.valueOf(this.player.getGameId());
+  }
+
+  public Player getPlayerServer(){
+    return this.player;
+  }
+
+  public Player getPlayerDataBase(String playerId) {
+    return ClientBuilder.newClient(new ClientConfig()) //
+        .target(server).path("api/game/player" + playerId) //
+        .request(APPLICATION_JSON) //
+        .accept(APPLICATION_JSON) //
+        .get(new GenericType<Player>() {
+        });
+  }
 
 }
