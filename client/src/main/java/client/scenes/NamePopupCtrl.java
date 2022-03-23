@@ -52,10 +52,10 @@ public class NamePopupCtrl {
         case WaitingRoomScreen:
           mainCtrl.showWaitingRoomScreenSP();
           break;
-        case MultiPlayerWaitingRoom:
+        case MPWaitingRoomScreen:
           // TODO: Add check if this name is valid to enter the multiplayer waiting room
           // TODO: Show multiplayer waiting room
-          mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
+          mainCtrl.showWaitingRoomScreenMP();
           break;
         default:
           break;

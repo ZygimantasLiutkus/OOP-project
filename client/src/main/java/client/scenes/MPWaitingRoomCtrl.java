@@ -4,12 +4,11 @@ import client.utils.ServerUtils;
 import commons.GameEntity;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javax.inject.Inject;
 
 /**
  * Controller for the Single-player WaitingRoom scene.
  */
-public class WaitingRoomCtrl {
+public class MPWaitingRoomCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
@@ -18,21 +17,20 @@ public class WaitingRoomCtrl {
   private Button startButton;
 
   /**
-   * Constructor for the Single-player Waiting Room Controller.
+   * Constructor for the Multi-player Waiting Room Controller.
    *
-   * @param server   reference to the server the game will run on.
+   * @param server reference to the server the game will run on.
    * @param mainCtrl reference to the main controller.
    */
-  @Inject
-  public WaitingRoomCtrl(ServerUtils server, MainCtrl mainCtrl) {
+  public MPWaitingRoomCtrl(ServerUtils server, MainCtrl mainCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
   }
 
   /**
-   * Starts the game in single-player mode.
+   * Starts the game in multi-player mode.
    */
-  public void startSinglePlayer() {
-    mainCtrl.showMoreExpensive(GameEntity.Type.SINGLEPLAYER);
+  public void startMultiPlayer() {
+    mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
   }
 }
