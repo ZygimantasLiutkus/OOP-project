@@ -52,7 +52,7 @@ public class NamePopupCtrl {
   public void submit() {
     if (!nameField.getText().equals("")) {
       server.setDummy(new Player(nameField.getText()));
-      server.setPlayer(server.addSingleplayer(server.getDummyPlayer()));
+      server.setPlayer(server.addSingleplayer());
       switch (nextScreen) {
         case WaitingRoomScreen:
           mainCtrl.showWaitingRoomScreenSP();

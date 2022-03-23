@@ -219,11 +219,11 @@ public class ServerUtils {
    * @param player the added player
    * @return the data of the respective player
    */
-  public Player addSingleplayer(Player player) {
+  public Player addSingleplayer() {
     Response response = ClientBuilder.newClient(new ClientConfig())
         .target(server + "api/game/singleplayer")
         .request()
-        .post(Entity.json(player));
+        .post(Entity.json(getDummyPlayer()));
     Player p = response.readEntity(GameEntity.class).getPlayers().get(0);
     setPlayer(p);
     return p;
@@ -259,4 +259,14 @@ public class ServerUtils {
     return dummyPlayer;
   }
 
+
+  public Player addPlayer(){
+    Response response = ClientBuilder.newClient(new ClientConfig())
+        .target(server + "api/game/addPlayer")
+        .request()
+        .post(Entity.json(getDummyPlayer()));
+    Player p = response.readEntity(GameEntity.class).getPlayers().get(0);
+    setPlayer(p);
+    return p;
+  }
 }
