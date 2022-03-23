@@ -282,8 +282,15 @@ public class ServerUtils {
         .target(server + "api/game/addPlayer")
         .request()
         .post(Entity.json(getDummyPlayer()));
-    Player p = response.readEntity(GameEntity.class).getPlayers().get(0);
-    setPlayer(p);
-    return p;
+    List<Player> players = response.readEntity(GameEntity.class).getPlayers();
+    for (Player p : players) {
+      if (p.getName().equals(player.getName())) {
+        setPlayer(p);
+        return p;
+      }
+    }
+    //Returning null because it's impossible for a name
+    // set in the client to be nonexistent inside a lobby.
+    return null;
   }
 }
