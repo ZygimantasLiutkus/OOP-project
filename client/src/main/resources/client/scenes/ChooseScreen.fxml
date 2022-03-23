@@ -8,7 +8,8 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="408.0"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+            minHeight="408.0"
             minWidth="900.0" prefHeight="500.0" prefWidth="1000.0"
             xmlns="http://javafx.com/javafx/17" fx:controller="client.scenes.ChooseScreenCtrl">
     <top>
@@ -58,6 +59,18 @@
                         <Button fx:id="multiplayerButton" mnemonicParsing="false" onMouseClicked="#playMultiplayer"
                                 onTouchPressed="#playMultiplayer" prefHeight="50.0" prefWidth="200.0"
                                 text="Play multiplayer"/>
+                    </children>
+                </FlowPane>
+                <FlowPane alignment="CENTER" hgap="100.0" layoutY="140.0" maxHeight="1.7976931348623157E308"
+                          maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
+                          prefHeight="150.0" prefWidth="1000.0" style="-fx-alignment: center;"
+                          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <children>
+                        <Button fx:id="changeServerButton" mnemonicParsing="false" onMouseClicked="#changeServer"
+                                onTouchPressed="#changeServer" prefHeight="50.0" prefWidth="200.0"
+                                text="Change server"/>
+                        <Button fx:id="changeNameButton" mnemonicParsing="false" onMouseClicked="#changeName"
+                                onTouchPressed="#changeName" prefHeight="50.0" prefWidth="200.0" text="Change name"/>
                     </children>
                 </FlowPane>
             </children>
