@@ -198,6 +198,15 @@ public class ServerUtils {
     return q;
   }
 
+  public GameEntity getGame(){
+    return ClientBuilder.newClient(new ClientConfig()) //
+        .target(server).path("api/game/" + String.valueOf(player.getGameId())) //
+        .request(APPLICATION_JSON) //
+        .accept(APPLICATION_JSON) //
+        .get(new GenericType<GameEntity>() {
+        });
+  }
+
   /**
    * Gets the type of the game and gives it to the client.
    *

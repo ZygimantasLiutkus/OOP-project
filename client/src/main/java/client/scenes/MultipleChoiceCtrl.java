@@ -39,6 +39,7 @@ public class MultipleChoiceCtrl {
   private Timeline timeCount;
   public GameEntity dummyGameStarted = new GameEntity("STARTED");
   public GameEntity dummyGameFinished = new GameEntity("FINISHED");
+  public GameEntity dummyGameAborted = new GameEntity("ABORTED");
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
   @FXML
@@ -105,7 +106,10 @@ public class MultipleChoiceCtrl {
    */
   public void goHomeScreen() {
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
-      questionNum = 21;
+      questionNum = 20;
+      timeline.stop();
+      timeCount.stop();
+      server.changeStatus(dummyGameAborted);
     }
     mainCtrl.showChooseScreen();
   }
@@ -314,9 +318,11 @@ public class MultipleChoiceCtrl {
       } else {
         String name = server.getPlayer().getName();
         int points = server.getPlayer().getScore();
+        if(!server.getGame().getStatus().equals("ABORTED")){
         LeaderboardEntry entry = new LeaderboardEntry(name, points);
         entry = server.addLeaderboardEntry(entry);
-        mainCtrl.showSPLeaderboard(entry);
+          mainCtrl.showSPLeaderboard(entry);
+        }
       }
     } else {
       if (questionNum < 20) {
