@@ -305,7 +305,10 @@ public class MultipleChoiceCtrl {
         timerStart();
         nextQuestionMultiple();
       } else {
-        mainCtrl.showMPLeaderboard();
+        String name = server.getPlayer().getName();
+        int points = server.getPlayer().getScore();
+        LeaderboardEntry entry = new LeaderboardEntry(name, points);
+        mainCtrl.showMPLeaderboard(entry);
       }
     }
   }

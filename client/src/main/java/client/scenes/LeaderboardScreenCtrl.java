@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.GameEntity;
 import commons.LeaderboardEntry;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class LeaderboardScreenCtrl implements Initializable {
 
   private ObservableList<LeaderboardEntry> data;
   private LeaderboardEntry ownEntry;
+  private GameEntity.Type gameType;
 
   @FXML
   private TableView leaderboardTable;
@@ -78,7 +80,12 @@ public class LeaderboardScreenCtrl implements Initializable {
    * Updates the global leaderboard with stored leaderboard entries.
    */
   public void refreshTop10() {
-    List<LeaderboardEntry> entries = server.getLeaderboardEntries();
+    List<LeaderboardEntry> entries = new ArrayList<>();
+    if (this.gameType == GameEntity.Type.SINGLEPLAYER) {
+      entries = server.getGlobalLeaderboard();
+    } else {
+      entries = server.getMultiplayerLeaderboard();
+    }
     entries.sort((e1, e2) -> Integer.compare(e2.getScore(), e1.getScore()));
 
     for (int i = 0; i < entries.size(); i++) {
@@ -137,17 +144,21 @@ public class LeaderboardScreenCtrl implements Initializable {
     this.scoreLabel.setText("Global Scores");
     this.reconnectButton.setVisible(false);
     this.homeButton.setVisible(false);
+    this.gameType = GameEntity.Type.SINGLEPLAYER;
     this.ownEntry = entry;
   }
 
   /**
    * Setter for the settings of a multiplayer leaderboard.
+   *
+   * @param entry the leaderboardEntry of the current player
    */
-  public void setMultiplayer() {
+  public void setMultiplayer(LeaderboardEntry entry) {
     this.scoreLabel.setText("Scores");
     this.reconnectButton.setVisible(true);
     this.homeButton.setVisible(true);
-    this.ownEntry = null;
+    this.gameType = GameEntity.Type.MULTIPLAYER;
+    this.ownEntry = entry;
   }
 
   /**

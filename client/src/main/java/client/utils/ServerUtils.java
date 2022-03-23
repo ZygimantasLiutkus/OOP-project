@@ -40,7 +40,6 @@ public class ServerUtils {
 
   private String server = "http://localhost:8080/";
   private Player player = new Player("");
-  // = new Player("test"); for testing purposes. If we want to test client uncomment.
 
   /**
    * Sets the server to connect to in later requests.
@@ -121,13 +120,29 @@ public class ServerUtils {
   }
 
   /**
-   * Gets the leaderboard entries from backend.
+   * Gets the global leaderboard entries from backend.
    *
    * @return a list of leaderboard entries.
    */
-  public List<LeaderboardEntry> getLeaderboardEntries() {
+  public List<LeaderboardEntry> getGlobalLeaderboard() {
     return ClientBuilder.newClient(new ClientConfig()) //
         .target(server).path("api/leaderboard") //
+        .request(APPLICATION_JSON) //
+        .accept(APPLICATION_JSON) //
+        .get(new GenericType<List<LeaderboardEntry>>() {
+        });
+  }
+
+  /**
+   * Gets the multiplayer leaderboard entries from backend.
+   *
+   * @return a list of leaderboard entries.
+   */
+  public List<LeaderboardEntry> getMultiplayerLeaderboard() {
+    //long id = player.getGameId();
+    long id = 1L;  // TODO: replace with the line above
+    return ClientBuilder.newClient(new ClientConfig()) //
+        .target(server).path("api/game/" + id + "/leaderboard") //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .get(new GenericType<List<LeaderboardEntry>>() {
