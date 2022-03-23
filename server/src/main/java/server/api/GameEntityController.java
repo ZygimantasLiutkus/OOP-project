@@ -323,14 +323,4 @@ public class GameEntityController {
     return ResponseEntity.ok(repo.save(game));
   }
 
-  @GetMapping(path = "/player/{id}")
-  public ResponseEntity<Player> getPlayer(@PathVariable Long id){
-    List<GameEntity> games = repo.findAll();
-    for(GameEntity game : games){
-      for(Player player : game.getPlayers()){
-        if(player.getId() == id) return ResponseEntity.ok(player);
-      }
-    }
-    return ResponseEntity.badRequest().build();
-  }
 }

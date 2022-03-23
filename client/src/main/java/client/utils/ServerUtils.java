@@ -254,17 +254,4 @@ public class ServerUtils {
     return String.valueOf(this.player.getGameId());
   }
 
-  public Player getPlayerServer(){
-    return this.player;
-  }
-
-  public Player getPlayerDataBase(String playerId) {
-    return ClientBuilder.newClient(new ClientConfig()) //
-        .target(server).path("api/game/player" + playerId) //
-        .request(APPLICATION_JSON) //
-        .accept(APPLICATION_JSON) //
-        .get(new GenericType<Player>() {
-        });
-  }
-
 }
