@@ -42,6 +42,9 @@ public class MultipleChoiceCtrl {
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
   @FXML
+  private ImageView homeButton;
+
+  @FXML
   private Label questionLabel;
 
   @FXML
@@ -95,6 +98,23 @@ public class MultipleChoiceCtrl {
     this.mainCtrl = mainCtrl;
   }
 
+  /**
+   * Method to "disconnect" from a game.
+   * It also stops a game from running if game type is sp.
+   * (For now it works best for sp as there is no notification of disconnecting)
+   */
+  public void goHomeScreen() {
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      questionNum = 21;
+    }
+    mainCtrl.showChooseScreen();
+  }
+
+  /**
+   * Setter for the game type.
+   *
+   * @param type the type of game it was created
+   */
   public void setType(GameEntity.Type type) {
     this.type = type;
   }
@@ -148,8 +168,10 @@ public class MultipleChoiceCtrl {
    * Starts the timer.
    */
   public void timerStart() {
-    server.changeStatus(server.getIdGame(), dummyGameStarted);
-    if(this.questionNum == 20) this.questionNum = 0;
+    server.changeStatus(dummyGameStarted);
+    if (this.questionNum == 20) {
+      this.questionNum = 0;
+    }
     nextQuestionSingle();
     timeCounter.setVisible(true);
     timeline = new Timeline();
@@ -305,6 +327,7 @@ public class MultipleChoiceCtrl {
           nextQuestionMultiple();
         }
       } else {
+        server.changeStatus(dummyGameFinished);
         mainCtrl.showMPLeaderboard();
       }
     }
@@ -396,8 +419,7 @@ public class MultipleChoiceCtrl {
    * Set the texts of the texts fields by question data.
    */
   public void setText() {
-    setQuestion(server.getQuestion(server.getIdGame(),
-        String.valueOf(questionNum + 1)));
+    setQuestion(server.getQuestion(String.valueOf(questionNum + 1)));
     setMapButtons();
     if (this.question.getText().equals("Which is more expensive?")) {
       prepareMoreExpensive();

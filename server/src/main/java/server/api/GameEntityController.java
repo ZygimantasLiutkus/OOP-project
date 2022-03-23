@@ -175,6 +175,7 @@ public class GameEntityController {
       }
       game.setType(GameEntity.Type.MULTIPLAYER);
       game.setQuestions(questions);
+      repo.save(game);
       player.setGameId(game.getId());
       playerRepo.save(player);
       game.addPlayer(player);

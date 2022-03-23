@@ -185,13 +185,12 @@ public class ServerUtils {
   /**
    * Requests a question and gives it to the client.
    *
-   * @param idx  the index of the question
-   * @param game the id of the game
+   * @param idx the index of the question
    * @return a question from a poll
    */
-  public Question getQuestion(String game, String idx) {
+  public Question getQuestion(String idx) {
     Question q = ClientBuilder.newClient(new ClientConfig()) //
-        .target(server).path("api/game/" + game + "/question/" + idx) //
+        .target(server).path("api/game/" + player.getGameId() + "/question/" + idx) //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .get(new GenericType<Question>() {
@@ -226,32 +225,38 @@ public class ServerUtils {
         .request()
         .post(Entity.json(player));
     Player p = response.readEntity(GameEntity.class).getPlayers().get(0);
+    setPlayer(p);
     return p;
   }
 
   /**
    * Method to change the status of the game.
    *
-   * @param game   the nr of the game
    * @param status a dummy game only with status
    */
-  public void changeStatus(String game, GameEntity status) {
+  public void changeStatus(GameEntity status) {
     ClientBuilder.newClient(new ClientConfig())
-        .target(server + "api/game/" + game)
+        .target(server + "api/game/" + player.getGameId())
         .request()
         .put(Entity.json(status));
   }
 
+  /**
+   * Setter for the dummy player that only gets a name.
+   *
+   * @param player the newly created player
+   */
   public void setDummy(Player player) {
     this.dummyPlayer = player;
   }
 
-  public Player getDummyPlayer(){
+  /**
+   * Getter for the dummy player.
+   *
+   * @return a player that only contains a name
+   */
+  public Player getDummyPlayer() {
     return dummyPlayer;
-  }
-
-  public String getIdGame() {
-    return String.valueOf(this.player.getGameId());
   }
 
 }

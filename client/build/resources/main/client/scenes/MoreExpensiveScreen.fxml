@@ -26,7 +26,7 @@
                           AnchorPane.rightAnchor="151.80000000000007">
                     <children>
                         <Label fx:id="questionLabel" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
-                               minHeight="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="560.0"
+                               minHeight="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="580.0"
                                text="questionLabel" textOverrun="WORD_ELLIPSIS" wrapText="true" textAlignment="CENTER">
                             <font>
                                 <Font size="20.0"/>
@@ -108,7 +108,7 @@
                           style="-fx-alignment: center;" AnchorPane.rightAnchor="13.600000000000023"
                           AnchorPane.topAnchor="3.0">
                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="homeButton" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true"  onMouseClicked="#goHomeScreen">
                             <image>
                                 <Image url="@/client/images/homeIcon.png"/>
                             </image>
