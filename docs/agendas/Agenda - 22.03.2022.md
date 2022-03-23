@@ -24,11 +24,11 @@ Note taker:     Adelina Cazacu
 
 ## Planning
 
-- All the must have issues should be finished by today (end of sprint 4/7)
+- All the must-have issues should be finished by today (end of sprint 4/7)
 - Set and divide tasks for sprint 5
 - Bug fixing
 	- Discuss if anyone has encountered any bugs. Make issues/incidents to fix them
-- Merge everyones issues to Development by the end of this week.
+- Merge everyone's issues to Development by the end of this week.
 
 # Action points for next week (Scrum board)
 
@@ -44,7 +44,7 @@ he/she should bring that up now so that it can be discussed after all.*
 
 - Is it bad to have high cyclomatic complexity?
 - How to correctly import activities?
-- Should files stored locally also be commited to main (json/images)?
+- Should files stored locally also be committed to main (json/images)?
 
 # Tips / tops round
 
@@ -61,3 +61,23 @@ he/she should bring that up now so that it can be discussed after all.*
     - Note taker: Zygimantas
 
 *Now you can start working on the project. Good luck!*
+
+# Notes
+
+- progress: finished all issues for sprint 4 on time
+- on track
+- we should start paying attention to bug fixing
+- maybe make a list of bugs? to discuss and fix them
+- final requirements: server does not crash, is it close to what we designed (why (not)?)
+- filter out activities with long names: preferably automatically (if we delete them from the json file we have to document that somewhere)
+- filtering for integer overflow: perfectly fine <br/><br/>
+
+- high cyclomatic complexity: only matters within a method
+  git inspector calculates it for a whole file
+- importing the activities: local copy, not allowed to put them on git
+  specify in the readme what files need to be stored where
+  we need to make a request to the server to get the image <br/><br/>
+
+- good test coverage
+- good javadoc
+- overall doing really well! :)
