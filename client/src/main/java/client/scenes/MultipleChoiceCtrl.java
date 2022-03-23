@@ -314,7 +314,7 @@ public class MultipleChoiceCtrl {
     } else {
       if (questionNum < 20) {
         timerStart();
-        if (type.equals("SINGLEPLAYER")) {
+        if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
           nextQuestionSingle();
         } else {
           nextQuestionMultiple();
