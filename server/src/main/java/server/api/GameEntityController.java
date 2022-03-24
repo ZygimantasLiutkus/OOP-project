@@ -174,6 +174,7 @@ public class GameEntityController {
       }
       game.setType(GameEntity.Type.MULTIPLAYER);
       game.setQuestions(questions);
+      repo.save(game);
       playerRepo.save(player);
       game.addPlayer(player);
       return ResponseEntity.ok(repo.save(game));

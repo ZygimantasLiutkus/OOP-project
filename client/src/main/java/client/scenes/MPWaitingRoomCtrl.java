@@ -4,6 +4,7 @@ import client.utils.ServerUtils;
 import commons.GameEntity;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javax.inject.Inject;
 
 /**
  * Controller for the Single-player WaitingRoom scene.
@@ -22,6 +23,7 @@ public class MPWaitingRoomCtrl {
    * @param server reference to the server the game will run on.
    * @param mainCtrl reference to the main controller.
    */
+  @Inject
   public MPWaitingRoomCtrl(ServerUtils server, MainCtrl mainCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
