@@ -47,7 +47,7 @@ public class ChooseScreenCtrl {
    * Shows the singleplayer waiting room.
    */
   public void playSinglePlayer() {
-    if (server.getPlayer().getName().equals("")) {
+    if (server.getDummyPlayer().getName().equals("")) {
       mainCtrl.showNamePopup(NextScreen.WaitingRoomScreen);
     } else {
       server.addSingleplayer();
