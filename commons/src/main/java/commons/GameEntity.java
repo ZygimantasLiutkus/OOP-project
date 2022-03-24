@@ -47,6 +47,15 @@ public class GameEntity {
   }
 
   /**
+   * Constructor to only support status.
+   *
+   * @param status the desired status
+   */
+  public GameEntity(String status) {
+    this.status = status;
+  }
+
+  /**
    * A getter for the type.
    *
    * @return a string value of the game type.

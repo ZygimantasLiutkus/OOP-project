@@ -24,6 +24,17 @@
     -fx-border-color: #EFDB22;
     -fx-border-width: 4px;
 }
+/*
+If having an animation when mouse hover looks good,
+uncomment this.
+
+.button:hover {
+    -fx-background-color: #11AD31;
+    -fx-max-height: 47;
+    -fx-border-color: #EFDB22;
+    -fx-border-width: 4px;
+}
+*/
 
 #reconnectButton,
 #homeButton {
@@ -68,5 +79,9 @@
 .table-row-cell:empty {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
+}
+
+.table-column {
+    -fx-alignment: CENTER;
 }
 

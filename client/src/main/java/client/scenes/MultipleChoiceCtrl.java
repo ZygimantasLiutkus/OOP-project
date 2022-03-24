@@ -2,10 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Activity;
-import commons.GameEntity;
-import commons.LeaderboardEntry;
-import commons.Question;
+import commons.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -40,8 +37,14 @@ public class MultipleChoiceCtrl {
   private double progress = 1;
   private Timeline timeline;
   private Timeline timeCount;
+  public GameEntity dummyGameStarted = new GameEntity("STARTED");
+  public GameEntity dummyGameFinished = new GameEntity("FINISHED");
+  public GameEntity dummyGameAborted = new GameEntity("ABORTED");
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
+  @FXML
+  private ImageView homeButton;
+
   @FXML
   private Label questionLabel;
 
@@ -97,9 +100,24 @@ public class MultipleChoiceCtrl {
   }
 
   /**
-   * A setter for the game type.
+   * Method to "disconnect" from a game.
+   * It also stops a game from running if game type is sp.
+   * (For now it works best for sp as there is no notification of disconnecting)
+   */
+  public void goHomeScreen() {
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      questionNum = 20;
+      timeline.stop();
+      timeCount.stop();
+      server.changeStatus(dummyGameAborted);
+    }
+    mainCtrl.showChooseScreen();
+  }
+
+  /**
+   * Setter for the game type.
    *
-   * @param type the game type
+   * @param type the type of game it was created
    */
   public void setType(GameEntity.Type type) {
     this.type = type;
@@ -154,6 +172,10 @@ public class MultipleChoiceCtrl {
    * Starts the timer.
    */
   public void timerStart() {
+    server.changeStatus(dummyGameStarted);
+    if (this.questionNum == 20) {
+      this.questionNum = 0;
+    }
     nextQuestionSingle();
     timeCounter.setVisible(true);
     timeline = new Timeline();
@@ -296,15 +318,22 @@ public class MultipleChoiceCtrl {
       } else {
         String name = server.getPlayer().getName();
         int points = server.getPlayer().getScore();
-        LeaderboardEntry entry = new LeaderboardEntry(name, points);
-        entry = server.addLeaderboardEntry(entry);
-        mainCtrl.showSPLeaderboard(entry);
+        if (!server.getGame().getStatus().equals("ABORTED")) {
+          LeaderboardEntry entry = new LeaderboardEntry(name, points);
+          entry = server.addLeaderboardEntry(entry);
+          mainCtrl.showSPLeaderboard(entry);
+        }
       }
     } else {
       if (questionNum < 20) {
         timerStart();
-        nextQuestionMultiple();
+        if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+          nextQuestionSingle();
+        } else {
+          nextQuestionMultiple();
+        }
       } else {
+        server.changeStatus(dummyGameFinished);
         mainCtrl.showMPLeaderboard();
       }
     }

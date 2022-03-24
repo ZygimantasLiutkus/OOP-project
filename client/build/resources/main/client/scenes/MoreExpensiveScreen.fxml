@@ -11,6 +11,8 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+
+
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="gameBg" maxHeight="1.7976931348623157E308"
             maxWidth="1.7976931348623157E308"
             minHeight="450.0" minWidth="1200.0" prefHeight="500.0" prefWidth="1200.0"
@@ -24,7 +26,7 @@
                           AnchorPane.rightAnchor="151.80000000000007">
                     <children>
                         <Label fx:id="questionLabel" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
-                               minHeight="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="560.0"
+                               minHeight="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="580.0"
                                text="questionLabel" textOverrun="WORD_ELLIPSIS" wrapText="true" textAlignment="CENTER">
                             <font>
                                 <Font size="20.0"/>
@@ -62,13 +64,13 @@
                     <children>
                         <Button fx:id="answer1" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity"
                                 minWidth="-Infinity" mnemonicParsing="false" onAction="#setSelectedAnswer1"
-                                prefHeight="60.0" prefWidth="230.0" text="answer1"/>
+                                prefHeight="65.0" prefWidth="230.0" text="answer1" wrapText="true" textAlignment="CENTER"/>
                         <Button fx:id="answer2" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity"
                                 maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
-                                onAction="#setSelectedAnswer2" prefHeight="60.0" prefWidth="230.0" text="answer2"/>
+                                onAction="#setSelectedAnswer2" prefHeight="65.0" prefWidth="230.0" text="answer2" wrapText="true" textAlignment="CENTER"/>
                         <Button fx:id="answer3" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity"
                                 minWidth="-Infinity" mnemonicParsing="false" onAction="#setSelectedAnswer3"
-                                prefHeight="60.0" prefWidth="230.0" text="answer3"/>
+                                prefHeight="65.0" prefWidth="230.0" text="answer3" wrapText="true" textAlignment="CENTER"/>
                     </children>
                     <padding>
                         <Insets top="20.0"/>
@@ -106,7 +108,7 @@
                           style="-fx-alignment: center;" AnchorPane.rightAnchor="13.600000000000023"
                           AnchorPane.topAnchor="3.0">
                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="homeButton" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true"  onMouseClicked="#goHomeScreen">
                             <image>
                                 <Image url="@/client/images/homeIcon.png"/>
                             </image>

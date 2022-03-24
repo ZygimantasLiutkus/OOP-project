@@ -17,6 +17,7 @@ public class NamePopupCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
+  private final MultipleChoiceCtrl multipleCtrl;
 
   private NextScreen nextScreen;
 
@@ -32,13 +33,16 @@ public class NamePopupCtrl {
   /**
    * Constructor for NamePopupCtrl.
    *
-   * @param server   reference to the server the game will run on.
-   * @param mainCtrl reference to the main controller.
+   * @param server       reference to the server the game will run on.
+   * @param mainCtrl     reference to the main controller.
+   * @param multipleCtrl reference to multiple controller.
    */
   @Inject
-  public NamePopupCtrl(ServerUtils server, MainCtrl mainCtrl) {
+  public NamePopupCtrl(ServerUtils server, MainCtrl mainCtrl,
+                       MultipleChoiceCtrl multipleCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
+    this.multipleCtrl = multipleCtrl;
   }
 
   /**
@@ -46,9 +50,10 @@ public class NamePopupCtrl {
    */
   public void submit() {
     if (!nameField.getText().equals("")) {
-      server.setPlayer(new Player(nameField.getText()));
+      server.setDummy(new Player(nameField.getText()));
       switch (nextScreen) {
         case WaitingRoomScreen:
+          server.setPlayer(server.addSingleplayer());
           mainCtrl.showWaitingRoomScreenSP();
           break;
         case MPWaitingRoomScreen:

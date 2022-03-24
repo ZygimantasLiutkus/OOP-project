@@ -175,6 +175,7 @@ public class GameEntityController {
       game.setType(GameEntity.Type.MULTIPLAYER);
       game.setQuestions(questions);
       repo.save(game);
+      player.setGameId(game.getId());
       playerRepo.save(player);
       game.addPlayer(player);
       return ResponseEntity.ok(repo.save(game));
@@ -188,6 +189,7 @@ public class GameEntityController {
       }
     }
     // Save the player and add it to the game
+    player.setGameId(game.getId());
     playerRepo.save(player);
     game.addPlayer(player);
     return ResponseEntity.ok(repo.save(game));
@@ -303,12 +305,14 @@ public class GameEntityController {
    */
   @PostMapping(path = "/singleplayer")
   public ResponseEntity<GameEntity> addSingleplayer(@RequestBody Player player) {
-    playerRepo.save(player);
     GameEntity game = repo.save(new GameEntity());
     List<Question> questions = qRepo.saveAll(service.generateQuestion(20));
     game.setType(GameEntity.Type.SINGLEPLAYER);
     game.setQuestions(questions);
+    player.setGameId(game.getId());
+    playerRepo.save(player);
     game.addPlayer(player);
     return ResponseEntity.ok(repo.save(game));
   }
+
 }
