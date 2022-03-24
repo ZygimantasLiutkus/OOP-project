@@ -15,7 +15,7 @@
             <children>
                 <Button fx:id="startButton" layoutX="571.0" layoutY="263.0" maxHeight="59.0" mnemonicParsing="false"
                         onMouseClicked="#startMultiPlayer" onTouchPressed="#startMultiPlayer" prefHeight="59.0"
-                        prefWidth="174.0" text="START" textAlignment="CENTER">
+                        prefWidth="174.0" text="START" textAlignment="CENTER" visible="false">
                     <font>
                         <Font size="22.0" />
                     </font>
