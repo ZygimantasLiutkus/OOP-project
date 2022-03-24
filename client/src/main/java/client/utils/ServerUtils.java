@@ -18,6 +18,7 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import commons.GameEntity;
 import commons.LeaderboardEntry;
 import commons.Player;
 import commons.Question;
