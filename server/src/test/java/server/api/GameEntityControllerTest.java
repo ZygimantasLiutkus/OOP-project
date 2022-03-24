@@ -3,6 +3,7 @@ package server.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 
 import commons.Activity;
 import commons.GameEntity;
@@ -83,7 +84,7 @@ public class GameEntityControllerTest {
   public void noPlayersWithSameName() {
     sut.addPlayerToGame(getPlayer("Bob"));
     var actual = sut.addPlayerToGame(getPlayer("Bob"));
-    assertEquals(BAD_REQUEST, actual.getStatusCode());
+    assertEquals(CONFLICT, actual.getStatusCode());
   }
 
   /**
@@ -343,7 +344,7 @@ public class GameEntityControllerTest {
     List<LeaderboardEntry> lb = new ArrayList<LeaderboardEntry>();
     lb.add(le1);
     lb.add(le2);
-    
+
     Player p1 = new Player("p1");
     Player p2 = new Player("p2");
     p1.setScore(1);

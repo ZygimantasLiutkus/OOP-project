@@ -300,9 +300,12 @@ public class ServerUtils {
         .target(server).path("api/game/addPlayer")
         .request()
         .post(Entity.json(getDummyPlayer()));
+    if (response.getStatus() == 409) { // HTTP status 409 is CONFLICT
+      return null;
+    }
     List<Player> players = response.readEntity(GameEntity.class).getPlayers();
     for (Player p : players) {
-      if (p.getName().equals(player.getName())) {
+      if (p.getName().equals(dummyPlayer.getName())) {
         setPlayer(p);
         return p;
       }
