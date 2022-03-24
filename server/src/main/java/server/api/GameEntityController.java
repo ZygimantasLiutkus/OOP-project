@@ -3,7 +3,6 @@ package server.api;
 import commons.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -205,12 +204,7 @@ public class GameEntityController {
   @GetMapping(path = "/{id}/question")
   public ResponseEntity<List<Question>> getAllQuestions(@PathVariable("id") long id) {
     if (repo.existsById(id)) {
-      Optional<GameEntity> game = repo.findById(id);
-      GameEntity entity = new GameEntity();
-      if (game.isPresent()) {
-        entity = game.get();
-      }
-      return ResponseEntity.ok(entity.getQuestions());
+      return ResponseEntity.ok(repo.getById(id).getQuestions());
     }
     return ResponseEntity.badRequest().build();
   }
@@ -295,12 +289,9 @@ public class GameEntityController {
    * @return the content of the question
    */
   @GetMapping(path = "/{id}/question/{idQ}")
-  public ResponseEntity<Question> getQuestionById(@PathVariable("id") long id,
+  public ResponseEntity<Question> getQuestionById(@PathVariable("id") Long id,
                                                   @PathVariable("idQ") int q) {
     if (!repo.existsById(id) || q <= 0 || q > 20) {
-      return ResponseEntity.badRequest().build();
-    }
-    if (!repo.existsById(id)) {
       return ResponseEntity.badRequest().build();
     }
     return ResponseEntity.ok(repo.getById(id).getQuestions().get(q - 1));

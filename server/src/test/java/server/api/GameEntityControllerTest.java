@@ -265,4 +265,44 @@ public class GameEntityControllerTest {
     assertEquals(sut.getAllGames().getBody().get(0), game1);
     assertEquals(sut.getAllGames().getBody().get(1), game2);
   }
+
+  /**
+   * Test for getting a list of all the questions.
+   */
+  @Test
+  public void testGetAllQuestions() {
+    repo.deleteAll();
+    GameEntity game = sut.addPlayerToGame(getPlayer("Bob")).getBody();
+    Long id = game.getId();
+    assertEquals(game.getQuestions(), sut.getAllQuestions(id).getBody());
+    assertEquals(BAD_REQUEST, sut.getAllQuestions(id + 1).getStatusCode());
+  }
+
+  /**
+   * Test for adding a player in singleplayer.
+   */
+  @Test
+  public void testAddSingleplayer() {
+    repo.deleteAll();
+    GameEntity game1 = sut.addSingleplayer(getPlayer("Alice")).getBody();
+    GameEntity game2 = sut.addSingleplayer(getPlayer("Bob")).getBody();
+    GameEntity game3 = sut.addSingleplayer(getPlayer("Alice")).getBody();
+    assertEquals(game1, repo.findAll().get(0));
+    assertEquals(game2, repo.findAll().get(1));
+    assertEquals(game3, repo.findAll().get(2));
+  }
+
+  /**
+   * Test for getting a question by id.
+   * For this test to pass you need to have the activities imported!
+   */
+  @Test
+  public void testGetQuestionById() {
+    GameEntity game = sut.addPlayerToGame(getPlayer("Alice")).getBody();
+    assertEquals(BAD_REQUEST, sut.getQuestionById(game.getId() + 1, 2).getStatusCode());
+    assertEquals(BAD_REQUEST, sut.getQuestionById(game.getId(), -3).getStatusCode());
+    assertEquals(BAD_REQUEST, sut.getQuestionById(game.getId(), 21).getStatusCode());
+    assertEquals(game.getQuestions().get(0), sut.getQuestionById(game.getId(), 1).getBody());
+    assertEquals(game.getQuestions().get(3), sut.getQuestionById(game.getId(), 4).getBody());
+  }
 }

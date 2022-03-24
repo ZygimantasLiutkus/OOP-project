@@ -24,6 +24,12 @@ public class ChooseScreenCtrl {
   @FXML
   private Button multiplayerButton;
 
+  @FXML
+  private Button changeServerButton;
+
+  @FXML
+  private Button changeNameButton;
+
   /**
    * Constructor for ChooseScreenCtrl.
    *
@@ -67,5 +73,19 @@ public class ChooseScreenCtrl {
       mainCtrl.showMoreExpensive(
           GameEntity.Type.SINGLEPLAYER); // TODO: Change to singleplayer waiting room
     }
+  }
+
+  /**
+   * Shows the entry screen so that the player can enter another server.
+   */
+  public void changeServer() {
+    mainCtrl.showEntry();
+  }
+
+  /**
+   * Opens the name popup so that the player can enter another name.
+   */
+  public void changeName() {
+    mainCtrl.showNamePopup(NextScreen.None);
   }
 }
