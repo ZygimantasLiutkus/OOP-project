@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.NextScreen;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.GameEntity;
 import commons.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
