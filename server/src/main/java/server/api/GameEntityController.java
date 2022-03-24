@@ -317,7 +317,7 @@ public class GameEntityController {
     GameEntity game = repo.save(new GameEntity());
     List<Question> questions = qRepo.saveAll(service.generateQuestion(20));
     game.setType(GameEntity.Type.SINGLEPLAYER);
-    game.getQuestions().addAll(questions);
+    game.setQuestions(questions);
     player.setGameId(game.getId());
     playerRepo.save(player);
     game.addPlayer(player);
