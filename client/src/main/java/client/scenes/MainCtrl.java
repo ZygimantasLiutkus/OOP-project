@@ -200,10 +200,12 @@ public class MainCtrl {
 
   /**
    * Shows the leaderboard screen as multiplayer leaderboard.
+   *
+   * @param entry the leaderboardEntry of the current player
    */
-  public void showMPLeaderboard() {
+  public void showMPLeaderboard(LeaderboardEntry entry) {
     primaryStage.setTitle("Match Leaderboard");
-    leaderboardScreenCtrl.setMultiplayer();
+    leaderboardScreenCtrl.setMultiplayer(entry);
     primaryStage.setScene(leaderboard);
   }
 

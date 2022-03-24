@@ -2,7 +2,10 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.*;
+import commons.Activity;
+import commons.GameEntity;
+import commons.LeaderboardEntry;
+import commons.Question;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -31,15 +34,15 @@ public class MultipleChoiceCtrl {
   public Question question;
   public Random random = new Random();
   public Map<Integer, Activity> mapButtons;
+  public GameEntity dummyGameStarted = new GameEntity("STARTED");
+  public GameEntity dummyGameFinished = new GameEntity("FINISHED");
+  public GameEntity dummyGameAborted = new GameEntity("ABORTED");
   private GameEntity.Type type;
   private int startTime = 10;
   private int questionNum = 0;
   private double progress = 1;
   private Timeline timeline;
   private Timeline timeCount;
-  public GameEntity dummyGameStarted = new GameEntity("STARTED");
-  public GameEntity dummyGameFinished = new GameEntity("FINISHED");
-  public GameEntity dummyGameAborted = new GameEntity("ABORTED");
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
   @FXML
@@ -333,8 +336,11 @@ public class MultipleChoiceCtrl {
           nextQuestionMultiple();
         }
       } else {
+        String name = server.getPlayer().getName();
+        int points = server.getPlayer().getScore();
+        LeaderboardEntry entry = new LeaderboardEntry(name, points);
         server.changeStatus(dummyGameFinished);
-        mainCtrl.showMPLeaderboard();
+        mainCtrl.showMPLeaderboard(entry);
       }
     }
   }

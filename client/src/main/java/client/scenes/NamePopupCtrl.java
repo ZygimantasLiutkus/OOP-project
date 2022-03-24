@@ -53,13 +53,14 @@ public class NamePopupCtrl {
       server.setDummy(new Player(nameField.getText()));
       switch (nextScreen) {
         case WaitingRoomScreen:
-          server.setPlayer(server.addSingleplayer());
+          server.addSingleplayer();
           mainCtrl.showWaitingRoomScreenSP();
           break;
         case MPWaitingRoomScreen:
           // TODO: Add check if this name is valid to enter the multiplayer waiting room
           // TODO: Show multiplayer waiting room
-          mainCtrl.showWaitingRoomScreenMP();
+          server.addPlayer();
+          mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
           break;
         default:
           break;

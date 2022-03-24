@@ -43,7 +43,6 @@ public class ServerUtils {
   private String server = "http://localhost:8080/";
   private Player player = new Player("");
   private Player dummyPlayer = new Player("");
-  // = new Player("test"); for testing purposes. If we want to test client uncomment.
 
   /**
    * Sets the server to connect to in later requests.
@@ -124,13 +123,28 @@ public class ServerUtils {
   }
 
   /**
-   * Gets the leaderboard entries from backend.
+   * Gets the global leaderboard entries from backend.
    *
    * @return a list of leaderboard entries.
    */
-  public List<LeaderboardEntry> getLeaderboardEntries() {
+  public List<LeaderboardEntry> getGlobalLeaderboard() {
     return ClientBuilder.newClient(new ClientConfig()) //
         .target(server).path("api/leaderboard") //
+        .request(APPLICATION_JSON) //
+        .accept(APPLICATION_JSON) //
+        .get(new GenericType<List<LeaderboardEntry>>() {
+        });
+  }
+
+  /**
+   * Gets the multiplayer leaderboard entries from backend.
+   *
+   * @return a list of leaderboard entries.
+   */
+  public List<LeaderboardEntry> getMultiplayerLeaderboard() {
+    long id = player.getGameId();
+    return ClientBuilder.newClient(new ClientConfig()) //
+        .target(server).path("api/game/" + id + "/leaderboard") //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .get(new GenericType<List<LeaderboardEntry>>() {
@@ -222,9 +236,9 @@ public class ServerUtils {
    * @return type of a game
    */
   public GameEntity.Type getType() {
+    Long id = player.getGameId();
     return ClientBuilder.newClient(new ClientConfig())  //
-        .target(server).path(//TODO: change the id to return
-            "api/game/1")    // type of current game instead of game with id = 1.
+        .target(server).path("api/game/" + id) //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .get(new GenericType<GameEntity>() {
@@ -238,7 +252,7 @@ public class ServerUtils {
    */
   public Player addSingleplayer() {
     Response response = ClientBuilder.newClient(new ClientConfig())
-        .target(server + "api/game/singleplayer")
+        .target(server).path("api/game/singleplayer")
         .request()
         .post(Entity.json(getDummyPlayer()));
     Player p = response.readEntity(GameEntity.class).getPlayers().get(0);
@@ -253,7 +267,7 @@ public class ServerUtils {
    */
   public void changeStatus(GameEntity status) {
     ClientBuilder.newClient(new ClientConfig())
-        .target(server + "api/game/" + player.getGameId())
+        .target(server).path("api/game/" + player.getGameId())
         .request()
         .put(Entity.json(status));
   }
@@ -283,7 +297,7 @@ public class ServerUtils {
    */
   public Player addPlayer() {
     Response response = ClientBuilder.newClient(new ClientConfig())
-        .target(server + "api/game/addPlayer")
+        .target(server).path("api/game/addPlayer")
         .request()
         .post(Entity.json(getDummyPlayer()));
     List<Player> players = response.readEntity(GameEntity.class).getPlayers();
