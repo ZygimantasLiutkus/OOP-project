@@ -13,6 +13,7 @@ public class WaitingRoomCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
+  private final MultipleChoiceCtrl multipleCtrl;
 
   @FXML
   private Button startButton;
@@ -20,13 +21,15 @@ public class WaitingRoomCtrl {
   /**
    * Construct for the Waiting Room Controller.
    *
-   * @param server   reference to the server the game will run on.
-   * @param mainCtrl reference to the main controller.
+   * @param server       reference to the server the game will run on.
+   * @param mainCtrl     reference to the main controller.
+   * @param multipleCtrl reference to multiple choice controller.
    */
   @Inject
-  public WaitingRoomCtrl(ServerUtils server, MainCtrl mainCtrl) {
+  public WaitingRoomCtrl(ServerUtils server, MainCtrl mainCtrl, MultipleChoiceCtrl multipleCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
+    this.multipleCtrl = multipleCtrl;
   }
 
   /**
@@ -34,5 +37,6 @@ public class WaitingRoomCtrl {
    */
   public void startSinglePlayer() {
     mainCtrl.showMoreExpensive(GameEntity.Type.SINGLEPLAYER);
+    multipleCtrl.timerStart();
   }
 }

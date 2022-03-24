@@ -18,6 +18,7 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import commons.GameEntity;
 import commons.LeaderboardEntry;
 import commons.Player;
 import commons.Question;
@@ -26,6 +27,7 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,6 +42,7 @@ public class ServerUtils {
 
   private String server = "http://localhost:8080/";
   private Player player = new Player("");
+  private Player dummyPlayer = new Player("");
   // = new Player("test"); for testing purposes. If we want to test client uncomment.
 
   /**
@@ -190,13 +193,108 @@ public class ServerUtils {
    * @return a question from a poll
    */
   public Question getQuestion(String idx) {
-
     Question q = ClientBuilder.newClient(new ClientConfig()) //
-        .target(server).path("api/game/1/question/" + idx) //
+        .target(server).path("api/game/" + player.getGameId() + "/question/" + idx) //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .get(new GenericType<Question>() {
         });
     return q;
+  }
+
+  /**
+   * Returns a game specified by the player's id.
+   *
+   * @return a created game
+   */
+  public GameEntity getGame() {
+    return ClientBuilder.newClient(new ClientConfig()) //
+        .target(server).path("api/game/" + String.valueOf(player.getGameId())) //
+        .request(APPLICATION_JSON) //
+        .accept(APPLICATION_JSON) //
+        .get(new GenericType<GameEntity>() {
+        });
+  }
+
+  /**
+   * Gets the type of the game and gives it to the client.
+   *
+   * @return type of a game
+   */
+  public GameEntity.Type getType() {
+    return ClientBuilder.newClient(new ClientConfig())  //
+        .target(server).path(//TODO: change the id to return
+            "api/game/1")    // type of current game instead of game with id = 1.
+        .request(APPLICATION_JSON) //
+        .accept(APPLICATION_JSON) //
+        .get(new GenericType<GameEntity>() {
+        }).getType();
+  }
+
+  /**
+   * Method to add a player to the waiting room (single player).
+   *
+   * @return the data of the respective player
+   */
+  public Player addSingleplayer() {
+    Response response = ClientBuilder.newClient(new ClientConfig())
+        .target(server + "api/game/singleplayer")
+        .request()
+        .post(Entity.json(getDummyPlayer()));
+    Player p = response.readEntity(GameEntity.class).getPlayers().get(0);
+    setPlayer(p);
+    return p;
+  }
+
+  /**
+   * Method to change the status of the game.
+   *
+   * @param status a dummy game only with status
+   */
+  public void changeStatus(GameEntity status) {
+    ClientBuilder.newClient(new ClientConfig())
+        .target(server + "api/game/" + player.getGameId())
+        .request()
+        .put(Entity.json(status));
+  }
+
+  /**
+   * Setter for the dummy player that only gets a name.
+   *
+   * @param player the newly created player
+   */
+  public void setDummy(Player player) {
+    this.dummyPlayer = player;
+  }
+
+  /**
+   * Getter for the dummy player.
+   *
+   * @return a player that only contains a name
+   */
+  public Player getDummyPlayer() {
+    return dummyPlayer;
+  }
+
+  /**
+   * Method to add a player to a multiplayer game.
+   *
+   * @return the added player.
+   */
+  public Player addPlayer() {
+    Response response = ClientBuilder.newClient(new ClientConfig())
+        .target(server + "api/game/addPlayer")
+        .request()
+        .post(Entity.json(getDummyPlayer()));
+    List<Player> players = response.readEntity(GameEntity.class).getPlayers();
+    for (Player p : players) {
+      if (p.getName().equals(player.getName())) {
+        setPlayer(p);
+        return p;
+      }
+    }
+    //Returning null because it's impossible for a name
+    // set in the client to be nonexistent inside a lobby.
+    return null;
   }
 }
