@@ -33,6 +33,8 @@ public class MPWaitingRoomCtrl {
    * Starts the game in multi-player mode.
    */
   public void startMultiPlayer() {
-    mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
+    if (server.getGame().getPlayers().size() > 1) {
+      mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
+    }
   }
 }
