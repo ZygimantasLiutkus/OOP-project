@@ -1,4 +1,4 @@
-package server.api;
+package server.database;
 
 import commons.Question;
 import java.util.List;
@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
-import server.database.QuestionRepository;
 
 /**
  * Tests for the question repository.
@@ -90,7 +89,7 @@ public class TestQuestionRepository implements QuestionRepository {
    *
    * @param longs must not be {@literal null}. Must not contain {@literal null} elements.
    * @throws IllegalArgumentException in case the given {@literal ids} or one of its
-   *     elements is {@literal null}.
+   *                                  elements is {@literal null}.
    * @since 2.5
    */
   @Override
@@ -103,7 +102,7 @@ public class TestQuestionRepository implements QuestionRepository {
    *
    * @param entities must not be {@literal null}. Must not contain {@literal null} elements.
    * @throws IllegalArgumentException in case the given {@literal entities} or one of its
-   *     entities is {@literal null}.
+   *                                  entities is {@literal null}.
    */
   @Override
   public void deleteAll(Iterable<? extends Question> entities) {
@@ -184,8 +183,8 @@ public class TestQuestionRepository implements QuestionRepository {
 
   /**
    * Deletes the given entities in a batch which means it will create a single query. This
-   *     kind of operation leaves JPAs first level cache and the database out of sync. Consider
-   *     flushing the {@link EntityManager} before calling this method.
+   * kind of operation leaves JPAs first level cache and the database out of sync. Consider
+   * flushing the {@link EntityManager} before calling this method.
    *
    * @param entities entities to be deleted. Must not be {@literal null}.
    * @since 2.5
@@ -197,8 +196,8 @@ public class TestQuestionRepository implements QuestionRepository {
 
   /**
    * Deletes the entities identified by the given ids using a single query. This kind of
-   *     operation leaves JPAs first level cache and the database out of sync. Consider
-   *     flushing the {@link EntityManager} before calling this method.
+   * operation leaves JPAs first level cache and the database out of sync. Consider
+   * flushing the {@link EntityManager} before calling this method.
    *
    * @param longs the ids of the entities to be deleted. Must not be {@literal null}.
    * @since 2.5
@@ -218,9 +217,9 @@ public class TestQuestionRepository implements QuestionRepository {
 
   /**
    * Returns a reference to the entity with the given identifier. Depending on how the
-   *     JPA persistence provider is implemented this is very likely to always return an
-   *     instance and throw an {@link EntityNotFoundException} on first access. Some of them
-   *     will reject invalid identifiers immediately.
+   * JPA persistence provider is implemented this is very likely to always return an
+   * instance and throw an {@link EntityNotFoundException} on first access. Some of them
+   * will reject invalid identifiers immediately.
    *
    * @param aLong must not be {@literal null}.
    * @return a reference to the entity with the given identifier.
@@ -233,9 +232,9 @@ public class TestQuestionRepository implements QuestionRepository {
 
   /**
    * Returns a reference to the entity with the given identifier. Depending on how the JPA
-   *     persistence provider is implemented this is very likely to always return an instance and
-   *     throw an {@link EntityNotFoundException} on first access. Some of them will reject invalid
-   *     identifiers immediately.
+   * persistence provider is implemented this is very likely to always return an instance and
+   * throw an {@link EntityNotFoundException} on first access. Some of them will reject invalid
+   * identifiers immediately.
    *
    * @param aLong must not be {@literal null}.
    * @return a reference to the entity with the given identifier.
@@ -299,8 +298,8 @@ public class TestQuestionRepository implements QuestionRepository {
    * {@inheritDoc}
    */
   @Override
-  public <S extends Question, R> R findBy(Example<S> example,
-                                  Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+  public <S extends Question, R> R findBy(
+      Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
     return null;
   }
 }

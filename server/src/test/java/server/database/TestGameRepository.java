@@ -1,4 +1,4 @@
-package server.api;
+package server.database;
 
 import commons.GameEntity;
 import java.util.ArrayList;
@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
-import server.database.GameEntityRepository;
 
 /**
  * Tests for Game repository.
