@@ -110,4 +110,30 @@ public class ActivityController {
       return ResponseEntity.badRequest().build();
     }
   }
+
+  /**
+   * PUT method that updates an activity.
+   * Returns error if the activity with specified id does not exist.
+   *
+   * @param id       id of the activity
+   * @param activity the activity with the updated data
+   * @return ResponseEntity of the activity with the updated data
+   */
+  @PutMapping(path = "/{id}")
+  public ResponseEntity<Activity> update(@PathVariable("id") String id,
+                                         @RequestBody Activity activity) {
+    if (!repo.existsById(id)) {
+      return ResponseEntity.badRequest().build();
+    } else {
+      Activity updated = repo.getById(id);
+      if (isNullOrEmpty(activity.getTitle()) || activity.getConsumption_in_wh() <= 0 ||
+          isNullOrEmpty(activity.getImage_path())) {
+        return ResponseEntity.badRequest().build();
+      }
+      updated.setTitle(activity.getTitle());
+      updated.setImage_path(activity.getImage_path());
+      updated.setConsumption_in_wh(activity.getConsumption_in_wh());
+      return ResponseEntity.ok(repo.save(updated));
+    }
+  }
 }

@@ -22,6 +22,33 @@ public class ActivityTest {
   }
 
   /**
+   * Test whether the setter for the title works.
+   */
+  @Test
+  public void testSetTitle() {
+    Activity a = new Activity("00-A", "How", 123, "file/file");
+    a.setTitle("How much");
+    assertEquals(a.getTitle(), "How much");
+  }
+
+  @Test
+  public void testSetImage_path() {
+    Activity a = new Activity("00-A", "How", 123, "file/file");
+    a.setImage_path("file/newFile");
+    assertEquals(a.getImage_path(), "file/newFile");
+  }
+
+  /**
+   * Test whether the setter for consumption works.
+   */
+  @Test
+  public void testSetConsumption_in_wh() {
+    Activity a = new Activity("00-A", "How", 123, "file/file");
+    a.setConsumption_in_wh(456);
+    assertEquals(a.getConsumption_in_wh(), 456);
+  }
+
+  /**
    * Tests whether identical activities output the same hash code.
    */
   @Test
