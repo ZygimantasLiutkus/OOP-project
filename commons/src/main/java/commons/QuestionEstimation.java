@@ -16,6 +16,11 @@ public class QuestionEstimation extends Question {
     super();
   }
 
+  /**
+   * The class' constructor.
+   *
+   * @param activities a list of activities
+   */
   public QuestionEstimation(List<Activity> activities) {
     super(activities);
   }
@@ -26,7 +31,7 @@ public class QuestionEstimation extends Question {
    * @return a string containing the appropriate question
    */
   @Override
-  public String toString() {
+  public String getText() {
     return "How much do you think this activity consumes per hour?";
   }
 }
