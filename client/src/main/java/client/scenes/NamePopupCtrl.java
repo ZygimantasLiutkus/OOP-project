@@ -3,7 +3,6 @@ package client.scenes;
 import client.utils.NextScreen;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.GameEntity;
 import commons.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -64,7 +63,7 @@ public class NamePopupCtrl {
         mainCtrl.showWaitingRoomScreenSP();
         break;
 
-      case MultiPlayerWaitingRoom:
+      case MPWaitingRoomScreen:
         Player player = server.addPlayer();
 
         if (player == null) {
@@ -72,9 +71,7 @@ public class NamePopupCtrl {
           incorrectName();
           return;
         }
-
-        // TODO: Change to multiplayer waiting room
-        mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
+        mainCtrl.showWaitingRoomScreenMP();
         break;
 
       default:

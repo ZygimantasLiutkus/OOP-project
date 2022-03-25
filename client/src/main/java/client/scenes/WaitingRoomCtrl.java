@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javax.inject.Inject;
 
 /**
- * Controller for the WaitingRoom scene.
+ * Controller for the Single-player WaitingRoom scene.
  */
 public class WaitingRoomCtrl {
 
@@ -19,7 +19,7 @@ public class WaitingRoomCtrl {
   private Button startButton;
 
   /**
-   * Construct for the Waiting Room Controller.
+   * Constructor for the Single-player Waiting Room Controller.
    *
    * @param server       reference to the server the game will run on.
    * @param mainCtrl     reference to the main controller.

@@ -18,15 +18,7 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
-import client.scenes.AddQuoteCtrl;
-import client.scenes.ChooseScreenCtrl;
-import client.scenes.EntryCtrl;
-import client.scenes.LeaderboardScreenCtrl;
-import client.scenes.MainCtrl;
-import client.scenes.MultipleChoiceCtrl;
-import client.scenes.NamePopupCtrl;
-import client.scenes.QuoteOverviewCtrl;
-import client.scenes.WaitingRoomCtrl;
+import client.scenes.*;
 import com.google.inject.Injector;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -69,11 +61,13 @@ public class Main extends Application {
         FXML.load(LeaderboardScreenCtrl.class, "client", "scenes", "LeaderboardScreen.fxml");
     var waitingRoomSP =
         FXML.load(WaitingRoomCtrl.class, "client", "scenes", "WaitingRoomScreen.fxml");
+    var waitingRoomMP =
+            FXML.load(MPWaitingRoomCtrl.class, "client", "scenes", "MPWaitingRoomScreen.fxml");
     primaryStage.setMinWidth(900);
     primaryStage.setMinHeight(408);
 
     var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
     mainCtrl.initialize(primaryStage, overview, add, entry, name, choose, moreExpensive,
-        leaderboard, waitingRoomSP);
+        leaderboard, waitingRoomSP, waitingRoomMP);
   }
 }

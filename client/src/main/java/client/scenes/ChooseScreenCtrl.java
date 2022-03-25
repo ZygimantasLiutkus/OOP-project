@@ -3,7 +3,6 @@ package client.scenes;
 import client.utils.NextScreen;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.GameEntity;
 import commons.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -71,16 +70,15 @@ public class ChooseScreenCtrl {
    */
   public void playMultiplayer() {
     if (server.getPlayer().getName().equals("")) {
-      mainCtrl.showNamePopup(NextScreen.MultiPlayerWaitingRoom);
+      mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
     } else {
       Player player = server.addPlayer();
       if (player == null) {
         namePopupCtrl.setErrorText("This name is already taken, please choose another name");
         namePopupCtrl.showErrorText(true);
-        mainCtrl.showNamePopup(NextScreen.MultiPlayerWaitingRoom);
+        mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
       } else {
-        // TODO: Change to multiplayer waiting room
-        mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
+        mainCtrl.showWaitingRoomScreenMP();
       }
     }
   }

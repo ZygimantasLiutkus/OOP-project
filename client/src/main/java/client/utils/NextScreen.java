@@ -5,6 +5,6 @@ package client.utils;
  */
 public enum NextScreen {
   WaitingRoomScreen,
-  MultiPlayerWaitingRoom,
+  MPWaitingRoomScreen,
   None // Use this if you want to stay on the same screen after the popup closes
 }
