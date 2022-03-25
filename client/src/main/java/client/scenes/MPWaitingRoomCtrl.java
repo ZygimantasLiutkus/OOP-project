@@ -15,6 +15,7 @@ public class MPWaitingRoomCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
+  private final MultipleChoiceCtrl multipleChoiceCtrl;
 
   @FXML
   private Button startButton;
@@ -26,9 +27,10 @@ public class MPWaitingRoomCtrl {
    * @param mainCtrl reference to the main controller.
    */
   @Inject
-  public MPWaitingRoomCtrl(ServerUtils server, MainCtrl mainCtrl) {
+  public MPWaitingRoomCtrl(ServerUtils server, MainCtrl mainCtrl, MultipleChoiceCtrl multipleChoiceCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
+    this.multipleChoiceCtrl = multipleChoiceCtrl;
 
     new Timer().scheduleAtFixedRate(new TimerTask() {
       /**
@@ -57,5 +59,6 @@ public class MPWaitingRoomCtrl {
    */
   public void startMultiPlayer() {
     mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
+    multipleChoiceCtrl.timerStart();
   }
 }
