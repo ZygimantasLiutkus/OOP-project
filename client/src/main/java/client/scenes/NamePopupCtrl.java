@@ -64,7 +64,7 @@ public class NamePopupCtrl {
         mainCtrl.showWaitingRoomScreenSP();
         break;
 
-      case MultiPlayerWaitingRoom:
+      case MPWaitingRoomScreen:
         Player player = server.addPlayer();
 
         if (player == null) {
@@ -72,9 +72,7 @@ public class NamePopupCtrl {
           incorrectName();
           return;
         }
-
-        // TODO: Change to multiplayer waiting room
-        mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
+        mainCtrl.showWaitingRoomScreenMP();
         break;
 
       default:
