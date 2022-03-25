@@ -49,7 +49,6 @@ public class MPWaitingRoomCtrl {
    * @return a boolean
    */
   public boolean checkPlayerNo() {
-    System.out.println(1);
     return (server.getGame().getPlayers().size() > 1);
   }
 
