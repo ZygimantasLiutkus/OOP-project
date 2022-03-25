@@ -50,32 +50,48 @@ public class NamePopupCtrl {
    * Saves the entered name of the user.
    */
   public void submit() {
-    if (!nameField.getText().equals("")) {
-      server.setDummy(new Player(nameField.getText()));
-      switch (nextScreen) {
-        case WaitingRoomScreen:
-          server.addSingleplayer();
-          mainCtrl.showWaitingRoomScreenSP();
-          break;
-        case MPWaitingRoomScreen:
-          // TODO: Add check if this name is valid to enter the multiplayer waiting room
-          // TODO: Show multiplayer waiting room
-          server.addPlayer();
-          mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
-          break;
-        default:
-          break;
-      }
-
-      mainCtrl.closeNamePopup();
-    } else {
-      takenNameLabel.setText("Please enter a name first");
-      takenNameLabel.setVisible(true);
-      nameField.textProperty().addListener((observable) -> {
-        takenNameLabel.setVisible(false);
-        takenNameLabel.setText("This name is already taken");
-      });
+    if (nameField.getText().equals("")) {
+      setErrorText("Please enter a name first");
+      incorrectName();
+      return;
     }
+
+    server.setDummy(new Player(nameField.getText()));
+
+    switch (nextScreen) {
+      case WaitingRoomScreen:
+        server.addSingleplayer();
+        mainCtrl.showWaitingRoomScreenSP();
+        break;
+
+      case MultiPlayerWaitingRoom:
+        Player player = server.addPlayer();
+
+        if (player == null) {
+          setErrorText("This name is already taken, please choose another name");
+          incorrectName();
+          return;
+        }
+
+        // TODO: Change to multiplayer waiting room
+        mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
+        break;
+
+      default:
+        break;
+    }
+
+    mainCtrl.closeNamePopup();
+  }
+
+  /**
+   * Shows the error text until the name is changed.
+   */
+  public void incorrectName() {
+    showErrorText(true);
+    nameField.textProperty().addListener((observable) -> {
+      showErrorText(false);
+    });
   }
 
   /**

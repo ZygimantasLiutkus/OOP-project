@@ -203,7 +203,7 @@ public class GameEntityController {
     // Check if the provided name is already in use in this game
     for (Player p : game.getPlayers()) {
       if (p.getName().equals(player.getName())) {
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
       }
     }
     // Save the player and add it to the game
