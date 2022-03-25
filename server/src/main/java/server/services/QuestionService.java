@@ -1,9 +1,6 @@
 package server.services;
 
-import commons.Activity;
-import commons.Question;
-import commons.QuestionMoreExpensive;
-import commons.QuestionMultipleChoice;
+import commons.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -56,11 +53,16 @@ public class QuestionService {
    * @return a random type of question.
    */
   public Question make(List<Integer> used) {
-    int nr = random.nextInt(2);
-    if (nr == 1) {
-      return new QuestionMoreExpensive(getActivities(3, used));
-    } else {
-      return new QuestionMultipleChoice(getActivities(3, used));
+    int nr = random.nextInt(3);
+    switch (nr) {
+      case 0:
+        return new QuestionMultipleChoice(getActivities(3, used));
+      case 1:
+        return new QuestionMoreExpensive(getActivities(3, used));
+      case 2:
+        return new QuestionEstimation(getActivities(1, used));
+      default:
+        return null;
     }
   }
 
