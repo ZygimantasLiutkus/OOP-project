@@ -7,10 +7,13 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests QuestionEstimation class
+ * Tests QuestionEstimation class.
  */
 class QuestionEstimationTest {
 
+  /**
+   * Constructor test for the QuestionEstimation class.
+   */
   @Test
   public void constructorTest() {
     Activity a = new Activity("A", "A", 1, "A");
@@ -35,7 +38,7 @@ class QuestionEstimationTest {
   }
 
   /**
-   * Test if the getTex
+   * Test if the getText() method does not return an incorrect result.
    */
   @Test
   public void testGetTextFail() {
