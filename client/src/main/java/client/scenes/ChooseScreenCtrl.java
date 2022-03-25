@@ -77,10 +77,9 @@ public class ChooseScreenCtrl {
       if (player == null) {
         namePopupCtrl.setErrorText("This name is already taken, please choose another name");
         namePopupCtrl.showErrorText(true);
-        mainCtrl.showNamePopup(NextScreen.MultiPlayerWaitingRoom);
+        mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
       } else {
-        // TODO: Change to multiplayer waiting room
-        mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
+        mainCtrl.showWaitingRoomScreenMP();
       }
     }
   }
