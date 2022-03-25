@@ -41,7 +41,11 @@ public class MPWaitingRoomCtrl {
       @Override
       public void run() {
         if (checkPlayerNo()) {
-          startButton.setVisible(true);
+          startButton.setDisable(false);
+          startButton.setStyle("-fx-background-color: #11AD31");
+        } else {
+          startButton.setDisable(true);
+          startButton.setStyle("-fx-background-color: #B3B3B3");
         }
       }
     }, 0, 1000);
