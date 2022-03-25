@@ -31,15 +31,15 @@ public class MultipleChoiceCtrl {
   public Question question;
   public Random random = new Random();
   public Map<Integer, Activity> mapButtons;
+  public GameEntity dummyGameStarted = new GameEntity("STARTED");
+  public GameEntity dummyGameFinished = new GameEntity("FINISHED");
+  public GameEntity dummyGameAborted = new GameEntity("ABORTED");
   private GameEntity.Type type;
   private int startTime = 10;
   private int questionNum = 0;
   private double progress = 1;
   private Timeline timeline;
   private Timeline timeCount;
-  public GameEntity dummyGameStarted = new GameEntity("STARTED");
-  public GameEntity dummyGameFinished = new GameEntity("FINISHED");
-  public GameEntity dummyGameAborted = new GameEntity("ABORTED");
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
   @FXML
@@ -506,5 +506,45 @@ public class MultipleChoiceCtrl {
    */
   public void setQuestion(Question q) {
     this.question = q;
+  }
+
+  /**
+   * Method that sends the server a message with the player's name and the laughing emoji.
+   */
+  public void sendEmojiLaughing() {
+    Message laughing = new Message("laughing", server.getPlayer().getName());
+    server.send("/app/messages", laughing);
+  }
+
+  /**
+   * Method that sends the server a message with the player's name and the ok emoji.
+   */
+  public void sendEmojiOk() {
+    Message ok = new Message("ok", server.getPlayer().getName());
+    server.send("/app/messages", ok);
+  }
+
+  /**
+   * Method that sends the server a message with the player's name and the thumbsUp emoji.
+   */
+  public void sendEmojiThumbsUp() {
+    Message thumbsUp = new Message("thumbsUp", server.getPlayer().getName());
+    server.send("/app/messages", thumbsUp);
+  }
+
+  /**
+   * Method that sends the server a message with the player's name and the flatFace emoji.
+   */
+  public void sendEmojiFlatFace() {
+    Message flatFace = new Message("flatFace", server.getPlayer().getName());
+    server.send("/app/messages", flatFace);
+  }
+  
+  /**
+   * Method that sends the server a message with the player's name and the angry emoji.
+   */
+  public void sendEmojiAngry() {
+    Message angry = new Message("angry", server.getPlayer().getName());
+    server.send("/app/messages", angry);
   }
 }

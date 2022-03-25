@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import server.database.GameEntityRepository;
 import server.database.PlayerRepository;
@@ -314,5 +316,19 @@ public class GameEntityController {
     game.addPlayer(player);
     return ResponseEntity.ok(repo.save(game));
   }
+
+  /**
+   * Method that takes a message from /app/messages and returns it to /topic/messages.
+   *
+   * @param message the message being sent
+   * @return the same message
+   */
+  @MessageMapping("/messages")  // is /app/messages
+  @SendTo("/topic/messages")
+  public Message addMessage(Message message) {
+    //call method for showing the name + emoji on the screen (to be implemented by frontend)
+    return message;
+  }
+
 
 }
