@@ -513,7 +513,8 @@ public class MultipleChoiceCtrl {
    */
   public void sendEmojiLaughing() {
     Message laughing = new Message("laughing", server.getPlayer().getName());
-    server.send("/app/messages", laughing);
+    Long gameID = server.getPlayer().getGameId();
+    server.send("/app/messages/" + gameID.toString(), laughing);
   }
 
   /**
@@ -521,7 +522,8 @@ public class MultipleChoiceCtrl {
    */
   public void sendEmojiOk() {
     Message ok = new Message("ok", server.getPlayer().getName());
-    server.send("/app/messages", ok);
+    Long gameID = server.getPlayer().getGameId();
+    server.send("/app/messages/" + gameID.toString(), ok);
   }
 
   /**
@@ -529,7 +531,8 @@ public class MultipleChoiceCtrl {
    */
   public void sendEmojiThumbsUp() {
     Message thumbsUp = new Message("thumbsUp", server.getPlayer().getName());
-    server.send("/app/messages", thumbsUp);
+    Long gameID = server.getPlayer().getGameId();
+    server.send("/app/messages/" + gameID.toString(), thumbsUp);
   }
 
   /**
@@ -537,14 +540,16 @@ public class MultipleChoiceCtrl {
    */
   public void sendEmojiFlatFace() {
     Message flatFace = new Message("flatFace", server.getPlayer().getName());
-    server.send("/app/messages", flatFace);
+    Long gameID = server.getPlayer().getGameId();
+    server.send("/app/messages/" + gameID.toString(), flatFace);
   }
-  
+
   /**
    * Method that sends the server a message with the player's name and the angry emoji.
    */
   public void sendEmojiAngry() {
     Message angry = new Message("angry", server.getPlayer().getName());
-    server.send("/app/messages", angry);
+    Long gameID = server.getPlayer().getGameId();
+    server.send("/app/messages/" + gameID.toString(), angry);
   }
 }
