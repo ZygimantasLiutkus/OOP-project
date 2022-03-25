@@ -143,6 +143,56 @@ public class ActivityControllerTest {
   }
 
   /**
+   * Tests if update() returns an error for an id that does not exist.
+   */
+  @Test
+  public void testUpdateNonexistant() {
+    repo.deleteAll();
+    assertEquals(BAD_REQUEST,
+        sut.update(getActivity("A", 1).getId(), getActivity("A", 2)).getStatusCode());
+  }
+
+  /**
+   * Tests if update() returns an error when trying to update with a null or empty title.
+   */
+  @Test
+  public void testUpdateNoTitle() {
+    repo.deleteAll();
+    Activity a = getActivity("A", 1);
+    repo.save(a);
+    assertEquals(BAD_REQUEST,
+        sut.update(a.getId(), new Activity("A", null, 1, "A")).getStatusCode());
+    assertEquals(BAD_REQUEST, sut.update(a.getId(), new Activity("A", "", 1, "A")).getStatusCode());
+  }
+
+  /**
+   * Tests if update() returns an error when trying to update with a less or equal to 0 consumption.
+   */
+  @Test
+  public void testUpdateWrongConsumption() {
+    repo.deleteAll();
+    Activity a = getActivity("A", 1);
+    repo.save(a);
+    assertEquals(BAD_REQUEST,
+        sut.update(a.getId(), new Activity("A", "A", 0, "A")).getStatusCode());
+    assertEquals(BAD_REQUEST,
+        sut.update(a.getId(), new Activity("A", "A", -5, "A")).getStatusCode());
+  }
+
+  /**
+   * Tests if update() returns an error when trying to update with a null or empty path.
+   */
+  @Test
+  public void testUpdateNoPath() {
+    repo.deleteAll();
+    Activity a = getActivity("A", 1);
+    repo.save(a);
+    assertEquals(BAD_REQUEST,
+        sut.update(a.getId(), new Activity("A", "A", 1, null)).getStatusCode());
+    assertEquals(BAD_REQUEST, sut.update(a.getId(), new Activity("A", "A", 1, "")).getStatusCode());
+  }
+
+  /**
    * Passing tests getAll activities method.
    */
   @Test

@@ -126,8 +126,8 @@ public class ActivityController {
       return ResponseEntity.badRequest().build();
     } else {
       Activity updated = repo.getById(id);
-      if (isNullOrEmpty(activity.getTitle()) || activity.getConsumption_in_wh() <= 0 ||
-          isNullOrEmpty(activity.getImage_path())) {
+      if (isNullOrEmpty(activity.getTitle()) || activity.getConsumption_in_wh() <= 0
+          || isNullOrEmpty(activity.getImage_path())) {
         return ResponseEntity.badRequest().build();
       }
       updated.setTitle(activity.getTitle());

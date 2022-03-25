@@ -31,6 +31,9 @@ public class ActivityTest {
     assertEquals(a.getTitle(), "How much");
   }
 
+  /**
+   * Test whether the setter for the image path works.
+   */
   @Test
   public void testSetImage_path() {
     Activity a = new Activity("00-A", "How", 123, "file/file");
