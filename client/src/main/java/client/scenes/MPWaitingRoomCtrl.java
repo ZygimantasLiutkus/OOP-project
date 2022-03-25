@@ -25,9 +25,11 @@ public class MPWaitingRoomCtrl {
    *
    * @param server reference to the server the game will run on.
    * @param mainCtrl reference to the main controller.
+   * @param multipleChoiceCtrl reference to multiple choice controller
    */
   @Inject
-  public MPWaitingRoomCtrl(ServerUtils server, MainCtrl mainCtrl, MultipleChoiceCtrl multipleChoiceCtrl) {
+  public MPWaitingRoomCtrl(ServerUtils server, MainCtrl mainCtrl,
+                           MultipleChoiceCtrl multipleChoiceCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
     this.multipleChoiceCtrl = multipleChoiceCtrl;
