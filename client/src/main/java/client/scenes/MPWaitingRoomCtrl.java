@@ -2,11 +2,9 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import commons.GameEntity;
-
+import commons.Player;
 import java.net.URL;
 import java.util.*;
-
-import commons.Player;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,7 +12,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-
 import javax.inject.Inject;
 
 /**
@@ -83,10 +80,9 @@ public class MPWaitingRoomCtrl implements Initializable {
       noOfPlayers.setText("1 player waiting to start...");
     }
     List<String> currentPlayers = new ArrayList<>();
-    //for (Player p : server.getGame().getPlayers()) {
-    //  currentPlayers.add(p.getName());
-    //}
-    currentPlayers.add("player");
+    for (Player p : server.getGame().getPlayers()) {
+      currentPlayers.add(p.getName());
+    }
     data = FXCollections.observableArrayList(currentPlayers);
     waitingPlayersList.setItems(data);
   }
@@ -113,6 +109,6 @@ public class MPWaitingRoomCtrl implements Initializable {
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    waitingPlayersList.getItems().addAll();
+    waitingPlayersList.setItems(data);
   }
 }
