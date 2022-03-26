@@ -128,6 +128,46 @@ public class MultipleChoiceCtrl {
   }
 
   /**
+   * Whenever you press on the type bar the default text gets deleted.
+   */
+  public void deleteText() {
+    textArea.setText("");
+  }
+
+  /**
+   * Setter for the question.
+   *
+   * @param q the question got from the server
+   */
+  public void setQuestion(Question q) {
+    this.question = q;
+  }
+
+  /**
+   * Map a button with an activity to ease feedback process.
+   */
+  public void setMapButtons() {
+    mapButtons = new HashMap<>();
+    for (int i = 0; i < 3; i++) {
+      int index = random.nextInt(4);
+      while (mapButtons.containsKey(index) || index == 0) {
+        index = random.nextInt(4);
+      }
+      mapButtons.put(index, question.getActivities().get(i));
+    }
+  }
+
+  /**
+   * The method linked to the submit button.
+   */
+  public void sendAnswer() {
+    String answer = String.valueOf(question.getActivities().get(0).getConsumption_in_wh());
+    server.getPlayer().setSelectedAnswer(answer);
+    this.submitButton.setDisable(true);
+    revealAnswer();
+  }
+
+  /**
    * Setter for the game type.
    *
    * @param type the type of game it was created
@@ -168,6 +208,61 @@ public class MultipleChoiceCtrl {
     String answer = answer3.getText();
     server.getPlayer().setSelectedAnswer(answer);
     revealAnswer();
+  }
+
+  /**
+   * Getter for answer1.
+   *
+   * @return value of answer1
+   */
+  public String getAnswer1() {
+    return answer1.getText();
+  }
+
+  /**
+   * Getter for answer2.
+   *
+   * @return value of answer2
+   */
+  public String getAnswer2() {
+    return answer2.getText();
+  }
+
+  /**
+   * Getter for answer3.
+   *
+   * @return value of answer3
+   */
+  public String getAnswer3() {
+    return answer3.getText();
+  }
+
+  /**
+   * Getter for the player points .
+   *
+   * @return value of the player points
+   */
+  public String getPlayerPoints() {
+    return playerPoints.getText();
+  }
+
+  /**
+   * Getter for progressbar.
+   *
+   * @return value of progressbar
+   */
+  public double getProgressBar() {
+    return progressBar.getProgress();
+  }
+
+  /**
+   * Getter for timer counter.
+   *
+   * @return value of the timer counter
+   */
+  public int getTimeCounter() {
+    String[] time = timeCounter.getText().split(" s");
+    return Integer.parseInt(time[0]);
   }
 
   /**
@@ -259,11 +354,12 @@ public class MultipleChoiceCtrl {
     if (!answerCorrectness) {
       addPoints.setText("+0");
     } else {
+      //The points are calculated depending on how close you were to the actual answer.
       if (question.getText().equals("How much do you think this activity consumes per hour?")) {
         int realAnswer = question.getActivities().get(0).getConsumption_in_wh();
         double percentageOff =
             Math.abs(Integer.valueOf(textArea.getText()) - realAnswer) / realAnswer;
-        points = (int) (100 * (double) (1 - percentageOff / 0.25));
+        points = (int) (100 * (double) (1 - percentageOff / 0.3));
       } else {
         points = 10 * (time + 1);
         if (time == 10) {
@@ -275,10 +371,12 @@ public class MultipleChoiceCtrl {
       addPoints.setText("+" + Integer.toString(points));
     }
 
+    //If someone didn't submit anything and just pressed the button, the answer is automatically 0.
     if (question.getText().equals("How much do you think this activity consumes per hour?")) {
       if (textArea.getText().equals("Type your answer...")) {
         textArea.setText("0");
       }
+      //If the question type was submission, a label which shows the exact answer should appear.
       answerText.setText(
           "The correct answer was: " + question.getActivities().get(0).getConsumption_in_wh()
               + ".\nYour answer was: " + textArea.getText());
@@ -293,72 +391,6 @@ public class MultipleChoiceCtrl {
     cooldown.setOnFinished(e -> {
       cooldownAnswer();
     });
-  }
-
-  /**
-   * Method to calculate the exact correct answer.
-   *
-   * @return a boolean that decides whether you receive points or not
-   */
-  public boolean computeAnswerEstimation() {
-    try {
-      Integer.parseInt(this.textArea.getText());
-    } catch (NumberFormatException nfe) {
-      return false;
-    }
-    int answer = question.getActivities().get(0).getConsumption_in_wh();
-    int bound = 25 * answer / 100;
-    if (Integer.valueOf(this.textArea.getText()) < (answer - bound)
-        || Integer.valueOf(this.textArea.getText()) > (answer + bound)) {
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * Changes buttons' colour according to the computed answer.
-   *
-   * @return correct/incorrect selected answer
-   */
-  public boolean computeAnswerChoice() {
-    int answer = question.getActivities().get(0).getConsumption_in_wh();
-    if (mapButtons.get(1).getConsumption_in_wh() != answer) {
-      answer1.setStyle("-fx-background-color: E50C0C");
-    }
-    if (mapButtons.get(2).getConsumption_in_wh() != answer) {
-      answer2.setStyle("-fx-background-color: E50C0C");
-    }
-    if (mapButtons.get(3).getConsumption_in_wh() != answer) {
-      answer3.setStyle("-fx-background-color: E50C0C");
-    }
-    return server.getPlayer().getSelectedAnswer().equals(Integer.toString(answer) + " wh");
-  }
-
-  /**
-   * Changes buttons' colour according to the computed answer.
-   *
-   * @return correct/incorrect selected answer
-   */
-  public boolean computeAnswerExpensive() {
-    int max = 0;
-    int imax = 1;
-    for (int i = 0; i < 3; i++) {
-      if (question.getActivities().get(i).getConsumption_in_wh() >= max) {
-        max = question.getActivities().get(i).getConsumption_in_wh();
-        imax = i;
-      }
-    }
-    if (mapButtons.get(1).getConsumption_in_wh() != max) {
-      answer1.setStyle("-fx-background-color: E50C0C");
-    }
-    if (mapButtons.get(2).getConsumption_in_wh() != max) {
-      answer2.setStyle("-fx-background-color: E50C0C");
-    }
-    if (mapButtons.get(3).getConsumption_in_wh() != max) {
-      answer3.setStyle("-fx-background-color: E50C0C");
-    }
-    return server.getPlayer().getSelectedAnswer()
-        .equals(question.getActivities().get(imax).getTitle());
   }
 
   /**
@@ -428,69 +460,8 @@ public class MultipleChoiceCtrl {
    * Makes the client ready for the new question. FOR MULTIPLAYER ONLY
    */
   public void nextQuestionMultiple() {
+    //TODO: write method's body
     revealAnswer();
-  }
-
-  /**
-   * Whenever you press on the type bar the default text gets deleted.
-   */
-  public void deleteText() {
-    textArea.setText("");
-  }
-
-  /**
-   * Getter for answer1.
-   *
-   * @return value of answer1
-   */
-  public String getAnswer1() {
-    return answer1.getText();
-  }
-
-  /**
-   * Getter for answer2.
-   *
-   * @return value of answer2
-   */
-  public String getAnswer2() {
-    return answer2.getText();
-  }
-
-  /**
-   * Getter for answer3.
-   *
-   * @return value of answer3
-   */
-  public String getAnswer3() {
-    return answer3.getText();
-  }
-
-  /**
-   * Getter for the player points .
-   *
-   * @return value of the player points
-   */
-  public String getPlayerPoints() {
-    return playerPoints.getText();
-  }
-
-  /**
-   * Getter for progressbar.
-   *
-   * @return value of progressbar
-   */
-  public double getProgressBar() {
-    return progressBar.getProgress();
-  }
-
-  /**
-   * Getter for timer counter.
-   *
-   * @return value of the timer counter
-   */
-  public int getTimeCounter() {
-    String[] time = timeCounter.getText().split(" s");
-    return Integer.parseInt(time[0]);
   }
 
   /**
@@ -594,35 +565,68 @@ public class MultipleChoiceCtrl {
   }
 
   /**
-   * Map a button with an activity to ease feedback process.
-   */
-  public void setMapButtons() {
-    mapButtons = new HashMap<>();
-    for (int i = 0; i < 3; i++) {
-      int index = random.nextInt(4);
-      while (mapButtons.containsKey(index) || index == 0) {
-        index = random.nextInt(4);
-      }
-      mapButtons.put(index, question.getActivities().get(i));
-    }
-  }
-
-  /**
-   * Setter for the question.
+   * Method to calculate the exact correct answer.
    *
-   * @param q the question got from the server
+   * @return a boolean that decides whether you receive points or not
    */
-  public void setQuestion(Question q) {
-    this.question = q;
+  public boolean computeAnswerEstimation() {
+    try {
+      Integer.parseInt(this.textArea.getText());
+    } catch (NumberFormatException nfe) {
+      return false;
+    }
+    int answer = question.getActivities().get(0).getConsumption_in_wh();
+    int bound = 30 * answer / 100;
+    if (Integer.valueOf(this.textArea.getText()) < (answer - bound)
+        || Integer.valueOf(this.textArea.getText()) > (answer + bound)) {
+      return false;
+    }
+    return true;
   }
 
   /**
-   * The method linked to the submit button.
+   * Changes buttons' colour according to the computed answer.
+   *
+   * @return correct/incorrect selected answer
    */
-  public void sendAnswer() {
-    String answer = String.valueOf(question.getActivities().get(0).getConsumption_in_wh());
-    server.getPlayer().setSelectedAnswer(answer);
-    this.submitButton.setDisable(true);
-    revealAnswer();
+  public boolean computeAnswerChoice() {
+    int answer = question.getActivities().get(0).getConsumption_in_wh();
+    if (mapButtons.get(1).getConsumption_in_wh() != answer) {
+      answer1.setStyle("-fx-background-color: E50C0C");
+    }
+    if (mapButtons.get(2).getConsumption_in_wh() != answer) {
+      answer2.setStyle("-fx-background-color: E50C0C");
+    }
+    if (mapButtons.get(3).getConsumption_in_wh() != answer) {
+      answer3.setStyle("-fx-background-color: E50C0C");
+    }
+    return server.getPlayer().getSelectedAnswer().equals(Integer.toString(answer) + " wh");
+  }
+
+  /**
+   * Changes buttons' colour according to the computed answer.
+   *
+   * @return correct/incorrect selected answer
+   */
+  public boolean computeAnswerExpensive() {
+    int max = 0;
+    int imax = 1;
+    for (int i = 0; i < 3; i++) {
+      if (question.getActivities().get(i).getConsumption_in_wh() >= max) {
+        max = question.getActivities().get(i).getConsumption_in_wh();
+        imax = i;
+      }
+    }
+    if (mapButtons.get(1).getConsumption_in_wh() != max) {
+      answer1.setStyle("-fx-background-color: E50C0C");
+    }
+    if (mapButtons.get(2).getConsumption_in_wh() != max) {
+      answer2.setStyle("-fx-background-color: E50C0C");
+    }
+    if (mapButtons.get(3).getConsumption_in_wh() != max) {
+      answer3.setStyle("-fx-background-color: E50C0C");
+    }
+    return server.getPlayer().getSelectedAnswer()
+        .equals(question.getActivities().get(imax).getTitle());
   }
 }
