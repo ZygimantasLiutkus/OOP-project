@@ -2,23 +2,43 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import commons.GameEntity;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import java.net.URL;
+import java.util.*;
+
+import commons.Player;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+
 import javax.inject.Inject;
 
 /**
  * Controller for the Single-player WaitingRoom scene.
  */
-public class MPWaitingRoomCtrl {
+public class MPWaitingRoomCtrl implements Initializable {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
   private final MultipleChoiceCtrl multipleChoiceCtrl;
 
+  private ObservableList<String> data;
+
   @FXML
   private Button startButton;
+
+  @FXML
+  private Label noOfPlayers;
+
+  @FXML
+  private ListView<String> waitingPlayersList;
+
+  @FXML
+  private Button homeButton;
 
   /**
    * Constructor for the Multi-player Waiting Room Controller.
@@ -40,6 +60,7 @@ public class MPWaitingRoomCtrl {
        */
       @Override
       public void run() {
+        updateWaitingPlayers();
         if (checkPlayerNo()) {
           startButton.setDisable(false);
           startButton.setStyle("-fx-background-color: #11AD31");
@@ -49,6 +70,25 @@ public class MPWaitingRoomCtrl {
         }
       }
     }, 0, 1000);
+  }
+
+  /**
+   * Updates the list of players currently waiting.
+   */
+  public void updateWaitingPlayers() {
+    int howManyPlayers = server.getGame().getPlayers().size();
+    if (howManyPlayers != 1) {
+      noOfPlayers.setText(howManyPlayers + "players waiting to start...");
+    } else {
+      noOfPlayers.setText("1 player waiting to start...");
+    }
+    List<String> currentPlayers = new ArrayList<>();
+    //for (Player p : server.getGame().getPlayers()) {
+    //  currentPlayers.add(p.getName());
+    //}
+    currentPlayers.add("player");
+    data = FXCollections.observableArrayList(currentPlayers);
+    waitingPlayersList.setItems(data);
   }
 
   /**
@@ -66,5 +106,13 @@ public class MPWaitingRoomCtrl {
   public void startMultiPlayer() {
     mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
     multipleChoiceCtrl.timerStart();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    waitingPlayersList.getItems().addAll();
   }
 }
