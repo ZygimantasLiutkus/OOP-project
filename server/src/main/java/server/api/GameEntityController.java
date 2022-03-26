@@ -369,9 +369,6 @@ public class GameEntityController {
       return ResponseEntity.badRequest().build();
     }
     GameEntity game = repo.getById(id);
-    if (players.size() == 0) {
-      game.setStatus("ABORTED");
-    }
     game.setPlayers(players);
     return ResponseEntity.ok(repo.save(game));
   }
