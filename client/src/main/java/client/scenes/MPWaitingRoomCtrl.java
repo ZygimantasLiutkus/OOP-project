@@ -2,6 +2,8 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import commons.GameEntity;
+import commons.Player;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.fxml.FXML;
@@ -23,8 +25,8 @@ public class MPWaitingRoomCtrl {
   /**
    * Constructor for the Multi-player Waiting Room Controller.
    *
-   * @param server reference to the server the game will run on.
-   * @param mainCtrl reference to the main controller.
+   * @param server             reference to the server the game will run on.
+   * @param mainCtrl           reference to the main controller.
    * @param multipleChoiceCtrl reference to multiple choice controller
    */
   @Inject
@@ -66,5 +68,15 @@ public class MPWaitingRoomCtrl {
   public void startMultiPlayer() {
     mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
     multipleChoiceCtrl.timerStart();
+  }
+
+  /**
+   * Have the ability to leave a multiplayer lobby.
+   */
+  public void goHome() {
+    List<Player> players = this.server.getGame().getPlayers();
+    players.remove(server.getPlayer());
+    this.server.updatePlayer(players);
+    mainCtrl.showChooseScreen();
   }
 }

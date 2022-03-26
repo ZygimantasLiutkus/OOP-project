@@ -39,4 +39,11 @@ public class WaitingRoomCtrl {
     mainCtrl.showMoreExpensive(GameEntity.Type.SINGLEPLAYER);
     multipleCtrl.timerStart();
   }
+
+  /**
+   * Have option to bgo back from a single player game.
+   */
+  public void goHome() {
+    mainCtrl.showChooseScreen();
+  }
 }
