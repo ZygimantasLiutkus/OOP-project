@@ -1,25 +1,13 @@
 package server.api;
 
-import commons.Activity;
-import commons.Answer;
-import commons.GameEntity;
-import commons.LeaderboardEntry;
-import commons.Player;
-import commons.Question;
-import commons.QuestionMoreExpensive;
+import commons.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.database.GameEntityRepository;
 import server.database.PlayerRepository;
 import server.database.QuestionRepository;
@@ -232,7 +220,8 @@ public class GameEntityController {
    * Checks if the player is actually present in the game.
    * Checks if the game has started.
    * For "What's more expensive" the answer is the biggest consumption.
-   * For the other type, the question will always talk about the first activity.
+   * For the Multiple Choice question the logic is a placeholder.
+   * For the Estimation question the logic is a placeholder.
    * The player's score will be updated.
    * (For now un "ugly" version of checking an answer)
    *
@@ -270,6 +259,20 @@ public class GameEntityController {
             }
           }
           if (Integer.parseInt(player.getSelectedAnswer()) == maxim) {
+            playerDummy.setScore(playerDummy.getScore() + 100);
+            playerRepo.save(playerDummy);
+            return ResponseEntity.ok(
+                new Answer("CORRECT", playerDummy, playerDummy.getScore(), 100));
+          } else {
+            playerDummy.setScore(playerDummy.getScore());
+            playerRepo.save(playerDummy);
+            return ResponseEntity.ok(
+                new Answer("INCORRECT", playerDummy, playerDummy.getScore(), 0));
+          }
+        } else if (q instanceof QuestionMultipleChoice) {
+          if (Integer.parseInt(player.getSelectedAnswer())
+              == q.getActivities().get(Integer.parseInt(player.getSelectedAnswer()) - 1)
+              .getConsumption_in_wh()) {
             playerDummy.setScore(playerDummy.getScore() + 100);
             playerRepo.save(playerDummy);
             return ResponseEntity.ok(
