@@ -240,11 +240,11 @@ public class MultipleChoiceCtrl {
 
     boolean answerCorrectness = false;
 
-    if (question.getText().contains("How much do you think this activity consumes?")) {
-      String answer = textArea.getText();
+    if (question.getText().equals("How much do you think this activity consumes per hour?")) {
+      answerCorrectness = computeAnswerEstimation();
     }
 
-    if (question.getText().contains("How big is the consumption per hour for this activity?")) {
+    if (question.getText().equals("How big is the consumption per hour for this activity?")) {
       answerCorrectness = computeAnswerChoice();
     }
     if (question.getText().equals("Which is more expensive?")) {
@@ -259,22 +259,31 @@ public class MultipleChoiceCtrl {
     if (!answerCorrectness) {
       addPoints.setText("+0");
     } else {
-      if (question.getText().contains("How big is the consumption per hour for this activity?")) {
+      if (question.getText().equals("How much do you think this activity consumes per hour?")) {
         int realAnswer = question.getActivities().get(0).getConsumption_in_wh();
         double percentageOff =
             Math.abs(Integer.valueOf(textArea.getText()) - realAnswer) / realAnswer;
-        points = (int) (100 * (double) (1 - percentageOff / 0.2));
-        points = Math.max(0, points);
+        points = (int) (100 * (double) (1 - percentageOff / 0.25));
       } else {
         points = 10 * (time + 1);
         if (time == 10) {
           points -= 10;
         }
       }
+
       server.getPlayer().setScore(server.getPlayer().getScore() + points);
       addPoints.setText("+" + Integer.toString(points));
     }
 
+    if (question.getText().equals("How much do you think this activity consumes per hour?")) {
+      if (textArea.getText().equals("Type your answer...")) {
+        textArea.setText("0");
+      }
+      answerText.setText(
+          "The correct answer was: " + question.getActivities().get(0).getConsumption_in_wh()
+              + ".\nYour answer was: " + textArea.getText());
+      answerText.setVisible(true);
+    }
     addPoints.setVisible(true);
 
     Timeline cooldown = new Timeline();
@@ -292,9 +301,15 @@ public class MultipleChoiceCtrl {
    * @return a boolean that decides whether you receive points or not
    */
   public boolean computeAnswerEstimation() {
+    try {
+      Integer.parseInt(this.textArea.getText());
+    } catch (NumberFormatException nfe) {
+      return false;
+    }
     int answer = question.getActivities().get(0).getConsumption_in_wh();
-    int bound = 20 * answer / 100;
-    if (Integer.valueOf(this.textArea.getText()) < (answer - bound) || Integer.valueOf(this.textArea.getText()) > (answer + bound)) {
+    int bound = 25 * answer / 100;
+    if (Integer.valueOf(this.textArea.getText()) < (answer - bound)
+        || Integer.valueOf(this.textArea.getText()) > (answer + bound)) {
       return false;
     }
     return true;
@@ -391,9 +406,9 @@ public class MultipleChoiceCtrl {
       jokerEl.setVisible(false);
     }
     questionNum++;
-    addPoints.setVisible(false);
-    questionNo.setText(questionNum + "/20");
-    if (!this.question.getText().equals("How much do you think this activity consumes?")) {
+    if (!this.question.getText().equals("How much do you think this activity consumes per hour?")) {
+      addPoints.setVisible(false);
+      questionNo.setText(questionNum + "/20");
       answer1.setDisable(false);
       answer1.setStyle("-fx-background-color: #11AD31");
       answer1.setVisible(true);
@@ -403,17 +418,8 @@ public class MultipleChoiceCtrl {
       answer3.setDisable(false);
       answer3.setStyle("-fx-background-color: #11AD31");
       answer3.setVisible(true);
-
-    } else {
-      this.questionImage1.setVisible(false);
-      this.questionImage3.setVisible(false);
-      this.answer1.setDisable(true);
-      this.answer1.setVisible(false);
-      this.answer2.setDisable(true);
-      this.answer2.setVisible(false);
-      this.answer3.setDisable(true);
-      this.answer3.setVisible(false);
     }
+    textArea.setText("Type your answer...");
     server.resetAnswer();
     playerPoints.setText(server.getPlayer().getScore() + " points");
   }
@@ -423,6 +429,13 @@ public class MultipleChoiceCtrl {
    */
   public void nextQuestionMultiple() {
     revealAnswer();
+  }
+
+  /**
+   * Whenever you press on the type bar the default text gets deleted.
+   */
+  public void deleteText() {
+    textArea.setText("");
   }
 
   /**
@@ -490,7 +503,6 @@ public class MultipleChoiceCtrl {
       submitButton.setVisible(false);
       textArea.setDisable(true);
       textArea.setVisible(false);
-      answerText.setDisable(true);
       answerText.setVisible(false);
       setMapButtons();
       if (this.question.getText().equals("Which is more expensive?")) {
@@ -508,13 +520,27 @@ public class MultipleChoiceCtrl {
    * Method to prepare the screen for the estimation question type.
    */
   public void prepareEstimation() {
-    this.submitButton.setVisible(true);
     this.submitButton.setDisable(false);
-    this.textArea.setVisible(true);
+    this.submitButton.setVisible(true);
     this.textArea.setDisable(false);
+    this.textArea.setVisible(true);
     this.answerText.setVisible(false);
-    this.questionLabel.setText(question.getText());
-    this.questionImage2.setImage(new Image(question.getActivities().get(0).getImage_path()));
+    this.answer1.setDisable(true);
+    this.answer1.setVisible(false);
+    this.answer2.setDisable(true);
+    this.answer2.setVisible(false);
+    this.answer3.setDisable(true);
+    this.answer3.setVisible(false);
+    this.questionImage1.setVisible(false);
+    this.questionImage3.setVisible(false);
+    this.questionLabel.setText(
+        question.getText() + "\n" + question.getActivities().get(0).getTitle());
+    try {
+      this.questionImage2.setImage(
+          new Image("client/images/" + question.getActivities().get(0).getImage_path()));
+    } catch (IllegalArgumentException e) {
+      this.questionImage1.setImage(new Image("client/images/defaultImage.png"));
+    }
   }
 
   /**

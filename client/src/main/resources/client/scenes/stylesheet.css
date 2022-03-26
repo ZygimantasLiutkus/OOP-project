@@ -64,7 +64,7 @@ uncomment this.
     -fx-text-fill: #165B24;
 }
 
-#questionLabel {
+#questionLabel, #answerText {
     -fx-background-color: #C4C4C4;
 }
 
