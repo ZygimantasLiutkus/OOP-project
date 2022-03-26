@@ -46,7 +46,7 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
  */
 public class ServerUtils {
 
-  private String server = "http://localhost:8080/";
+  private String server = "ws://localhost:8080/";
   private Player player = new Player("");
   private Player dummyPlayer = new Player("");
   // = new Player("test"); for testing purposes. If we want to test client uncomment.
