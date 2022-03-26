@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
@@ -89,6 +90,15 @@ public class MultipleChoiceCtrl {
 
   @FXML
   private FlowPane emojiPane;
+
+  @FXML
+  private TextField textArea;
+
+  @FXML
+  private Button submitButton;
+
+  @FXML
+  private Label answerText;
 
   /**
    * Constructor for MultipleChoiceCtrl.
@@ -230,6 +240,10 @@ public class MultipleChoiceCtrl {
 
     boolean answerCorrectness = false;
 
+    if (question.getText().contains("How much do you think this activity consumes?")) {
+      String answer = textArea.getText();
+    }
+
     if (question.getText().contains("How big is the consumption per hour for this activity?")) {
       answerCorrectness = computeAnswerChoice();
     }
@@ -241,13 +255,21 @@ public class MultipleChoiceCtrl {
     timeCount.stop();
     timeCounter.setVisible(false);
     resetTimer();
-
+    int points = 0;
     if (!answerCorrectness) {
       addPoints.setText("+0");
     } else {
-      int points = 10 * (time + 1);
-      if (time == 10) {
-        points -= 10;
+      if (question.getText().contains("How big is the consumption per hour for this activity?")) {
+        int realAnswer = question.getActivities().get(0).getConsumption_in_wh();
+        double percentageOff =
+            Math.abs(Integer.valueOf(textArea.getText()) - realAnswer) / realAnswer;
+        points = (int) (100 * (double) (1 - percentageOff / 0.2));
+        points = Math.max(0, points);
+      } else {
+        points = 10 * (time + 1);
+        if (time == 10) {
+          points -= 10;
+        }
       }
       server.getPlayer().setScore(server.getPlayer().getScore() + points);
       addPoints.setText("+" + Integer.toString(points));
@@ -262,6 +284,20 @@ public class MultipleChoiceCtrl {
     cooldown.setOnFinished(e -> {
       cooldownAnswer();
     });
+  }
+
+  /**
+   * Method to calculate the exact correct answer.
+   *
+   * @return a boolean that decides whether you receive points or not
+   */
+  public boolean computeAnswerEstimation() {
+    int answer = question.getActivities().get(0).getConsumption_in_wh();
+    int bound = 20 * answer / 100;
+    if (Integer.valueOf(this.textArea.getText()) < (answer - bound) || Integer.valueOf(this.textArea.getText()) > (answer + bound)) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -351,18 +387,35 @@ public class MultipleChoiceCtrl {
   public void nextQuestionSingle() {
     setText();
     resetTimer();
-    jokerEl.setVisible(true);
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      jokerEl.setVisible(false);
+    }
     questionNum++;
     addPoints.setVisible(false);
     questionNo.setText(questionNum + "/20");
-    answer1.setDisable(false);
-    answer1.setStyle("-fx-background-color: #11AD31");
-    answer2.setDisable(false);
-    answer2.setStyle("-fx-background-color: #11AD31");
-    answer3.setDisable(false);
-    answer3.setStyle("-fx-background-color: #11AD31");
+    if (!this.question.getText().equals("How much do you think this activity consumes?")) {
+      answer1.setDisable(false);
+      answer1.setStyle("-fx-background-color: #11AD31");
+      answer1.setVisible(true);
+      answer2.setDisable(false);
+      answer2.setStyle("-fx-background-color: #11AD31");
+      answer2.setVisible(true);
+      answer3.setDisable(false);
+      answer3.setStyle("-fx-background-color: #11AD31");
+      answer3.setVisible(true);
+
+    } else {
+      this.questionImage1.setVisible(false);
+      this.questionImage3.setVisible(false);
+      this.answer1.setDisable(true);
+      this.answer1.setVisible(false);
+      this.answer2.setDisable(true);
+      this.answer2.setVisible(false);
+      this.answer3.setDisable(true);
+      this.answer3.setVisible(false);
+    }
     server.resetAnswer();
-    playerPoints.setText(Integer.toString(server.getPlayer().getScore()) + " points");
+    playerPoints.setText(server.getPlayer().getScore() + " points");
   }
 
   /**
@@ -432,13 +485,36 @@ public class MultipleChoiceCtrl {
    */
   public void setText() {
     setQuestion(server.getQuestion(String.valueOf(questionNum + 1)));
-    setMapButtons();
-    if (this.question.getText().equals("Which is more expensive?")) {
-      prepareMoreExpensive();
-    } else if (this.question.getText()
-        .equals("How big is the consumption per hour for this activity?")) {
-      prepareMultipleChoice();
+    if (!this.question.getText().equals("How much do you think this activity consumes per hour?")) {
+      submitButton.setDisable(true);
+      submitButton.setVisible(false);
+      textArea.setDisable(true);
+      textArea.setVisible(false);
+      answerText.setDisable(true);
+      answerText.setVisible(false);
+      setMapButtons();
+      if (this.question.getText().equals("Which is more expensive?")) {
+        prepareMoreExpensive();
+      } else if (this.question.getText()
+          .equals("How big is the consumption per hour for this activity?")) {
+        prepareMultipleChoice();
+      }
+    } else {
+      prepareEstimation();
     }
+  }
+
+  /**
+   * Method to prepare the screen for the estimation question type.
+   */
+  public void prepareEstimation() {
+    this.submitButton.setVisible(true);
+    this.submitButton.setDisable(false);
+    this.textArea.setVisible(true);
+    this.textArea.setDisable(false);
+    this.answerText.setVisible(false);
+    this.questionLabel.setText(question.getText());
+    this.questionImage2.setImage(new Image(question.getActivities().get(0).getImage_path()));
   }
 
   /**
@@ -512,5 +588,15 @@ public class MultipleChoiceCtrl {
    */
   public void setQuestion(Question q) {
     this.question = q;
+  }
+
+  /**
+   * The method linked to the submit button.
+   */
+  public void sendAnswer() {
+    String answer = String.valueOf(question.getActivities().get(0).getConsumption_in_wh());
+    server.getPlayer().setSelectedAnswer(answer);
+    this.submitButton.setDisable(true);
+    revealAnswer();
   }
 }
