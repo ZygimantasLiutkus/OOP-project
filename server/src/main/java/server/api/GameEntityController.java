@@ -318,17 +318,17 @@ public class GameEntityController {
   }
 
   /**
-   * Method that takes a message from /app/messages and returns it to /topic/messages.
+   * Method that takes a message from /app/messages/{id} and returns it to /topic/messages/{id}.
    *
+   * @param id      the ID of the game
    * @param message the message being sent
    * @return the same message
    */
-  @MessageMapping("/messages")  // is /app/messages
-  @SendTo("/topic/messages")
-  public Message addMessage(Message message) {
+  @MessageMapping("/messages/{id}")  // is /app/messages
+  @SendTo("/topic/messages/{id}")
+  public Message addMessageToGameByID(@PathVariable("id") long id, Message message) {
     //call method for showing the name + emoji on the screen (to be implemented by frontend)
     return message;
   }
-
 
 }
