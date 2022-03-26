@@ -1,6 +1,8 @@
 package commons;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,15 @@ class QuestionEstimationTest {
     list.add(a);
     QuestionEstimation q = new QuestionEstimation(list);
 
+    assertNotNull(q);
+  }
+
+  /**
+   * Test for empty constructor.
+   */
+  @Test
+  void constructorEmpty() {
+    QuestionEstimation q = new QuestionEstimation();
     assertNotNull(q);
   }
 

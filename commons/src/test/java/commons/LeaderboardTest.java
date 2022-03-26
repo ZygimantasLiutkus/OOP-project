@@ -1,6 +1,7 @@
 package commons;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,15 @@ public class LeaderboardTest {
     LeaderboardEntry e = new LeaderboardEntry("Bob", 44);
     assertEquals(e.getScore(), 44);
     assertEquals(e.getName(), "Bob");
+  }
+
+  /**
+   * Test for empty constructor.
+   */
+  @Test
+  void constructorEmpty() {
+    LeaderboardEntry e = new LeaderboardEntry();
+    assertNotNull(e);
   }
 
   /**

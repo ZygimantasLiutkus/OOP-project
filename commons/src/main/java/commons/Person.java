@@ -44,7 +44,7 @@ public class Person {
    * Only used for the object mappers.
    */
   @SuppressWarnings("unused")
-  private Person() {
+  public Person() {
     // for object mapper
   }
 

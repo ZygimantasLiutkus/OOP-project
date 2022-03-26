@@ -27,6 +27,15 @@ class QuestionMultipleChoiceTest {
   }
 
   /**
+   * Test for empty constructor.
+   */
+  @Test
+  void emptyConstructor() {
+    QuestionMultipleChoice q = new QuestionMultipleChoice();
+    assertNotNull(q);
+  }
+
+  /**
    * Tests getText() method.
    */
   @Test
