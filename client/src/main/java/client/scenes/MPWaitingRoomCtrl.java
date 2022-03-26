@@ -50,23 +50,6 @@ public class MPWaitingRoomCtrl implements Initializable {
     this.server = server;
     this.mainCtrl = mainCtrl;
     this.multipleChoiceCtrl = multipleChoiceCtrl;
-
-    new Timer().scheduleAtFixedRate(new TimerTask() {
-      /**
-       * Run method that gets executed once every second.
-       */
-      @Override
-      public void run() {
-        updateWaitingPlayers();
-        if (checkPlayerNo()) {
-          startButton.setDisable(false);
-          startButton.setStyle("-fx-background-color: #11AD31");
-        } else {
-          startButton.setDisable(true);
-          startButton.setStyle("-fx-background-color: #B3B3B3");
-        }
-      }
-    }, 0, 1000);
   }
 
   /**
@@ -110,5 +93,22 @@ public class MPWaitingRoomCtrl implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     waitingPlayersList.setItems(data);
+
+    new Timer().scheduleAtFixedRate(new TimerTask() {
+      /**
+       * Run method that gets executed once every second.
+       */
+      @Override
+      public void run() {
+        updateWaitingPlayers();
+        if (checkPlayerNo()) {
+          startButton.setDisable(false);
+          startButton.setStyle("-fx-background-color: #11AD31");
+        } else {
+          startButton.setDisable(true);
+          startButton.setStyle("-fx-background-color: #B3B3B3");
+        }
+      }
+    }, 0, 1000);
   }
 }

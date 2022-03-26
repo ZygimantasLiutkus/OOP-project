@@ -28,7 +28,7 @@
                         </ImageView>
                     </children>
                 </FlowPane>
-                <ListView fx:id="waitingPlayersList" layoutX="235.0" layoutY="163.0" prefHeight="200.0" prefWidth="255.0" />
+                <ListView fx:id="waitingPlayersList" layoutX="235.0" layoutY="163.0" prefHeight="200.0" prefWidth="255.0" style="-fx-background-color: #B3B3B3"/>
                 <Label fx:id="noOfPlayers" layoutX="235.0" layoutY="136.0" text="1 player waiting to start...">
                     <font>
                         <Font size="14.0" />
