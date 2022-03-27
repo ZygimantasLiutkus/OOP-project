@@ -141,7 +141,7 @@ public class MultipleChoiceCtrl {
    * @param e the events of typing.
    */
   public void keyPressed(KeyEvent e) {
-    if (!e.getCode().equals(KeyCode.NUMBER_SIGN)) {
+    if (e.getCode().isLetterKey()) {
       validator.setVisible(true);
     } else {
       validator.setVisible(false);
