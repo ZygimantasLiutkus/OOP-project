@@ -4,6 +4,7 @@ import commons.GameEntity;
 import commons.LeaderboardEntry;
 import commons.Player;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,6 @@ public class LeaderboardService {
       LeaderboardEntry newEntry = new LeaderboardEntry(player.getName(), player.getScore());
       list.add(newEntry);
     }
-
     return list;
   }
 }

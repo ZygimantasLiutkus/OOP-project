@@ -363,6 +363,7 @@ public class MultipleChoiceCtrl {
     boolean answerCorrectness = false;
 
     if (question.getText().equals("How much do you think this activity consumes per hour?")) {
+      this.textPrompt.setVisible(false);
       answerCorrectness = computeAnswerEstimation();
     }
 
@@ -471,9 +472,9 @@ public class MultipleChoiceCtrl {
       jokerEl.setVisible(false);
     }
     questionNum++;
+    addPoints.setVisible(false);
+    questionNo.setText(questionNum + "/20");
     if (!this.question.getText().equals("How much do you think this activity consumes per hour?")) {
-      addPoints.setVisible(false);
-      questionNo.setText(questionNum + "/20");
       answer1.setDisable(false);
       answer1.setStyle("-fx-background-color: #11AD31");
       answer1.setVisible(true);
