@@ -4,7 +4,6 @@ import commons.GameEntity;
 import commons.LeaderboardEntry;
 import commons.Player;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
