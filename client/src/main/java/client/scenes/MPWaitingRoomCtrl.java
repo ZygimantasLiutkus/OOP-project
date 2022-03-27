@@ -58,16 +58,16 @@ public class MPWaitingRoomCtrl implements Initializable {
   public void updateWaitingPlayers() {
     int howManyPlayers = server.getGame().getPlayers().size();
     if (howManyPlayers != 1) {
-      noOfPlayers.setText(howManyPlayers + "players waiting to start...");
+      this.noOfPlayers.setText(howManyPlayers + " players waiting to start...");
     } else {
-      noOfPlayers.setText("1 player waiting to start...");
+      this.noOfPlayers.setText("2 player waiting to start...");
     }
     List<String> currentPlayers = new ArrayList<>();
     for (Player p : server.getGame().getPlayers()) {
       currentPlayers.add(p.getName());
     }
     data = FXCollections.observableArrayList(currentPlayers);
-    waitingPlayersList.setItems(data);
+    this.waitingPlayersList.setItems(data);
   }
 
   /**
@@ -92,8 +92,6 @@ public class MPWaitingRoomCtrl implements Initializable {
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    waitingPlayersList.setItems(data);
-
     new Timer().scheduleAtFixedRate(new TimerTask() {
       /**
        * Run method that gets executed once every second.
@@ -109,6 +107,6 @@ public class MPWaitingRoomCtrl implements Initializable {
           startButton.setStyle("-fx-background-color: #B3B3B3");
         }
       }
-    }, 0, 1000);
+    }, 10000, 1000);
   }
 }
