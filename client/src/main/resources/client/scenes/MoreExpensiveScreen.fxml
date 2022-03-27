@@ -12,7 +12,7 @@
             <children>
                 <FlowPane layoutX="156.0" layoutY="14.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="161.0" AnchorPane.rightAnchor="151.80000000000007">
                     <children>
-                        <Label fx:id="questionLabel" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="580.0" stylesheets="@stylesheet.css" text="questionLabel" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                        <Label fx:id="questionLabel" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="580.0" stylesheets="@/client/scenes/stylesheet.css" text="questionLabel" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" wrapText="true">
                             <font>
                                 <Font size="20.0" />
                             </font>
