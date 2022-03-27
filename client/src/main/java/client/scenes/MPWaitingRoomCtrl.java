@@ -125,4 +125,14 @@ public class MPWaitingRoomCtrl implements Initializable {
     showPlayersButton.setDisable(true);
     showPlayersButton.setVisible(false);
   }
+
+  /**
+   * Have the ability to leave a multiplayer lobby.
+   */
+  public void goHome() {
+    List<Player> players = this.server.getGame().getPlayers();
+    players.remove(server.getPlayer());
+    this.server.updatePlayer(players);
+    mainCtrl.showChooseScreen();
+  }
 }
