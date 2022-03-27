@@ -20,6 +20,8 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -128,6 +130,17 @@ public class MultipleChoiceCtrl {
   }
 
   /**
+   * Looks for an ENTER key press.
+   *
+   * @param e the events of typing.
+   */
+  public void keyPressed(KeyEvent e) {
+    if (e.getCode().equals(KeyCode.ENTER)) {
+      sendAnswer();
+    }
+  }
+
+  /**
    * Whenever you press on the type bar the default text gets deleted.
    */
   public void deleteText() {
@@ -164,7 +177,9 @@ public class MultipleChoiceCtrl {
     String answer = String.valueOf(question.getActivities().get(0).getConsumption_in_wh());
     server.getPlayer().setSelectedAnswer(answer);
     this.submitButton.setDisable(true);
-    revealAnswer();
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      revealAnswer();
+    }
   }
 
   /**
