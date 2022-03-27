@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import server.database.GameEntityRepository;
@@ -325,8 +326,7 @@ public class GameEntityController {
    */
   @MessageMapping("/messages") // is /app/messages
   @SendTo("/topic/messages")
-  public Message addMessageToGameByID(Message message) {
-    System.out.println("test message 3");
+  public Message addMessageToGameByID(@Payload Message message) {
     //call method for showing the name + emoji on the screen (to be implemented by frontend)
     return message;
   }

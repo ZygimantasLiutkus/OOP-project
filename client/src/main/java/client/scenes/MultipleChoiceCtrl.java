@@ -136,7 +136,6 @@ public class MultipleChoiceCtrl {
   public void setSelectedAnswer1() {
     String answer = answer1.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    startCommunication(); //for testing purposes
     revealAnswer();
   }
 
@@ -146,7 +145,6 @@ public class MultipleChoiceCtrl {
   public void setSelectedAnswer2() {
     String answer = answer2.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    sendEmojiLaughing(); //for testing purposes
     revealAnswer();
   }
 
@@ -514,9 +512,7 @@ public class MultipleChoiceCtrl {
    * Method that sets up communication for the client.
    */
   public void startCommunication() {
-    System.out.println("test message 1");
     server.registerForMessages("/topic/messages", message -> {
-      System.out.println("test message 4");
       //implement method to show emoji on screen
     });
   }
@@ -527,8 +523,7 @@ public class MultipleChoiceCtrl {
   public void sendEmojiLaughing() {
     Message laughing = new Message("laughing", server.getPlayer().getName());
     Long gameID = server.getPlayer().getGameId();
-    System.out.println("test message 2");
-    server.send("/app/messages", laughing);
+    server.send("app/messages", laughing);
   }
 
   /**
