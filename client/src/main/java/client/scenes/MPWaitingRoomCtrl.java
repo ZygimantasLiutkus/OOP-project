@@ -5,7 +5,6 @@ import commons.GameEntity;
 import commons.Player;
 import java.net.URL;
 import java.util.*;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -17,7 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.util.Duration;
-
 import javax.inject.Inject;
 
 /**
@@ -119,6 +117,9 @@ public class MPWaitingRoomCtrl implements Initializable {
     timeline.setCycleCount(Animation.INDEFINITE);
   }
 
+  /**
+   * Method that starts the timeline and disables the 'showPlayersButton'.
+   */
   public void startTimeline() {
     timeline.play();
     showPlayersButton.setDisable(true);
