@@ -29,8 +29,8 @@
                         <Insets top="20.0" />
                     </padding>
                 </FlowPane>
-                <TextField fx:id="textArea" alignment="CENTER" layoutX="320.0" layoutY="330.0" onMouseClicked="#deleteText" onKeyPressed="#keyPressed" prefHeight="40.0" prefWidth="250.0" text="Type your answer..." />
-                <Button fx:id="submitButton" layoutX="580.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#sendAnswer"  prefHeight="40.0" prefWidth="75.0" style="-fx-background-color: #3966BF;" text="SUBMIT" />
+                <TextField fx:id="textArea" alignment="CENTER" layoutX="320.0" layoutY="330.0" onKeyPressed="#keyPressed" prefHeight="40.0" prefWidth="250.0" />
+                <Button fx:id="submitButton" layoutX="580.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#sendAnswer" prefHeight="40.0" prefWidth="75.0" style="-fx-background-color: #3966BF;" text="SUBMIT" />
                 <Label fx:id="answerText" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="310.0" prefHeight="80.0" prefWidth="580.0" style="-fx-background-color: #C4C4C4;" stylesheets="@/client/scenes/stylesheet.css" text="Label" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="18.0" />
@@ -47,6 +47,16 @@
                     <image>
                         <Image url="@../../../../../build/resources/main/client/images/defaultImage.png" />
                     </image></ImageView>
+            <Label fx:id="textPrompt" alignment="CENTER" layoutX="320.0" layoutY="330.0" prefHeight="40.0" prefWidth="250.0" text="Type your answer....">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="validator" alignment="CENTER" layoutX="320.0" layoutY="295.0" prefHeight="30.0" prefWidth="250.0" text="Type a valid number!" textFill="#f20404">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
             </children>
         </AnchorPane>
     </center>

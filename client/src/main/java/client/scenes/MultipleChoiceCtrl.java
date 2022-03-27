@@ -102,6 +102,12 @@ public class MultipleChoiceCtrl {
   @FXML
   private Label answerText;
 
+  @FXML
+  private Label textPrompt;
+
+  @FXML
+  private Label validator;
+
   /**
    * Constructor for MultipleChoiceCtrl.
    *
@@ -135,6 +141,13 @@ public class MultipleChoiceCtrl {
    * @param e the events of typing.
    */
   public void keyPressed(KeyEvent e) {
+    if(!e.getCode().equals(KeyCode.NUMBER_SIGN)){
+      validator.setVisible(true);
+    }
+    else{
+      validator.setVisible(false);
+    }
+    this.textPrompt.setVisible(false);
     if (e.getCode().equals(KeyCode.ENTER)) {
       sendAnswer();
     }
@@ -388,7 +401,14 @@ public class MultipleChoiceCtrl {
 
     //If someone didn't submit anything and just pressed the button, the answer is automatically 0.
     if (question.getText().equals("How much do you think this activity consumes per hour?")) {
-      if (textArea.getText().equals("Type your answer...")) {
+      this.validator.setVisible(false);
+      try{
+        Long.parseLong(textArea.getText());
+      }
+      catch (NumberFormatException e){
+        textArea.setText("0");
+      }
+      if (textArea.getText().equals("")) {
         textArea.setText("0");
       }
       //If the question type was submission, a label which shows the exact answer should appear.
@@ -466,7 +486,9 @@ public class MultipleChoiceCtrl {
       answer3.setStyle("-fx-background-color: #11AD31");
       answer3.setVisible(true);
     }
-    textArea.setText("Type your answer...");
+    textArea.setText("");
+    this.validator.setVisible(false);
+    this.validator.setDisable(true);
     server.resetAnswer();
     playerPoints.setText(server.getPlayer().getScore() + " points");
   }
@@ -490,6 +512,8 @@ public class MultipleChoiceCtrl {
       textArea.setDisable(true);
       textArea.setVisible(false);
       answerText.setVisible(false);
+      textPrompt.setVisible(false);
+      textPrompt.setDisable(true);
       setMapButtons();
       if (this.question.getText().equals("Which is more expensive?")) {
         prepareMoreExpensive();
@@ -506,6 +530,7 @@ public class MultipleChoiceCtrl {
    * Method to prepare the screen for the estimation question type.
    */
   public void prepareEstimation() {
+    this.textPrompt.setVisible(true);
     this.submitButton.setDisable(false);
     this.submitButton.setVisible(true);
     this.textArea.setDisable(false);
