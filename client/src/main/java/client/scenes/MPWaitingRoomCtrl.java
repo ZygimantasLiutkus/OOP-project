@@ -5,6 +5,10 @@ import commons.GameEntity;
 import commons.Player;
 import java.net.URL;
 import java.util.*;
+
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +16,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.util.Duration;
+
 import javax.inject.Inject;
 
 /**
@@ -24,18 +30,26 @@ public class MPWaitingRoomCtrl implements Initializable {
   private final MultipleChoiceCtrl multipleChoiceCtrl;
 
   private ObservableList<String> data;
+  public Timer timer = new Timer();
+  private Timeline timeline;
 
   @FXML
   private Button startButton;
 
   @FXML
-  private Label noOfPlayers;
+  private Label playersNumber;
 
   @FXML
   private ListView<String> waitingPlayersList;
 
   @FXML
   private Button homeButton;
+
+  @FXML
+  private Label label;
+
+  @FXML
+  private Button showPlayersButton;
 
   /**
    * Constructor for the Multi-player Waiting Room Controller.
@@ -58,9 +72,9 @@ public class MPWaitingRoomCtrl implements Initializable {
   public void updateWaitingPlayers() {
     int howManyPlayers = server.getGame().getPlayers().size();
     if (howManyPlayers != 1) {
-      this.noOfPlayers.setText(howManyPlayers + " players waiting to start...");
+      this.playersNumber.setText(howManyPlayers + " players waiting to start...");
     } else {
-      this.noOfPlayers.setText("2 player waiting to start...");
+      this.playersNumber.setText("1 player waiting to start...");
     }
     List<String> currentPlayers = new ArrayList<>();
     for (Player p : server.getGame().getPlayers()) {
@@ -92,21 +106,22 @@ public class MPWaitingRoomCtrl implements Initializable {
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    new Timer().scheduleAtFixedRate(new TimerTask() {
-      /**
-       * Run method that gets executed once every second.
-       */
-      @Override
-      public void run() {
-        updateWaitingPlayers();
-        if (checkPlayerNo()) {
-          startButton.setDisable(false);
-          startButton.setStyle("-fx-background-color: #11AD31");
-        } else {
-          startButton.setDisable(true);
-          startButton.setStyle("-fx-background-color: #B3B3B3");
-        }
+    timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+      updateWaitingPlayers();
+      if (checkPlayerNo()) {
+        startButton.setDisable(false);
+        startButton.setStyle("-fx-background-color: #11AD31");
+      } else {
+        startButton.setDisable(true);
+        startButton.setStyle("-fx-background-color: #B3B3B3");
       }
-    }, 10000, 1000);
+    }));
+    timeline.setCycleCount(Animation.INDEFINITE);
+  }
+
+  public void startTimeline() {
+    timeline.play();
+    showPlayersButton.setDisable(true);
+    showPlayersButton.setVisible(false);
   }
 }

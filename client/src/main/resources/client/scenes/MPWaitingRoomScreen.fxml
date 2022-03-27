@@ -7,14 +7,14 @@
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="408.0" minWidth="900.0" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MPWaitingRoomCtrl">
     <center>
-        <AnchorPane fx:id="centralPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
+        <AnchorPane fx:id="centralPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onDragDetected="#startTimeline" prefHeight="500.0" prefWidth="1000.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
                 <Button fx:id="startButton" disable="true" layoutX="571.0" layoutY="263.0" maxHeight="59.0" mnemonicParsing="false" onMouseClicked="#startMultiPlayer" onTouchPressed="#startMultiPlayer" prefHeight="59.0" prefWidth="174.0" style="-fx-background-color: #B3B3B3" text="START" textAlignment="CENTER">
                     <font>
                         <Font size="22.0" />
                     </font>
                 </Button>
-                <Label alignment="CENTER" layoutX="538.0" layoutY="203.0" prefHeight="46.0" prefWidth="239.0" text="Waiting to start...">
+                <Label fx:id="label" alignment="CENTER" layoutX="538.0" layoutY="203.0" prefHeight="46.0" prefWidth="239.0" text="Waiting to start...">
                     <font>
                         <Font size="28.0" />
                     </font>
@@ -28,12 +28,13 @@
                         </ImageView>
                     </children>
                 </FlowPane>
-                <ListView fx:id="waitingPlayersList" layoutX="235.0" layoutY="163.0" prefHeight="200.0" prefWidth="255.0" style="-fx-background-color: #B3B3B3"/>
-                <Label fx:id="noOfPlayers" layoutX="235.0" layoutY="136.0" text="1 player waiting to start...">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Label>
+                <ListView fx:id="waitingPlayersList" layoutX="235.0" layoutY="163.0" prefHeight="200.0" prefWidth="255.0" style="-fx-background-color: #B3B3B3" />
+            <Label fx:id="playersNumber" layoutX="235.0" layoutY="128.0" prefHeight="30.0" prefWidth="255.0" text="1 player waiting to start...">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Button fx:id="showPlayersButton" layoutX="279.0" layoutY="239.0" maxHeight="63.0" mnemonicParsing="false" onMouseClicked="#startTimeline" onMousePressed="#startTimeline" prefHeight="47.0" prefWidth="166.0" text="Click here to see who else is in this waiting room!" textAlignment="CENTER" wrapText="true" />
             </children>
         </AnchorPane>
     </center>
