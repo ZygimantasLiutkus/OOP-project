@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package server.api;
+package server.database;
 
 import commons.Quote;
 import java.util.ArrayList;
@@ -26,7 +26,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
-import server.database.QuoteRepository;
 
 /**
  * Tests for the QuoteRepository.

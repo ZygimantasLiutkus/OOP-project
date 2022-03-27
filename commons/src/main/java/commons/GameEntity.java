@@ -4,7 +4,14 @@ import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -44,6 +51,15 @@ public class GameEntity {
     this.type = type;
     this.status = "WAITING";
     this.questions = questions;
+  }
+
+  /**
+   * Constructor to only support status.
+   *
+   * @param status the desired status
+   */
+  public GameEntity(String status) {
+    this.status = status;
   }
 
   /**
@@ -124,7 +140,7 @@ public class GameEntity {
    * @return a long generated using Identity
    */
   public Long getId() {
-    return id;
+    return this.id;
   }
 
   /**

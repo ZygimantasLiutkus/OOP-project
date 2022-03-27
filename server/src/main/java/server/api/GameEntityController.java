@@ -3,7 +3,7 @@ package server.api;
 import commons.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import server.database.GameEntityRepository;
 import server.database.PlayerRepository;
 import server.database.QuestionRepository;
+import server.services.LeaderboardService;
 import server.services.QuestionService;
 
 /**
@@ -21,23 +22,27 @@ import server.services.QuestionService;
 public class GameEntityController {
   private final GameEntityRepository repo;
   private final PlayerRepository playerRepo;
-  private final QuestionService service;
+  private final QuestionService questionService;
   private final QuestionRepository qRepo;
+  private final LeaderboardService leaderboardService;
 
   /**
    * Constructor for the controller.
    *
-   * @param repo       the game repository
-   * @param playerRepo the player repository
-   * @param service    the service for questions
-   * @param qRepo      the question repository
+   * @param repo               the game repository
+   * @param playerRepo         the player repository
+   * @param questionService    the service for questions
+   * @param qRepo              the question repository
+   * @param leaderboardService the leaderboard service
    */
   public GameEntityController(GameEntityRepository repo, PlayerRepository playerRepo,
-                              QuestionService service, QuestionRepository qRepo) {
+                              QuestionService questionService, QuestionRepository qRepo,
+                              LeaderboardService leaderboardService) {
     this.repo = repo;
     this.playerRepo = playerRepo;
-    this.service = service;
+    this.questionService = questionService;
     this.qRepo = qRepo;
+    this.leaderboardService = leaderboardService;
   }
 
   /**
@@ -163,18 +168,20 @@ public class GameEntityController {
    */
   @PostMapping(path = "/addPlayer")
   public ResponseEntity<GameEntity> addPlayerToGame(@RequestBody Player player) {
-    final int questionAmount = 4; // TODO: change amount to 20
+    final int questionAmount = 20;
     List<GameEntity> status = repo.findByStatus("WAITING");
     List<GameEntity> type = repo.findByType(GameEntity.Type.MULTIPLAYER);
     List<GameEntity> list = status.stream().filter(type::contains).collect(Collectors.toList());
     if (list.size() == 0) { // Create a new game
       GameEntity game = new GameEntity();
-      List<Question> questions = service.generateQuestion(questionAmount);
+      List<Question> questions = questionService.generateQuestion(questionAmount);
       if (questions.size() != questionAmount) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
       }
       game.setType(GameEntity.Type.MULTIPLAYER);
       game.setQuestions(questions);
+      repo.save(game);
+      player.setGameId(game.getId());
       playerRepo.save(player);
       game.addPlayer(player);
       return ResponseEntity.ok(repo.save(game));
@@ -184,10 +191,11 @@ public class GameEntityController {
     // Check if the provided name is already in use in this game
     for (Player p : game.getPlayers()) {
       if (p.getName().equals(player.getName())) {
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
       }
     }
     // Save the player and add it to the game
+    player.setGameId(game.getId());
     playerRepo.save(player);
     game.addPlayer(player);
     return ResponseEntity.ok(repo.save(game));
@@ -202,12 +210,7 @@ public class GameEntityController {
   @GetMapping(path = "/{id}/question")
   public ResponseEntity<List<Question>> getAllQuestions(@PathVariable("id") long id) {
     if (repo.existsById(id)) {
-      Optional<GameEntity> game = repo.findById(id);
-      GameEntity entity = new GameEntity();
-      if (game.isPresent()) {
-        entity = game.get();
-      }
-      return ResponseEntity.ok(entity.getQuestions());
+      return ResponseEntity.ok(repo.getById(id).getQuestions());
     }
     return ResponseEntity.badRequest().build();
   }
@@ -217,7 +220,8 @@ public class GameEntityController {
    * Checks if the player is actually present in the game.
    * Checks if the game has started.
    * For "What's more expensive" the answer is the biggest consumption.
-   * For the other type, the question will always talk about the first activity.
+   * For the Multiple Choice question the logic is a placeholder.
+   * For the Estimation question the logic is a placeholder.
    * The player's score will be updated.
    * (For now un "ugly" version of checking an answer)
    *
@@ -237,7 +241,7 @@ public class GameEntityController {
           return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         for (Player p : game.getPlayers()) {
-          if (p.getId() == player.getId()) {
+          if (Objects.equals(p.getId(), player.getId())) {
             playerDummy = p;
             found = true;
             break;
@@ -254,7 +258,21 @@ public class GameEntityController {
               maxim = a.getConsumption_in_wh();
             }
           }
-          if (Integer.valueOf(player.getSelectedAnswer()) == maxim) {
+          if (Integer.parseInt(player.getSelectedAnswer()) == maxim) {
+            playerDummy.setScore(playerDummy.getScore() + 100);
+            playerRepo.save(playerDummy);
+            return ResponseEntity.ok(
+                new Answer("CORRECT", playerDummy, playerDummy.getScore(), 100));
+          } else {
+            playerDummy.setScore(playerDummy.getScore());
+            playerRepo.save(playerDummy);
+            return ResponseEntity.ok(
+                new Answer("INCORRECT", playerDummy, playerDummy.getScore(), 0));
+          }
+        } else if (q instanceof QuestionMultipleChoice) {
+          if (Integer.parseInt(player.getSelectedAnswer())
+              == q.getActivities().get(Integer.parseInt(player.getSelectedAnswer()) - 1)
+              .getConsumption_in_wh()) {
             playerDummy.setScore(playerDummy.getScore() + 100);
             playerRepo.save(playerDummy);
             return ResponseEntity.ok(
@@ -266,7 +284,7 @@ public class GameEntityController {
                 new Answer("INCORRECT", playerDummy, playerDummy.getScore(), 0));
           }
         } else {
-          if (Integer.valueOf(player.getSelectedAnswer())
+          if (Integer.parseInt(player.getSelectedAnswer())
               == q.getActivities().get(0).getConsumption_in_wh()) {
             playerDummy.setScore(playerDummy.getScore() + 100);
             playerRepo.save(playerDummy);
@@ -292,15 +310,31 @@ public class GameEntityController {
    * @return the content of the question
    */
   @GetMapping(path = "/{id}/question/{idQ}")
-  public ResponseEntity<Question> getQuestionById(@PathVariable("id") long id,
+  public ResponseEntity<Question> getQuestionById(@PathVariable("id") Long id,
                                                   @PathVariable("idQ") int q) {
     if (!repo.existsById(id) || q <= 0 || q > 20) {
       return ResponseEntity.badRequest().build();
     }
+    return ResponseEntity.ok(repo.getById(id).getQuestions().get(q - 1));
+  }
+
+  /**
+   * GET request for the leaderboard of a multiplayer game.
+   *
+   * @param id the id of the game
+   * @return the generated leaderboard
+   */
+  @GetMapping(path = "/{id}/leaderboard")
+  public ResponseEntity<List<LeaderboardEntry>> getLeaderboard(@PathVariable("id") Long id) {
     if (!repo.existsById(id)) {
       return ResponseEntity.badRequest().build();
     }
-    return ResponseEntity.ok(repo.getById(id).getQuestions().get(q - 1));
+    GameEntity game = repo.getById(id);
+    if (game.getType() != GameEntity.Type.MULTIPLAYER) {
+      return ResponseEntity.badRequest().build();
+    }
+    List<LeaderboardEntry> leaderboard = leaderboardService.generateLeaderboard(game);
+    return ResponseEntity.ok(leaderboard);
   }
 
   /**
@@ -311,13 +345,14 @@ public class GameEntityController {
    */
   @PostMapping(path = "/singleplayer")
   public ResponseEntity<GameEntity> addSingleplayer(@RequestBody Player player) {
-    playerRepo.save(player);
     GameEntity game = repo.save(new GameEntity());
-    //TODO: change amount to 20
-    List<Question> questions = qRepo.saveAll(service.generateQuestion(3));
+    List<Question> questions = qRepo.saveAll(questionService.generateQuestion(20));
     game.setType(GameEntity.Type.SINGLEPLAYER);
-    game.getQuestions().addAll(questions);
+    game.setQuestions(questions);
+    player.setGameId(game.getId());
+    playerRepo.save(player);
     game.addPlayer(player);
     return ResponseEntity.ok(repo.save(game));
   }
+
 }

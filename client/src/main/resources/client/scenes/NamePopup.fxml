@@ -6,14 +6,23 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 
-<AnchorPane fx:id="namePopupBg" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="500.0" stylesheets="@/client/scenes/stylesheet.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.NamePopupCtrl">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="namePopupBg" maxHeight="1.7976931348623157E308"
+            maxWidth="1.7976931348623157E308"
+            minHeight="200" minWidth="300" prefHeight="250.0" prefWidth="500.0"
+            stylesheets="@/client/scenes/stylesheet.css" xmlns="http://javafx.com/javafx/17"
+            fx:controller="client.scenes.NamePopupCtrl">
     <children>
-        <FlowPane columnHalignment="CENTER" layoutX="132.0" layoutY="35.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="132.0" AnchorPane.rightAnchor="132.8" AnchorPane.topAnchor="35.0">
+        <FlowPane columnHalignment="CENTER" layoutX="132.0" layoutY="35.0" orientation="VERTICAL" prefHeight="200.0"
+                  prefWidth="200.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="35.0"
+                  AnchorPane.leftAnchor="132.0" AnchorPane.rightAnchor="132.8" AnchorPane.topAnchor="35.0">
             <children>
-                <Label prefHeight="65.0" prefWidth="168.0" text="Enter the name that you want" />
-                <TextField fx:id="nameField" alignment="CENTER" prefHeight="26.0" prefWidth="215.0" promptText="Name" />
-                <Label fx:id="takenNameLabel" prefHeight="36.0" prefWidth="170.0" text="This name is already taken, please choose another name" textAlignment="CENTER" textFill="RED" visible="false" wrapText="true" />
-                <Button fx:id="nameButton" mnemonicParsing="false" onMouseClicked="#submit" onTouchPressed="#submit" prefHeight="31.0" prefWidth="120.0" text="Enter" />
+                <Label prefHeight="65.0" prefWidth="168.0" text="Enter the name that you want"/>
+                <TextField fx:id="nameField" alignment="CENTER" prefHeight="26.0" prefWidth="215.0" promptText="Name"/>
+                <Label fx:id="takenNameLabel" prefHeight="36.0" prefWidth="170.0"
+                       text="This name is already taken, please choose another name" textAlignment="CENTER"
+                       textFill="RED" visible="false" wrapText="true"/>
+                <Button fx:id="nameButton" mnemonicParsing="false" onMouseClicked="#submit" onTouchPressed="#submit"
+                        prefHeight="31.0" prefWidth="120.0" text="Enter"/>
             </children>
         </FlowPane>
     </children>

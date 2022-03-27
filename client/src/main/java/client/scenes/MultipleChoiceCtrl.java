@@ -34,6 +34,9 @@ public class MultipleChoiceCtrl {
   public Question question;
   public Random random = new Random();
   public Map<Integer, Activity> mapButtons;
+  public GameEntity dummyGameStarted = new GameEntity("STARTED");
+  public GameEntity dummyGameFinished = new GameEntity("FINISHED");
+  public GameEntity dummyGameAborted = new GameEntity("ABORTED");
   private GameEntity.Type type;
   private int startTime = 10;
   private int questionNum = 0;
@@ -42,6 +45,9 @@ public class MultipleChoiceCtrl {
   private Timeline timeCount;
   //placeholder
   private Activity test = new Activity("1", "answer2", 10, "test");
+  @FXML
+  private ImageView homeButton;
+
   @FXML
   private Label questionLabel;
 
@@ -94,7 +100,30 @@ public class MultipleChoiceCtrl {
   public MultipleChoiceCtrl(ServerUtils server, MainCtrl mainCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
-    this.type = server.getType();
+  }
+
+  /**
+   * Method to "disconnect" from a game.
+   * It also stops a game from running if game type is sp.
+   * (For now it works best for sp as there is no notification of disconnecting)
+   */
+  public void goHomeScreen() {
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      questionNum = 20;
+      timeline.stop();
+      timeCount.stop();
+      server.changeStatus(dummyGameAborted);
+    }
+    mainCtrl.showChooseScreen();
+  }
+
+  /**
+   * Setter for the game type.
+   *
+   * @param type the type of game it was created
+   */
+  public void setType(GameEntity.Type type) {
+    this.type = type;
   }
 
   /**
@@ -146,6 +175,10 @@ public class MultipleChoiceCtrl {
    * Starts the timer.
    */
   public void timerStart() {
+    server.changeStatus(dummyGameStarted);
+    if (this.questionNum == 20) {
+      this.questionNum = 0;
+    }
     nextQuestionSingle();
     timeCounter.setVisible(true);
     timeline = new Timeline();
@@ -274,7 +307,7 @@ public class MultipleChoiceCtrl {
       answer3.setStyle("-fx-background-color: E50C0C");
     }
     return server.getPlayer().getSelectedAnswer()
-            .equals(question.getActivities().get(imax).getTitle());
+        .equals(question.getActivities().get(imax).getTitle());
   }
 
   /**
@@ -288,16 +321,26 @@ public class MultipleChoiceCtrl {
       } else {
         String name = server.getPlayer().getName();
         int points = server.getPlayer().getScore();
-        LeaderboardEntry entry = new LeaderboardEntry(name, points);
-        entry = server.addLeaderboardEntry(entry);
-        mainCtrl.showSPLeaderboard(entry);
+        if (!server.getGame().getStatus().equals("ABORTED")) {
+          LeaderboardEntry entry = new LeaderboardEntry(name, points);
+          entry = server.addLeaderboardEntry(entry);
+          mainCtrl.showSPLeaderboard(entry);
+        }
       }
     } else {
       if (questionNum < 20) {
         timerStart();
-        nextQuestionMultiple();
+        if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+          nextQuestionSingle();
+        } else {
+          nextQuestionMultiple();
+        }
       } else {
-        mainCtrl.showMPLeaderboard();
+        String name = server.getPlayer().getName();
+        int points = server.getPlayer().getScore();
+        LeaderboardEntry entry = new LeaderboardEntry(name, points);
+        server.changeStatus(dummyGameFinished);
+        mainCtrl.showMPLeaderboard(entry);
       }
     }
   }

@@ -3,14 +3,23 @@ package server.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 
 import commons.Activity;
 import commons.GameEntity;
+import commons.LeaderboardEntry;
 import commons.Player;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.database.QuestionRepository;
+import server.database.TestActivityRepository;
+import server.database.TestGameRepository;
+import server.database.TestPlayerRepository;
+import server.database.TestQuestionRepository;
+import server.services.LeaderboardService;
 import server.services.QuestionService;
 
 /**
@@ -25,6 +34,7 @@ public class GameEntityControllerTest {
   private TestActivityRepository activityRepo;
   private Random random;
   private QuestionRepository qRepo;
+  private LeaderboardService lService;
 
   /**
    * Returns a new player.
@@ -63,7 +73,8 @@ public class GameEntityControllerTest {
     random = new Random();
     qService = new QuestionService(activityRepo, random);
     qRepo = new TestQuestionRepository();
-    sut = new GameEntityController(repo, playerRepo, qService, qRepo);
+    lService = new LeaderboardService();
+    sut = new GameEntityController(repo, playerRepo, qService, qRepo, lService);
   }
 
   /**
@@ -73,7 +84,7 @@ public class GameEntityControllerTest {
   public void noPlayersWithSameName() {
     sut.addPlayerToGame(getPlayer("Bob"));
     var actual = sut.addPlayerToGame(getPlayer("Bob"));
-    assertEquals(BAD_REQUEST, actual.getStatusCode());
+    assertEquals(CONFLICT, actual.getStatusCode());
   }
 
   /**
@@ -264,5 +275,82 @@ public class GameEntityControllerTest {
     assertTrue(sut.getAllGames().getBody().size() == 2);
     assertEquals(sut.getAllGames().getBody().get(0), game1);
     assertEquals(sut.getAllGames().getBody().get(1), game2);
+  }
+
+  /**
+   * Test for getting a list of all the questions.
+   */
+  @Test
+  public void testGetAllQuestions() {
+    repo.deleteAll();
+    GameEntity game = sut.addPlayerToGame(getPlayer("Bob")).getBody();
+    Long id = game.getId();
+    assertEquals(game.getQuestions(), sut.getAllQuestions(id).getBody());
+    assertEquals(BAD_REQUEST, sut.getAllQuestions(id + 1).getStatusCode());
+  }
+
+  /**
+   * Test for adding a player in singleplayer.
+   */
+  @Test
+  public void testAddSingleplayer() {
+    repo.deleteAll();
+    GameEntity game1 = sut.addSingleplayer(getPlayer("Alice")).getBody();
+    GameEntity game2 = sut.addSingleplayer(getPlayer("Bob")).getBody();
+    GameEntity game3 = sut.addSingleplayer(getPlayer("Alice")).getBody();
+    assertEquals(game1, repo.findAll().get(0));
+    assertEquals(game2, repo.findAll().get(1));
+    assertEquals(game3, repo.findAll().get(2));
+  }
+
+  /**
+   * Test for getting a question by id.
+   * For this test to pass you need to have the activities imported!
+   */
+  @Test
+  public void testGetQuestionById() {
+    GameEntity game = sut.addPlayerToGame(getPlayer("Alice")).getBody();
+    assertEquals(BAD_REQUEST, sut.getQuestionById(game.getId() + 1, 2).getStatusCode());
+    assertEquals(BAD_REQUEST, sut.getQuestionById(game.getId(), -3).getStatusCode());
+    assertEquals(BAD_REQUEST, sut.getQuestionById(game.getId(), 21).getStatusCode());
+    assertEquals(game.getQuestions().get(0), sut.getQuestionById(game.getId(), 1).getBody());
+    assertEquals(game.getQuestions().get(3), sut.getQuestionById(game.getId(), 4).getBody());
+  }
+
+  /**
+   * Tests if you get a bad request when asking for a leaderboard of a nonexistent game.
+   */
+  @Test
+  public void testGetLeaderboardNonExistingGame() {
+    assertEquals(BAD_REQUEST, sut.getLeaderboard(10000L).getStatusCode());
+  }
+
+  /**
+   * Tests if you get a bad request if when asking for a leaderboard of a singleplayer game.
+   */
+  @Test
+  public void testGetLeaderboardSingleplayer() {
+    GameEntity game = sut.addSingleplayer(getPlayer("Bob")).getBody();
+    assertEquals(BAD_REQUEST, sut.getLeaderboard(game.getId()).getStatusCode());
+  }
+
+  /**
+   * Tests if you get a good leaderboard from a multiplayer game.
+   */
+  @Test
+  public void testGetLeaderboard() {
+    LeaderboardEntry le1 = new LeaderboardEntry("p1", 1);
+    LeaderboardEntry le2 = new LeaderboardEntry("p2", 2);
+    List<LeaderboardEntry> lb = new ArrayList<LeaderboardEntry>();
+    lb.add(le1);
+    lb.add(le2);
+
+    Player p1 = new Player("p1");
+    Player p2 = new Player("p2");
+    p1.setScore(1);
+    p2.setScore(2);
+    GameEntity game = sut.addPlayerToGame(p1).getBody();
+    sut.addPlayerToGame(p2);
+    assertEquals(lb, sut.getLeaderboard(game.getId()).getBody());
   }
 }

@@ -7,6 +7,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import commons.LeaderboardEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import server.database.TestLeaderboardRepository;
 
 /**
  * Tests for the leaderboard controller.

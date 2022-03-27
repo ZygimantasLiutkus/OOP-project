@@ -1,8 +1,6 @@
 package server.api;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import commons.Activity;
@@ -11,6 +9,8 @@ import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.ResponseEntity;
+import server.database.TestActivityRepository;
 
 /**
  * Tests for the activity controller.
@@ -112,7 +112,7 @@ public class ActivityControllerTest {
   public void testGetImagePathById() {
     repo.deleteAll();
     Activity testActivity = new Activity("09-shower", "Taking a hot shower for 6 minutes",
-            4000, "00/shower.png");
+        4000, "00/shower.png");
     repo.save(testActivity);
     String imagePath = sut.getImagePathById(testActivity.getId()).getBody();
     assertEquals("00/shower.png", imagePath);
@@ -125,6 +125,71 @@ public class ActivityControllerTest {
   public void testGetImagePathByIDNonexistent() {
     repo.deleteAll();
     assertEquals(BAD_REQUEST, sut.getImagePathById("0").getStatusCode());
+  }
+
+  /**
+   * Test if update() updates the attributes of the activity with specific id.
+   */
+  @Test
+  public void testUpdate() {
+    repo.deleteAll();
+    Activity a = getActivity("A", 1);
+    Activity b = getActivity("B", 2);
+    repo.save(a);
+    ResponseEntity<Activity> re = sut.update(a.getId(), b);
+    assertEquals(b.getTitle(), re.getBody().getTitle());
+    assertEquals(b.getImage_path(), re.getBody().getImage_path());
+    assertEquals(b.getConsumption_in_wh(), re.getBody().getConsumption_in_wh());
+  }
+
+  /**
+   * Tests if update() returns an error for an id that does not exist.
+   */
+  @Test
+  public void testUpdateNonexistant() {
+    repo.deleteAll();
+    assertEquals(BAD_REQUEST,
+        sut.update(getActivity("A", 1).getId(), getActivity("A", 2)).getStatusCode());
+  }
+
+  /**
+   * Tests if update() returns an error when trying to update with a null or empty title.
+   */
+  @Test
+  public void testUpdateNoTitle() {
+    repo.deleteAll();
+    Activity a = getActivity("A", 1);
+    repo.save(a);
+    assertEquals(BAD_REQUEST,
+        sut.update(a.getId(), new Activity("A", null, 1, "A")).getStatusCode());
+    assertEquals(BAD_REQUEST, sut.update(a.getId(), new Activity("A", "", 1, "A")).getStatusCode());
+  }
+
+  /**
+   * Tests if update() returns an error when trying to update with a less or equal to 0 consumption.
+   */
+  @Test
+  public void testUpdateWrongConsumption() {
+    repo.deleteAll();
+    Activity a = getActivity("A", 1);
+    repo.save(a);
+    assertEquals(BAD_REQUEST,
+        sut.update(a.getId(), new Activity("A", "A", 0, "A")).getStatusCode());
+    assertEquals(BAD_REQUEST,
+        sut.update(a.getId(), new Activity("A", "A", -5, "A")).getStatusCode());
+  }
+
+  /**
+   * Tests if update() returns an error when trying to update with a null or empty path.
+   */
+  @Test
+  public void testUpdateNoPath() {
+    repo.deleteAll();
+    Activity a = getActivity("A", 1);
+    repo.save(a);
+    assertEquals(BAD_REQUEST,
+        sut.update(a.getId(), new Activity("A", "A", 1, null)).getStatusCode());
+    assertEquals(BAD_REQUEST, sut.update(a.getId(), new Activity("A", "A", 1, "")).getStatusCode());
   }
 
   /**

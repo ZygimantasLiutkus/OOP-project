@@ -17,6 +17,7 @@
 package client.scenes;
 
 import client.utils.NextScreen;
+import commons.GameEntity;
 import commons.LeaderboardEntry;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -51,6 +52,9 @@ public class MainCtrl {
   private WaitingRoomCtrl waitingRoomCtrl;
   private Scene waitingRoomSP;
 
+  private MPWaitingRoomCtrl mpWaitingRoomCtrl;
+  private Scene waitingRoomMP;
+
   private QuoteOverviewCtrl overviewCtrl;
   private Scene overview;
 
@@ -69,13 +73,15 @@ public class MainCtrl {
    * @param moreExpensive a pair of the MultipleChoiceScreen controller and the parent.
    * @param leaderboard   a pair of the LeaderboardScreen controller and the parent.
    * @param waitingRoomSP a pair of the (single-player) WaitingRoomScreen controller and the parent.
+   * @param waitingRoomMP a pair of the (multi-player) WaitingRoomScreen controller and the parent.
    */
   public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                          Pair<AddQuoteCtrl, Parent> add, Pair<EntryCtrl, Parent> entry,
                          Pair<NamePopupCtrl, Parent> name, Pair<ChooseScreenCtrl, Parent> choose,
                          Pair<MultipleChoiceCtrl, Parent> moreExpensive,
                          Pair<LeaderboardScreenCtrl, Parent> leaderboard,
-                         Pair<WaitingRoomCtrl, Parent> waitingRoomSP) {
+                         Pair<WaitingRoomCtrl, Parent> waitingRoomSP,
+                         Pair<MPWaitingRoomCtrl, Parent> waitingRoomMP) {
     this.primaryStage = primaryStage;
     this.overviewCtrl = overview.getKey();
     this.overview = new Scene(overview.getValue());
@@ -100,6 +106,9 @@ public class MainCtrl {
 
     this.waitingRoomCtrl = waitingRoomSP.getKey();
     this.waitingRoomSP = new Scene(waitingRoomSP.getValue());
+
+    this.mpWaitingRoomCtrl = waitingRoomMP.getKey();
+    this.waitingRoomMP = new Scene(waitingRoomMP.getValue());
 
     showEntry();
     primaryStage.show();
@@ -168,9 +177,12 @@ public class MainCtrl {
 
   /**
    * Shows the multiple choice game screen.
+   *
+   * @param type the type of the game
    */
-  public void showMoreExpensive() {
+  public void showMoreExpensive(GameEntity.Type type) {
     primaryStage.setTitle("Quizzzz");
+    moreExpensiveCtrl.setType(type);
     primaryStage.setScene(moreExpensive);
   }
 
@@ -188,10 +200,12 @@ public class MainCtrl {
 
   /**
    * Shows the leaderboard screen as multiplayer leaderboard.
+   *
+   * @param entry the leaderboardEntry of the current player
    */
-  public void showMPLeaderboard() {
+  public void showMPLeaderboard(LeaderboardEntry entry) {
     primaryStage.setTitle("Match Leaderboard");
-    leaderboardScreenCtrl.setMultiplayer();
+    leaderboardScreenCtrl.setMultiplayer(entry);
     primaryStage.setScene(leaderboard);
   }
 
@@ -201,5 +215,13 @@ public class MainCtrl {
   public void showWaitingRoomScreenSP() {
     primaryStage.setTitle("Waiting...");
     primaryStage.setScene(waitingRoomSP);
+  }
+
+  /**
+   * Shows the multi-player waiting room.
+   */
+  public void showWaitingRoomScreenMP() {
+    primaryStage.setTitle("Waiting...");
+    primaryStage.setScene(waitingRoomMP);
   }
 }

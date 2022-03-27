@@ -52,6 +52,15 @@ public class Activity {
   }
 
   /**
+   * A setter for the title.
+   *
+   * @param title the title of the activity.
+   */
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  /**
    * A getter for the path.
    *
    * @return the path to the photo
@@ -61,12 +70,30 @@ public class Activity {
   }
 
   /**
+   * A setter for the image path.
+   *
+   * @param image_path the path to the image
+   */
+  public void setImage_path(String image_path) {
+    this.image_path = image_path;
+  }
+
+  /**
    * A getter for the consumption.
    *
    * @return an integer representing consumption
    */
   public int getConsumption_in_wh() {
     return consumption_in_wh;
+  }
+
+  /**
+   * A setter for the consumption.
+   *
+   * @param consumption_in_wh an integer representing consumption.
+   */
+  public void setConsumption_in_wh(int consumption_in_wh) {
+    this.consumption_in_wh = consumption_in_wh;
   }
 
   /**
