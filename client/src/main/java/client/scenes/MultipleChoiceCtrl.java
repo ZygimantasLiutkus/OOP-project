@@ -141,10 +141,9 @@ public class MultipleChoiceCtrl {
    * @param e the events of typing.
    */
   public void keyPressed(KeyEvent e) {
-    if(!e.getCode().equals(KeyCode.NUMBER_SIGN)){
+    if (!e.getCode().equals(KeyCode.NUMBER_SIGN)) {
       validator.setVisible(true);
-    }
-    else{
+    } else {
       validator.setVisible(false);
     }
     this.textPrompt.setVisible(false);
@@ -402,10 +401,9 @@ public class MultipleChoiceCtrl {
     //If someone didn't submit anything and just pressed the button, the answer is automatically 0.
     if (question.getText().equals("How much do you think this activity consumes per hour?")) {
       this.validator.setVisible(false);
-      try{
+      try {
         Long.parseLong(textArea.getText());
-      }
-      catch (NumberFormatException e){
+      } catch (NumberFormatException e) {
         textArea.setText("0");
       }
       if (textArea.getText().equals("")) {
