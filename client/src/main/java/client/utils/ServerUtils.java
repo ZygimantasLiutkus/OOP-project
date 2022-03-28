@@ -18,11 +18,7 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import commons.GameEntity;
-import commons.LeaderboardEntry;
-import commons.Player;
-import commons.Question;
-import commons.Quote;
+import commons.*;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
@@ -325,5 +321,20 @@ public class ServerUtils {
         .target(server).path("api/game/" + getGame().getId() + "/updatePlayer")
         .request()
         .put(Entity.json(players));
+  }
+
+  public List<Activity> getAllActivities() {
+    return ClientBuilder.newClient(new ClientConfig())
+        .target(server).path("api/activity")
+        .request().get(new GenericType<List<Activity>>() {
+        });
+  }
+
+  public Activity addActivity(Activity activity) {
+    return ClientBuilder.newClient(new ClientConfig()) //
+        .target(server).path("api/activity") //
+        .request(APPLICATION_JSON) //
+        .accept(APPLICATION_JSON) //
+        .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);
   }
 }

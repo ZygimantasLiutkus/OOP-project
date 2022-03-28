@@ -58,12 +58,17 @@ public class MainCtrl {
   private QuoteOverviewCtrl overviewCtrl;
   private Scene overview;
 
+  private ActivityOverviewCtrl activityCtrl;
+  private Scene activityList;
+
   private AddQuoteCtrl addCtrl;
   private Scene add;
 
+  private ActivityPopUpCtrl activityPopUpCtrl;
+  private Scene activityPopUp;
+
   /**
    * Initializes the main controller.
-   *
    * @param primaryStage  the top level JavaFX container.
    * @param overview      a pair of the QuoteOverview controller and the parent.
    * @param add           a pair of the AddQuote controller and the parent.
@@ -74,6 +79,8 @@ public class MainCtrl {
    * @param leaderboard   a pair of the LeaderboardScreen controller and the parent.
    * @param waitingRoomSP a pair of the (single-player) WaitingRoomScreen controller and the parent.
    * @param waitingRoomMP a pair of the (multi-player) WaitingRoomScreen controller and the parent.
+   * @param activityOverview
+   * @param activityPopUp
    */
   public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                          Pair<AddQuoteCtrl, Parent> add, Pair<EntryCtrl, Parent> entry,
@@ -81,7 +88,9 @@ public class MainCtrl {
                          Pair<MultipleChoiceCtrl, Parent> moreExpensive,
                          Pair<LeaderboardScreenCtrl, Parent> leaderboard,
                          Pair<WaitingRoomCtrl, Parent> waitingRoomSP,
-                         Pair<MPWaitingRoomCtrl, Parent> waitingRoomMP) {
+                         Pair<MPWaitingRoomCtrl, Parent> waitingRoomMP,
+                         Pair<ActivityOverviewCtrl, Parent> activityOverview,
+                         Pair<ActivityPopUpCtrl, Parent> activityPopUp) {
     this.primaryStage = primaryStage;
     this.overviewCtrl = overview.getKey();
     this.overview = new Scene(overview.getValue());
@@ -109,6 +118,12 @@ public class MainCtrl {
 
     this.mpWaitingRoomCtrl = waitingRoomMP.getKey();
     this.waitingRoomMP = new Scene(waitingRoomMP.getValue());
+
+    this.activityCtrl = activityOverview.getKey();
+    this.activityList = new Scene(activityOverview.getValue());
+
+    this.activityPopUpCtrl = activityPopUp.getKey();
+    this.activityPopUp = new Scene(activityPopUp.getValue());
 
     showEntry();
     primaryStage.show();
@@ -223,5 +238,26 @@ public class MainCtrl {
   public void showWaitingRoomScreenMP() {
     primaryStage.setTitle("Waiting...");
     primaryStage.setScene(waitingRoomMP);
+  }
+
+  /**
+   * Shows the activity panel scene.
+   */
+  public void showActivityOverview(){
+    activityCtrl.refresh();
+    primaryStage.setTitle("Activity Panel");
+    primaryStage.setScene(activityList);
+  }
+
+  public void closeActivityPopUp(){
+    popup.close();
+  }
+
+  public void showActivityPopUp(NextScreen nextScreen){
+      activityPopUpCtrl.setType(nextScreen);
+      activityPopUpCtrl.disableValidator();
+    popup.setTitle("Activity Panel");
+    popup.setScene(activityPopUp);
+    popup.show();
   }
 }
