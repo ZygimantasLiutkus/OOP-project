@@ -9,6 +9,13 @@ public class Message {
   private String playerName;
 
   /**
+   * For object mappers.
+   */
+  @SuppressWarnings("unused")
+  public Message() {
+  }
+
+  /**
    * The constructor for the class.
    *
    * @param emojiName  string that represents which emoji is being sent

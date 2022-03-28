@@ -2,7 +2,11 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.*;
+import commons.Activity;
+import commons.GameEntity;
+import commons.LeaderboardEntry;
+import commons.Message;
+import commons.Question;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -517,6 +521,7 @@ public class MultipleChoiceCtrl {
   public void startCommunication() {
     System.out.println("test message 1");
     server.registerForMessages("/topic/messages", message -> {
+      System.out.println(message.getPlayerName() + ": " + message.getEmojiName());
       //implement method to show emoji on screen
     });
   }
