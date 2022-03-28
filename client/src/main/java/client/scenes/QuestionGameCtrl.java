@@ -668,4 +668,49 @@ public class QuestionGameCtrl {
     return server.getPlayer().getSelectedAnswer()
         .equals(question.getActivities().get(imax).getTitle());
   }
+
+  /**
+   * Method that sets up communication for the client.
+   */
+  public void startCommunication() {
+    server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
+      System.out.println(message.getPlayerName() + ": " + message.getEmojiName());
+      //implement method to show emoji on screen
+    });
+  }
+
+  /**
+   * Method that sends the server a message with the player's name and the laughing emoji.
+   */
+  public void sendEmojiLaughing() {
+    server.send("/app/messages", "laughing");
+  }
+
+  /**
+   * Method that sends the server a message with the player's name and the ok emoji.
+   */
+  public void sendEmojiOk() {
+    server.send("/app/messages", "ok");
+  }
+
+  /**
+   * Method that sends the server a message with the player's name and the thumbsUp emoji.
+   */
+  public void sendEmojiThumbsUp() {
+    server.send("/app/messages", "thumbsUp");
+  }
+
+  /**
+   * Method that sends the server a message with the player's name and the flatFace emoji.
+   */
+  public void sendEmojiFlatFace() {
+    server.send("/app/messages", "flatFace");
+  }
+
+  /**
+   * Method that sends the server a message with the player's name and the angry emoji.
+   */
+  public void sendEmojiAngry() {
+    server.send("/app/messages", "angry");
+  }
 }

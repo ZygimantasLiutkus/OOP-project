@@ -18,11 +18,7 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import commons.GameEntity;
-import commons.LeaderboardEntry;
-import commons.Player;
-import commons.Question;
-import commons.Quote;
+import commons.*;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
@@ -31,18 +27,53 @@ import jakarta.ws.rs.core.Response;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 import org.glassfish.jersey.client.ClientConfig;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 /**
  * The ServerUtils class.
  */
 public class ServerUtils {
 
+  // = new Player("test"); for testing purposes. If we want to test client uncomment.
+  public StompSession session;
   private String server = "http://localhost:8080/";
   private Player player = new Player("");
   private Player dummyPlayer = new Player("");
+
+  /**
+   * Connect method that sets up a connection with a websocket.
+   *
+   * @param url the url to use for the connection
+   * @return the started stomp session
+   * @throws RuntimeException      if setting up the connection went wrong
+   * @throws IllegalStateException if the stomp session got into a wrong state
+   */
+  public StompSession connect(String url) {
+    var client = new StandardWebSocketClient();
+    var stomp = new WebSocketStompClient(client);
+    stomp.setMessageConverter(new MappingJackson2MessageConverter());
+    try {
+      return stomp.connect(url, new StompSessionHandlerAdapter() {
+      }).get();
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException e) {
+      throw new RuntimeException(e);
+    }
+    throw new IllegalStateException();
+  }
 
   /**
    * Sets the server to connect to in later requests.
@@ -313,6 +344,50 @@ public class ServerUtils {
     //Returning null because it's impossible for a name
     // set in the client to be nonexistent inside a lobby.
     return null;
+  }
+
+  /**
+   * Method to set up a player to receive messages in game.
+   *
+   * @param dest     path for where to get messages from
+   * @param consumer the player
+   */
+  public void registerForMessages(String dest, Consumer<Message> consumer) {
+    session.subscribe(dest, new StompFrameHandler() {
+
+      /**
+       * Automatically generated getter for the payload type.
+       *
+       * @param headers the headers
+       * @return the payload type
+       */
+      @Override
+      public Type getPayloadType(StompHeaders headers) {
+        return Message.class;
+      }
+
+      /**
+       * Automatically generated method for frame handling.
+       *
+       * @param headers the headers
+       * @param payload the content of the message
+       */
+      @Override
+      public void handleFrame(StompHeaders headers, Object payload) {
+        consumer.accept((Message) payload);
+      }
+    });
+  }
+
+  /**
+   * Method to send a message.
+   *
+   * @param dest  the path to send the message to
+   * @param emoji the name of the emoji to be sent
+   */
+  public void send(String dest, String emoji) {
+    Message message = new Message(emoji, player.getName());
+    session.send(dest + "/" + player.getGameId(), message);
   }
 
   /**

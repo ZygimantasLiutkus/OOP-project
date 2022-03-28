@@ -7,6 +7,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import server.database.GameEntityRepository;
 import server.database.PlayerRepository;
@@ -308,6 +312,20 @@ public class GameEntityController {
     playerRepo.save(player);
     game.addPlayer(player);
     return ResponseEntity.ok(repo.save(game));
+  }
+
+  /**
+   * Method that takes a message from /app/messages and returns it to /topic/messages.
+   *
+   * @param id      the id of the game
+   * @param message the message being sent
+   * @return        the same message
+   */
+  @MessageMapping("/messages/{id}") // is /app/messages
+  @SendTo("/topic/messages/{id}")
+  public Message addMessageToGameByID(@Payload Message message, @DestinationVariable Long id) {
+    //call method for showing the name + emoji on the screen (to be implemented by frontend)
+    return message;
   }
 
   /**
