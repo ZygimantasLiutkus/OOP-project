@@ -355,4 +355,22 @@ public class GameEntityController {
     return ResponseEntity.ok(repo.save(game));
   }
 
+  /**
+   * Method to update list of players.
+   *
+   * @param id      the id of the game.
+   * @param players the list of players
+   * @return the updated game
+   */
+  @PutMapping(path = "/{id}/updatePlayer")
+  public ResponseEntity<GameEntity> updatePlayers(@PathVariable Long id,
+                                                  @RequestBody List<Player> players) {
+    if (!repo.existsById(id)) {
+      return ResponseEntity.badRequest().build();
+    }
+    GameEntity game = repo.getById(id);
+    game.setPlayers(players);
+    return ResponseEntity.ok(repo.save(game));
+  }
+
 }

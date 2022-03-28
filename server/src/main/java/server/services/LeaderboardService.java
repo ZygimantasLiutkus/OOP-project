@@ -32,7 +32,6 @@ public class LeaderboardService {
       LeaderboardEntry newEntry = new LeaderboardEntry(player.getName(), player.getScore());
       list.add(newEntry);
     }
-
     return list;
   }
 }

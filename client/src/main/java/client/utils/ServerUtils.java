@@ -314,4 +314,16 @@ public class ServerUtils {
     // set in the client to be nonexistent inside a lobby.
     return null;
   }
+
+  /**
+   * Update the list of players of a game.
+   *
+   * @param players the list of players
+   */
+  public void updatePlayer(List<Player> players) {
+    ClientBuilder.newClient(new ClientConfig())
+        .target(server).path("api/game/" + getGame().getId() + "/updatePlayer")
+        .request()
+        .put(Entity.json(players));
+  }
 }

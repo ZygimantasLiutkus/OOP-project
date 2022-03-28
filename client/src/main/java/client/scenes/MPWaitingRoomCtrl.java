@@ -52,8 +52,8 @@ public class MPWaitingRoomCtrl implements Initializable {
   /**
    * Constructor for the Multi-player Waiting Room Controller.
    *
-   * @param server reference to the server the game will run on.
-   * @param mainCtrl reference to the main controller.
+   * @param server             reference to the server the game will run on.
+   * @param mainCtrl           reference to the main controller.
    * @param multipleChoiceCtrl reference to multiple choice controller
    */
   @Inject
@@ -124,5 +124,15 @@ public class MPWaitingRoomCtrl implements Initializable {
     timeline.play();
     showPlayersButton.setDisable(true);
     showPlayersButton.setVisible(false);
+  }
+
+  /**
+   * Have the ability to leave a multiplayer lobby.
+   */
+  public void goHome() {
+    List<Player> players = this.server.getGame().getPlayers();
+    players.remove(server.getPlayer());
+    this.server.updatePlayer(players);
+    mainCtrl.showChooseScreen();
   }
 }
