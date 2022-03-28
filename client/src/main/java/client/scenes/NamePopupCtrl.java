@@ -3,7 +3,6 @@ package client.scenes;
 import client.utils.NextScreen;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.GameEntity;
 import commons.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,7 +17,7 @@ public class NamePopupCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
-  private final MultipleChoiceCtrl multipleCtrl;
+  private final QuestionGameCtrl multipleCtrl;
 
   private NextScreen nextScreen;
 
@@ -40,7 +39,7 @@ public class NamePopupCtrl {
    */
   @Inject
   public NamePopupCtrl(ServerUtils server, MainCtrl mainCtrl,
-                       MultipleChoiceCtrl multipleCtrl) {
+                       QuestionGameCtrl multipleCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
     this.multipleCtrl = multipleCtrl;
@@ -50,31 +49,46 @@ public class NamePopupCtrl {
    * Saves the entered name of the user.
    */
   public void submit() {
-    if (!nameField.getText().equals("")) {
-      server.setDummy(new Player(nameField.getText()));
-      switch (nextScreen) {
-        case WaitingRoomScreen:
-          server.setPlayer(server.addSingleplayer());
-          mainCtrl.showWaitingRoomScreenSP();
-          break;
-        case MultiPlayerWaitingRoom:
-          // TODO: Add check if this name is valid to enter the multiplayer waiting room
-          // TODO: Show multiplayer waiting room
-          mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
-          break;
-        default:
-          break;
-      }
-
-      mainCtrl.closeNamePopup();
-    } else {
-      takenNameLabel.setText("Please enter a name first");
-      takenNameLabel.setVisible(true);
-      nameField.textProperty().addListener((observable) -> {
-        takenNameLabel.setVisible(false);
-        takenNameLabel.setText("This name is already taken");
-      });
+    if (nameField.getText().equals("")) {
+      setErrorText("Please enter a name first");
+      incorrectName();
+      return;
     }
+
+    server.setDummy(new Player(nameField.getText()));
+
+    switch (nextScreen) {
+      case WaitingRoomScreen:
+        server.addSingleplayer();
+        mainCtrl.showWaitingRoomScreenSP();
+        break;
+
+      case MPWaitingRoomScreen:
+        Player player = server.addPlayer();
+
+        if (player == null) {
+          setErrorText("This name is already taken, please choose another name");
+          incorrectName();
+          return;
+        }
+        mainCtrl.showWaitingRoomScreenMP();
+        break;
+
+      default:
+        break;
+    }
+
+    mainCtrl.closeNamePopup();
+  }
+
+  /**
+   * Shows the error text until the name is changed.
+   */
+  public void incorrectName() {
+    showErrorText(true);
+    nameField.textProperty().addListener((observable) -> {
+      showErrorText(false);
+    });
   }
 
   /**

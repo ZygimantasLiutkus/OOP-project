@@ -7,26 +7,26 @@ import javafx.scene.control.Button;
 import javax.inject.Inject;
 
 /**
- * Controller for the WaitingRoom scene.
+ * Controller for the Single-player WaitingRoom scene.
  */
 public class WaitingRoomCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
-  private final MultipleChoiceCtrl multipleCtrl;
+  private final QuestionGameCtrl multipleCtrl;
 
   @FXML
   private Button startButton;
 
   /**
-   * Construct for the Waiting Room Controller.
+   * Constructor for the Single-player Waiting Room Controller.
    *
    * @param server       reference to the server the game will run on.
    * @param mainCtrl     reference to the main controller.
    * @param multipleCtrl reference to multiple choice controller.
    */
   @Inject
-  public WaitingRoomCtrl(ServerUtils server, MainCtrl mainCtrl, MultipleChoiceCtrl multipleCtrl) {
+  public WaitingRoomCtrl(ServerUtils server, MainCtrl mainCtrl, QuestionGameCtrl multipleCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
     this.multipleCtrl = multipleCtrl;
@@ -38,5 +38,12 @@ public class WaitingRoomCtrl {
   public void startSinglePlayer() {
     mainCtrl.showMoreExpensive(GameEntity.Type.SINGLEPLAYER);
     multipleCtrl.timerStart();
+  }
+
+  /**
+   * Have option to bgo back from a single player game.
+   */
+  public void goHome() {
+    mainCtrl.showChooseScreen();
   }
 }

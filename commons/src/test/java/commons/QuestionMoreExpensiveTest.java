@@ -27,6 +27,15 @@ class QuestionMoreExpensiveTest {
   }
 
   /**
+   * Test for empty constructor.
+   */
+  @Test
+  void constructorEmpty() {
+    QuestionMoreExpensive q = new QuestionMoreExpensive();
+    assertNotNull(q);
+  }
+
+  /**
    * Tests getText() method.
    */
   @Test

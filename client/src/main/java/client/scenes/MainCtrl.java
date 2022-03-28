@@ -43,14 +43,17 @@ public class MainCtrl {
   private ChooseScreenCtrl chooseScreenCtrl;
   private Scene choose;
 
-  private MultipleChoiceCtrl moreExpensiveCtrl;
-  private Scene moreExpensive;
+  private QuestionGameCtrl questionGameCtrl;
+  private Scene questionGame;
 
   private LeaderboardScreenCtrl leaderboardScreenCtrl;
   private Scene leaderboard;
 
   private WaitingRoomCtrl waitingRoomCtrl;
   private Scene waitingRoomSP;
+
+  private MPWaitingRoomCtrl mpWaitingRoomCtrl;
+  private Scene waitingRoomMP;
 
   private QuoteOverviewCtrl overviewCtrl;
   private Scene overview;
@@ -70,13 +73,15 @@ public class MainCtrl {
    * @param moreExpensive a pair of the MultipleChoiceScreen controller and the parent.
    * @param leaderboard   a pair of the LeaderboardScreen controller and the parent.
    * @param waitingRoomSP a pair of the (single-player) WaitingRoomScreen controller and the parent.
+   * @param waitingRoomMP a pair of the (multi-player) WaitingRoomScreen controller and the parent.
    */
   public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                          Pair<AddQuoteCtrl, Parent> add, Pair<EntryCtrl, Parent> entry,
                          Pair<NamePopupCtrl, Parent> name, Pair<ChooseScreenCtrl, Parent> choose,
-                         Pair<MultipleChoiceCtrl, Parent> moreExpensive,
+                         Pair<QuestionGameCtrl, Parent> moreExpensive,
                          Pair<LeaderboardScreenCtrl, Parent> leaderboard,
-                         Pair<WaitingRoomCtrl, Parent> waitingRoomSP) {
+                         Pair<WaitingRoomCtrl, Parent> waitingRoomSP,
+                         Pair<MPWaitingRoomCtrl, Parent> waitingRoomMP) {
     this.primaryStage = primaryStage;
     this.overviewCtrl = overview.getKey();
     this.overview = new Scene(overview.getValue());
@@ -93,14 +98,17 @@ public class MainCtrl {
     this.chooseScreenCtrl = choose.getKey();
     this.choose = new Scene(choose.getValue());
 
-    this.moreExpensiveCtrl = moreExpensive.getKey();
-    this.moreExpensive = new Scene(moreExpensive.getValue());
+    this.questionGameCtrl = moreExpensive.getKey();
+    this.questionGame = new Scene(moreExpensive.getValue());
 
     this.leaderboardScreenCtrl = leaderboard.getKey();
     this.leaderboard = new Scene(leaderboard.getValue());
 
     this.waitingRoomCtrl = waitingRoomSP.getKey();
     this.waitingRoomSP = new Scene(waitingRoomSP.getValue());
+
+    this.mpWaitingRoomCtrl = waitingRoomMP.getKey();
+    this.waitingRoomMP = new Scene(waitingRoomMP.getValue());
 
     showEntry();
     primaryStage.show();
@@ -174,8 +182,8 @@ public class MainCtrl {
    */
   public void showMoreExpensive(GameEntity.Type type) {
     primaryStage.setTitle("Quizzzz");
-    moreExpensiveCtrl.setType(type);
-    primaryStage.setScene(moreExpensive);
+    questionGameCtrl.setType(type);
+    primaryStage.setScene(questionGame);
   }
 
   /**
@@ -192,10 +200,12 @@ public class MainCtrl {
 
   /**
    * Shows the leaderboard screen as multiplayer leaderboard.
+   *
+   * @param entry the leaderboardEntry of the current player
    */
-  public void showMPLeaderboard() {
+  public void showMPLeaderboard(LeaderboardEntry entry) {
     primaryStage.setTitle("Match Leaderboard");
-    leaderboardScreenCtrl.setMultiplayer();
+    leaderboardScreenCtrl.setMultiplayer(entry);
     primaryStage.setScene(leaderboard);
   }
 
@@ -205,5 +215,13 @@ public class MainCtrl {
   public void showWaitingRoomScreenSP() {
     primaryStage.setTitle("Waiting...");
     primaryStage.setScene(waitingRoomSP);
+  }
+
+  /**
+   * Shows the multi-player waiting room.
+   */
+  public void showWaitingRoomScreenMP() {
+    primaryStage.setTitle("Waiting...");
+    primaryStage.setScene(waitingRoomMP);
   }
 }
