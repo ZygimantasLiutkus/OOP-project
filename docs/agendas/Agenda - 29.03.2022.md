@@ -1,8 +1,8 @@
-## Agenda 22.03.2022
+## Agenda 29.03.2022
 
 ---
 
-Date:           22.03.2022\
+Date:           29.03.2022\
 Main focus:     Final additions\
 Chair:          Adelina Cazacu\
 Note taker:     Zygimantas Liutkus
