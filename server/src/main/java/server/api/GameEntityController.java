@@ -372,6 +372,7 @@ public class GameEntityController {
     return message;
   }
 
+  /**
    * Method to update list of players.
    *
    * @param id      the id of the game.
