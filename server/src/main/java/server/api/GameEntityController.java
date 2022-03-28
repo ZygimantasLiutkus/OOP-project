@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import server.database.GameEntityRepository;
 import server.database.PlayerRepository;
 import server.database.QuestionRepository;
+import server.services.AnswerService;
 import server.services.LeaderboardService;
 import server.services.QuestionService;
 
@@ -25,6 +26,7 @@ public class GameEntityController {
   private final QuestionService questionService;
   private final QuestionRepository qRepo;
   private final LeaderboardService leaderboardService;
+  private final AnswerService answerService;
 
   /**
    * Constructor for the controller.
@@ -43,6 +45,7 @@ public class GameEntityController {
     this.questionService = questionService;
     this.qRepo = qRepo;
     this.leaderboardService = leaderboardService;
+    this.answerService = new AnswerService(repo, playerRepo);
   }
 
   /**
@@ -217,13 +220,9 @@ public class GameEntityController {
 
   /**
    * POST request to map a player with an answer.
-   * Checks if the player is actually present in the game.
-   * Checks if the game has started.
-   * For "What's more expensive" the answer is the biggest consumption.
-   * For the Multiple Choice question the logic is a placeholder.
-   * For the Estimation question the logic is a placeholder.
+   * Sends the variables to the answer service to be processed.
+   * Applies different score calculations for different types of questions.
    * The player's score will be updated.
-   * (For now un "ugly" version of checking an answer)
    *
    * @param id     the game's id
    * @param idq    the question number
@@ -233,73 +232,29 @@ public class GameEntityController {
   @PostMapping(path = "/{id}/question/{idQ}")
   public ResponseEntity<Answer> answer(@PathVariable("id") long id, @PathVariable("idQ") long idq,
                                        @RequestBody Player player) {
-    boolean found = false;
-    Player playerDummy = new Player();
-    for (GameEntity game : repo.findAll()) {
-      if (game.getId() == id) {
-        if (!game.getStatus().equals("STARTED")) {
-          return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        for (Player p : game.getPlayers()) {
-          if (Objects.equals(p.getId(), player.getId())) {
-            playerDummy = p;
-            found = true;
-            break;
-          }
-        }
-        if (!found) {
-          return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        Question q = game.getQuestions().get((int) idq - 1);
-        if (q instanceof QuestionMoreExpensive) {
-          int maxim = 0;
-          for (Activity a : q.getActivities()) {
-            if (a.getConsumption_in_wh() > maxim) {
-              maxim = a.getConsumption_in_wh();
-            }
-          }
-          if (Integer.parseInt(player.getSelectedAnswer()) == maxim) {
-            playerDummy.setScore(playerDummy.getScore() + 100);
-            playerRepo.save(playerDummy);
-            return ResponseEntity.ok(
-                new Answer("CORRECT", playerDummy, playerDummy.getScore(), 100));
-          } else {
-            playerDummy.setScore(playerDummy.getScore());
-            playerRepo.save(playerDummy);
-            return ResponseEntity.ok(
-                new Answer("INCORRECT", playerDummy, playerDummy.getScore(), 0));
-          }
-        } else if (q instanceof QuestionMultipleChoice) {
-          if (Integer.parseInt(player.getSelectedAnswer())
-              == q.getActivities().get(Integer.parseInt(player.getSelectedAnswer()) - 1)
-              .getConsumption_in_wh()) {
-            playerDummy.setScore(playerDummy.getScore() + 100);
-            playerRepo.save(playerDummy);
-            return ResponseEntity.ok(
-                new Answer("CORRECT", playerDummy, playerDummy.getScore(), 100));
-          } else {
-            playerDummy.setScore(playerDummy.getScore());
-            playerRepo.save(playerDummy);
-            return ResponseEntity.ok(
-                new Answer("INCORRECT", playerDummy, playerDummy.getScore(), 0));
-          }
-        } else {
-          if (Integer.parseInt(player.getSelectedAnswer())
-              == q.getActivities().get(0).getConsumption_in_wh()) {
-            playerDummy.setScore(playerDummy.getScore() + 100);
-            playerRepo.save(playerDummy);
-            return ResponseEntity.ok(
-                new Answer("CORRECT", playerDummy, playerDummy.getScore(), 100));
-          } else {
-            playerDummy.setScore(playerDummy.getScore());
-            playerRepo.save(playerDummy);
-            return ResponseEntity.ok(
-                new Answer("INCORRECT", playerDummy, playerDummy.getScore(), 0));
-          }
-        }
-      }
+    GameEntity game = answerService.findGame(id).getBody();
+    if (Objects.isNull(game)) {
+      return ResponseEntity.status(answerService.findGame(id).getStatusCode()).build();
     }
-    return ResponseEntity.badRequest().build();
+
+    Player playerDummy = answerService.findPlayer(game, player);
+    if (Objects.isNull(playerDummy)) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+    Question q = game.getQuestions().get((int) idq - 1);
+    playerDummy.setSelectedAnswer(player.getSelectedAnswer());
+    AnswerService.QType type = AnswerService.QType.valueOf(q.getClass().getSimpleName());
+
+    switch (type) {
+      case QuestionEstimation:
+        return answerService.answerE(q, playerDummy);
+      case QuestionMultipleChoice:
+        return answerService.answerMC(q, playerDummy);
+      case QuestionMoreExpensive:
+        return answerService.answerME(q, playerDummy);
+      default:
+        return ResponseEntity.badRequest().build();
+    }
   }
 
   /**
