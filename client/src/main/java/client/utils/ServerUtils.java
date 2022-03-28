@@ -46,11 +46,11 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
  */
 public class ServerUtils {
 
-  private String server = "ws://localhost:8080/";
+  // = new Player("test"); for testing purposes. If we want to test client uncomment.
+  public StompSession session;
+  private String server = "http://localhost:8080/";
   private Player player = new Player("");
   private Player dummyPlayer = new Player("");
-  // = new Player("test"); for testing purposes. If we want to test client uncomment.
-  private StompSession session = connect("ws://localhost:8080/websocket");
 
   /**
    * Connect method that sets up a connection with a websocket.
@@ -60,7 +60,7 @@ public class ServerUtils {
    * @throws RuntimeException      if setting up the connection went wrong
    * @throws IllegalStateException if the stomp session got into a wrong state
    */
-  private StompSession connect(String url) {
+  public StompSession connect(String url) {
     var client = new StandardWebSocketClient();
     var stomp = new WebSocketStompClient(client);
     stomp.setMessageConverter(new MappingJackson2MessageConverter());
@@ -368,6 +368,7 @@ public class ServerUtils {
    * @param message the message to be sent
    */
   public void send(String dest, Message message) {
+    System.out.println("test message 3 " + dest);
     session.send(dest, message);
   }
 }

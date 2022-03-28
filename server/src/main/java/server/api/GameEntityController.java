@@ -319,7 +319,7 @@ public class GameEntityController {
   }
 
   /**
-   * Method that takes a message from /app/messages/{id} and returns it to /topic/messages/{id}.
+   * Method that takes a message from /app/messages and returns it to /topic/messages.
    *
    * @param message the message being sent
    * @return the same message
@@ -328,6 +328,7 @@ public class GameEntityController {
   @SendTo("/topic/messages")
   public Message addMessageToGameByID(@Payload Message message) {
     //call method for showing the name + emoji on the screen (to be implemented by frontend)
+    System.out.println("test message 4");
     return message;
   }
 
