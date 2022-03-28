@@ -30,7 +30,7 @@ import javafx.util.Duration;
 /**
  * A template controller for the MultipleChoiceScreen scene.
  */
-public class MultipleChoiceCtrl {
+public class QuestionGameCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
@@ -109,13 +109,13 @@ public class MultipleChoiceCtrl {
   private Label validator;
 
   /**
-   * Constructor for MultipleChoiceCtrl.
+   * Constructor for QuestionGameCtrl.
    *
    * @param server   reference to the server the game will run on
    * @param mainCtrl reference to the main controller
    */
   @Inject
-  public MultipleChoiceCtrl(ServerUtils server, MainCtrl mainCtrl) {
+  public QuestionGameCtrl(ServerUtils server, MainCtrl mainCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
   }
