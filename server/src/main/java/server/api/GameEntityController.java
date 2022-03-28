@@ -362,8 +362,9 @@ public class GameEntityController {
   /**
    * Method that takes a message from /app/messages and returns it to /topic/messages.
    *
+   * @param id      the id of the game
    * @param message the message being sent
-   * @return the same message
+   * @return        the same message
    */
   @MessageMapping("/messages/{id}") // is /app/messages
   @SendTo("/topic/messages/{id}")
