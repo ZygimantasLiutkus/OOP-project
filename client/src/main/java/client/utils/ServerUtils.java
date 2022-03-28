@@ -390,6 +390,7 @@ public class ServerUtils {
     session.send(dest + "/" + player.getGameId(), message);
   }
 
+  /**
    * Update the list of players of a game.
    *
    * @param players the list of players
