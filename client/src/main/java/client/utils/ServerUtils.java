@@ -51,7 +51,6 @@ public class ServerUtils {
   private String server = "http://localhost:8080/";
   private Player player = new Player("");
   private Player dummyPlayer = new Player("");
-<<<<<<< client/src/main/java/client/utils/ServerUtils.java
 
   /**
    * Connect method that sets up a connection with a websocket.
@@ -75,8 +74,6 @@ public class ServerUtils {
     }
     throw new IllegalStateException();
   }
-=======
->>>>>>> client/src/main/java/client/utils/ServerUtils.java
 
   /**
    * Sets the server to connect to in later requests.
