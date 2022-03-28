@@ -364,11 +364,11 @@ public class ServerUtils {
   /**
    * Method to send a message.
    *
-   * @param dest    the path to send the message to
-   * @param message the message to be sent
+   * @param dest  the path to send the message to
+   * @param emoji the name of the emoji to be sent
    */
-  public void send(String dest, Message message) {
-    System.out.println("test message 3 " + dest);
-    session.send(dest, message);
+  public void send(String dest, String emoji) {
+    Message message = new Message(emoji, player.getName());
+    session.send(dest + "/" + player.getGameId(), message);
   }
 }

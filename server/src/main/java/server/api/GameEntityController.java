@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -324,11 +325,10 @@ public class GameEntityController {
    * @param message the message being sent
    * @return the same message
    */
-  @MessageMapping("/messages") // is /app/messages
-  @SendTo("/topic/messages")
-  public Message addMessageToGameByID(@Payload Message message) {
+  @MessageMapping("/messages/{id}") // is /app/messages
+  @SendTo("/topic/messages/{id}")
+  public Message addMessageToGameByID(@Payload Message message, @DestinationVariable Long id) {
     //call method for showing the name + emoji on the screen (to be implemented by frontend)
-    System.out.println("test message 4");
     return message;
   }
 

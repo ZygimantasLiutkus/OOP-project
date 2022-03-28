@@ -5,7 +5,6 @@ import com.google.inject.Inject;
 import commons.Activity;
 import commons.GameEntity;
 import commons.LeaderboardEntry;
-import commons.Message;
 import commons.Question;
 import java.util.HashMap;
 import java.util.Map;
@@ -140,7 +139,6 @@ public class MultipleChoiceCtrl {
   public void setSelectedAnswer1() {
     String answer = answer1.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    server.session = server.connect("ws://localhost:8080/websocket"); //for testing
     revealAnswer();
   }
 
@@ -150,7 +148,6 @@ public class MultipleChoiceCtrl {
   public void setSelectedAnswer2() {
     String answer = answer2.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    startCommunication(); //for testing
     revealAnswer();
   }
 
@@ -160,7 +157,6 @@ public class MultipleChoiceCtrl {
   public void setSelectedAnswer3() {
     String answer = answer3.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    sendEmojiLaughing(); //for testing
     revealAnswer();
   }
 
@@ -519,8 +515,7 @@ public class MultipleChoiceCtrl {
    * Method that sets up communication for the client.
    */
   public void startCommunication() {
-    System.out.println("test message 1");
-    server.registerForMessages("/topic/messages", message -> {
+    server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
       System.out.println(message.getPlayerName() + ": " + message.getEmojiName());
       //implement method to show emoji on screen
     });
@@ -530,45 +525,34 @@ public class MultipleChoiceCtrl {
    * Method that sends the server a message with the player's name and the laughing emoji.
    */
   public void sendEmojiLaughing() {
-    Message laughing = new Message("laughing", server.getPlayer().getName());
-    Long gameID = server.getPlayer().getGameId();
-    System.out.println("test message 2");
-    server.send("/app/messages", laughing);
+    server.send("/app/messages", "laughing");
   }
 
   /**
    * Method that sends the server a message with the player's name and the ok emoji.
    */
   public void sendEmojiOk() {
-    Message ok = new Message("ok", server.getPlayer().getName());
-    Long gameID = server.getPlayer().getGameId();
-    server.send("/app/messages/" + gameID.toString(), ok);
+    server.send("/app/messages", "ok");
   }
 
   /**
    * Method that sends the server a message with the player's name and the thumbsUp emoji.
    */
   public void sendEmojiThumbsUp() {
-    Message thumbsUp = new Message("thumbsUp", server.getPlayer().getName());
-    Long gameID = server.getPlayer().getGameId();
-    server.send("/app/messages/" + gameID.toString(), thumbsUp);
+    server.send("/app/messages", "thumbsUp");
   }
 
   /**
    * Method that sends the server a message with the player's name and the flatFace emoji.
    */
   public void sendEmojiFlatFace() {
-    Message flatFace = new Message("flatFace", server.getPlayer().getName());
-    Long gameID = server.getPlayer().getGameId();
-    server.send("/app/messages/" + gameID.toString(), flatFace);
+    server.send("/app/messages", "flatFace");
   }
 
   /**
    * Method that sends the server a message with the player's name and the angry emoji.
    */
   public void sendEmojiAngry() {
-    Message angry = new Message("angry", server.getPlayer().getName());
-    Long gameID = server.getPlayer().getGameId();
-    server.send("/app/messages/" + gameID.toString(), angry);
+    server.send("/app/messages", "angry");
   }
 }
