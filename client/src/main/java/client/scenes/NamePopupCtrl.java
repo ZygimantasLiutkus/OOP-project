@@ -17,7 +17,7 @@ public class NamePopupCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
-  private final MultipleChoiceCtrl multipleCtrl;
+  private final QuestionGameCtrl multipleCtrl;
 
   private NextScreen nextScreen;
 
@@ -39,7 +39,7 @@ public class NamePopupCtrl {
    */
   @Inject
   public NamePopupCtrl(ServerUtils server, MainCtrl mainCtrl,
-                       MultipleChoiceCtrl multipleCtrl) {
+                       QuestionGameCtrl multipleCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
     this.multipleCtrl = multipleCtrl;

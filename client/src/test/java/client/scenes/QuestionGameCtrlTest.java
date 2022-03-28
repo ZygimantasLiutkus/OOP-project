@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 /**
  * Test class for the multiple choice game screen.
  */
-public class MultipleChoiceCtrlTest {
-  private MultipleChoiceCtrl sut;
+public class QuestionGameCtrlTest {
+  private QuestionGameCtrl sut;
   private ServerUtils server;
   private MainCtrl mainCtrl;
 
@@ -18,6 +18,6 @@ public class MultipleChoiceCtrlTest {
   void setUp() {
     server = new ServerUtils();
     mainCtrl = new MainCtrl();
-    sut = new MultipleChoiceCtrl(server, mainCtrl);
+    sut = new QuestionGameCtrl(server, mainCtrl);
   }
 }
