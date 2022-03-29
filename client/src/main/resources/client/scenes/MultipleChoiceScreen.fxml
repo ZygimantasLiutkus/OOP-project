@@ -72,7 +72,7 @@
                 <ProgressBar fx:id="progressBar" layoutX="369.0" layoutY="22.0" onMouseClicked="#timerStart"
                              prefHeight="22.0" prefWidth="262.0" progress="1.0" AnchorPane.leftAnchor="369.0"
                              AnchorPane.rightAnchor="369.0" AnchorPane.topAnchor="23.0"/>
-                <Label fx:id="timeCounter" layoutX="643.0" layoutY="21.0" prefHeight="18.0" prefWidth="30.0" text="10 s"
+                <Label fx:id="timeCounter" layoutX="643.0" layoutY="21.0" prefHeight="18.0" prefWidth="30.0" text="15 s"
                        AnchorPane.rightAnchor="326.6">
                     <font>
                         <Font size="16.0"/>
