@@ -36,8 +36,9 @@ public class WaitingRoomCtrl {
    * Starts the game in single-player mode.
    */
   public void startSinglePlayer() {
-    mainCtrl.showMoreExpensive(GameEntity.Type.SINGLEPLAYER);
-    multipleCtrl.timerStart();
+    //    mainCtrl.showMoreExpensive(GameEntity.Type.SINGLEPLAYER);
+    //    multipleCtrl.timerStart();
+    mainCtrl.showCountdown(GameEntity.Type.SINGLEPLAYER);
   }
 
   /**

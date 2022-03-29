@@ -24,6 +24,7 @@
     -fx-border-color: #EFDB22;
     -fx-border-width: 4px;
 }
+
 /*
 If having an animation when mouse hover looks good,
 uncomment this.
@@ -42,7 +43,8 @@ uncomment this.
 }
 
 #gameBg,
-#entryBg {
+#entryBg,
+#countdownBg {
     -fx-border-width: 0;
     -fx-background-color: #6EB7F5;
 }

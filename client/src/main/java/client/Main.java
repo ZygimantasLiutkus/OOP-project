@@ -62,12 +62,13 @@ public class Main extends Application {
     var waitingRoomSP =
         FXML.load(WaitingRoomCtrl.class, "client", "scenes", "WaitingRoomScreen.fxml");
     var waitingRoomMP =
-            FXML.load(MPWaitingRoomCtrl.class, "client", "scenes", "MPWaitingRoomScreen.fxml");
+        FXML.load(MPWaitingRoomCtrl.class, "client", "scenes", "MPWaitingRoomScreen.fxml");
+    var countdown = FXML.load(CountdownCtrl.class, "client", "scenes", "Countdown.fxml");
     primaryStage.setMinWidth(900);
     primaryStage.setMinHeight(408);
 
     var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
     mainCtrl.initialize(primaryStage, overview, add, entry, name, choose, questionGame,
-        leaderboard, waitingRoomSP, waitingRoomMP);
+        leaderboard, waitingRoomSP, waitingRoomMP, countdown);
   }
 }

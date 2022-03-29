@@ -55,6 +55,9 @@ public class MainCtrl {
   private MPWaitingRoomCtrl mpWaitingRoomCtrl;
   private Scene waitingRoomMP;
 
+  private CountdownCtrl countdownCtrl;
+  private Scene countdown;
+
   private QuoteOverviewCtrl overviewCtrl;
   private Scene overview;
 
@@ -74,6 +77,7 @@ public class MainCtrl {
    * @param leaderboard   a pair of the LeaderboardScreen controller and the parent.
    * @param waitingRoomSP a pair of the (single-player) WaitingRoomScreen controller and the parent.
    * @param waitingRoomMP a pair of the (multi-player) WaitingRoomScreen controller and the parent.
+   * @param countdown     a pair of the Countdown controller and the parent.
    */
   public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                          Pair<AddQuoteCtrl, Parent> add, Pair<EntryCtrl, Parent> entry,
@@ -81,7 +85,8 @@ public class MainCtrl {
                          Pair<QuestionGameCtrl, Parent> moreExpensive,
                          Pair<LeaderboardScreenCtrl, Parent> leaderboard,
                          Pair<WaitingRoomCtrl, Parent> waitingRoomSP,
-                         Pair<MPWaitingRoomCtrl, Parent> waitingRoomMP) {
+                         Pair<MPWaitingRoomCtrl, Parent> waitingRoomMP,
+                         Pair<CountdownCtrl, Parent> countdown) {
     this.primaryStage = primaryStage;
     this.overviewCtrl = overview.getKey();
     this.overview = new Scene(overview.getValue());
@@ -109,6 +114,9 @@ public class MainCtrl {
 
     this.mpWaitingRoomCtrl = waitingRoomMP.getKey();
     this.waitingRoomMP = new Scene(waitingRoomMP.getValue());
+
+    this.countdownCtrl = countdown.getKey();
+    this.countdown = new Scene(countdown.getValue());
 
     showEntry();
     primaryStage.show();
@@ -144,6 +152,7 @@ public class MainCtrl {
   public void showEntry() {
     primaryStage.setTitle("Quizzzz");
     primaryStage.setScene(entry);
+    entryCtrl.animate();
     entry.setOnKeyPressed(e -> entryCtrl.keyPressed(e));
   }
 
@@ -184,6 +193,18 @@ public class MainCtrl {
     primaryStage.setTitle("Quizzzz");
     questionGameCtrl.setType(type);
     primaryStage.setScene(questionGame);
+    questionGameCtrl.timerStart();
+  }
+
+  /**
+   * Shows countdows before game.
+   *
+   * @param type the type of game
+   */
+  public void showCountdown(GameEntity.Type type) {
+    primaryStage.setTitle("Quizzzz");
+    primaryStage.setScene(countdown);
+    countdownCtrl.animate(type);
   }
 
   /**
