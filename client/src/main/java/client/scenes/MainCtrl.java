@@ -69,18 +69,19 @@ public class MainCtrl {
 
   /**
    * Initializes the main controller.
-   * @param primaryStage  the top level JavaFX container.
-   * @param overview      a pair of the QuoteOverview controller and the parent.
-   * @param add           a pair of the AddQuote controller and the parent.
-   * @param entry         a pair of the EntryScreen controller and the parent.
-   * @param name          a pair of the NamePopup controller and the parent.
-   * @param choose        a pair of the ChooseScreen controller and the parent.
-   * @param moreExpensive a pair of the MultipleChoiceScreen controller and the parent.
-   * @param leaderboard   a pair of the LeaderboardScreen controller and the parent.
-   * @param waitingRoomSP a pair of the (single-player) WaitingRoomScreen controller and the parent.
-   * @param waitingRoomMP a pair of the (multi-player) WaitingRoomScreen controller and the parent.
-   * @param activityOverview
-   * @param activityPopUp
+   *
+   * @param primaryStage     the top level JavaFX container.
+   * @param overview         a pair of the QuoteOverview controller and the parent.
+   * @param add              a pair of the AddQuote controller and the parent.
+   * @param entry            a pair of the EntryScreen controller and the parent.
+   * @param name             a pair of the NamePopup controller and the parent.
+   * @param choose           a pair of the ChooseScreen controller and the parent.
+   * @param moreExpensive    a pair of the MultipleChoiceScreen controller and the parent.
+   * @param leaderboard      a pair of the LeaderboardScreen controller and the parent.
+   * @param waitingRoomSP    a pair of the sp WaitingRoomScreen controller and the parent.
+   * @param waitingRoomMP    a pair of the mp WaitingRoomScreen controller and the parent.
+   * @param activityOverview a pair of the activityOverview controller and the parent.
+   * @param activityPopUp    a pair of the ActivityPopUp controller and the parent.
    */
   public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                          Pair<AddQuoteCtrl, Parent> add, Pair<EntryCtrl, Parent> entry,
@@ -243,19 +244,27 @@ public class MainCtrl {
   /**
    * Shows the activity panel scene.
    */
-  public void showActivityOverview(){
+  public void showActivityOverview() {
     activityCtrl.refresh();
     primaryStage.setTitle("Activity Panel");
     primaryStage.setScene(activityList);
   }
 
-  public void closeActivityPopUp(){
+  /**
+   * Closes the edit activity popup.
+   */
+  public void closeActivityPopUp() {
     popup.close();
   }
 
-  public void showActivityPopUp(NextScreen nextScreen){
-      activityPopUpCtrl.setType(nextScreen);
-      activityPopUpCtrl.disableValidator();
+  /**
+   * Shows the activity popup.
+   *
+   * @param nextScreen the type of action the admin wants to do
+   */
+  public void showActivityPopUp(NextScreen nextScreen) {
+    activityPopUpCtrl.setType(nextScreen);
+    activityPopUpCtrl.disableValidator();
     popup.setTitle("Activity Panel");
     popup.setScene(activityPopUp);
     popup.show();

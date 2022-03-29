@@ -60,6 +60,10 @@ public class ActivityPopUpCtrl {
    */
   public void disableValidator() {
     validator.setVisible(false);
+    id.setText("");
+    title.setText("");
+    consumption.setText("");
+    imagePath.setText("");
   }
 
   /**

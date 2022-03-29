@@ -65,7 +65,8 @@ public class Main extends Application {
         FXML.load(MPWaitingRoomCtrl.class, "client", "scenes", "MPWaitingRoomScreen.fxml");
     var activityOverview =
         FXML.load(ActivityOverviewCtrl.class, "client", "scenes", "ActivityOverviewScreen.fxml");
-    var activityPopUp = FXML.load(ActivityPopUpCtrl.class, "client", "scenes", "ActivityPopUpScreen.fxml");
+    var activityPopUp =
+        FXML.load(ActivityPopUpCtrl.class, "client", "scenes", "ActivityPopUpScreen.fxml");
     primaryStage.setMinWidth(900);
     primaryStage.setMinHeight(408);
 

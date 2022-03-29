@@ -10,7 +10,7 @@
    <top>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #6EB7F5;" stylesheets="@stylesheet.css" BorderPane.alignment="CENTER">
             <children>
-                <Label fx:id="textLabel" alignment="CENTER" layoutX="155.0" layoutY="21.0" prefHeight="41.0" prefWidth="690.0" style="-fx-background-color: #11AD31;" stylesheets="@/client/scenes/stylesheet.css" text="Activity Panel">
+                <Label fx:id="textLabel" alignment="CENTER" layoutX="260.0" layoutY="21.0" prefHeight="41.0" prefWidth="485.0" style="-fx-background-color: #11AD31;" stylesheets="@/client/scenes/stylesheet.css" text="Activity Panel">
                     <font>
                         <Font size="18.0" />
                     </font>
@@ -34,8 +34,8 @@
                   <Image url="@/client/images/homeIcon.png" />
                </image>
             </ImageView>
-            <Pane layoutX="32.0" layoutY="94.0" prefHeight="334.0" prefWidth="941.0" style="-fx-background-color: #EFDB22;" />
-                <TableView fx:id="activityTable" cache="true" layoutX="50.0" layoutY="108.0" prefHeight="304.0" prefWidth="905.0" style="-fx-background-color: #D7CC6B;">
+            <Pane layoutX="25.0" layoutY="94.0" prefHeight="334.0" prefWidth="948.0" style="-fx-background-color: #EFDB22;" />
+                <TableView fx:id="activityTable" cache="true" layoutX="42.0" layoutY="108.0" prefHeight="304.0" prefWidth="913.0" style="-fx-background-color: #D7CC6B;">
                     <columns>
                         <TableColumn fx:id="activityId" editable="false" minWidth="175.0" prefWidth="175.0" text="Activity ID" />
                         <TableColumn fx:id="title" editable="false" minWidth="386.0" prefWidth="386.0" text="Title" />

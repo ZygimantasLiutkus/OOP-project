@@ -98,7 +98,7 @@ public class ChooseScreenCtrl {
   }
 
   /**
-   * Method to transition to activity panel
+   * Method to transition to activity panel.
    */
   public void goPanel() {
     mainCtrl.showActivityOverview();

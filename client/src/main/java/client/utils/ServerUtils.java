@@ -323,6 +323,11 @@ public class ServerUtils {
         .put(Entity.json(players));
   }
 
+  /**
+   * Method that retrieves the whole list of activities.
+   *
+   * @return a list of added activities inside the DB
+   */
   public List<Activity> getAllActivities() {
     return ClientBuilder.newClient(new ClientConfig())
         .target(server).path("api/activity")
@@ -330,6 +335,12 @@ public class ServerUtils {
         });
   }
 
+  /**
+   * Method that adds an activity to the DB.
+   *
+   * @param activity the type activity by the admin.
+   * @return the newly created activity.
+   */
   public Activity addActivity(Activity activity) {
     return ClientBuilder.newClient(new ClientConfig()) //
         .target(server).path("api/activity") //
@@ -340,6 +351,7 @@ public class ServerUtils {
 
   /**
    * Method to retrieve an activity by id.
+   *
    * @param id the id of a wanted activity
    * @return null if there is no activity or the retrieved activity
    */
@@ -348,12 +360,15 @@ public class ServerUtils {
         .target(server).path("/api/activity/" + id)
         .request().get(new GenericType<Response>() {
         });
-    if (act.getStatus() == 400) return null;
+    if (act.getStatus() == 400) {
+      return null;
+    }
     return act;
   }
 
   /**
    * Method to update an activity.
+   *
    * @param activity the newly created activity
    * @return either null if there is no such activity or the updated activity
    */
@@ -361,7 +376,9 @@ public class ServerUtils {
     Response r = ClientBuilder.newClient(new ClientConfig())
         .target(server).path("/api/activity/" + activity.getId())
         .request().put(Entity.json(activity));
-    if(r.getStatus() == 400) return null;
+    if (r.getStatus() == 400) {
+      return null;
+    }
     return r.readEntity(Activity.class);
   }
 }
