@@ -235,6 +235,7 @@ public class MainCtrl {
    */
   public void showWaitingRoomScreenSP() {
     primaryStage.setTitle("Waiting...");
+    waitingRoomCtrl.animate();
     primaryStage.setScene(waitingRoomSP);
   }
 
