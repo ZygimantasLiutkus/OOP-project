@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +41,7 @@ public class DownloadController {
     } catch (FileNotFoundException e) {
       return ResponseEntity.notFound().build();
     } catch (Exception e) {
-      return ResponseEntity.badRequest().build();
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
   }
 }
