@@ -202,49 +202,66 @@ public class QuestionGameCtrl {
     }
   }
 
-  public void usePointsJocker(){
+  /**
+   * Method to flag the use of a joker.
+   */
+  public void usePointsJoker() {
     pointsUsed = true;
     jokerPoints.setDisable(true);
     jokerPoints.setVisible(false);
   }
 
-  public void useAnswerJoker(){
+  /**
+   * Method to flag the use of a joker.
+   */
+  public void useAnswerJoker() {
     answerUsed = true;
     jokerAnswer.setVisible(false);
     jokerAnswer.setDisable(true);
-    if(question.getText().equals("Which is more expensive?")){
+    if (question.getText().equals("Which is more expensive?")) {
       discardExpensive();
-    }
-    else if(question.getText().equals("How much does this activity consume per hour?")){
+    } else if (question.getText().equals("How much does this activity consume per hour?")) {
       discardMultiple();
     }
   }
 
-  private void discardExpensive(){
+  /**
+   * Method to discard an answer for more expensive type.
+   */
+  private void discardExpensive() {
     int answer = 0;
-    for(int i = 0; i < 3; i++){
-      if(mapButtons.get(i).getConsumption_in_wh() > answer){
-        answer = mapButtons.get(i).getConsumption_in_wh();
+    for (int i = 0; i < 3; i++) {
+      if (mapButtons.get(i + 1).getConsumption_in_wh() > answer) {
+        answer = mapButtons.get(i + 1).getConsumption_in_wh();
       }
     }
     int index = random.nextInt(3);
-    while(mapButtons.get(index).getConsumption_in_wh() == answer){
+    while (mapButtons.get(index + 1).getConsumption_in_wh() == answer) {
       index = random.nextInt(3);
     }
     deleteJoker(index);
   }
 
-  private void discardMultiple(){
-    int answer = mapButtons.get(0).getConsumption_in_wh();
+  /**
+   * Method to discard an answer for multiple choice type.
+   */
+  private void discardMultiple() {
+    int answer = question.getActivities().get(0).getConsumption_in_wh();
     int index = random.nextInt(3);
-    while(mapButtons.get(index).getConsumption_in_wh() == answer){
+    while (mapButtons.get(index + 1).getConsumption_in_wh() == answer) {
       index = random.nextInt(3);
     }
     deleteJoker(index);
   }
 
-  private void deleteJoker(int index){
-    switch (index){
+  /**
+   * Deletes an answer button from the scene.
+   *
+   * @param index the index of the button to be deleted
+   */
+  public void deleteJoker(int index) {
+    questionNo.setText(String.valueOf(index));
+    switch (index) {
       case 0:
         answer1.setVisible(false);
         answer1.setDisable(true);
@@ -464,7 +481,7 @@ public class QuestionGameCtrl {
         }
       }
 
-      if(pointsUsed){
+      if (pointsUsed) {
         points *= 2;
       }
       server.getPlayer().setScore(server.getPlayer().getScore() + points);
@@ -534,9 +551,18 @@ public class QuestionGameCtrl {
     }
   }
 
-  private void resetJokers(){
-    if(!answerUsed) jokerAnswer.setVisible(true);
-    if(!pointsUsed) jokerPoints.setVisible(true);
+  /**
+   * Method that resets the jokers vision.
+   */
+  private void resetJokers() {
+    if (!answerUsed) {
+      jokerAnswer.setVisible(true);
+      jokerAnswer.setDisable(false);
+    }
+    if (!pointsUsed) {
+      jokerPoints.setVisible(true);
+      jokerPoints.setDisable(false);
+    }
   }
 
   /**
