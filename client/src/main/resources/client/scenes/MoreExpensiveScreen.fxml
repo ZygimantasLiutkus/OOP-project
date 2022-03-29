@@ -140,8 +140,8 @@
                     <children>
                         <Label fx:id="jokerLabel" prefHeight="18.0" prefWidth="70.0" text="Joker cards:" />
                         <Button fx:id="jokerTime" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" style="-fx-alignment: center;" text="Decrease Time" />
-                        <Button fx:id="jokerPoints" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" text="Double Points" />
-                        <Button fx:id="jokerAnswer" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" text="Discard Answer" />
+                        <Button fx:id="jokerPoints" mnemonicParsing="false" onMouseClicked="#usePointsJocker" prefHeight="38.0" prefWidth="106.0" text="Double Points" />
+                        <Button fx:id="jokerAnswer" mnemonicParsing="false" onMouseClicked="#useAnswerJoker" prefHeight="38.0" prefWidth="106.0" text="Discard Answer" />
                     </children>
                 </VBox>
             </children>
