@@ -25,7 +25,7 @@ public class MPWaitingRoomCtrl implements Initializable {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
-  private final MultipleChoiceCtrl multipleChoiceCtrl;
+  private final QuestionGameCtrl questionGameCtrl;
 
   private ObservableList<String> data;
   public Timer timer = new Timer();
@@ -54,14 +54,14 @@ public class MPWaitingRoomCtrl implements Initializable {
    *
    * @param server             reference to the server the game will run on.
    * @param mainCtrl           reference to the main controller.
-   * @param multipleChoiceCtrl reference to multiple choice controller
+   * @param questionGameCtrl reference to multiple choice controller
    */
   @Inject
   public MPWaitingRoomCtrl(ServerUtils server, MainCtrl mainCtrl,
-                           MultipleChoiceCtrl multipleChoiceCtrl) {
+                           QuestionGameCtrl questionGameCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
-    this.multipleChoiceCtrl = multipleChoiceCtrl;
+    this.questionGameCtrl = questionGameCtrl;
   }
 
   /**
@@ -96,7 +96,7 @@ public class MPWaitingRoomCtrl implements Initializable {
    */
   public void startMultiPlayer() {
     mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
-    multipleChoiceCtrl.timerStart();
+    questionGameCtrl.timerStart();
   }
 
   /**

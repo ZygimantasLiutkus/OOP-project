@@ -2,12 +2,7 @@ package commons;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -44,6 +39,17 @@ public class Player {
    */
   public Player(String name) {
     this.name = name;
+  }
+
+  /**
+   * Temporary constructor for testing answer posting in Postman.
+   *
+   * @param id             id of the player
+   * @param selectedAnswer selected answer (wh) in string format
+   */
+  public Player(Long id, String selectedAnswer) {
+    this.id = id;
+    this.selectedAnswer = selectedAnswer;
   }
 
   /**
@@ -120,21 +126,21 @@ public class Player {
   }
 
   /**
-   * Setter for the game id.
-   *
-   * @param id the id of the game the player has joined.
-   */
-  public void setGameId(Long id) {
-    this.gameId = id;
-  }
-
-  /**
    * Getter for the game.
    *
    * @return a long representing the id of the last joined game.
    */
   public Long getGameId() {
     return gameId;
+  }
+
+  /**
+   * Setter for the game id.
+   *
+   * @param id the id of the game the player has joined.
+   */
+  public void setGameId(Long id) {
+    this.gameId = id;
   }
 
   /**

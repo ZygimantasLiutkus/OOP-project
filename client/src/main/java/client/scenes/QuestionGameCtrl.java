@@ -30,7 +30,7 @@ import javafx.util.Duration;
 /**
  * A template controller for the MultipleChoiceScreen scene.
  */
-public class MultipleChoiceCtrl {
+public class QuestionGameCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
@@ -41,7 +41,7 @@ public class MultipleChoiceCtrl {
   public GameEntity dummyGameFinished = new GameEntity("FINISHED");
   public GameEntity dummyGameAborted = new GameEntity("ABORTED");
   private GameEntity.Type type;
-  private int startTime = 10;
+  private int startTime = 15;
   private int questionNum = 0;
   private double progress = 1;
   private Timeline timeline;
@@ -109,13 +109,13 @@ public class MultipleChoiceCtrl {
   private Label validator;
 
   /**
-   * Constructor for MultipleChoiceCtrl.
+   * Constructor for QuestionGameCtrl.
    *
    * @param server   reference to the server the game will run on
    * @param mainCtrl reference to the main controller
    */
   @Inject
-  public MultipleChoiceCtrl(ServerUtils server, MainCtrl mainCtrl) {
+  public QuestionGameCtrl(ServerUtils server, MainCtrl mainCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
   }
@@ -299,8 +299,8 @@ public class MultipleChoiceCtrl {
     progress = 1;
     progressBar.setProgress(progress);
     progressBar.setStyle("-fx-accent: #008057");
-    timeCounter.setText("10 s");
-    startTime = 10;
+    timeCounter.setText("15 s");
+    startTime = 15;
   }
 
   /**
@@ -316,7 +316,7 @@ public class MultipleChoiceCtrl {
     timeline = new Timeline();
     timeline.setCycleCount(1000);
     timeline.setAutoReverse(false);
-    timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10),
+    timeline.getKeyFrames().add(new KeyFrame(Duration.millis(15),
         new EventHandler<>() {
           /**
            * {@inheritDoc}
@@ -339,7 +339,7 @@ public class MultipleChoiceCtrl {
           }
         })
     );
-    timeCount.setCycleCount(10);
+    timeCount.setCycleCount(15);
     timeline.play();
     timeCount.play();
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
@@ -387,10 +387,11 @@ public class MultipleChoiceCtrl {
         int realAnswer = question.getActivities().get(0).getConsumption_in_wh();
         double percentageOff =
             Math.abs(Integer.valueOf(textArea.getText()) - realAnswer) / realAnswer;
-        points = (int) (100 * (double) (1 - percentageOff / 0.3));
+        points = (int) (150 * (double) (1 - percentageOff / 0.3));
       } else {
+
         points = 10 * (time + 1);
-        if (time == 10) {
+        if (time == 15) {
           points -= 10;
         }
       }
@@ -667,5 +668,50 @@ public class MultipleChoiceCtrl {
     }
     return server.getPlayer().getSelectedAnswer()
         .equals(question.getActivities().get(imax).getTitle());
+  }
+
+  /**
+   * Method that sets up communication for the client.
+   */
+  public void startCommunication() {
+    server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
+      System.out.println(message.getPlayerName() + ": " + message.getEmojiName());
+      //implement method to show emoji on screen
+    });
+  }
+
+  /**
+   * Method that sends the server a message with the player's name and the laughing emoji.
+   */
+  public void sendEmojiLaughing() {
+    server.send("/app/messages", "laughing");
+  }
+
+  /**
+   * Method that sends the server a message with the player's name and the ok emoji.
+   */
+  public void sendEmojiOk() {
+    server.send("/app/messages", "ok");
+  }
+
+  /**
+   * Method that sends the server a message with the player's name and the thumbsUp emoji.
+   */
+  public void sendEmojiThumbsUp() {
+    server.send("/app/messages", "thumbsUp");
+  }
+
+  /**
+   * Method that sends the server a message with the player's name and the flatFace emoji.
+   */
+  public void sendEmojiFlatFace() {
+    server.send("/app/messages", "flatFace");
+  }
+
+  /**
+   * Method that sends the server a message with the player's name and the angry emoji.
+   */
+  public void sendEmojiAngry() {
+    server.send("/app/messages", "angry");
   }
 }

@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="gameBg" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
             minHeight="450.0" minWidth="1200.0" prefHeight="500.0" prefWidth="1200.0"
-            xmlns="http://javafx.com/javafx/17" fx:controller="client.scenes.MultipleChoiceCtrl">
+            xmlns="http://javafx.com/javafx/17" fx:controller="client.scenes.QuestionGameCtrl">
     <center>
         <AnchorPane fx:id="centralPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                     minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="745.0"
@@ -72,7 +72,7 @@
                 <ProgressBar fx:id="progressBar" layoutX="369.0" layoutY="22.0" onMouseClicked="#timerStart"
                              prefHeight="22.0" prefWidth="262.0" progress="1.0" AnchorPane.leftAnchor="369.0"
                              AnchorPane.rightAnchor="369.0" AnchorPane.topAnchor="23.0"/>
-                <Label fx:id="timeCounter" layoutX="643.0" layoutY="21.0" prefHeight="18.0" prefWidth="30.0" text="10 s"
+                <Label fx:id="timeCounter" layoutX="643.0" layoutY="21.0" prefHeight="18.0" prefWidth="30.0" text="15 s"
                        AnchorPane.rightAnchor="326.6">
                     <font>
                         <Font size="16.0"/>

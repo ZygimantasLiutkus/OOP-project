@@ -43,8 +43,8 @@ public class MainCtrl {
   private ChooseScreenCtrl chooseScreenCtrl;
   private Scene choose;
 
-  private MultipleChoiceCtrl moreExpensiveCtrl;
-  private Scene moreExpensive;
+  private QuestionGameCtrl questionGameCtrl;
+  private Scene questionGame;
 
   private LeaderboardScreenCtrl leaderboardScreenCtrl;
   private Scene leaderboard;
@@ -86,7 +86,7 @@ public class MainCtrl {
   public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                          Pair<AddQuoteCtrl, Parent> add, Pair<EntryCtrl, Parent> entry,
                          Pair<NamePopupCtrl, Parent> name, Pair<ChooseScreenCtrl, Parent> choose,
-                         Pair<MultipleChoiceCtrl, Parent> moreExpensive,
+                         Pair<QuestionGameCtrl, Parent> moreExpensive,
                          Pair<LeaderboardScreenCtrl, Parent> leaderboard,
                          Pair<WaitingRoomCtrl, Parent> waitingRoomSP,
                          Pair<MPWaitingRoomCtrl, Parent> waitingRoomMP,
@@ -108,8 +108,8 @@ public class MainCtrl {
     this.chooseScreenCtrl = choose.getKey();
     this.choose = new Scene(choose.getValue());
 
-    this.moreExpensiveCtrl = moreExpensive.getKey();
-    this.moreExpensive = new Scene(moreExpensive.getValue());
+    this.questionGameCtrl = moreExpensive.getKey();
+    this.questionGame = new Scene(moreExpensive.getValue());
 
     this.leaderboardScreenCtrl = leaderboard.getKey();
     this.leaderboard = new Scene(leaderboard.getValue());
@@ -198,8 +198,8 @@ public class MainCtrl {
    */
   public void showMoreExpensive(GameEntity.Type type) {
     primaryStage.setTitle("Quizzzz");
-    moreExpensiveCtrl.setType(type);
-    primaryStage.setScene(moreExpensive);
+    questionGameCtrl.setType(type);
+    primaryStage.setScene(questionGame);
   }
 
   /**
