@@ -72,6 +72,6 @@ public class Main extends Application {
 
     var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
     mainCtrl.initialize(primaryStage, overview, add, entry, name, choose, questionGame,
-        leaderboard, waitingRoomSP, waitingRoomMP, activityList, activityPopUp);
+        leaderboard, waitingRoomSP, waitingRoomMP, activityOverview, activityPopUp);
   }
 }
