@@ -182,6 +182,7 @@ public class MainCtrl {
   public void showChooseScreen() {
     primaryStage.setTitle("Choose the game style!");
     primaryStage.setScene(choose);
+    chooseScreenCtrl.animate();
   }
 
   /**

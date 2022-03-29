@@ -4,8 +4,14 @@ import client.utils.NextScreen;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Player;
+import javafx.animation.*;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 /**
  * A template controller for the ChooseScreen scene.
@@ -15,6 +21,9 @@ public class ChooseScreenCtrl {
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
   private final NamePopupCtrl namePopupCtrl;
+
+  @FXML
+  private Label label;
 
   @FXML
   private Button singleplayerButton;
@@ -29,6 +38,9 @@ public class ChooseScreenCtrl {
   private Button changeServerButton;
 
   @FXML
+  private Button adminButton;
+
+  @FXML
   private Button changeNameButton;
 
   /**
@@ -39,11 +51,68 @@ public class ChooseScreenCtrl {
    * @param namePopupCtrl reference to the name popup controller.
    */
   @Inject
-
   public ChooseScreenCtrl(ServerUtils server, MainCtrl mainCtrl, NamePopupCtrl namePopupCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
     this.namePopupCtrl = namePopupCtrl;
+  }
+
+  public void animate() {
+    TranslateTransition labelT = new TranslateTransition(Duration.millis(500), label);
+    labelT.setFromY(-160);
+    labelT.setToY(0);
+    labelT.play();
+
+    TranslateTransition sp = new TranslateTransition(Duration.millis(300), singleplayerButton);
+    sp.setFromY(300);
+    sp.setToY(0);
+
+
+    TranslateTransition l = new TranslateTransition(Duration.millis(300), leaderboardButton);
+    l.setFromY(300);
+    l.setToY(0);
+
+    TranslateTransition mp = new TranslateTransition(Duration.millis(300), multiplayerButton);
+    mp.setFromY(300);
+    mp.setToY(0);
+
+    TranslateTransition cs = new TranslateTransition(Duration.millis(300), changeServerButton);
+    cs.setFromY(150);
+    cs.setToY(0);
+
+    TranslateTransition cn = new TranslateTransition(Duration.millis(300), changeNameButton);
+    cn.setFromY(150);
+    cn.setToY(0);
+
+    TranslateTransition a = new TranslateTransition(Duration.millis(300), adminButton);
+    a.setFromY(150);
+    a.setToY(0);
+
+    Animation flash = new Transition() {
+      {
+        setCycleDuration(Duration.millis(1500));
+        setCycleCount(INDEFINITE);
+        setInterpolator(Interpolator.EASE_OUT);
+      }
+
+      /**
+       * {@inheritDoc}
+       */
+      @Override
+      protected void interpolate(double frac) {
+        Color color = new Color(1, 1, 0, Math.abs(Math.abs(-1.0 + 2 * frac * frac) - 1.0));
+
+        DropShadow shadow = new DropShadow();
+        shadow.setSpread(0.75);
+        Node target = label;
+        shadow.setColor(color);
+        target.setEffect(shadow);
+      }
+    };
+
+    SequentialTransition sq = new SequentialTransition(sp, l, mp, cs, cn, a, flash);
+    sq.setDelay(Duration.millis(1500));
+    sq.play();
   }
 
   /**
