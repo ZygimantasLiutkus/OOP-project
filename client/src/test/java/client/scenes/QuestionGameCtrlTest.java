@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
+import client.utils.TimerUtils;
 import org.junit.jupiter.api.BeforeEach;
 
 /**
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 public class QuestionGameCtrlTest {
   private QuestionGameCtrl sut;
   private ServerUtils server;
+  private TimerUtils timers;
   private MainCtrl mainCtrl;
 
   /**
@@ -17,7 +19,8 @@ public class QuestionGameCtrlTest {
   @BeforeEach
   void setUp() {
     server = new ServerUtils();
+    timers = new TimerUtils();
     mainCtrl = new MainCtrl();
-    sut = new QuestionGameCtrl(server, mainCtrl);
+    sut = new QuestionGameCtrl(server, timers, mainCtrl);
   }
 }

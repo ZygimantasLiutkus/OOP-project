@@ -16,9 +16,16 @@
 
 package client;
 
-import client.scenes.*;
+import client.scenes.AddQuoteCtrl;
+import client.scenes.ChooseScreenCtrl;
+import client.scenes.EntryCtrl;
+import client.scenes.LeaderboardScreenCtrl;
+import client.scenes.MainCtrl;
+import client.scenes.NamePopupCtrl;
 import client.scenes.QuestionGameCtrl;
+import client.scenes.QuoteOverviewCtrl;
 import client.utils.ServerUtils;
+import client.utils.TimerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -41,5 +48,6 @@ public class MyModule implements Module {
     binder.bind(NamePopupCtrl.class).in(Scopes.SINGLETON);
     binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
     binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
+    binder.bind(TimerUtils.class).in(Scopes.SINGLETON);
   }
 }

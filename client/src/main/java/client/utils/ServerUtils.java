@@ -18,7 +18,12 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import commons.*;
+import commons.GameEntity;
+import commons.LeaderboardEntry;
+import commons.Message;
+import commons.Player;
+import commons.Question;
+import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
@@ -32,6 +37,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
+import javafx.scene.image.Image;
 import org.glassfish.jersey.client.ClientConfig;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
@@ -254,7 +260,7 @@ public class ServerUtils {
    */
   public GameEntity getGame() {
     return ClientBuilder.newClient(new ClientConfig()) //
-        .target(server).path("api/game/" + String.valueOf(player.getGameId())) //
+        .target(server).path("api/game/" + player.getGameId()) //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .get(new GenericType<GameEntity>() {
@@ -400,5 +406,22 @@ public class ServerUtils {
         .target(server).path("api/game/" + getGame().getId() + "/updatePlayer")
         .request()
         .put(Entity.json(players));
+  }
+
+  /**
+   * Gets an image from the backend.
+   *
+   * @param path the path to the image
+   * @return the specified image or a default image if the image doesn't exist
+   */
+  public javafx.scene.image.Image getImage(String path) {
+    Image img;
+    try {
+      img = new javafx.scene.image.Image(
+          server + "api/download/images/" + path);
+    } catch (Exception e) {
+      img = new javafx.scene.image.Image("client/images/defaultImage.png");
+    }
+    return img;
   }
 }
