@@ -41,7 +41,7 @@ public class QuestionGameCtrl {
   public GameEntity dummyGameFinished = new GameEntity("FINISHED");
   public GameEntity dummyGameAborted = new GameEntity("ABORTED");
   private GameEntity.Type type;
-  private int startTime = 10;
+  private int startTime = 15;
   private int questionNum = 0;
   private double progress = 1;
   private Timeline timeline;
@@ -299,8 +299,8 @@ public class QuestionGameCtrl {
     progress = 1;
     progressBar.setProgress(progress);
     progressBar.setStyle("-fx-accent: #008057");
-    timeCounter.setText("10 s");
-    startTime = 10;
+    timeCounter.setText("15 s");
+    startTime = 15;
   }
 
   /**
@@ -316,7 +316,7 @@ public class QuestionGameCtrl {
     timeline = new Timeline();
     timeline.setCycleCount(1000);
     timeline.setAutoReverse(false);
-    timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10),
+    timeline.getKeyFrames().add(new KeyFrame(Duration.millis(15),
         new EventHandler<>() {
           /**
            * {@inheritDoc}
@@ -339,7 +339,7 @@ public class QuestionGameCtrl {
           }
         })
     );
-    timeCount.setCycleCount(10);
+    timeCount.setCycleCount(15);
     timeline.play();
     timeCount.play();
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
@@ -387,10 +387,11 @@ public class QuestionGameCtrl {
         int realAnswer = question.getActivities().get(0).getConsumption_in_wh();
         double percentageOff =
             Math.abs(Integer.valueOf(textArea.getText()) - realAnswer) / realAnswer;
-        points = (int) (100 * (double) (1 - percentageOff / 0.3));
+        points = (int) (150 * (double) (1 - percentageOff / 0.3));
       } else {
+
         points = 10 * (time + 1);
-        if (time == 10) {
+        if (time == 15) {
           points -= 10;
         }
       }
