@@ -136,4 +136,18 @@ public class ActivityController {
       return ResponseEntity.ok(repo.save(updated));
     }
   }
+
+  /**
+   * GET endpoint to obtain an activity by id.
+   *
+   * @param id the id of an activity
+   * @return either a bad request if there is no such activity, or the wanted activity
+   */
+  @GetMapping(path = "/{id}")
+  public ResponseEntity<Activity> getById(@PathVariable("id") String id) {
+    if (!repo.existsById(id)) {
+      return ResponseEntity.badRequest().build();
+    }
+    return ResponseEntity.ok(repo.getById(id));
+  }
 }

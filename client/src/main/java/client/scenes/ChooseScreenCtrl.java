@@ -97,7 +97,10 @@ public class ChooseScreenCtrl {
     mainCtrl.showNamePopup(NextScreen.None);
   }
 
-  public void goPanel(){
+  /**
+   * Method to transition to activity panel
+   */
+  public void goPanel() {
     mainCtrl.showActivityOverview();
   }
 }

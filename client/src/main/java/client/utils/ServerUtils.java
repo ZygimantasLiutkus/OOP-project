@@ -337,4 +337,31 @@ public class ServerUtils {
         .accept(APPLICATION_JSON) //
         .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);
   }
+
+  /**
+   * Method to retrieve an activity by id.
+   * @param id the id of a wanted activity
+   * @return null if there is no activity or the retrieved activity
+   */
+  public Response getActivityById(String id) {
+    Response act = ClientBuilder.newClient(new ClientConfig())
+        .target(server).path("/api/activity/" + id)
+        .request().get(new GenericType<Response>() {
+        });
+    if (act.getStatus() == 400) return null;
+    return act;
+  }
+
+  /**
+   * Method to update an activity.
+   * @param activity the newly created activity
+   * @return either null if there is no such activity or the updated activity
+   */
+  public Activity updateActivity(Activity activity) {
+    Response r = ClientBuilder.newClient(new ClientConfig())
+        .target(server).path("/api/activity/" + activity.getId())
+        .request().put(Entity.json(activity));
+    if(r.getStatus() == 400) return null;
+    return r.readEntity(Activity.class);
+  }
 }

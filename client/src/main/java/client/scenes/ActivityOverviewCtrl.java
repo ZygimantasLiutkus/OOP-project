@@ -17,6 +17,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
+/**
+ * Controller class for the activity overview panel.
+ */
 public class ActivityOverviewCtrl implements Initializable {
 
   private final MainCtrl main;
@@ -50,16 +53,28 @@ public class ActivityOverviewCtrl implements Initializable {
   @FXML
   private TableColumn imagePath;
 
+  /**
+   * Constructor for the class.
+   *
+   * @param main   the MainCtrl reference
+   * @param server the ServerUtils reference
+   */
   @Inject
-  public ActivityOverviewCtrl(MainCtrl main, ServerUtils server){
+  public ActivityOverviewCtrl(MainCtrl main, ServerUtils server) {
     this.main = main;
     this.server = server;
   }
 
-  public void goHome(){
+  /**
+   * Method to go back to the choose screen.
+   */
+  public void goHome() {
     main.showChooseScreen();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     activityTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -69,17 +84,26 @@ public class ActivityOverviewCtrl implements Initializable {
     imagePath.setCellValueFactory(new PropertyValueFactory<Activity, String>("image_path"));
   }
 
-  public void refresh(){
+  /**
+   * Method that refreshes the table after editing it.
+   */
+  public void refresh() {
     var activities = server.getAllActivities();
     data = FXCollections.observableList(activities);
     activityTable.setItems(data);
   }
 
-  public void addPopUp(){
+  /**
+   * Method to open the popup to add an activity.
+   */
+  public void addPopUp() {
     main.showActivityPopUp(NextScreen.Add);
   }
 
-  public void updatePopUp(){
+  /**
+   * Method to open up the popup to update an activity.
+   */
+  public void updatePopUp() {
     main.showActivityPopUp(NextScreen.Update);
   }
 }

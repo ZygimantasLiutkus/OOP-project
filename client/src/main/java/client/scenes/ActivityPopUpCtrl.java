@@ -9,6 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+/**
+ * Popup class to edit the activity table.
+ */
 public class ActivityPopUpCtrl {
 
   private final ServerUtils server;
@@ -37,6 +40,13 @@ public class ActivityPopUpCtrl {
   @FXML
   private Label validator;
 
+  /**
+   * Constructor for the class.
+   *
+   * @param server       the ServerUtils reference
+   * @param main         the MainCtrl reference
+   * @param activityCtrl the ActivityOverviewCtrl reference
+   */
   @Inject
   public ActivityPopUpCtrl(ServerUtils server, MainCtrl main,
                            ActivityOverviewCtrl activityCtrl) {
@@ -45,29 +55,54 @@ public class ActivityPopUpCtrl {
     this.activityCtrl = activityCtrl;
   }
 
+  /**
+   * Method that disables the validator text when showing the popup.
+   */
   public void disableValidator() {
     validator.setVisible(false);
   }
 
+  /**
+   * Method that sets the type of the next scene.
+   *
+   * @param type either an "update" screen or an "add" screen
+   */
   public void setType(NextScreen type) {
     this.type = type;
   }
 
+  /**
+   * Method that submits the data for a new activity.
+   * Also calls for validation of raw data.
+   */
   public void submit() {
-    if (type.equals(NextScreen.Add)) {
-      submitAdd();
-    } else {
-      submitUpdate();
+    validator.setVisible(false);
+    validate();
+    if (!validator.isVisible()) {
+      if (type.equals(NextScreen.Add)) {
+        submitAdd();
+      } else {
+        submitUpdate();
+      }
     }
   }
 
-  public void submitAdd() {
-    if (id.getText().equals("") || title.getText().equals("") || consumption.getText().equals("") ||
-        imagePath.getText().equals("")) {
+  /**
+   * Method to validate the data for potential errors when creating an activity.
+   */
+  public void validate() {
+    if (id.getText().equals("") || title.getText().equals("") || consumption.getText().equals("")
+        || imagePath.getText().equals("")) {
       validator.setText("This is not a valid activity!");
       validator.setVisible(true);
     } else if (consumption.getText().contains("-")) {
       validator.setText("Type a valid consumption!");
+      validator.setVisible(true);
+    } else if (server.getActivityById(id.getText()) != null && type.equals(NextScreen.Add)) {
+      validator.setText("This activity already exists! Change the id.");
+      validator.setVisible(true);
+    } else if (server.getActivityById(id.getText()) == null && type.equals(NextScreen.Update)) {
+      validator.setText("This activity does not exist!");
       validator.setVisible(true);
     } else {
       try {
@@ -77,20 +112,29 @@ public class ActivityPopUpCtrl {
         validator.setVisible(true);
       }
     }
-    if (!validator.isVisible()) {
-      var act =
-          new Activity(id.getText(), title.getText(), Integer.parseInt(consumption.getText()),
-              imagePath.getText());
-      server.addActivity(act);
-      activityCtrl.refresh();
-      main.closeActivityPopUp();
-    }
-
   }
 
+  /**
+   * Method that creates a new activity.
+   */
+  public void submitAdd() {
+    var act =
+        new Activity(id.getText(), title.getText(), Integer.parseInt(consumption.getText()),
+            imagePath.getText());
+    server.addActivity(act);
+    activityCtrl.refresh();
+    main.closeActivityPopUp();
+  }
+
+
+  /**
+   * Method that updates an activity.
+   */
   public void submitUpdate() {
-    var act = new Activity(id.getText(), title.getText(), Integer.parseInt(consumption.getText()),
-        imagePath.getText());
+    var act =
+        new Activity(id.getText(), title.getText(), Integer.parseInt(consumption.getText()),
+            imagePath.getText());
+    server.updateActivity(act);
     activityCtrl.refresh();
     main.closeActivityPopUp();
   }
