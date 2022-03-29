@@ -189,6 +189,7 @@ public class QuestionGameCtrl {
     String answer = String.valueOf(question.getActivities().get(0).getConsumption_in_wh());
     server.getPlayer().setSelectedAnswer(answer);
     this.submitButton.setDisable(true);
+    this.submitButton.setVisible(false);
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       revealAnswer();
     }
@@ -216,7 +217,17 @@ public class QuestionGameCtrl {
   public void setSelectedAnswer1() {
     String answer = answer1.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    revealAnswer();
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      revealAnswer();
+    } else {
+      answer1.setDisable(true);
+      answer2.setDisable(true);
+      answer3.setDisable(true);
+      answer3.setStyle("-fx-opacity: 0.5");
+      answer2.setStyle("-fx-opacity: 0.5");
+      answer1.setStyle("-fx-border-style: solid");
+      answer1.setStyle("-fx-border-color: EFDB22");
+    }
   }
 
   /**
@@ -225,7 +236,17 @@ public class QuestionGameCtrl {
   public void setSelectedAnswer2() {
     String answer = answer2.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    revealAnswer();
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      revealAnswer();
+    } else {
+      answer1.setDisable(true);
+      answer2.setDisable(true);
+      answer3.setDisable(true);
+      answer1.setStyle("-fx-opacity: 0.5");
+      answer3.setStyle("-fx-opacity: 0.5");
+      answer2.setStyle("-fx-border-style: solid");
+      answer2.setStyle("-fx-border-color: EFDB22");
+    }
   }
 
   /**
@@ -234,7 +255,17 @@ public class QuestionGameCtrl {
   public void setSelectedAnswer3() {
     String answer = answer3.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    revealAnswer();
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      revealAnswer();
+    } else {
+      answer1.setDisable(true);
+      answer2.setDisable(true);
+      answer3.setDisable(true);
+      answer1.setStyle("-fx-opacity: 0.5");
+      answer2.setStyle("-fx-opacity: 0.5");
+      answer3.setStyle("-fx-border-style: solid");
+      answer3.setStyle("-fx-border-color: EFDB22");
+    }
   }
 
   /**
@@ -356,6 +387,10 @@ public class QuestionGameCtrl {
     answer2.setDisable(true);
     answer3.setDisable(true);
 
+    answer1.setStyle("-fx-opacity: 1");
+    answer2.setStyle("-fx-opacity: 1");
+    answer3.setStyle("-fx-opacity: 1");
+
     int time = startTime;
 
     jokerEl.setVisible(false);
@@ -447,12 +482,9 @@ public class QuestionGameCtrl {
       }
     } else {
       if (questionNum < 20) {
+        resetTimer();
         timerStart();
-        if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
-          nextQuestionSingle();
-        } else {
-          nextQuestionMultiple();
-        }
+        nextQuestionMultiple();
       } else {
         String name = server.getPlayer().getName();
         int points = server.getPlayer().getScore();
@@ -498,7 +530,30 @@ public class QuestionGameCtrl {
    */
   public void nextQuestionMultiple() {
     //TODO: write method's body
-    revealAnswer();
+    setText();
+    resetTimer();
+
+    jokerEl.setVisible(true);
+
+    questionNum++;
+    addPoints.setVisible(false);
+    questionNo.setText(questionNum + "/20");
+    if (!this.question.getText().equals("How much do you think this activity consumes per hour?")) {
+      answer1.setDisable(false);
+      answer1.setStyle("-fx-background-color: #11AD31");
+      answer1.setVisible(true);
+      answer2.setDisable(false);
+      answer2.setStyle("-fx-background-color: #11AD31");
+      answer2.setVisible(true);
+      answer3.setDisable(false);
+      answer3.setStyle("-fx-background-color: #11AD31");
+      answer3.setVisible(true);
+    }
+    textArea.setText("");
+    this.validator.setVisible(false);
+    this.validator.setDisable(true);
+    server.resetAnswer();
+    playerPoints.setText(server.getPlayer().getScore() + " points");
   }
 
   /**
