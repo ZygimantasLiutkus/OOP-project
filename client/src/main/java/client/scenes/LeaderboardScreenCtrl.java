@@ -91,13 +91,7 @@ public class LeaderboardScreenCtrl implements Initializable {
     for (int i = 0; i < entries.size(); i++) {
       LeaderboardEntry entry = entries.get(i);
       entry.setRanking(i + 1);
-      if (ownEntry == null) {
-        continue;
-      }
-      if (this.gameType == GameEntity.Type.SINGLEPLAYER && ownEntry.getId() != null
-          && ownEntry.getId().equals(entry.getId())) {
-        ownEntry = entry;
-      } else if (ownEntry.getName().equals(entry.getName())) {
+      if (ownEntry != null && ownEntry.getName().equals(entry.getName())) {
         ownEntry = entry;
       }
     }
@@ -132,7 +126,7 @@ public class LeaderboardScreenCtrl implements Initializable {
         super.updateItem(item, empty);
         if (empty || item == null) {
           setStyle("");
-        } else if (ownEntry != null && item.getId().equals(ownEntry.getId())) {
+        } else if (ownEntry != null && item.getName().equals(ownEntry.getName())) {
           setStyle("-fx-background-color: tomato;");
         } else {
           setStyle("");
