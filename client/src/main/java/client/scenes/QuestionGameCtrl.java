@@ -219,10 +219,12 @@ public class QuestionGameCtrl {
       answer1.setDisable(true);
       answer2.setDisable(true);
       answer3.setDisable(true);
+      answer1.setStyle("-fx-border-color: EFDB22;\n"
+          + "-fx-border-insets: 1;\n"
+          + "-fx-border-width: 4;\n"
+          + "-fx-border-style: solid;\n");
       answer3.setStyle("-fx-opacity: 0.5");
       answer2.setStyle("-fx-opacity: 0.5");
-      answer1.setStyle("-fx-border-style: solid");
-      answer1.setStyle("-fx-border-color: EFDB22");
     }
   }
 
@@ -240,8 +242,10 @@ public class QuestionGameCtrl {
       answer3.setDisable(true);
       answer1.setStyle("-fx-opacity: 0.5");
       answer3.setStyle("-fx-opacity: 0.5");
-      answer2.setStyle("-fx-border-style: solid");
-      answer2.setStyle("-fx-border-color: EFDB22");
+      answer2.setStyle("-fx-border-color: EFDB22;\n"
+          + "-fx-border-insets: 1;\n"
+          + "-fx-border-width: 4;\n"
+          + "-fx-border-style: solid;\n");
     }
   }
 
@@ -259,8 +263,10 @@ public class QuestionGameCtrl {
       answer3.setDisable(true);
       answer1.setStyle("-fx-opacity: 0.5");
       answer2.setStyle("-fx-opacity: 0.5");
-      answer3.setStyle("-fx-border-style: solid");
-      answer3.setStyle("-fx-border-color: EFDB22");
+      answer3.setStyle("-fx-border-color: EFDB22;\n"
+          + "-fx-border-insets: 1;\n"
+          + "-fx-border-width: 4;\n"
+          + "-fx-border-style: solid;\n");
     }
   }
 
