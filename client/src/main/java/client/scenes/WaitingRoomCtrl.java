@@ -37,7 +37,7 @@ public class WaitingRoomCtrl {
    */
   public void startSinglePlayer() {
     mainCtrl.showMoreExpensive(GameEntity.Type.SINGLEPLAYER);
-    multipleCtrl.timerStart();
+    multipleCtrl.startGame();
   }
 
   /**

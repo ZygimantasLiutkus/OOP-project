@@ -4,7 +4,9 @@ import client.utils.ServerUtils;
 import commons.GameEntity;
 import commons.Player;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -26,9 +28,7 @@ public class MPWaitingRoomCtrl implements Initializable {
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
   private final QuestionGameCtrl questionGameCtrl;
-
   private ObservableList<String> data;
-  public Timer timer = new Timer();
   private Timeline timeline;
 
   @FXML
@@ -52,8 +52,8 @@ public class MPWaitingRoomCtrl implements Initializable {
   /**
    * Constructor for the Multi-player Waiting Room Controller.
    *
-   * @param server             reference to the server the game will run on.
-   * @param mainCtrl           reference to the main controller.
+   * @param server           reference to the server the game will run on.
+   * @param mainCtrl         reference to the main controller.
    * @param questionGameCtrl reference to multiple choice controller
    */
   @Inject
@@ -96,7 +96,7 @@ public class MPWaitingRoomCtrl implements Initializable {
    */
   public void startMultiPlayer() {
     mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
-    questionGameCtrl.timerStart();
+    questionGameCtrl.startGame();
   }
 
   /**
