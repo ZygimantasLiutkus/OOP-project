@@ -2,10 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Activity;
-import commons.GameEntity;
-import commons.LeaderboardEntry;
-import commons.Question;
+import commons.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -14,10 +11,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -107,6 +101,21 @@ public class QuestionGameCtrl {
 
   @FXML
   private Label validator;
+
+  @FXML
+  private FlowPane messagePane;
+
+  @FXML
+  private ImageView messageEmojiImage;
+
+  @FXML
+  private Label messageText;
+
+  @FXML
+  private ListView<Image> messageEmojiList;
+  
+  @FXML
+  private ListView<String> messageNameList;
 
   /**
    * Constructor for QuestionGameCtrl.
@@ -216,6 +225,7 @@ public class QuestionGameCtrl {
   public void setSelectedAnswer1() {
     String answer = answer1.getText();
     server.getPlayer().setSelectedAnswer(answer);
+    server.session = server.connect("ws://localhost:8080/websocket"); //for testing
     revealAnswer();
   }
 
@@ -225,6 +235,7 @@ public class QuestionGameCtrl {
   public void setSelectedAnswer2() {
     String answer = answer2.getText();
     server.getPlayer().setSelectedAnswer(answer);
+    startCommunication(); //for testing
     revealAnswer();
   }
 
@@ -674,8 +685,8 @@ public class QuestionGameCtrl {
    */
   public void startCommunication() {
     server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
-      System.out.println(message.getPlayerName() + ": " + message.getEmojiName());
-      //implement method to show emoji on screen
+      //System.out.println(message.getPlayerName() + ": " + message.getEmojiName()); Testing
+      showMessage(message);
     });
   }
 
@@ -690,7 +701,7 @@ public class QuestionGameCtrl {
    * Method that sends the server a message with the player's name and the ok emoji.
    */
   public void sendEmojiOk() {
-    server.send("/app/messages", "ok");
+    server.send("/app/messages", "okHand");
   }
 
   /**
@@ -713,4 +724,11 @@ public class QuestionGameCtrl {
   public void sendEmojiAngry() {
     server.send("/app/messages", "angry");
   }
+
+  public void showMessage(Message message) {
+    String name = message.getPlayerName();
+    messageText.setText(name);
+    messageEmojiImage.setImage(new Image("client/images/" + message.getEmojiName() + "Emoji.png"));
+  }
+
 }
