@@ -370,10 +370,9 @@ public class QuestionGameCtrl {
     }
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       emojiPane.setVisible(false);
-      nextQuestionSingle();
-    } else {
-      nextQuestionMultiple();
     }
+
+    nextQuestion();
   }
 
   /**
@@ -479,11 +478,7 @@ public class QuestionGameCtrl {
    */
   public void cooldownAnswer() {
     if (questionNum < 20) {
-      if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
-        nextQuestionSingle();
-      } else {
-        nextQuestionMultiple();
-      }
+      nextQuestion();
     } else {
       String name = server.getPlayer().getName();
       int points = server.getPlayer().getScore();
@@ -501,12 +496,10 @@ public class QuestionGameCtrl {
   /**
    * Makes the client screen ready for the new question. FOR SINGLE PLAYER ONLY
    */
-  public void nextQuestionSingle() {
+  public void nextQuestion() {
     setText();
     resetTimer();
-    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
-      jokerEl.setVisible(false);
-    }
+    jokerEl.setVisible(true);
     questionNum++;
     addPoints.setVisible(false);
     questionNo.setText(questionNum + "/20");
@@ -527,37 +520,6 @@ public class QuestionGameCtrl {
     server.resetAnswer();
     playerPoints.setText(server.getPlayer().getScore() + " points");
     startTimer();
-  }
-
-  /**
-   * Makes the client ready for the new question. FOR MULTIPLAYER ONLY
-   */
-  public void nextQuestionMultiple() {
-    //TODO: write method's body
-    setText();
-    resetTimer();
-
-    jokerEl.setVisible(true);
-
-    questionNum++;
-    addPoints.setVisible(false);
-    questionNo.setText(questionNum + "/20");
-    if (!this.question.getText().equals("How much do you think this activity consumes per hour?")) {
-      answer1.setDisable(false);
-      answer1.setStyle("-fx-background-color: #11AD31");
-      answer1.setVisible(true);
-      answer2.setDisable(false);
-      answer2.setStyle("-fx-background-color: #11AD31");
-      answer2.setVisible(true);
-      answer3.setDisable(false);
-      answer3.setStyle("-fx-background-color: #11AD31");
-      answer3.setVisible(true);
-    }
-    textArea.setText("");
-    this.validator.setVisible(false);
-    this.validator.setDisable(true);
-    server.resetAnswer();
-    playerPoints.setText(server.getPlayer().getScore() + " points");
   }
 
   /**
