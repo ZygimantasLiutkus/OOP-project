@@ -265,8 +265,8 @@ public class MainCtrl {
    * @param act        the activity the admin wants to use
    */
   public void showActivityPopUp(Activity act, NextScreen nextScreen) {
-    activityPopUpCtrl.disableValidator();
     activityPopUpCtrl.setType(act, nextScreen);
+    activityPopUpCtrl.disableValidator();
     popup.setTitle("Activity Panel");
     popup.setScene(activityPopUp);
     popup.show();
