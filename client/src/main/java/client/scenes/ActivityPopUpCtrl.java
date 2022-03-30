@@ -59,11 +59,12 @@ public class ActivityPopUpCtrl {
    * Method that disables the validator text when showing the popup.
    */
   public void disableValidator() {
+    if (type.equals(NextScreen.Update)) {
+      textTitle.setText("Update an activity");
+    } else {
+      textTitle.setText("Add an activity");
+    }
     validator.setVisible(false);
-    id.setText("");
-    title.setText("");
-    consumption.setText("");
-    imagePath.setText("");
   }
 
   /**
@@ -88,6 +89,10 @@ public class ActivityPopUpCtrl {
       } else {
         submitUpdate();
       }
+      id.setText("");
+      title.setText("");
+      consumption.setText("");
+      imagePath.setText("");
     }
   }
 
