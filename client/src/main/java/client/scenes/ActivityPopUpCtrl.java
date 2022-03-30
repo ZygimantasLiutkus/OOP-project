@@ -71,6 +71,7 @@ public class ActivityPopUpCtrl {
    * Method that sets the type of the next scene.
    *
    * @param type either an "update" screen or an "add" screen
+   * @param act  the activity the admin wants to use
    */
   public void setType(Activity act, NextScreen type) {
     if (act != null) {
