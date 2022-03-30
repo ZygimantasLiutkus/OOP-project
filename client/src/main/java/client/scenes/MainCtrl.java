@@ -262,6 +262,7 @@ public class MainCtrl {
    * Shows the activity popup.
    *
    * @param nextScreen the type of action the admin wants to do
+   * @param act        the activity the admin wants to use
    */
   public void showActivityPopUp(Activity act, NextScreen nextScreen) {
     activityPopUpCtrl.disableValidator();
