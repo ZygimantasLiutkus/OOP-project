@@ -2,6 +2,7 @@ package server.api;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 
 import commons.Activity;
 import java.util.ArrayList;
@@ -256,6 +257,29 @@ public class ActivityControllerTest {
     assertEquals(BAD_REQUEST, actual.getStatusCode());
   }
 
+  /**
+   * Tests a successful GET endpoint using an id.
+   */
+  @Test
+  public void getByIdOK(){
+    Activity a = new Activity("00", "Test", 100, "test");
+    repo.save(a);
+    var actual = sut.getById(a.getId());
+    assertEquals(OK, actual.getStatusCode());
+    assertEquals(a, actual.getBody());
+  }
+
+  /**
+   * Tests an invalid GET using an id.
+   */
+  @Test
+  public void getByIdFail(){
+    Activity a = new Activity("00", "Test", 100, "test");
+    repo.save(a);
+    var actual = sut.getById("Shower");
+    assertEquals(BAD_REQUEST, actual.getStatusCode());
+    assertNotEquals(actual.getBody(), a);
+  }
 
   /**
    * Extends the implementation of the Random class.
