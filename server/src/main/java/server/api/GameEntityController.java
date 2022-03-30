@@ -9,6 +9,7 @@ import commons.Question;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -92,10 +93,8 @@ public class GameEntityController {
    */
   @GetMapping(path = "/{id}")
   public ResponseEntity<GameEntity> getGameById(@PathVariable("id") long id) {
-    if (repo.existsById(id)) {
-      return ResponseEntity.ok(repo.findById(id).get());
-    }
-    return ResponseEntity.badRequest().build();
+    Optional<GameEntity> optional = repo.findById(id);
+    return optional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
   }
 
   /**
