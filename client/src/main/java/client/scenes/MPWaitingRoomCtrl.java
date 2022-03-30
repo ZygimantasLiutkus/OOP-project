@@ -4,7 +4,10 @@ import client.utils.ServerUtils;
 import commons.GameEntity;
 import commons.Player;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Timer;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -26,9 +29,8 @@ public class MPWaitingRoomCtrl implements Initializable {
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
   private final QuestionGameCtrl questionGameCtrl;
-
-  private ObservableList<String> data;
   public Timer timer = new Timer();
+  private ObservableList<String> data;
   private Timeline timeline;
 
   @FXML
@@ -52,8 +54,8 @@ public class MPWaitingRoomCtrl implements Initializable {
   /**
    * Constructor for the Multi-player Waiting Room Controller.
    *
-   * @param server             reference to the server the game will run on.
-   * @param mainCtrl           reference to the main controller.
+   * @param server           reference to the server the game will run on.
+   * @param mainCtrl         reference to the main controller.
    * @param questionGameCtrl reference to multiple choice controller
    */
   @Inject
@@ -92,11 +94,22 @@ public class MPWaitingRoomCtrl implements Initializable {
   }
 
   /**
+   * Sends the START message to the other players.
+   */
+  public void sendStart() {
+    server.send("/app/messages", "START");
+  }
+
+  /**
    * Starts the game in multi-player mode.
    */
   public void startMultiPlayer() {
+    //TODO: Delete print statements
+    System.out.println("It got here");
     mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
+    System.out.println("until here");
     questionGameCtrl.timerStart();
+    System.out.println("Should start now");
   }
 
   /**
@@ -115,6 +128,21 @@ public class MPWaitingRoomCtrl implements Initializable {
       }
     }));
     timeline.setCycleCount(Animation.INDEFINITE);
+  }
+
+  /**
+   * Method that starts listening for a START message.
+   */
+  public void startListening() {
+    //TODO: Delete print statements
+    server.connect();
+    server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
+      System.out.println(message.getPlayerName() + ": " + message.getText());
+      if (message.getText().equals("START")) {
+        System.out.println("START!");
+        startMultiPlayer();
+      }
+    });
   }
 
   /**

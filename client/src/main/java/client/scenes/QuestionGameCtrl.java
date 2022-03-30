@@ -617,11 +617,8 @@ public class QuestionGameCtrl {
     }
     int answer = question.getActivities().get(0).getConsumption_in_wh();
     int bound = 30 * answer / 100;
-    if (Integer.valueOf(this.textArea.getText()) < (answer - bound)
-        || Integer.valueOf(this.textArea.getText()) > (answer + bound)) {
-      return false;
-    }
-    return true;
+    return Integer.parseInt(this.textArea.getText()) >= (answer - bound)
+        && Integer.parseInt(this.textArea.getText()) <= (answer + bound);
   }
 
   /**
@@ -675,7 +672,7 @@ public class QuestionGameCtrl {
    */
   public void startCommunication() {
     server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
-      System.out.println(message.getPlayerName() + ": " + message.getEmojiName());
+      System.out.println(message.getPlayerName() + ": " + message.getText());
       //implement method to show emoji on screen
     });
   }

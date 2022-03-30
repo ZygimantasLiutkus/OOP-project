@@ -223,5 +223,6 @@ public class MainCtrl {
   public void showWaitingRoomScreenMP() {
     primaryStage.setTitle("Waiting...");
     primaryStage.setScene(waitingRoomMP);
+    mpWaitingRoomCtrl.startListening();
   }
 }

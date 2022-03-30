@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="408.0" minWidth="900.0" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MPWaitingRoomCtrl">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="408.0" minWidth="900.0" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MPWaitingRoomCtrl">
     <center>
         <AnchorPane fx:id="centralPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onDragDetected="#startTimeline" prefHeight="500.0" prefWidth="1000.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="startButton" disable="true" layoutX="571.0" layoutY="263.0" maxHeight="59.0" mnemonicParsing="false" onMouseClicked="#startMultiPlayer" onTouchPressed="#startMultiPlayer" prefHeight="59.0" prefWidth="174.0" style="-fx-background-color: #B3B3B3" text="START" textAlignment="CENTER">
+                <Button fx:id="startButton" disable="true" layoutX="571.0" layoutY="263.0" maxHeight="59.0" mnemonicParsing="false" onMouseClicked="#sendStart" onTouchPressed="#sendStart" prefHeight="59.0" prefWidth="174.0" style="-fx-background-color: #B3B3B3" text="START" textAlignment="CENTER">
                     <font>
                         <Font size="22.0" />
                     </font>
@@ -21,7 +26,7 @@
                 </Label>
                 <FlowPane layoutX="956.0" layoutY="3.0" prefHeight="30.0" prefWidth="30.0" style="-fx-alignment: center;" AnchorPane.rightAnchor="13.600000000000023" AnchorPane.topAnchor="3.0">
                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#goHome">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#goHome" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@/client/images/homeIcon.png" />
                             </image>
