@@ -207,6 +207,7 @@ public class MainCtrl {
     primaryStage.setTitle("Match Leaderboard");
     leaderboardScreenCtrl.setMultiplayer(entry);
     primaryStage.setScene(leaderboard);
+    leaderboardScreenCtrl.refreshTop10();
   }
 
   /**

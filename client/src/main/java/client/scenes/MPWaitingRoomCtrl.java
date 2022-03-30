@@ -11,6 +11,7 @@ import java.util.Timer;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -104,12 +105,8 @@ public class MPWaitingRoomCtrl implements Initializable {
    * Starts the game in multi-player mode.
    */
   public void startMultiPlayer() {
-    //TODO: Delete print statements
-    System.out.println("It got here");
     mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
-    System.out.println("until here");
     questionGameCtrl.timerStart();
-    System.out.println("Should start now");
   }
 
   /**
@@ -134,13 +131,10 @@ public class MPWaitingRoomCtrl implements Initializable {
    * Method that starts listening for a START message.
    */
   public void startListening() {
-    //TODO: Delete print statements
     server.connect();
     server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
-      System.out.println(message.getPlayerName() + ": " + message.getText());
       if (message.getText().equals("START")) {
-        System.out.println("START!");
-        startMultiPlayer();
+        Platform.runLater(this::startMultiPlayer);
       }
     });
   }
