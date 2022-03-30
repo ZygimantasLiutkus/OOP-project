@@ -216,15 +216,7 @@ public class QuestionGameCtrl {
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       revealAnswer();
     } else {
-      answer1.setDisable(true);
-      answer2.setDisable(true);
-      answer3.setDisable(true);
-      answer1.setStyle("-fx-border-color: EFDB22;\n"
-          + "-fx-border-insets: 1;\n"
-          + "-fx-border-width: 4;\n"
-          + "-fx-border-style: solid;\n");
-      answer3.setStyle("-fx-opacity: 0.5");
-      answer2.setStyle("-fx-opacity: 0.5");
+      answerMP("answer1");
     }
   }
 
@@ -237,15 +229,7 @@ public class QuestionGameCtrl {
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       revealAnswer();
     } else {
-      answer1.setDisable(true);
-      answer2.setDisable(true);
-      answer3.setDisable(true);
-      answer1.setStyle("-fx-opacity: 0.5");
-      answer3.setStyle("-fx-opacity: 0.5");
-      answer2.setStyle("-fx-border-color: EFDB22;\n"
-          + "-fx-border-insets: 1;\n"
-          + "-fx-border-width: 4;\n"
-          + "-fx-border-style: solid;\n");
+      answerMP("answer2");
     }
   }
 
@@ -258,15 +242,52 @@ public class QuestionGameCtrl {
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       revealAnswer();
     } else {
-      answer1.setDisable(true);
-      answer2.setDisable(true);
-      answer3.setDisable(true);
-      answer1.setStyle("-fx-opacity: 0.5");
-      answer2.setStyle("-fx-opacity: 0.5");
-      answer3.setStyle("-fx-border-color: EFDB22;\n"
-          + "-fx-border-insets: 1;\n"
-          + "-fx-border-width: 4;\n"
-          + "-fx-border-style: solid;\n");
+      answerMP("answer3");
+    }
+  }
+
+  /**
+   * Marks the selected answer for multiplayer games.
+   *
+   * @param bNum number of button pressed.
+   */
+  public void answerMP(String bNum) {
+    switch (bNum) {
+      case "answer1":
+        answer1.setDisable(true);
+        answer2.setDisable(true);
+        answer3.setDisable(true);
+        answer1.setStyle("-fx-border-color: EFDB22;\n"
+            + "-fx-border-insets: 1;\n"
+            + "-fx-border-width: 4;\n"
+            + "-fx-border-style: solid;\n");
+        answer3.setStyle("-fx-opacity: 0.5");
+        answer2.setStyle("-fx-opacity: 0.5");
+        break;
+      case "answer2":
+        answer1.setDisable(true);
+        answer2.setDisable(true);
+        answer3.setDisable(true);
+        answer1.setStyle("-fx-opacity: 0.5");
+        answer3.setStyle("-fx-opacity: 0.5");
+        answer2.setStyle("-fx-border-color: EFDB22;\n"
+            + "-fx-border-insets: 1;\n"
+            + "-fx-border-width: 4;\n"
+            + "-fx-border-style: solid;\n");
+        break;
+      case "answer3":
+        answer1.setDisable(true);
+        answer2.setDisable(true);
+        answer3.setDisable(true);
+        answer1.setStyle("-fx-opacity: 0.5");
+        answer2.setStyle("-fx-opacity: 0.5");
+        answer3.setStyle("-fx-border-color: EFDB22;\n"
+            + "-fx-border-insets: 1;\n"
+            + "-fx-border-width: 4;\n"
+            + "-fx-border-style: solid;\n");
+        break;
+      default:
+        break;
     }
   }
 
