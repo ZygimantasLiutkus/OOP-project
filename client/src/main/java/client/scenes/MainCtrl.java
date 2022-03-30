@@ -17,6 +17,7 @@
 package client.scenes;
 
 import client.utils.NextScreen;
+import commons.Activity;
 import commons.GameEntity;
 import commons.LeaderboardEntry;
 import javafx.scene.Parent;
@@ -262,9 +263,9 @@ public class MainCtrl {
    *
    * @param nextScreen the type of action the admin wants to do
    */
-  public void showActivityPopUp(NextScreen nextScreen) {
-    activityPopUpCtrl.setType(nextScreen);
+  public void showActivityPopUp(Activity act, NextScreen nextScreen) {
     activityPopUpCtrl.disableValidator();
+    activityPopUpCtrl.setType(act, nextScreen);
     popup.setTitle("Activity Panel");
     popup.setScene(activityPopUp);
     popup.show();

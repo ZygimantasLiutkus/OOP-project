@@ -39,7 +39,7 @@ public class ActivityOverviewCtrl implements Initializable {
   private Button updateActivity;
 
   @FXML
-  private TableView activityTable;
+  private TableView<Activity> activityTable;
 
   @FXML
   private TableColumn activityId;
@@ -97,13 +97,14 @@ public class ActivityOverviewCtrl implements Initializable {
    * Method to open the popup to add an activity.
    */
   public void addPopUp() {
-    main.showActivityPopUp(NextScreen.Add);
+    main.showActivityPopUp(null, NextScreen.Add);
   }
 
   /**
    * Method to open up the popup to update an activity.
    */
   public void updatePopUp() {
-    main.showActivityPopUp(NextScreen.Update);
+    Activity act = activityTable.getSelectionModel().getSelectedItem();
+    main.showActivityPopUp(act, NextScreen.Update);
   }
 }

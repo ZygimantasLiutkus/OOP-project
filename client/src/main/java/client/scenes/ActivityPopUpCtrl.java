@@ -71,7 +71,13 @@ public class ActivityPopUpCtrl {
    *
    * @param type either an "update" screen or an "add" screen
    */
-  public void setType(NextScreen type) {
+  public void setType(Activity act, NextScreen type) {
+    if (act != null) {
+      this.id.setText(act.getId());
+      this.title.setText(act.getTitle());
+      this.consumption.setText(Integer.toString(act.getConsumption_in_wh()));
+      this.imagePath.setText(act.getImage_path());
+    }
     this.type = type;
   }
 
