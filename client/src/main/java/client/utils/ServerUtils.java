@@ -30,6 +30,7 @@ import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
@@ -419,6 +420,9 @@ public class ServerUtils {
     try {
       img = new javafx.scene.image.Image(
           server + "api/download/images/" + path);
+      if (img.isError()) {
+        throw new FileNotFoundException();
+      }
     } catch (Exception e) {
       img = new javafx.scene.image.Image("client/images/defaultImage.png");
     }
