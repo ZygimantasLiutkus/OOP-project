@@ -261,7 +261,7 @@ public class ActivityControllerTest {
    * Tests a successful GET endpoint using an id.
    */
   @Test
-  public void getByIdOK(){
+  public void getByIdOK() {
     Activity a = new Activity("00", "Test", 100, "test");
     repo.save(a);
     var actual = sut.getById(a.getId());
@@ -273,7 +273,7 @@ public class ActivityControllerTest {
    * Tests an invalid GET using an id.
    */
   @Test
-  public void getByIdFail(){
+  public void getByIdFail() {
     Activity a = new Activity("00", "Test", 100, "test");
     repo.save(a);
     var actual = sut.getById("Shower");
