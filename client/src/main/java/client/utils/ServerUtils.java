@@ -24,6 +24,7 @@ import commons.Message;
 import commons.Player;
 import commons.Question;
 import commons.Quote;
+import commons.Activity;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
@@ -467,9 +468,8 @@ public class ServerUtils {
     }
     return r.readEntity(Activity.class);
   }
-}
 
-   * Gets an image from the backend.
+   /* Gets an image from the backend.
    *
    * @param path the path to the image
    * @return the specified image or a default image if the image doesn't exist
