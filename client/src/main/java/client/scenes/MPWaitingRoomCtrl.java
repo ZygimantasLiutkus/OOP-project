@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Timer;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -30,7 +29,6 @@ public class MPWaitingRoomCtrl implements Initializable {
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
   private final QuestionGameCtrl questionGameCtrl;
-  public Timer timer = new Timer();
   private ObservableList<String> data;
   private Timeline timeline;
 
@@ -106,7 +104,7 @@ public class MPWaitingRoomCtrl implements Initializable {
    */
   public void startMultiPlayer() {
     mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
-    questionGameCtrl.timerStart();
+    questionGameCtrl.startGame();
   }
 
   /**
