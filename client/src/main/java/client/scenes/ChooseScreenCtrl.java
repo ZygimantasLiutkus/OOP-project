@@ -20,7 +20,6 @@ public class ChooseScreenCtrl {
   private final MainCtrl mainCtrl;
   private final NamePopupCtrl namePopupCtrl;
   public Scanner scanner;
-  public StringBuffer buffer = new StringBuffer();
 
   @FXML
   private Button singleplayerButton;
@@ -61,7 +60,8 @@ public class ChooseScreenCtrl {
       if (scanner.hasNext()) {
         String name = scanner.next();
         server.setDummy(new Player(name));
-        buffer.append(name);
+        server.addSingleplayer();
+        mainCtrl.showWaitingRoomScreenSP();
       } else {
         mainCtrl.showNamePopup(NextScreen.WaitingRoomScreen);
       }
@@ -84,42 +84,46 @@ public class ChooseScreenCtrl {
   public void playMultiplayer() {
     initializeName();
     if (server.getPlayer().getName().equals("")) {
-      if (scanner.hasNext()) {
-        String name = scanner.next();
+      if (scanner.hasNextLine()) {
+        String name = scanner.nextLine();
         server.setDummy(new Player(name));
-        server.addSingleplayer();
-        buffer.append(name);
-        mainCtrl.showWaitingRoomScreenSP();
+        verifyName();
       } else {
         mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
       }
     } else {
-      Player player = server.addPlayer();
-      if (player == null) {
-        namePopupCtrl.setErrorText("This name is already taken, please choose another name");
-        namePopupCtrl.showErrorText(true);
-        mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
-      } else {
-        mainCtrl.showWaitingRoomScreenMP();
+      verifyName();
+    }
+  }
+
+  /**
+   * Initializes the scanner and may potentially create the file.
+   */
+  public void initializeName() {
+    try {
+      scanner = new Scanner(new File("name.txt"));
+    } catch (FileNotFoundException e) {
+      File file = new File("name.txt");
+      try {
+        file.createNewFile();
+        scanner = new Scanner(file);
+      } catch (IOException ex) {
+        ex.printStackTrace();
       }
     }
   }
 
-  public void initializeName() {
-    try {
-      scanner = new Scanner(new File("client/src/main/resources/name.txt"));
-    } catch (FileNotFoundException e) {
-        File file = new File("client/src/main/resources/name.txt");
-      try {
-        file.createNewFile();
-      } catch (IOException ex) {
-        ex.printStackTrace();
-      }
-      try {
-        scanner = new Scanner(file);
-      } catch (FileNotFoundException ex) {
-        ex.printStackTrace();
-      }
+  /**
+   * Verifies if the name is already used.
+   */
+  public void verifyName() {
+    Player player = server.addPlayer();
+    if (player == null) {
+      namePopupCtrl.setErrorText("This name is already taken, please choose another name");
+      namePopupCtrl.showErrorText(true);
+      mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
+    } else {
+      mainCtrl.showWaitingRoomScreenMP();
     }
   }
 
