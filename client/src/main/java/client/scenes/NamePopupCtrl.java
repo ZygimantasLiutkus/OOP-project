@@ -5,7 +5,6 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Player;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -24,8 +23,6 @@ public class NamePopupCtrl {
   private final MainCtrl mainCtrl;
   private final QuestionGameCtrl multipleCtrl;
   public FileWriter writer;
-  public String string = new String();
-  public Scanner scanner;
 
   private NextScreen nextScreen;
 
@@ -54,6 +51,20 @@ public class NamePopupCtrl {
   }
 
   /**
+   * Initializes the scanner and may potentially create the file.
+   */
+  public void initializeName() {
+    try {
+      Scanner scanner = new Scanner(new File("name.txt"));
+      String name = scanner.nextLine();
+      server.setDummy(new Player(name));
+      nameField.setText(name);
+    } catch (Exception e) {
+      server.setDummy(new Player(""));
+    }
+  }
+
+  /**
    * Saves the entered name of the user.
    */
   public void submit() {
@@ -66,13 +77,8 @@ public class NamePopupCtrl {
     server.setDummy(new Player(nameField.getText()));
     //Overwrite the already existent name inside the .txt
     try {
-      scanner = new Scanner(new File("name.txt"));
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
-    try {
-      writer = new FileWriter("name.txt");
-      writer.append(nameField.getText());
+      writer = new FileWriter("name.txt", false);
+      writer.write(nameField.getText());
       writer.flush();
       writer.close();
     } catch (IOException e) {
