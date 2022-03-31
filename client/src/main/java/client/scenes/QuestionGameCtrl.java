@@ -557,7 +557,8 @@ public class QuestionGameCtrl {
    */
   private void resetJokers() {
     if (!answerUsed) {
-      if (this.question.getText().equals("How much do you think this activity consumes per hour?")) {
+      if (this.question.getText()
+          .equals("How much do you think this activity consumes per hour?")) {
         jokerAnswer.setDisable(true);
         jokerAnswer.setVisible(false);
       } else {
