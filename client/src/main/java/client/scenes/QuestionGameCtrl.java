@@ -3,10 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import client.utils.TimerUtils;
 import com.google.inject.Inject;
-import commons.Activity;
-import commons.GameEntity;
-import commons.LeaderboardEntry;
-import commons.Question;
+import commons.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -45,6 +42,7 @@ public class QuestionGameCtrl {
   public boolean pointsUsed = false;
   public boolean answerUsed = false;
   public boolean timeUsed = false;
+  public boolean pointsDisabled = false;
   private Timeline cooldown;
 
   @FXML
@@ -484,6 +482,7 @@ public class QuestionGameCtrl {
     int points;
     if (!answerCorrectness) {
       addPoints.setText("+0");
+      pointsDisabled = true;
     } else {
       //The points are calculated depending on how close you were to the actual answer.
       if (question.getText().equals("How much do you think this activity consumes per hour?")) {
@@ -499,8 +498,9 @@ public class QuestionGameCtrl {
         }
       }
 
-      if (pointsUsed) {
+      if (pointsUsed && pointsDisabled == false) {
         points *= 2;
+        pointsDisabled = true;
       }
       server.getPlayer().setScore(server.getPlayer().getScore() + points);
       addPoints.setText("+" + points);
@@ -557,10 +557,15 @@ public class QuestionGameCtrl {
    */
   private void resetJokers() {
     if (!answerUsed) {
-      jokerAnswer.setVisible(true);
-      jokerAnswer.setDisable(false);
+      if (this.question.getText().equals("How much do you think this activity consumes per hour?")) {
+        jokerAnswer.setDisable(true);
+        jokerAnswer.setVisible(false);
+      } else {
+        jokerAnswer.setVisible(true);
+        jokerAnswer.setDisable(false);
+      }
     }
-    if (!pointsUsed) {
+    if (!pointsDisabled) {
       jokerPoints.setVisible(true);
       jokerPoints.setDisable(false);
     }
@@ -633,6 +638,7 @@ public class QuestionGameCtrl {
    */
   public void prepareEstimation() {
     this.textPrompt.setVisible(true);
+    this.textPrompt.setDisable(true);
     this.submitButton.setDisable(false);
     this.submitButton.setVisible(true);
     this.textArea.setDisable(false);
