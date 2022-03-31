@@ -109,8 +109,8 @@ public class ChooseScreenCtrl {
     try {
       scanner = new Scanner(new File("client/src/main/resources/name.txt"));
     } catch (FileNotFoundException e) {
-      File file = new File("client/src/main/resources/name.txt");
       try {
+        File file = new File("client/src/main/resources/name.txt");
         file.createNewFile();
         scanner = new Scanner(file);
       } catch (IOException ioException) {
