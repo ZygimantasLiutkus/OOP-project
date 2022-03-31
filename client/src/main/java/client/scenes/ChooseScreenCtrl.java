@@ -4,6 +4,10 @@ import client.utils.NextScreen;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Player;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Scanner;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -15,6 +19,8 @@ public class ChooseScreenCtrl {
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
   private final NamePopupCtrl namePopupCtrl;
+  public Scanner scanner;
+  public StringBuffer buffer = new StringBuffer();
 
   @FXML
   private Button singleplayerButton;
@@ -50,8 +56,15 @@ public class ChooseScreenCtrl {
    * Shows the singleplayer waiting room.
    */
   public void playSinglePlayer() {
+    initializeName();
     if (server.getDummyPlayer().getName().equals("")) {
-      mainCtrl.showNamePopup(NextScreen.WaitingRoomScreen);
+      if (scanner.hasNext()) {
+        String name = scanner.next();
+        server.setDummy(new Player(name));
+        buffer.append(name);
+      } else {
+        mainCtrl.showNamePopup(NextScreen.WaitingRoomScreen);
+      }
     } else {
       server.addSingleplayer();
       mainCtrl.showWaitingRoomScreenSP();
@@ -69,8 +82,15 @@ public class ChooseScreenCtrl {
    * Shows the multiplayer waiting room.
    */
   public void playMultiplayer() {
+    initializeName();
     if (server.getPlayer().getName().equals("")) {
-      mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
+      if (scanner.hasNext()) {
+        String name = scanner.next();
+        server.setDummy(new Player(name));
+        buffer.append(name);
+      } else {
+        mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
+      }
     } else {
       Player player = server.addPlayer();
       if (player == null) {
@@ -79,6 +99,20 @@ public class ChooseScreenCtrl {
         mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
       } else {
         mainCtrl.showWaitingRoomScreenMP();
+      }
+    }
+  }
+
+  public void initializeName() {
+    try {
+      scanner = new Scanner(new File("client/src/main/resources/name.txt"));
+    } catch (FileNotFoundException e) {
+      File file = new File("client/src/main/resources/name.txt");
+      try {
+        file.createNewFile();
+        scanner = new Scanner(file);
+      } catch (IOException ioException) {
+        ioException.printStackTrace();
       }
     }
   }
