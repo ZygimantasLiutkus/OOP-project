@@ -103,7 +103,13 @@
     <left>
         <AnchorPane fx:id="leftPane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="150.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
          <children>
-            <ListView layoutX="-3.0" layoutY="80.0" prefHeight="297.0" prefWidth="155.0" />
+            <ListView fx:id="messageEmojiList" fixedCellSize="40.0" layoutY="52.0" prefHeight="300.0" prefWidth="40.0" />
+            <ListView fx:id="messageNameList" fixedCellSize="40.0" layoutX="40.0" layoutY="52.0" prefHeight="300.0" prefWidth="120.0" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" prefHeight="40.0" prefWidth="160.0" text="Chat" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
          </children></AnchorPane>
     </left>
     <bottom>
@@ -170,22 +176,6 @@
                         <Insets left="95.0" right="75.0" />
                     </padding>
                 </FlowPane>
-            <FlowPane fx:id="messagePane" layoutX="902.0" layoutY="-2.0" prefHeight="66.0" prefWidth="298.0">
-               <children>
-                  <ImageView fx:id="messageEmojiImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                     <FlowPane.margin>
-                        <Insets top="14.0" />
-                     </FlowPane.margin>
-                  </ImageView>
-                  <Label fx:id="messageText" prefHeight="38.0" prefWidth="226.0" text="messageNameLabel">
-                     <FlowPane.margin>
-                        <Insets left="10.0" top="15.0" />
-                     </FlowPane.margin>
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-               </children></FlowPane>
             </children>
         </AnchorPane>
     </bottom>

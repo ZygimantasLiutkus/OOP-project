@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -103,17 +104,8 @@ public class QuestionGameCtrl {
   private Label validator;
 
   @FXML
-  private FlowPane messagePane;
+  private ListView<ImageView> messageEmojiList;
 
-  @FXML
-  private ImageView messageEmojiImage;
-
-  @FXML
-  private Label messageText;
-
-  @FXML
-  private ListView<Image> messageEmojiList;
-  
   @FXML
   private ListView<String> messageNameList;
 
@@ -685,8 +677,9 @@ public class QuestionGameCtrl {
    */
   public void startCommunication() {
     server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
-      //System.out.println(message.getPlayerName() + ": " + message.getEmojiName()); Testing
-      showMessage(message);
+      Platform.runLater(() -> {
+        showMessage(message);
+      });
     });
   }
 
@@ -726,9 +719,9 @@ public class QuestionGameCtrl {
   }
 
   public void showMessage(Message message) {
-    String name = message.getPlayerName();
-    messageText.setText(name);
-    messageEmojiImage.setImage(new Image("client/images/" + message.getEmojiName() + "Emoji.png"));
+    messageEmojiList.getItems()
+        .add(new ImageView(new Image("client/images/" + message.getEmojiName() + "Emoji.png")));
+    messageNameList.getItems().add(message.getPlayerName());
   }
 
 }
