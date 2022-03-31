@@ -87,7 +87,9 @@ public class ChooseScreenCtrl {
       if (scanner.hasNext()) {
         String name = scanner.next();
         server.setDummy(new Player(name));
+        server.addSingleplayer();
         buffer.append(name);
+        mainCtrl.showWaitingRoomScreenSP();
       } else {
         mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
       }
