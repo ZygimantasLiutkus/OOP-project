@@ -719,9 +719,18 @@ public class QuestionGameCtrl {
   }
 
   public void showMessage(Message message) {
+
+    if (messageEmojiList.getItems().size() > 6) {
+      for (int i = messageEmojiList.getItems().size() - 1; i > 5; i--) {
+        messageEmojiList.getItems().remove(i);
+        messageNameList.getItems().remove(i);
+      }
+    }
+
     messageEmojiList.getItems()
-        .add(new ImageView(new Image("client/images/" + message.getEmojiName() + "Emoji.png")));
-    messageNameList.getItems().add(message.getPlayerName());
+        .add(0,
+            new ImageView(new Image("client/images/" + message.getEmojiName() + "Emoji.png")));
+    messageNameList.getItems().add(0, message.getPlayerName());
   }
 
 }

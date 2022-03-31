@@ -105,9 +105,9 @@
          <children>
             <ListView fx:id="messageEmojiList" fixedCellSize="40.0" layoutY="52.0" prefHeight="300.0" prefWidth="40.0" />
             <ListView fx:id="messageNameList" fixedCellSize="40.0" layoutX="40.0" layoutY="52.0" prefHeight="300.0" prefWidth="120.0" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" prefHeight="40.0" prefWidth="160.0" text="Chat" textAlignment="CENTER">
+            <Label contentDisplay="CENTER" layoutY="21.0" prefHeight="30.0" prefWidth="160.0" text="  Chat" textAlignment="CENTER">
                <font>
-                  <Font size="20.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
          </children></AnchorPane>
