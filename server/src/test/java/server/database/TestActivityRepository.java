@@ -3,6 +3,7 @@ package server.database;
 import commons.Activity;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import org.springframework.data.domain.Example;
@@ -136,7 +137,7 @@ public class TestActivityRepository implements ActivityRepository {
    */
   @Override
   public Optional<Activity> findById(String s) {
-    return Optional.empty();
+    return find(s);
   }
 
   /**
@@ -210,7 +211,8 @@ public class TestActivityRepository implements ActivityRepository {
   @Override
   public Activity getById(String s) {
     call("getById");
-    return find(s).get();
+    Optional<Activity> optional = find(s);
+    return optional.orElse(null);
   }
 
   /**
@@ -220,7 +222,7 @@ public class TestActivityRepository implements ActivityRepository {
    * @return the activity that was found
    */
   private Optional<Activity> find(String s) {
-    return activities.stream().filter(x -> x.getId().equals(s)).findFirst();
+    return activities.stream().filter(x -> Objects.equals(x.getId(), s)).findFirst();
   }
 
   /**

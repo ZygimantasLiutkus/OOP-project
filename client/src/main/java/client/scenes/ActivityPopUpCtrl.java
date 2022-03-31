@@ -111,7 +111,7 @@ public class ActivityPopUpCtrl {
         || imagePath.getText().equals("")) {
       validator.setText("This is not a valid activity!");
       validator.setVisible(true);
-    } else if (consumption.getText().contains("-")) {
+    } else if (consumption.getText().contains("-") || consumption.getText().equals("0")) {
       validator.setText("Type a valid consumption!");
       validator.setVisible(true);
     } else if (server.getActivityById(id.getText()) != null && type.equals(NextScreen.Add)) {

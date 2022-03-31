@@ -3,6 +3,7 @@ package server.api;
 
 import commons.Activity;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -145,9 +146,7 @@ public class ActivityController {
    */
   @GetMapping(path = "/{id}")
   public ResponseEntity<Activity> getById(@PathVariable("id") String id) {
-    if (!repo.existsById(id)) {
-      return ResponseEntity.badRequest().build();
-    }
-    return ResponseEntity.ok(repo.getById(id));
+    Optional<Activity> optional = repo.findById(id);
+    return optional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
   }
 }
