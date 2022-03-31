@@ -3,6 +3,7 @@ package server.database;
 import commons.GameEntity;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -144,7 +145,7 @@ public class TestGameRepository implements GameEntityRepository {
    */
   @Override
   public Optional<GameEntity> findById(Long id) {
-    return null;
+    return find(id);
   }
 
   /**
@@ -219,7 +220,8 @@ public class TestGameRepository implements GameEntityRepository {
   @Override
   public GameEntity getById(Long id) {
     call("getById");
-    return find(id).get();
+    Optional<GameEntity> optional = find(id);
+    return optional.orElse(null);
   }
 
   /**
@@ -229,7 +231,7 @@ public class TestGameRepository implements GameEntityRepository {
    * @return a game or an empty item
    */
   public Optional<GameEntity> find(Long id) {
-    return games.stream().filter(x -> x.getId() == id).findFirst();
+    return games.stream().filter(x -> Objects.equals(x.getId(), id)).findFirst();
   }
 
   /**

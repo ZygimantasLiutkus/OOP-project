@@ -192,6 +192,7 @@ public class QuestionGameCtrl {
     String answer = String.valueOf(question.getActivities().get(0).getConsumption_in_wh());
     server.getPlayer().setSelectedAnswer(answer);
     this.submitButton.setDisable(true);
+    this.submitButton.setVisible(false);
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       revealAnswer();
     }
@@ -296,7 +297,11 @@ public class QuestionGameCtrl {
   public void setSelectedAnswer1() {
     String answer = answer1.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    revealAnswer();
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      revealAnswer();
+    } else {
+      answerMP("answer1");
+    }
   }
 
   /**
@@ -305,7 +310,11 @@ public class QuestionGameCtrl {
   public void setSelectedAnswer2() {
     String answer = answer2.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    revealAnswer();
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      revealAnswer();
+    } else {
+      answerMP("answer2");
+    }
   }
 
   /**
@@ -314,7 +323,56 @@ public class QuestionGameCtrl {
   public void setSelectedAnswer3() {
     String answer = answer3.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    revealAnswer();
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      revealAnswer();
+    } else {
+      answerMP("answer3");
+    }
+  }
+
+  /**
+   * Marks the selected answer for multiplayer games.
+   *
+   * @param bNum number of button pressed.
+   */
+  public void answerMP(String bNum) {
+    switch (bNum) {
+      case "answer1":
+        answer1.setDisable(true);
+        answer2.setDisable(true);
+        answer3.setDisable(true);
+        answer1.setStyle("-fx-border-color: EFDB22;\n"
+            + "-fx-border-insets: 1;\n"
+            + "-fx-border-width: 4;\n"
+            + "-fx-border-style: solid;\n");
+        answer3.setStyle("-fx-opacity: 0.5");
+        answer2.setStyle("-fx-opacity: 0.5");
+        break;
+      case "answer2":
+        answer1.setDisable(true);
+        answer2.setDisable(true);
+        answer3.setDisable(true);
+        answer1.setStyle("-fx-opacity: 0.5");
+        answer3.setStyle("-fx-opacity: 0.5");
+        answer2.setStyle("-fx-border-color: EFDB22;\n"
+            + "-fx-border-insets: 1;\n"
+            + "-fx-border-width: 4;\n"
+            + "-fx-border-style: solid;\n");
+        break;
+      case "answer3":
+        answer1.setDisable(true);
+        answer2.setDisable(true);
+        answer3.setDisable(true);
+        answer1.setStyle("-fx-opacity: 0.5");
+        answer2.setStyle("-fx-opacity: 0.5");
+        answer3.setStyle("-fx-border-color: EFDB22;\n"
+            + "-fx-border-insets: 1;\n"
+            + "-fx-border-width: 4;\n"
+            + "-fx-border-style: solid;\n");
+        break;
+      default:
+        break;
+    }
   }
 
   /**
@@ -425,10 +483,9 @@ public class QuestionGameCtrl {
     }
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       emojiPane.setVisible(false);
-      nextQuestionSingle();
-    } else {
-      nextQuestionMultiple();
     }
+
+    nextQuestion();
   }
 
   /**
@@ -458,6 +515,10 @@ public class QuestionGameCtrl {
     answer1.setDisable(true);
     answer2.setDisable(true);
     answer3.setDisable(true);
+
+    answer1.setStyle("-fx-opacity: 1");
+    answer2.setStyle("-fx-opacity: 1");
+    answer3.setStyle("-fx-opacity: 1");
 
     int time = startTime;
 
@@ -533,11 +594,7 @@ public class QuestionGameCtrl {
    */
   public void cooldownAnswer() {
     if (questionNum < 20) {
-      if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
-        nextQuestionSingle();
-      } else {
-        nextQuestionMultiple();
-      }
+      nextQuestion();
     } else {
       String name = server.getPlayer().getName();
       int points = server.getPlayer().getScore();
@@ -575,7 +632,7 @@ public class QuestionGameCtrl {
   /**
    * Makes the client screen ready for the new question. FOR SINGLE PLAYER ONLY
    */
-  public void nextQuestionSingle() {
+  public void nextQuestion() {
     setText();
     resetTimer();
     resetJokers();
@@ -599,14 +656,6 @@ public class QuestionGameCtrl {
     server.resetAnswer();
     playerPoints.setText(server.getPlayer().getScore() + " points");
     startTimer();
-  }
-
-  /**
-   * Makes the client ready for the new question. FOR MULTIPLAYER ONLY
-   */
-  public void nextQuestionMultiple() {
-    //TODO: write method's body
-    revealAnswer();
   }
 
   /**

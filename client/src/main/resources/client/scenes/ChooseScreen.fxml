@@ -26,15 +26,15 @@
             <children>
                 <FlowPane alignment="CENTER" hgap="100.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="159.0" prefWidth="1000.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <children>
-                        <Button fx:id="singleplayerButton" mnemonicParsing="false" onMouseClicked="#playSinglePlayer" onTouchPressed="#playSinglePlayer" prefHeight="50.0" prefWidth="200.0" text="Play singleplayer" />
-                        <Button fx:id="leaderboardButton" mnemonicParsing="false" onMouseClicked="#leaderboard" onTouchPressed="#leaderboard" prefHeight="50.0" prefWidth="200.0" text="LEADERBOARD" />
+                        <Button fx:id="singleplayerButton" mnemonicParsing="false" onMouseClicked="#playSinglePlayer" onTouchPressed="#playSinglePlayer" prefHeight="47.0" prefWidth="200.0" text="Play singleplayer" />
+                        <Button fx:id="leaderboardButton" mnemonicParsing="false" onMouseClicked="#leaderboard" onTouchPressed="#leaderboard" prefHeight="47.0" prefWidth="200.0" text="LEADERBOARD" />
                         <Button fx:id="multiplayerButton" mnemonicParsing="false" onMouseClicked="#playMultiplayer" onTouchPressed="#playMultiplayer" prefHeight="50.0" prefWidth="200.0" text="Play multiplayer" />
                     </children>
                 </FlowPane>
                 <FlowPane alignment="CENTER" hgap="100.0" layoutY="140.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="1000.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <children>
                         <Button fx:id="changeServerButton" mnemonicParsing="false" onMouseClicked="#changeServer" onTouchPressed="#changeServer" prefHeight="50.0" prefWidth="200.0" text="Change server" />
-                        <Button fx:id="adminButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Admin panel" />
+                        <Button fx:id="adminButton" mnemonicParsing="false" onMouseClicked="#goPanel" prefHeight="50.0" prefWidth="200.0" text="Admin panel" />
                         <Button fx:id="changeNameButton" mnemonicParsing="false" onMouseClicked="#changeName" onTouchPressed="#changeName" prefHeight="50.0" prefWidth="200.0" text="Change name" />
                     </children>
                 </FlowPane>
