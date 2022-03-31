@@ -26,7 +26,7 @@
                 </Label>
                 <FlowPane layoutX="956.0" layoutY="3.0" prefHeight="30.0" prefWidth="30.0" style="-fx-alignment: center;" AnchorPane.rightAnchor="13.600000000000023" AnchorPane.topAnchor="3.0">
                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#goHome" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#goHome">
                             <image>
                                 <Image url="@/client/images/homeIcon.png" />
                             </image>

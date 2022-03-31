@@ -33,7 +33,7 @@
                           style="-fx-alignment: center;" AnchorPane.rightAnchor="13.600000000000023"
                           AnchorPane.topAnchor="3.0">
                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#goHome">
+                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#goHome">
                             <image>
                                 <Image url="@/client/images/homeIcon.png"/>
                             </image>

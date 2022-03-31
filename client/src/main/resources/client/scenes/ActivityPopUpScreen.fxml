@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="330.0" minWidth="650.0" prefHeight="330.0" prefWidth="650.0" style="-fx-background-color: #6EB7F5;" stylesheets="@/client/scenes/stylesheet.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ActivityPopUpCtrl">
+   <children>
+      <Label fx:id="textTitle" alignment="CENTER" layoutX="107.0" layoutY="22.0" prefHeight="40.0" prefWidth="450.0" style="-fx-background-color: #D7CC6B;" text="Add an activity">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <FlowPane hgap="150.0" layoutX="53.0" layoutY="135.0" prefHeight="119.0" prefWidth="558.0" vgap="60.0">
+         <children>
+            <TextField fx:id="id" prefHeight="30.0" prefWidth="200.0" />
+            <TextField fx:id="title" prefHeight="30.0" prefWidth="200.0" />
+            <TextField fx:id="consumption" prefHeight="30.0" prefWidth="200.0" />
+            <TextField fx:id="imagePath" prefHeight="30.0" prefWidth="200.0" />
+         </children>
+      </FlowPane>
+      <Label alignment="CENTER" layoutX="53.0" layoutY="113.0" prefHeight="17.0" prefWidth="200.0" text="Activity ID">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="403.0" layoutY="113.0" prefHeight="17.0" prefWidth="200.0" text="Title">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="54.0" layoutY="202.0" prefHeight="17.0" prefWidth="200.0" text="Consumption in wh">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="406.0" layoutY="202.0" prefHeight="17.0" prefWidth="200.0" text="Image path">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Button fx:id="button" layoutX="277.0" layoutY="271.0" mnemonicParsing="false" onMouseClicked="#submit" prefHeight="33.0" prefWidth="109.0" text="SUBMIT">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Button>
+      <Label fx:id="validator" alignment="CENTER" layoutX="179.0" layoutY="75.0" prefHeight="30.0" prefWidth="306.0" text="Text" textFill="RED">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

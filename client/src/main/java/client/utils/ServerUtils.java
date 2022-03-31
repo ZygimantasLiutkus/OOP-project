@@ -18,6 +18,7 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import commons.Activity;
 import commons.GameEntity;
 import commons.LeaderboardEntry;
 import commons.Message;
@@ -405,6 +406,65 @@ public class ServerUtils {
         .target(server).path("api/game/" + getGame().getId() + "/updatePlayer")
         .request()
         .put(Entity.json(players));
+  }
+
+  /**
+   * Method that retrieves the whole list of activities.
+   *
+   * @return a list of added activities inside the DB
+   */
+  public List<Activity> getAllActivities() {
+    return ClientBuilder.newClient(new ClientConfig())
+        .target(server).path("api/activity")
+        .request().get(new GenericType<List<Activity>>() {
+        });
+  }
+
+  /**
+   * Method that adds an activity to the DB.
+   *
+   * @param activity the type activity by the admin.
+   * @return the newly created activity.
+   */
+  public Activity addActivity(Activity activity) {
+    return ClientBuilder.newClient(new ClientConfig()) //
+        .target(server).path("api/activity") //
+        .request(APPLICATION_JSON) //
+        .accept(APPLICATION_JSON) //
+        .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);
+  }
+
+  /**
+   * Method to retrieve an activity by id.
+   *
+   * @param id the id of a wanted activity
+   * @return null if there is no activity or the retrieved activity
+   */
+  public Response getActivityById(String id) {
+    Response act = ClientBuilder.newClient(new ClientConfig())
+        .target(server).path("/api/activity/" + id)
+        .request().get(new GenericType<Response>() {
+        });
+    if (act.getStatus() == 400) {
+      return null;
+    }
+    return act;
+  }
+
+  /**
+   * Method to update an activity.
+   *
+   * @param activity the newly created activity
+   * @return either null if there is no such activity or the updated activity
+   */
+  public Activity updateActivity(Activity activity) {
+    Response r = ClientBuilder.newClient(new ClientConfig())
+        .target(server).path("/api/activity/" + activity.getId())
+        .request().put(Entity.json(activity));
+    if (r.getStatus() == 400) {
+      return null;
+    }
+    return r.readEntity(Activity.class);
   }
 
   /**
