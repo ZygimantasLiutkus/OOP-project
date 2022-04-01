@@ -3,14 +3,22 @@ package client.scenes;
 import client.utils.ServerUtils;
 import client.utils.TimerUtils;
 import com.google.inject.Inject;
-import commons.*;
+import commons.Activity;
+import commons.GameEntity;
+import commons.LeaderboardEntry;
+import commons.Message;
+import commons.Question;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -32,16 +40,16 @@ public class QuestionGameCtrl {
   public GameEntity dummyGameStarted = new GameEntity("STARTED");
   public GameEntity dummyGameFinished = new GameEntity("FINISHED");
   public GameEntity dummyGameAborted = new GameEntity("ABORTED");
+  public boolean pointsUsed = false;
+  public boolean answerUsed = false;
+  public boolean timeUsed = false;
+  public boolean pointsDisabled = false;
   private GameEntity.Type type;
   private int startTime = 15;
   private int questionNum = 0;
   private double progress = 1;
   private Timeline timeline;
   private Timeline timeCount;
-  public boolean pointsUsed = false;
-  public boolean answerUsed = false;
-  public boolean timeUsed = false;
-  public boolean pointsDisabled = false;
   private Timeline cooldown;
 
   @FXML
@@ -479,6 +487,9 @@ public class QuestionGameCtrl {
     if (startTime <= 3) {
       progressBar.setStyle("-fx-accent: red");
     }
+    if (startTime < 0) {
+      timeCounter.setVisible(false);
+    }
   }
 
   /**
@@ -573,7 +584,7 @@ public class QuestionGameCtrl {
         }
       }
 
-      if (pointsUsed && pointsDisabled == false) {
+      if (pointsUsed && !pointsDisabled) {
         points *= 2;
         pointsDisabled = true;
       }
@@ -821,10 +832,15 @@ public class QuestionGameCtrl {
    */
   public void startCommunication() {
     server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
+
       Platform.runLater(() -> {
         showMessage(message);
       });
-
+      if (message.getText().equals("time")) {
+        Platform.runLater(() -> {
+          timeJoker(message);
+        });
+      }
     });
   }
 
@@ -886,4 +902,23 @@ public class QuestionGameCtrl {
     messageNameList.getItems().add(0, message.getPlayerName());
   }
 
+  /**
+   * Sends a message with the player's name and an indication that the time joker has been used.
+   */
+  public void sendJokerTime() {
+    server.send("/app/messages", "time");
+  }
+
+  /**
+   * Reduces the time for other players.
+   *
+   * @param message the message that was sent by the player that used the joker.
+   */
+  public void timeJoker(Message message) {
+    if (!server.getPlayer().getName().equals(message.getPlayerName())) {
+      int newTime = startTime / 2;
+      progress /= 2;
+      updateCounter(newTime);
+    }
+  }
 }
