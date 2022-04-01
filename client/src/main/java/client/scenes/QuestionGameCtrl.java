@@ -879,7 +879,7 @@ public class QuestionGameCtrl {
 
     messageEmojiList.getItems()
         .add(0,
-            new ImageView(new Image("client/images/" + message.getEmojiName() + "Emoji.png")));
+            new ImageView(new Image("client/images/" + message.getText() + "Emoji.png")));
     messageEmojiList.getItems().get(0).setFitWidth(30);
     messageEmojiList.getItems().get(0).setFitHeight(30);
 
