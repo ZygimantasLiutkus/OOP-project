@@ -821,7 +821,6 @@ public class QuestionGameCtrl {
    */
   public void startCommunication() {
     server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
-QuestionGameCtrl.java
       Platform.runLater(() -> {
         showMessage(message);
       });
