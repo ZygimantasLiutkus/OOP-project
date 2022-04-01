@@ -43,7 +43,6 @@ public class QuestionGameCtrl {
   public boolean pointsUsed = false;
   public boolean answerUsed = false;
   public boolean timeUsed = false;
-  public boolean pointsDisabled = false;
   private GameEntity.Type type;
   private int startTime = 15;
   private int questionNum = 0;
@@ -608,7 +607,7 @@ public class QuestionGameCtrl {
     int points;
     if (!answerCorrectness) {
       addPoints.setText("+0");
-      pointsDisabled = true;
+
     } else {
       //The points are calculated depending on how close you were to the actual answer.
       if (question.getText().equals("How much do you think this activity consumes per hour?")) {
@@ -624,9 +623,9 @@ public class QuestionGameCtrl {
         }
       }
 
-      if (pointsUsed && !pointsDisabled) {
+      if (pointsUsed) {
         points *= 2;
-        pointsDisabled = true;
+        pointsUsed = false;
       }
       server.getPlayer().setScore(server.getPlayer().getScore() + points);
       addPoints.setText("+" + points);
@@ -688,10 +687,6 @@ public class QuestionGameCtrl {
         jokerAnswer.setDisable(false);
       }
     }
-    if (!pointsDisabled) {
-      jokerPoints.setVisible(true);
-      jokerPoints.setDisable(false);
-    }
   }
 
   /**
@@ -699,6 +694,7 @@ public class QuestionGameCtrl {
    */
   public void nextQuestion() {
     setText();
+    pointsUsed = false;
     resetTimer();
     resetJokers();
     questionNum++;
