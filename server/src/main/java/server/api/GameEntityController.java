@@ -331,7 +331,9 @@ public class GameEntityController {
   @MessageMapping("/messages/{id}") // is /app/messages
   @SendTo("/topic/messages/{id}")
   public Message addMessageToGameByID(@Payload Message message, @DestinationVariable Long id) {
-    //call method for showing the name + emoji on the screen (to be implemented by frontend)
+    //call method for showing the name + text on the screen (to be implemented by frontend)
+    //TODO: delete the line below
+    System.out.println(message.getPlayerName() + ": " + message.getText());
     return message;
   }
 

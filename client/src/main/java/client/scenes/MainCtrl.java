@@ -224,6 +224,7 @@ public class MainCtrl {
     primaryStage.setTitle("Match Leaderboard");
     leaderboardScreenCtrl.setMultiplayer(entry);
     primaryStage.setScene(leaderboard);
+    leaderboardScreenCtrl.refreshTop10();
   }
 
   /**
@@ -240,6 +241,7 @@ public class MainCtrl {
   public void showWaitingRoomScreenMP() {
     primaryStage.setTitle("Waiting...");
     primaryStage.setScene(waitingRoomMP);
+    mpWaitingRoomCtrl.startListening();
   }
 
   /**

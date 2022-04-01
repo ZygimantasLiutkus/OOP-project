@@ -806,7 +806,7 @@ public class QuestionGameCtrl {
    */
   public void startCommunication() {
     server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
-      System.out.println(message.getPlayerName() + ": " + message.getEmojiName());
+      System.out.println(message.getPlayerName() + ": " + message.getText());
       //implement method to show emoji on screen
     });
   }

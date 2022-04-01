@@ -15,7 +15,7 @@ public class MessageTest {
   @Test
   public void testConstructor() {
     Message testMessage = new Message("emoji", "player");
-    assertEquals("emoji", testMessage.getEmojiName());
+    assertEquals("emoji", testMessage.getText());
     assertEquals("player", testMessage.getPlayerName());
   }
 
@@ -35,7 +35,7 @@ public class MessageTest {
   @Test
   public void testSetEmojiName() {
     Message testMessage = new Message("emoji", "player");
-    testMessage.setEmojiName("emoji2");
-    assertEquals("emoji2", testMessage.getEmojiName());
+    testMessage.setText("emoji2");
+    assertEquals("emoji2", testMessage.getText());
   }
 }

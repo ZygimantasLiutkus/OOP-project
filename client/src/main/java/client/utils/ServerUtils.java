@@ -37,7 +37,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import javafx.scene.image.Image;
 import org.glassfish.jersey.client.ClientConfig;
@@ -63,24 +62,23 @@ public class ServerUtils {
   /**
    * Connect method that sets up a connection with a websocket.
    *
-   * @param url the url to use for the connection
-   * @return the started stomp session
    * @throws RuntimeException      if setting up the connection went wrong
    * @throws IllegalStateException if the stomp session got into a wrong state
    */
-  public StompSession connect(String url) {
+  public void connect() {
+    String url = server.replaceAll("^(http|https)://", "ws://") + "/websocket";
+    System.out.println(url);
     var client = new StandardWebSocketClient();
     var stomp = new WebSocketStompClient(client);
     stomp.setMessageConverter(new MappingJackson2MessageConverter());
     try {
-      return stomp.connect(url, new StompSessionHandlerAdapter() {
+      this.session = stomp.connect(url, new StompSessionHandlerAdapter() {
       }).get();
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
-    } catch (ExecutionException e) {
-      throw new RuntimeException(e);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    throw new IllegalStateException();
   }
 
   /**
@@ -265,7 +263,7 @@ public class ServerUtils {
         .target(server).path("api/game/" + player.getGameId()) //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
-        .get(new GenericType<GameEntity>() {
+        .get(new GenericType<>() {
         });
   }
 
@@ -390,11 +388,11 @@ public class ServerUtils {
   /**
    * Method to send a message.
    *
-   * @param dest  the path to send the message to
-   * @param emoji the name of the emoji to be sent
+   * @param dest the path to send the message to
+   * @param text the text to be sent
    */
-  public void send(String dest, String emoji) {
-    Message message = new Message(emoji, player.getName());
+  public void send(String dest, String text) {
+    Message message = new Message(text, player.getName());
     session.send(dest + "/" + player.getGameId(), message);
   }
 
