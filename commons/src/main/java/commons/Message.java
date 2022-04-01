@@ -5,7 +5,7 @@ package commons;
  */
 public class Message {
 
-  private String emojiName;
+  private String text;
   private String playerName;
 
   /**
@@ -18,11 +18,11 @@ public class Message {
   /**
    * The constructor for the class.
    *
-   * @param emojiName  string that represents which emoji is being sent
+   * @param text       string that represents which emoji is being sent
    * @param playerName the name of the player who sent the message
    */
-  public Message(String emojiName, String playerName) {
-    this.emojiName = emojiName;
+  public Message(String text, String playerName) {
+    this.text = text;
     this.playerName = playerName;
   }
 
@@ -31,17 +31,17 @@ public class Message {
    *
    * @return the name of the emoji
    */
-  public String getEmojiName() {
-    return emojiName;
+  public String getText() {
+    return text;
   }
 
   /**
    * Setter for the name of the emoji.
    *
-   * @param emojiName the name of the emoji
+   * @param text the name of the emoji
    */
-  public void setEmojiName(String emojiName) {
-    this.emojiName = emojiName;
+  public void setText(String text) {
+    this.text = text;
   }
 
   /**

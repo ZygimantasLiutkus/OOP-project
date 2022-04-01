@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -92,6 +93,13 @@ public class MPWaitingRoomCtrl implements Initializable {
   }
 
   /**
+   * Sends the START message to the other players.
+   */
+  public void sendStart() {
+    server.send("/app/messages", "START");
+  }
+
+  /**
    * Starts the game in multi-player mode.
    */
   public void startMultiPlayer() {
@@ -115,6 +123,18 @@ public class MPWaitingRoomCtrl implements Initializable {
       }
     }));
     timeline.setCycleCount(Animation.INDEFINITE);
+  }
+
+  /**
+   * Method that starts listening for a START message.
+   */
+  public void startListening() {
+    server.connect();
+    server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
+      if (message.getText().equals("START")) {
+        Platform.runLater(this::startMultiPlayer);
+      }
+    });
   }
 
   /**

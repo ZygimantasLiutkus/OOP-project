@@ -38,6 +38,10 @@ public class QuestionGameCtrl {
   private double progress = 1;
   private Timeline timeline;
   private Timeline timeCount;
+  public boolean pointsUsed = false;
+  public boolean answerUsed = false;
+  public boolean timeUsed = false;
+  public boolean pointsDisabled = false;
   private Timeline cooldown;
 
   @FXML
@@ -111,6 +115,12 @@ public class QuestionGameCtrl {
 
   @FXML
   private Label chatLabel;
+
+  @FXML
+  private Button jokerPoints;
+
+  @FXML
+  private Button jokerAnswer;
 
   /**
    * Constructor for QuestionGameCtrl.
@@ -196,6 +206,82 @@ public class QuestionGameCtrl {
     this.submitButton.setVisible(false);
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       revealAnswer();
+    }
+  }
+
+  /**
+   * Method to flag the use of a joker.
+   */
+  public void usePointsJoker() {
+    pointsUsed = true;
+    jokerPoints.setDisable(true);
+    jokerPoints.setVisible(false);
+  }
+
+  /**
+   * Method to flag the use of a joker.
+   */
+  public void useAnswerJoker() {
+    answerUsed = true;
+    jokerAnswer.setVisible(false);
+    jokerAnswer.setDisable(true);
+    if (question.getText().equals("Which is more expensive?")) {
+      discardExpensive();
+    } else if (question.getText().equals("How much does this activity consume per hour?")) {
+      discardMultiple();
+    }
+  }
+
+  /**
+   * Method to discard an answer for more expensive type.
+   */
+  private void discardExpensive() {
+    int answer = 0;
+    for (int i = 0; i < 3; i++) {
+      if (mapButtons.get(i + 1).getConsumption_in_wh() > answer) {
+        answer = mapButtons.get(i + 1).getConsumption_in_wh();
+      }
+    }
+    int index = random.nextInt(3);
+    while (mapButtons.get(index + 1).getConsumption_in_wh() == answer) {
+      index = random.nextInt(3);
+    }
+    deleteJoker(index);
+  }
+
+  /**
+   * Method to discard an answer for multiple choice type.
+   */
+  private void discardMultiple() {
+    int answer = question.getActivities().get(0).getConsumption_in_wh();
+    int index = random.nextInt(3);
+    while (mapButtons.get(index + 1).getConsumption_in_wh() == answer) {
+      index = random.nextInt(3);
+    }
+    deleteJoker(index);
+  }
+
+  /**
+   * Deletes an answer button from the scene.
+   *
+   * @param index the index of the button to be deleted
+   */
+  public void deleteJoker(int index) {
+    switch (index) {
+      case 0:
+        answer1.setVisible(false);
+        answer1.setDisable(true);
+        break;
+      case 1:
+        answer2.setVisible(false);
+        answer2.setDisable(true);
+        break;
+      case 2:
+        answer3.setVisible(false);
+        answer3.setDisable(true);
+        break;
+      default:
+        break;
     }
   }
 
@@ -402,6 +488,8 @@ public class QuestionGameCtrl {
     server.changeStatus(dummyGameStarted);
     if (this.questionNum == 20) {
       this.questionNum = 0;
+      answerUsed = false;
+      pointsUsed = false;
     }
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       emojiPane.setVisible(false);
@@ -448,8 +536,6 @@ public class QuestionGameCtrl {
 
     int time = startTime;
 
-    jokerEl.setVisible(false);
-
     boolean answerCorrectness = false;
 
     if (question.getText().equals("How much do you think this activity consumes per hour?")) {
@@ -471,6 +557,7 @@ public class QuestionGameCtrl {
     int points;
     if (!answerCorrectness) {
       addPoints.setText("+0");
+      pointsDisabled = true;
     } else {
       //The points are calculated depending on how close you were to the actual answer.
       if (question.getText().equals("How much do you think this activity consumes per hour?")) {
@@ -486,6 +573,10 @@ public class QuestionGameCtrl {
         }
       }
 
+      if (pointsUsed && pointsDisabled == false) {
+        points *= 2;
+        pointsDisabled = true;
+      }
       server.getPlayer().setScore(server.getPlayer().getScore() + points);
       addPoints.setText("+" + points);
     }
@@ -533,12 +624,32 @@ public class QuestionGameCtrl {
   }
 
   /**
+   * Method that resets the jokers vision.
+   */
+  private void resetJokers() {
+    if (!answerUsed) {
+      if (this.question.getText()
+          .equals("How much do you think this activity consumes per hour?")) {
+        jokerAnswer.setDisable(true);
+        jokerAnswer.setVisible(false);
+      } else {
+        jokerAnswer.setVisible(true);
+        jokerAnswer.setDisable(false);
+      }
+    }
+    if (!pointsDisabled) {
+      jokerPoints.setVisible(true);
+      jokerPoints.setDisable(false);
+    }
+  }
+
+  /**
    * Makes the client screen ready for the new question. FOR SINGLE PLAYER ONLY
    */
   public void nextQuestion() {
     setText();
     resetTimer();
-    jokerEl.setVisible(true);
+    resetJokers();
     questionNum++;
     addPoints.setVisible(false);
     questionNo.setText(questionNum + "/20");
@@ -591,6 +702,7 @@ public class QuestionGameCtrl {
    */
   public void prepareEstimation() {
     this.textPrompt.setVisible(true);
+    this.textPrompt.setDisable(true);
     this.submitButton.setDisable(false);
     this.submitButton.setVisible(true);
     this.textArea.setDisable(false);
@@ -709,9 +821,14 @@ public class QuestionGameCtrl {
    */
   public void startCommunication() {
     server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
+<<<<<<< client/src/main/java/client/scenes/QuestionGameCtrl.java
       Platform.runLater(() -> {
         showMessage(message);
       });
+=======
+      System.out.println(message.getPlayerName() + ": " + message.getText());
+      //implement method to show emoji on screen
+>>>>>>> client/src/main/java/client/scenes/QuestionGameCtrl.java
     });
   }
 

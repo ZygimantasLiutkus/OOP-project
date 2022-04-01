@@ -80,7 +80,7 @@ public class LeaderboardScreenCtrl implements Initializable {
    * Updates the global leaderboard with stored leaderboard entries.
    */
   public void refreshTop10() {
-    List<LeaderboardEntry> entries = new ArrayList<>();
+    List<LeaderboardEntry> entries;
     if (this.gameType == GameEntity.Type.SINGLEPLAYER) {
       entries = server.getGlobalLeaderboard();
     } else {
@@ -91,7 +91,7 @@ public class LeaderboardScreenCtrl implements Initializable {
     for (int i = 0; i < entries.size(); i++) {
       LeaderboardEntry entry = entries.get(i);
       entry.setRanking(i + 1);
-      if (ownEntry != null && ownEntry.getId().equals(entry.getId())) {
+      if (ownEntry != null && ownEntry.getName().equals(entry.getName())) {
         ownEntry = entry;
       }
     }
@@ -126,7 +126,7 @@ public class LeaderboardScreenCtrl implements Initializable {
         super.updateItem(item, empty);
         if (empty || item == null) {
           setStyle("");
-        } else if (ownEntry != null && item.getId().equals(ownEntry.getId())) {
+        } else if (ownEntry != null && item.getName().equals(ownEntry.getName())) {
           setStyle("-fx-background-color: tomato;");
         } else {
           setStyle("");
