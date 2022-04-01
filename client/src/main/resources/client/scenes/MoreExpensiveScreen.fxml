@@ -40,39 +40,43 @@
                 <TextField fx:id="textArea" alignment="CENTER" layoutX="320.0" layoutY="330.0" onKeyPressed="#keyPressed" prefHeight="40.0" prefWidth="250.0" />
                 <Button fx:id="submitButton" layoutX="580.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#sendAnswer" prefHeight="40.0" prefWidth="75.0" style="-fx-background-color: #3966BF;" text="SUBMIT" />
                 <Label fx:id="answerText" alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="310.0" prefHeight="80.0" prefWidth="580.0" style="-fx-background-color: #C4C4C4;" stylesheets="@/client/scenes/stylesheet.css" text="Label" textAlignment="CENTER" wrapText="true">
-               <font>
-                  <Font size="18.0" />
-               </font></Label>
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
                 <ImageView fx:id="questionImage1" fitHeight="170.0" fitWidth="230.0" layoutX="90.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../../../../build/resources/main/client/images/defaultImage.png" />
-                    </image></ImageView>
+                    </image>
+                </ImageView>
                 <ImageView fx:id="questionImage2" fitHeight="170.0" fitWidth="230.0" layoutX="364.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../../../../build/resources/main/client/images/defaultImage.png" />
-                    </image></ImageView>
+                    </image>
+                </ImageView>
                 <ImageView fx:id="questionImage3" fitHeight="170.0" fitWidth="230.0" layoutX="634.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../../../../build/resources/main/client/images/defaultImage.png" />
-                    </image></ImageView>
-            <Label fx:id="textPrompt" alignment="CENTER" layoutX="320.0" layoutY="330.0" prefHeight="40.0" prefWidth="250.0" text="Type your answer....">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label fx:id="validator" alignment="CENTER" layoutX="320.0" layoutY="295.0" prefHeight="30.0" prefWidth="250.0" text="Type a valid number!" textFill="#f20404">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
+                    </image>
+                </ImageView>
+                <Label fx:id="textPrompt" alignment="CENTER" layoutX="320.0" layoutY="330.0" prefHeight="40.0" prefWidth="250.0" text="Type your answer....">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Label>
+                <Label fx:id="validator" alignment="CENTER" layoutX="320.0" layoutY="295.0" prefHeight="30.0" prefWidth="250.0" text="Type a valid number!" textFill="#f20404">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Label>
             </children>
         </AnchorPane>
     </center>
     <top>
         <AnchorPane fx:id="topPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="1000.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
-                <ProgressBar fx:id="progressBar" layoutX="369.0" layoutY="22.0" onMouseClicked="#timerStart" prefHeight="22.0" prefWidth="262.0" progress="1.0" AnchorPane.leftAnchor="369.0" AnchorPane.rightAnchor="369.0" AnchorPane.topAnchor="23.0" />
-                <Label fx:id="timeCounter" layoutX="643.0" layoutY="21.0" prefHeight="18.0" prefWidth="30.0" text="10 s" AnchorPane.rightAnchor="326.6">
+                <ProgressBar fx:id="progressBar" layoutX="369.0" layoutY="22.0" prefHeight="22.0" prefWidth="262.0" progress="1.0" AnchorPane.leftAnchor="369.0" AnchorPane.rightAnchor="369.0" AnchorPane.topAnchor="23.0" />
+                <Label fx:id="timeCounter" layoutX="643.0" layoutY="21.0" prefHeight="18.0" prefWidth="30.0" text="15 s" AnchorPane.rightAnchor="326.6">
                     <font>
                         <Font size="16.0" />
                     </font>

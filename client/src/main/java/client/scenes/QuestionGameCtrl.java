@@ -1,12 +1,12 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
+import client.utils.TimerUtils;
 import com.google.inject.Inject;
 import commons.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -19,7 +19,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 
 
 /**
@@ -36,13 +35,13 @@ public class QuestionGameCtrl {
   public GameEntity dummyGameFinished = new GameEntity("FINISHED");
   public GameEntity dummyGameAborted = new GameEntity("ABORTED");
   private GameEntity.Type type;
-  private int startTime = 10;
+  private int startTime = 15;
   private int questionNum = 0;
   private double progress = 1;
   private Timeline timeline;
   private Timeline timeCount;
-  //placeholder
-  private Activity test = new Activity("1", "answer2", 10, "test");
+  private Timeline cooldown;
+
   @FXML
   private ImageView homeButton;
 
@@ -119,12 +118,16 @@ public class QuestionGameCtrl {
    * Constructor for QuestionGameCtrl.
    *
    * @param server   reference to the server the game will run on
+   * @param timers   reference to the timer utils that sets up the timers
    * @param mainCtrl reference to the main controller
    */
   @Inject
-  public QuestionGameCtrl(ServerUtils server, MainCtrl mainCtrl) {
+  public QuestionGameCtrl(ServerUtils server, TimerUtils timers, MainCtrl mainCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
+    this.timeCount = timers.setupCounter(this);
+    this.timeline = timers.setupTimeline(this);
+    this.cooldown = timers.setupCooldown(this);
   }
 
   /**
@@ -148,11 +151,7 @@ public class QuestionGameCtrl {
    * @param e the events of typing.
    */
   public void keyPressed(KeyEvent e) {
-    if (e.getCode().isLetterKey()) {
-      validator.setVisible(true);
-    } else {
-      validator.setVisible(false);
-    }
+    validator.setVisible(e.getCode().isLetterKey());
     this.textPrompt.setVisible(false);
     if (e.getCode().equals(KeyCode.ENTER)) {
       sendAnswer();
@@ -196,6 +195,7 @@ public class QuestionGameCtrl {
     String answer = String.valueOf(question.getActivities().get(0).getConsumption_in_wh());
     server.getPlayer().setSelectedAnswer(answer);
     this.submitButton.setDisable(true);
+    this.submitButton.setVisible(false);
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       revealAnswer();
     }
@@ -223,7 +223,11 @@ public class QuestionGameCtrl {
   public void setSelectedAnswer1() {
     String answer = answer1.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    revealAnswer();
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      revealAnswer();
+    } else {
+      answerMP("answer1");
+    }
   }
 
   /**
@@ -232,7 +236,11 @@ public class QuestionGameCtrl {
   public void setSelectedAnswer2() {
     String answer = answer2.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    revealAnswer();
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      revealAnswer();
+    } else {
+      answerMP("answer2");
+    }
   }
 
   /**
@@ -241,7 +249,56 @@ public class QuestionGameCtrl {
   public void setSelectedAnswer3() {
     String answer = answer3.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    revealAnswer();
+    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      revealAnswer();
+    } else {
+      answerMP("answer3");
+    }
+  }
+
+  /**
+   * Marks the selected answer for multiplayer games.
+   *
+   * @param bNum number of button pressed.
+   */
+  public void answerMP(String bNum) {
+    switch (bNum) {
+      case "answer1":
+        answer1.setDisable(true);
+        answer2.setDisable(true);
+        answer3.setDisable(true);
+        answer1.setStyle("-fx-border-color: EFDB22;\n"
+            + "-fx-border-insets: 1;\n"
+            + "-fx-border-width: 4;\n"
+            + "-fx-border-style: solid;\n");
+        answer3.setStyle("-fx-opacity: 0.5");
+        answer2.setStyle("-fx-opacity: 0.5");
+        break;
+      case "answer2":
+        answer1.setDisable(true);
+        answer2.setDisable(true);
+        answer3.setDisable(true);
+        answer1.setStyle("-fx-opacity: 0.5");
+        answer3.setStyle("-fx-opacity: 0.5");
+        answer2.setStyle("-fx-border-color: EFDB22;\n"
+            + "-fx-border-insets: 1;\n"
+            + "-fx-border-width: 4;\n"
+            + "-fx-border-style: solid;\n");
+        break;
+      case "answer3":
+        answer1.setDisable(true);
+        answer2.setDisable(true);
+        answer3.setDisable(true);
+        answer1.setStyle("-fx-opacity: 0.5");
+        answer2.setStyle("-fx-opacity: 0.5");
+        answer3.setStyle("-fx-border-color: EFDB22;\n"
+            + "-fx-border-insets: 1;\n"
+            + "-fx-border-width: 4;\n"
+            + "-fx-border-style: solid;\n");
+        break;
+      default:
+        break;
+    }
   }
 
   /**
@@ -300,55 +357,54 @@ public class QuestionGameCtrl {
   }
 
   /**
-   * Resets the timer.
+   * Gets the progress.
+   *
+   * @return the progress
    */
-  public void resetTimer() {
-    progress = 1;
-    progressBar.setProgress(progress);
-    progressBar.setStyle("-fx-accent: #008057");
-    timeCounter.setText("10 s");
-    startTime = 10;
+  public double getProgress() {
+    return progress;
   }
 
   /**
-   * Starts the timer.
+   * Sets the progress.
+   *
+   * @param progress the progress to set
    */
-  public void timerStart() {
+  public void setProgress(double progress) {
+    this.progress = progress;
+    progressBar.setProgress(progress);
+  }
+
+  /**
+   * Gets the startTime.
+   *
+   * @return the startTime
+   */
+  public int getStartTime() {
+    return startTime;
+  }
+
+  /**
+   * Updates the counter.
+   *
+   * @param time the time to set the counter to
+   */
+  public void updateCounter(int time) {
+    this.startTime = time;
+    timeCounter.setText(startTime + " s");
+    if (startTime <= 3) {
+      progressBar.setStyle("-fx-accent: red");
+    }
+  }
+
+  /**
+   * Starts the game.
+   */
+  public void startGame() {
     server.changeStatus(dummyGameStarted);
     if (this.questionNum == 20) {
       this.questionNum = 0;
     }
-    nextQuestionSingle();
-    timeCounter.setVisible(true);
-    timeline = new Timeline();
-    timeline.setCycleCount(1000);
-    timeline.setAutoReverse(false);
-    timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10),
-        new EventHandler<>() {
-          /**
-           * {@inheritDoc}
-           */
-          @Override
-          public void handle(ActionEvent event) {
-            if (progress >= 0.001) {
-              progressBar.setProgress(progress);
-              progress -= 0.001;
-            }
-          }
-        }));
-
-    timeCount = new Timeline(
-        new KeyFrame(Duration.seconds(1), e -> {
-          startTime--;
-          timeCounter.setText(startTime + " s");
-          if (startTime <= 3) {
-            progressBar.setStyle("-fx-accent: red");
-          }
-        })
-    );
-    timeCount.setCycleCount(10);
-    timeline.play();
-    timeCount.play();
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       emojiPane.setVisible(false);
       emojiButtonPane.setVisible(false);
@@ -356,7 +412,28 @@ public class QuestionGameCtrl {
       messageNameList.setVisible(false);
       chatLabel.setVisible(false);
     }
-    timeline.setOnFinished(e -> revealAnswer());
+
+    nextQuestion();
+  }
+
+  /**
+   * Starts the timer.
+   */
+  public void startTimer() {
+    timeCounter.setVisible(true);
+    timeline.playFromStart();
+    timeCount.playFromStart();
+  }
+
+  /**
+   * Resets the timer.
+   */
+  public void resetTimer() {
+    progress = 1;
+    progressBar.setProgress(progress);
+    progressBar.setStyle("-fx-accent: #008057");
+    timeCounter.setText("15 s");
+    startTime = 15;
   }
 
   /**
@@ -366,6 +443,10 @@ public class QuestionGameCtrl {
     answer1.setDisable(true);
     answer2.setDisable(true);
     answer3.setDisable(true);
+
+    answer1.setStyle("-fx-opacity: 1");
+    answer2.setStyle("-fx-opacity: 1");
+    answer3.setStyle("-fx-opacity: 1");
 
     int time = startTime;
 
@@ -389,7 +470,7 @@ public class QuestionGameCtrl {
     timeCount.stop();
     timeCounter.setVisible(false);
     resetTimer();
-    int points = 0;
+    int points;
     if (!answerCorrectness) {
       addPoints.setText("+0");
     } else {
@@ -397,17 +478,18 @@ public class QuestionGameCtrl {
       if (question.getText().equals("How much do you think this activity consumes per hour?")) {
         int realAnswer = question.getActivities().get(0).getConsumption_in_wh();
         double percentageOff =
-            Math.abs(Integer.valueOf(textArea.getText()) - realAnswer) / realAnswer;
-        points = (int) (100 * (double) (1 - percentageOff / 0.3));
+            Math.abs((double) Integer.parseInt(textArea.getText()) - realAnswer) / realAnswer;
+        points = (int) (150 * (1 - percentageOff / 0.3));
       } else {
+
         points = 10 * (time + 1);
-        if (time == 10) {
+        if (time == 15) {
           points -= 10;
         }
       }
 
       server.getPlayer().setScore(server.getPlayer().getScore() + points);
-      addPoints.setText("+" + Integer.toString(points));
+      addPoints.setText("+" + points);
     }
 
     //If someone didn't submit anything and just pressed the button, the answer is automatically 0.
@@ -429,45 +511,24 @@ public class QuestionGameCtrl {
     }
     addPoints.setVisible(true);
 
-    Timeline cooldown = new Timeline();
-    cooldown.getKeyFrames().add(new KeyFrame(Duration.millis(3000), e -> {
-    }));
-    cooldown.play();
-    cooldown.setOnFinished(e -> {
-      cooldownAnswer();
-    });
+    cooldown.playFromStart();
   }
 
   /**
    * Checks if the game type is single player and does the associated methods.
    */
   public void cooldownAnswer() {
-    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
-      if (questionNum < 20) {
-        resetTimer();
-        timerStart();
-      } else {
-        String name = server.getPlayer().getName();
-        int points = server.getPlayer().getScore();
-        if (!server.getGame().getStatus().equals("ABORTED")) {
-          LeaderboardEntry entry = new LeaderboardEntry(name, points);
-          entry = server.addLeaderboardEntry(entry);
-          mainCtrl.showSPLeaderboard(entry);
-        }
-      }
+    if (questionNum < 20) {
+      nextQuestion();
     } else {
-      if (questionNum < 20) {
-        timerStart();
-        if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
-          nextQuestionSingle();
-        } else {
-          nextQuestionMultiple();
-        }
+      String name = server.getPlayer().getName();
+      int points = server.getPlayer().getScore();
+      LeaderboardEntry entry = new LeaderboardEntry(name, points);
+      server.changeStatus(dummyGameFinished);
+      if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+        entry = server.addLeaderboardEntry(entry);
+        mainCtrl.showSPLeaderboard(entry);
       } else {
-        String name = server.getPlayer().getName();
-        int points = server.getPlayer().getScore();
-        LeaderboardEntry entry = new LeaderboardEntry(name, points);
-        server.changeStatus(dummyGameFinished);
         mainCtrl.showMPLeaderboard(entry);
       }
     }
@@ -476,12 +537,10 @@ public class QuestionGameCtrl {
   /**
    * Makes the client screen ready for the new question. FOR SINGLE PLAYER ONLY
    */
-  public void nextQuestionSingle() {
+  public void nextQuestion() {
     setText();
     resetTimer();
-    if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
-      jokerEl.setVisible(false);
-    }
+    jokerEl.setVisible(true);
     questionNum++;
     addPoints.setVisible(false);
     questionNo.setText(questionNum + "/20");
@@ -501,14 +560,7 @@ public class QuestionGameCtrl {
     this.validator.setDisable(true);
     server.resetAnswer();
     playerPoints.setText(server.getPlayer().getScore() + " points");
-  }
-
-  /**
-   * Makes the client ready for the new question. FOR MULTIPLAYER ONLY
-   */
-  public void nextQuestionMultiple() {
-    //TODO: write method's body
-    revealAnswer();
+    startTimer();
   }
 
   /**
@@ -556,12 +608,7 @@ public class QuestionGameCtrl {
     this.questionImage3.setVisible(false);
     this.questionLabel.setText(
         question.getText() + "\n" + question.getActivities().get(0).getTitle());
-    try {
-      this.questionImage2.setImage(
-          new Image("client/images/" + question.getActivities().get(0).getImage_path()));
-    } catch (IllegalArgumentException e) {
-      this.questionImage1.setImage(new Image("client/images/defaultImage.png"));
-    }
+    this.questionImage2.setImage(server.getImage(question.getActivities().get(0).getImage_path()));
   }
 
   /**
@@ -570,24 +617,11 @@ public class QuestionGameCtrl {
   public void prepareMoreExpensive() {
     this.questionLabel.setText(question.getText());
     this.answer1.setText(mapButtons.get(1).getTitle());
-    try {
-      this.questionImage1.setImage(
-          (new Image("client/images/" + mapButtons.get(1).getImage_path())));
-    } catch (IllegalArgumentException e) {
-      this.questionImage1.setImage(new Image("client/images/defaultImage.png"));
-    }
-    try {
-      this.questionImage2.setImage(
-          (new Image("client/images/" + mapButtons.get(2).getImage_path())));
-    } catch (IllegalArgumentException e) {
-      this.questionImage2.setImage(new Image("client/images/flatFaceEmoji.png"));
-    }
-    try {
-      this.questionImage3.setImage(
-          (new Image("client/images/" + mapButtons.get(3).getImage_path())));
-    } catch (IllegalArgumentException e) {
-      this.questionImage3.setImage(new Image("client/images/defaultImage.png"));
-    }
+
+    this.questionImage1.setImage(server.getImage(mapButtons.get(1).getImage_path()));
+    this.questionImage2.setImage(server.getImage(mapButtons.get(2).getImage_path()));
+    this.questionImage3.setImage(server.getImage(mapButtons.get(3).getImage_path()));
+
     this.answer2.setText(mapButtons.get(2).getTitle());
     this.answer3.setText(mapButtons.get(3).getTitle());
     this.questionImage1.setVisible(true);
@@ -601,15 +635,10 @@ public class QuestionGameCtrl {
   public void prepareMultipleChoice() {
     this.questionLabel.setText(
         question.getText() + "\n" + question.getActivities().get(0).getTitle());
-    this.answer1.setText(String.valueOf(mapButtons.get(1).getConsumption_in_wh()) + " wh");
-    this.answer2.setText(String.valueOf(mapButtons.get(2).getConsumption_in_wh()) + " wh");
-    this.answer3.setText(String.valueOf(mapButtons.get(3).getConsumption_in_wh()) + " wh");
-    try {
-      this.questionImage2.setImage(
-          (new Image("client/images/" + question.getActivities().get(0).getImage_path())));
-    } catch (IllegalArgumentException e) {
-      this.questionImage2.setImage(new Image("client/images/defaultImage.png"));
-    }
+    this.answer1.setText(mapButtons.get(1).getConsumption_in_wh() + " wh");
+    this.answer2.setText(mapButtons.get(2).getConsumption_in_wh() + " wh");
+    this.answer3.setText(mapButtons.get(3).getConsumption_in_wh() + " wh");
+    this.questionImage2.setImage(server.getImage(question.getActivities().get(0).getImage_path()));
     this.questionImage1.setVisible(false);
     this.questionImage3.setVisible(false);
   }
@@ -627,11 +656,8 @@ public class QuestionGameCtrl {
     }
     int answer = question.getActivities().get(0).getConsumption_in_wh();
     int bound = 30 * answer / 100;
-    if (Integer.valueOf(this.textArea.getText()) < (answer - bound)
-        || Integer.valueOf(this.textArea.getText()) > (answer + bound)) {
-      return false;
-    }
-    return true;
+    return Integer.parseInt(this.textArea.getText()) >= (answer - bound)
+        && Integer.parseInt(this.textArea.getText()) <= (answer + bound);
   }
 
   /**
@@ -650,7 +676,7 @@ public class QuestionGameCtrl {
     if (mapButtons.get(3).getConsumption_in_wh() != answer) {
       answer3.setStyle("-fx-background-color: E50C0C");
     }
-    return server.getPlayer().getSelectedAnswer().equals(Integer.toString(answer) + " wh");
+    return server.getPlayer().getSelectedAnswer().equals(answer + " wh");
   }
 
   /**
