@@ -821,14 +821,11 @@ public class QuestionGameCtrl {
    */
   public void startCommunication() {
     server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
-<<<<<<< client/src/main/java/client/scenes/QuestionGameCtrl.java
+QuestionGameCtrl.java
       Platform.runLater(() -> {
         showMessage(message);
       });
-=======
-      System.out.println(message.getPlayerName() + ": " + message.getText());
-      //implement method to show emoji on screen
->>>>>>> client/src/main/java/client/scenes/QuestionGameCtrl.java
+
     });
   }
 
