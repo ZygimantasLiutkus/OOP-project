@@ -103,9 +103,9 @@
     <left>
         <AnchorPane fx:id="leftPane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="150.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
          <children>
-            <ListView fx:id="messageEmojiList" fixedCellSize="40.0" layoutY="52.0" prefHeight="300.0" prefWidth="40.0" />
-            <ListView fx:id="messageNameList" fixedCellSize="40.0" layoutX="40.0" layoutY="52.0" prefHeight="300.0" prefWidth="120.0" />
-            <Label contentDisplay="CENTER" layoutY="21.0" prefHeight="30.0" prefWidth="160.0" text="  Chat" textAlignment="CENTER">
+            <ListView fx:id="messageEmojiList" fixedCellSize="40.0" layoutY="52.0" prefHeight="300.0" prefWidth="45.0" />
+            <ListView fx:id="messageNameList" fixedCellSize="40.0" layoutX="46.0" layoutY="52.0" prefHeight="300.0" prefWidth="120.0" />
+            <Label fx:id="chatLabel" contentDisplay="CENTER" layoutY="21.0" prefHeight="30.0" prefWidth="160.0" text="  Chat" textAlignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
@@ -115,35 +115,6 @@
     <bottom>
         <AnchorPane fx:id="bottomPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="1000.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
-            <FlowPane layoutX="293.0" layoutY="-14.0" prefHeight="91.0" prefWidth="413.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="-13.42857142857143" AnchorPane.leftAnchor="293.0" AnchorPane.rightAnchor="294.0" AnchorPane.topAnchor="-14.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#sendEmojiLaughing" prefHeight="30.0" prefWidth="30.0">
-                     <FlowPane.margin>
-                        <Insets left="28.0" right="7.0" />
-                     </FlowPane.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#sendEmojiOk" prefHeight="30.0" prefWidth="30.0">
-                     <FlowPane.margin>
-                        <Insets right="5.0" />
-                     </FlowPane.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#sendEmojiThumbsUp" prefHeight="30.0" prefWidth="30.0">
-                     <FlowPane.margin>
-                        <Insets right="9.0" />
-                     </FlowPane.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#sendEmojiFlatFace" prefHeight="30.0" prefWidth="30.0">
-                     <FlowPane.margin>
-                        <Insets right="10.0" />
-                     </FlowPane.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#sendEmojiAngry" prefHeight="30.0" prefWidth="30.0">
-                     <FlowPane.margin>
-                        <Insets right="7.0" />
-                     </FlowPane.margin>
-                  </Button>
-               </children>
-            </FlowPane>
                 <FlowPane fx:id="emojiPane" hgap="10.0" layoutX="293.0" layoutY="-14.0" prefHeight="91.0" prefWidth="413.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="-13.42857142857143" AnchorPane.leftAnchor="293.0" AnchorPane.rightAnchor="294.0" AnchorPane.topAnchor="-14.0">
                     <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
@@ -176,6 +147,35 @@
                         <Insets left="95.0" right="75.0" />
                     </padding>
                 </FlowPane>
+            <FlowPane fx:id="emojiButtonPane" layoutX="293.0" layoutY="-14.0" prefHeight="91.0" prefWidth="413.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="-13.42857142857143" AnchorPane.leftAnchor="293.0" AnchorPane.rightAnchor="294.0" AnchorPane.topAnchor="-14.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#sendEmojiLaughing" prefHeight="30.0" prefWidth="30.0" styleClass="emojiButton" stylesheets="@stylesheet.css">
+                     <FlowPane.margin>
+                        <Insets left="28.0" right="7.0" />
+                     </FlowPane.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#sendEmojiOk" prefHeight="30.0" prefWidth="30.0" styleClass="emojiButton" stylesheets="@stylesheet.css">
+                     <FlowPane.margin>
+                        <Insets right="5.0" />
+                     </FlowPane.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#sendEmojiThumbsUp" prefHeight="30.0" prefWidth="30.0" styleClass="emojiButton" stylesheets="@stylesheet.css">
+                     <FlowPane.margin>
+                        <Insets right="9.0" />
+                     </FlowPane.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#sendEmojiFlatFace" prefHeight="30.0" prefWidth="30.0" styleClass="emojiButton" stylesheets="@stylesheet.css">
+                     <FlowPane.margin>
+                        <Insets right="10.0" />
+                     </FlowPane.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#sendEmojiAngry" prefHeight="30.0" prefWidth="30.0" styleClass="emojiButton" stylesheets="@stylesheet.css">
+                     <FlowPane.margin>
+                        <Insets right="7.0" />
+                     </FlowPane.margin>
+                  </Button>
+               </children>
+            </FlowPane>
             </children>
         </AnchorPane>
     </bottom>

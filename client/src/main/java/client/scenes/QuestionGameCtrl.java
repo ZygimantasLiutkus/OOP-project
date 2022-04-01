@@ -89,6 +89,9 @@ public class QuestionGameCtrl {
   private FlowPane emojiPane;
 
   @FXML
+  private FlowPane emojiButtonPane;
+
+  @FXML
   private TextField textArea;
 
   @FXML
@@ -108,6 +111,9 @@ public class QuestionGameCtrl {
 
   @FXML
   private ListView<String> messageNameList;
+
+  @FXML
+  private Label chatLabel;
 
   /**
    * Constructor for QuestionGameCtrl.
@@ -217,7 +223,6 @@ public class QuestionGameCtrl {
   public void setSelectedAnswer1() {
     String answer = answer1.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    server.session = server.connect("ws://localhost:8080/websocket"); //for testing
     revealAnswer();
   }
 
@@ -227,7 +232,6 @@ public class QuestionGameCtrl {
   public void setSelectedAnswer2() {
     String answer = answer2.getText();
     server.getPlayer().setSelectedAnswer(answer);
-    startCommunication(); //for testing
     revealAnswer();
   }
 
@@ -347,6 +351,10 @@ public class QuestionGameCtrl {
     timeCount.play();
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       emojiPane.setVisible(false);
+      emojiButtonPane.setVisible(false);
+      messageEmojiList.setVisible(false);
+      messageNameList.setVisible(false);
+      chatLabel.setVisible(false);
     }
     timeline.setOnFinished(e -> revealAnswer());
   }
@@ -718,6 +726,11 @@ public class QuestionGameCtrl {
     server.send("/app/messages", "angry");
   }
 
+  /**
+   * Method that adds an emoji message to the chat.
+   *
+   * @param message the message to be added
+   */
   public void showMessage(Message message) {
 
     if (messageEmojiList.getItems().size() > 6) {
@@ -730,6 +743,9 @@ public class QuestionGameCtrl {
     messageEmojiList.getItems()
         .add(0,
             new ImageView(new Image("client/images/" + message.getEmojiName() + "Emoji.png")));
+    messageEmojiList.getItems().get(0).setFitWidth(30);
+    messageEmojiList.getItems().get(0).setFitHeight(30);
+
     messageNameList.getItems().add(0, message.getPlayerName());
   }
 
