@@ -256,7 +256,6 @@ public class QuestionGameCtrl {
    * @param index the index of the button to be deleted
    */
   public void deleteJoker(int index) {
-    questionNo.setText(String.valueOf(index));
     switch (index) {
       case 0:
         answer1.setVisible(false);
