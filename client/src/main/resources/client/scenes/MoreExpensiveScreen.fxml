@@ -107,8 +107,8 @@
     <left>
         <AnchorPane fx:id="leftPane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="150.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
          <children>
-            <ListView fx:id="messageEmojiList" fixedCellSize="40.0" layoutY="52.0" prefHeight="300.0" prefWidth="45.0" />
-            <ListView fx:id="messageNameList" fixedCellSize="40.0" layoutX="46.0" layoutY="52.0" prefHeight="300.0" prefWidth="120.0" />
+            <ListView fx:id="messageEmojiList" disable="true" fixedCellSize="40.0" layoutY="52.0" prefHeight="300.0" prefWidth="45.0" />
+            <ListView fx:id="messageNameList" disable="true" fixedCellSize="40.0" layoutX="46.0" layoutY="52.0" prefHeight="300.0" prefWidth="120.0" />
             <Label fx:id="chatLabel" contentDisplay="CENTER" layoutY="21.0" prefHeight="30.0" prefWidth="160.0" text="  Chat" textAlignment="CENTER">
                <font>
                   <Font size="16.0" />
