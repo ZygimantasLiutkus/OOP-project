@@ -8,11 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -91,6 +90,9 @@ public class QuestionGameCtrl {
   private FlowPane emojiPane;
 
   @FXML
+  private FlowPane emojiButtonPane;
+
+  @FXML
   private TextField textArea;
 
   @FXML
@@ -104,6 +106,15 @@ public class QuestionGameCtrl {
 
   @FXML
   private Label validator;
+
+  @FXML
+  private ListView<ImageView> messageEmojiList;
+
+  @FXML
+  private ListView<String> messageNameList;
+
+  @FXML
+  private Label chatLabel;
 
   @FXML
   private Button jokerPoints;
@@ -482,6 +493,10 @@ public class QuestionGameCtrl {
     }
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       emojiPane.setVisible(false);
+      emojiButtonPane.setVisible(false);
+      messageEmojiList.setVisible(false);
+      messageNameList.setVisible(false);
+      chatLabel.setVisible(false);
     }
 
     nextQuestion();
@@ -806,8 +821,10 @@ public class QuestionGameCtrl {
    */
   public void startCommunication() {
     server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
-      System.out.println(message.getPlayerName() + ": " + message.getText());
-      //implement method to show emoji on screen
+      Platform.runLater(() -> {
+        showMessage(message);
+      });
+
     });
   }
 
@@ -822,7 +839,7 @@ public class QuestionGameCtrl {
    * Method that sends the server a message with the player's name and the ok emoji.
    */
   public void sendEmojiOk() {
-    server.send("/app/messages", "ok");
+    server.send("/app/messages", "okHand");
   }
 
   /**
@@ -845,4 +862,28 @@ public class QuestionGameCtrl {
   public void sendEmojiAngry() {
     server.send("/app/messages", "angry");
   }
+
+  /**
+   * Method that adds an emoji message to the chat.
+   *
+   * @param message the message to be added
+   */
+  public void showMessage(Message message) {
+
+    if (messageEmojiList.getItems().size() > 6) {
+      for (int i = messageEmojiList.getItems().size() - 1; i > 5; i--) {
+        messageEmojiList.getItems().remove(i);
+        messageNameList.getItems().remove(i);
+      }
+    }
+
+    messageEmojiList.getItems()
+        .add(0,
+            new ImageView(new Image("client/images/" + message.getText() + "Emoji.png")));
+    messageEmojiList.getItems().get(0).setFitWidth(30);
+    messageEmojiList.getItems().get(0).setFitHeight(30);
+
+    messageNameList.getItems().add(0, message.getPlayerName());
+  }
+
 }
