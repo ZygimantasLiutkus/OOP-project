@@ -104,6 +104,7 @@ public class MPWaitingRoomCtrl implements Initializable {
    */
   public void startMultiPlayer() {
     mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
+    questionGameCtrl.startCommunication();
     questionGameCtrl.startGame();
   }
 
@@ -150,9 +151,10 @@ public class MPWaitingRoomCtrl implements Initializable {
    * Have the ability to leave a multiplayer lobby.
    */
   public void goHome() {
-    List<Player> players = this.server.getGame().getPlayers();
+    List<Player> players = server.getGame().getPlayers();
     players.remove(server.getPlayer());
-    this.server.updatePlayer(players);
+    server.updatePlayer(players);
+    server.session.disconnect();
     mainCtrl.showChooseScreen();
   }
 }

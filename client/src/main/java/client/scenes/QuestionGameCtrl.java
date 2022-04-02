@@ -5,6 +5,7 @@ import client.utils.TimerUtils;
 import com.google.inject.Inject;
 import commons.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import javafx.animation.Timeline;
@@ -32,16 +33,16 @@ public class QuestionGameCtrl {
   public GameEntity dummyGameStarted = new GameEntity("STARTED");
   public GameEntity dummyGameFinished = new GameEntity("FINISHED");
   public GameEntity dummyGameAborted = new GameEntity("ABORTED");
+  public boolean pointsUsed = false;
+  public boolean answerUsed = false;
+  public boolean timeUsed = false;
+  public boolean pointsDisabled = false;
   private GameEntity.Type type;
   private int startTime = 15;
   private int questionNum = 0;
   private double progress = 1;
   private Timeline timeline;
   private Timeline timeCount;
-  public boolean pointsUsed = false;
-  public boolean answerUsed = false;
-  public boolean timeUsed = false;
-  public boolean pointsDisabled = false;
   private Timeline cooldown;
 
   @FXML
@@ -149,6 +150,9 @@ public class QuestionGameCtrl {
       timeline.stop();
       timeCount.stop();
       server.changeStatus(dummyGameAborted);
+    }
+    if (type.equals(GameEntity.Type.MULTIPLAYER)) {
+      disconnect();
     }
     mainCtrl.showChooseScreen();
   }
@@ -877,13 +881,40 @@ public class QuestionGameCtrl {
       }
     }
 
-    messageEmojiList.getItems()
-        .add(0,
-            new ImageView(new Image("client/images/" + message.getText() + "Emoji.png")));
-    messageEmojiList.getItems().get(0).setFitWidth(30);
-    messageEmojiList.getItems().get(0).setFitHeight(30);
+    if (message.getText().equals("disconnected")) {
+      messageEmojiList.getItems().add(0, new ImageView());
+      messageNameList.getItems().add(0, message.getPlayerName() + " has " + message.getText());
+    } else {
+      messageEmojiList.getItems()
+          .add(0,
+              new ImageView(new Image("client/images/" + message.getText() + "Emoji.png")));
+      messageEmojiList.getItems().get(0).setFitWidth(30);
+      messageEmojiList.getItems().get(0).setFitHeight(30);
 
-    messageNameList.getItems().add(0, message.getPlayerName());
+      messageNameList.getItems().add(0, message.getPlayerName());
+    }
   }
 
+  public void disconnect() {
+    List<Player> players = server.getGame().getPlayers();
+    Player leaving = server.getPlayer();
+    leaving.setSelectedAnswer("0");
+    players.remove(leaving);
+
+    server.updatePlayer(players);
+    server.send("/app/messages", "disconnected");
+    server.session.disconnect();
+
+    messageEmojiList.getItems().clear();
+    messageNameList.getItems().clear();
+
+    cooldown.stop();
+    timeline.stop();
+    timeCount.stop();
+    questionNum = 20;
+
+    if (players.isEmpty()) {
+      server.changeStatus(dummyGameAborted);
+    }
+  }
 }
