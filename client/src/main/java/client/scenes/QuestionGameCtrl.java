@@ -895,6 +895,9 @@ public class QuestionGameCtrl {
     }
   }
 
+  /**
+   * Method that disconnects a player from a multiplayer game and notifies the others.
+   */
   public void disconnect() {
     List<Player> players = server.getGame().getPlayers();
     Player leaving = server.getPlayer();
