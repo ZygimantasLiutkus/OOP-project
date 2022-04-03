@@ -62,7 +62,7 @@ public class Main {
 
       InputStream inputStream =
           Activity.class.getClassLoader()
-              .getResourceAsStream("activitiesEdited.json");
+              .getResourceAsStream("Activities.json");
       try {
         List<Activity> activityList = mapper.readValue(inputStream, typeReference);
         activityService.save(activityList);
