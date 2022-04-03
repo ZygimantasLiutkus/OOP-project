@@ -29,7 +29,8 @@ There are 2 main components that are needed in order to be able to play the game
 Before starting the server, make sure that you have a *.json* file that contains every activity that yow want to have
 featured inside the questions. In order for the file to be read by the computer, create a file called *Activities.json*
 and place it in  **server > src > main > resources**. You can use a pre-made list that was used by the developers when
-creating the game (accessing this *WeTransfer* link - https://we.tl/t-98tPWJDLZe) or create your own one. The list must
+creating the game (accessing this *Google Drive* link - 
+https://drive.google.com/file/d/1D6_m38rXbag36BSluRgsEMZvfCHo304d/view?usp=sharing) or create your own one. The list must
 look something like this:
 
 ![img_1.png](img_1.png)
@@ -70,8 +71,8 @@ be able to start a game.
 
 **NOTE FOR TEACHERS:** The *.json* file that we have used for testing the game was edited (some activities were removed)
 due to long resources links and very high consumptions on the given activities, so it will not be exactly the same as
-the one inside the *Activity Bank*. What we have used can be accessed using this *WeTransfer*
-link: https://we.tl/t-98tPWJDLZe
+the one inside the *Activity Bank*. What we have used can be accessed using this *Google Drive*
+link: https://drive.google.com/file/d/1D6_m38rXbag36BSluRgsEMZvfCHo304d/view?usp=sharing
 
 ## How to contribute to it
 
