@@ -957,5 +957,17 @@ public class QuestionGameCtrl {
       progress /= 2;
       updateCounter(newTime);
     }
+
+    if (messageEmojiList.getItems().size() > 6) {
+      for (int i = messageEmojiList.getItems().size() - 1; i > 5; i--) {
+        messageEmojiList.getItems().remove(i);
+        messageNameList.getItems().remove(i);
+      }
+    }
+    ImageView empty = new ImageView();
+    messageEmojiList.getItems().add(0, empty);
+    messageEmojiList.getItems().get(0).setFitWidth(30);
+    messageEmojiList.getItems().get(0).setFitHeight(30);
+    messageNameList.getItems().add(0, "Time joker");
   }
 }
