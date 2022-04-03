@@ -622,6 +622,7 @@ public class QuestionGameCtrl {
         entry = server.addLeaderboardEntry(entry);
         mainCtrl.showSPLeaderboard(entry);
       } else {
+        server.send("/app/messages", "finished");
         mainCtrl.showMPLeaderboard(entry);
       }
     }
@@ -882,8 +883,17 @@ public class QuestionGameCtrl {
     }
 
     if (message.getText().equals("disconnected")) {
+      server.setPlayersFinished(server.getPlayersFinished() + 1);
+      if (server.getPlayersFinished() >= server.getGame().getPlayers().size()) {
+        mainCtrl.setMPLeaderboard();
+      }
       messageEmojiList.getItems().add(0, new ImageView());
       messageNameList.getItems().add(0, message.getPlayerName() + " has " + message.getText());
+    } else if (message.getText().equals("finished")) {
+      server.setPlayersFinished(server.getPlayersFinished() + 1);
+      if (server.getPlayersFinished() >= server.getGame().getPlayers().size()) {
+        mainCtrl.setMPLeaderboard();
+      }
     } else {
       messageEmojiList.getItems()
           .add(0,

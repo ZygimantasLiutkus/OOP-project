@@ -234,8 +234,16 @@ public class MainCtrl {
    */
   public void showMPLeaderboard(LeaderboardEntry entry) {
     primaryStage.setTitle("Match Leaderboard");
+    leaderboardScreenCtrl.setScoreLabel("Generating scores...");
     leaderboardScreenCtrl.setMultiplayer(entry);
     primaryStage.setScene(leaderboard);
+  }
+
+  /**
+   * Method for revealing the entries of a multiplayer leaderboard.
+   */
+  public void setMPLeaderboard() {
+    leaderboardScreenCtrl.setScoreLabel("Scores");
     leaderboardScreenCtrl.refreshTop10();
   }
 
