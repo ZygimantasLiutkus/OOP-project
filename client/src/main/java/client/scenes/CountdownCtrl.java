@@ -50,7 +50,7 @@ public class CountdownCtrl {
 
     Animation blink1 = new Transition() {
       {
-        setCycleDuration(Duration.millis(3000));
+        setCycleDuration(Duration.millis(2000));
         setInterpolator(Interpolator.EASE_OUT);
       }
 
