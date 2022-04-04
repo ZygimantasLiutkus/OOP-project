@@ -3,6 +3,7 @@ package server.api;
 
 import commons.Activity;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -135,5 +136,17 @@ public class ActivityController {
       updated.setConsumption_in_wh(activity.getConsumption_in_wh());
       return ResponseEntity.ok(repo.save(updated));
     }
+  }
+
+  /**
+   * GET endpoint to obtain an activity by id.
+   *
+   * @param id the id of an activity
+   * @return either a bad request if there is no such activity, or the wanted activity
+   */
+  @GetMapping(path = "/{id}")
+  public ResponseEntity<Activity> getById(@PathVariable("id") String id) {
+    Optional<Activity> optional = repo.findById(id);
+    return optional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
   }
 }

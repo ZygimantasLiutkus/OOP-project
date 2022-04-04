@@ -4,10 +4,13 @@ import client.utils.ServerUtils;
 import commons.GameEntity;
 import commons.Player;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,10 +28,8 @@ public class MPWaitingRoomCtrl implements Initializable {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
-  private final MultipleChoiceCtrl multipleChoiceCtrl;
-
+  private final QuestionGameCtrl questionGameCtrl;
   private ObservableList<String> data;
-  public Timer timer = new Timer();
   private Timeline timeline;
 
   @FXML
@@ -52,16 +53,16 @@ public class MPWaitingRoomCtrl implements Initializable {
   /**
    * Constructor for the Multi-player Waiting Room Controller.
    *
-   * @param server reference to the server the game will run on.
-   * @param mainCtrl reference to the main controller.
-   * @param multipleChoiceCtrl reference to multiple choice controller
+   * @param server           reference to the server the game will run on.
+   * @param mainCtrl         reference to the main controller.
+   * @param questionGameCtrl reference to multiple choice controller
    */
   @Inject
   public MPWaitingRoomCtrl(ServerUtils server, MainCtrl mainCtrl,
-                           MultipleChoiceCtrl multipleChoiceCtrl) {
+                           QuestionGameCtrl questionGameCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
-    this.multipleChoiceCtrl = multipleChoiceCtrl;
+    this.questionGameCtrl = questionGameCtrl;
   }
 
   /**
@@ -92,11 +93,18 @@ public class MPWaitingRoomCtrl implements Initializable {
   }
 
   /**
+   * Sends the START message to the other players.
+   */
+  public void sendStart() {
+    server.send("/app/messages", "START");
+  }
+
+  /**
    * Starts the game in multi-player mode.
    */
   public void startMultiPlayer() {
     mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
-    multipleChoiceCtrl.timerStart();
+    questionGameCtrl.startGame();
   }
 
   /**
@@ -118,11 +126,33 @@ public class MPWaitingRoomCtrl implements Initializable {
   }
 
   /**
+   * Method that starts listening for a START message.
+   */
+  public void startListening() {
+    server.connect();
+    server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
+      if (message.getText().equals("START")) {
+        Platform.runLater(this::startMultiPlayer);
+      }
+    });
+  }
+
+  /**
    * Method that starts the timeline and disables the 'showPlayersButton'.
    */
   public void startTimeline() {
     timeline.play();
     showPlayersButton.setDisable(true);
     showPlayersButton.setVisible(false);
+  }
+
+  /**
+   * Have the ability to leave a multiplayer lobby.
+   */
+  public void goHome() {
+    List<Player> players = this.server.getGame().getPlayers();
+    players.remove(server.getPlayer());
+    this.server.updatePlayer(players);
+    mainCtrl.showChooseScreen();
   }
 }

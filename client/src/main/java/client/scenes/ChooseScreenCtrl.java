@@ -50,6 +50,7 @@ public class ChooseScreenCtrl {
    * Shows the singleplayer waiting room.
    */
   public void playSinglePlayer() {
+    namePopupCtrl.initializeName();
     if (server.getDummyPlayer().getName().equals("")) {
       mainCtrl.showNamePopup(NextScreen.WaitingRoomScreen);
     } else {
@@ -69,17 +70,26 @@ public class ChooseScreenCtrl {
    * Shows the multiplayer waiting room.
    */
   public void playMultiplayer() {
-    if (server.getPlayer().getName().equals("")) {
+    namePopupCtrl.initializeName();
+    if (server.getDummyPlayer().getName().equals("")) {
       mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
     } else {
-      Player player = server.addPlayer();
-      if (player == null) {
-        namePopupCtrl.setErrorText("This name is already taken, please choose another name");
-        namePopupCtrl.showErrorText(true);
-        mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
-      } else {
-        mainCtrl.showWaitingRoomScreenMP();
-      }
+      verifyName();
+    }
+  }
+
+
+  /**
+   * Verifies if the name is already used.
+   */
+  public void verifyName() {
+    Player player = server.addPlayer();
+    if (player == null) {
+      namePopupCtrl.setErrorText("This name is already taken, please choose another name");
+      mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
+      namePopupCtrl.showErrorText(true);
+    } else {
+      mainCtrl.showWaitingRoomScreenMP();
     }
   }
 
@@ -95,5 +105,12 @@ public class ChooseScreenCtrl {
    */
   public void changeName() {
     mainCtrl.showNamePopup(NextScreen.None);
+  }
+
+  /**
+   * Method to transition to activity panel.
+   */
+  public void goPanel() {
+    mainCtrl.showActivityOverview();
   }
 }

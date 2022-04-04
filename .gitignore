@@ -6,8 +6,11 @@ build/
 !**/src/test/**/build/
 
 **/*.mv.db
+**/*.trace.db
 
 **/*.swp
+
+name.txt
 
 **/images/*
 **/*.json

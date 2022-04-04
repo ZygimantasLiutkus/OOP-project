@@ -24,6 +24,7 @@
     -fx-border-color: #EFDB22;
     -fx-border-width: 4px;
 }
+
 /*
 If having an animation when mouse hover looks good,
 uncomment this.
@@ -35,6 +36,16 @@ uncomment this.
     -fx-border-width: 4px;
 }
 */
+
+.emojiButton {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.emojiButton:pressed {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
 
 #reconnectButton,
 #homeButton {
@@ -64,7 +75,7 @@ uncomment this.
     -fx-text-fill: #165B24;
 }
 
-#questionLabel {
+#questionLabel, #answerText {
     -fx-background-color: #C4C4C4;
 }
 
@@ -85,3 +96,11 @@ uncomment this.
     -fx-alignment: CENTER;
 }
 
+.table-view .scroll-bar:horizontal .increment-arrow,
+.table-view .scroll-bar:horizontal .decrement-arrow,
+.table-view .scroll-bar:horizontal .increment-button,
+.table-view .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0;
+    -fx-background-color: transparent;
+    -fx-opacity: 0;
+}

@@ -17,6 +17,7 @@
 package client.scenes;
 
 import client.utils.NextScreen;
+import commons.Activity;
 import commons.GameEntity;
 import commons.LeaderboardEntry;
 import javafx.scene.Parent;
@@ -43,8 +44,8 @@ public class MainCtrl {
   private ChooseScreenCtrl chooseScreenCtrl;
   private Scene choose;
 
-  private MultipleChoiceCtrl moreExpensiveCtrl;
-  private Scene moreExpensive;
+  private QuestionGameCtrl questionGameCtrl;
+  private Scene questionGame;
 
   private LeaderboardScreenCtrl leaderboardScreenCtrl;
   private Scene leaderboard;
@@ -58,30 +59,40 @@ public class MainCtrl {
   private QuoteOverviewCtrl overviewCtrl;
   private Scene overview;
 
+  private ActivityOverviewCtrl activityCtrl;
+  private Scene activityList;
+
   private AddQuoteCtrl addCtrl;
   private Scene add;
+
+  private ActivityPopUpCtrl activityPopUpCtrl;
+  private Scene activityPopUp;
 
   /**
    * Initializes the main controller.
    *
-   * @param primaryStage  the top level JavaFX container.
-   * @param overview      a pair of the QuoteOverview controller and the parent.
-   * @param add           a pair of the AddQuote controller and the parent.
-   * @param entry         a pair of the EntryScreen controller and the parent.
-   * @param name          a pair of the NamePopup controller and the parent.
-   * @param choose        a pair of the ChooseScreen controller and the parent.
-   * @param moreExpensive a pair of the MultipleChoiceScreen controller and the parent.
-   * @param leaderboard   a pair of the LeaderboardScreen controller and the parent.
-   * @param waitingRoomSP a pair of the (single-player) WaitingRoomScreen controller and the parent.
-   * @param waitingRoomMP a pair of the (multi-player) WaitingRoomScreen controller and the parent.
+   * @param primaryStage     the top level JavaFX container.
+   * @param overview         a pair of the QuoteOverview controller and the parent.
+   * @param add              a pair of the AddQuote controller and the parent.
+   * @param entry            a pair of the EntryScreen controller and the parent.
+   * @param name             a pair of the NamePopup controller and the parent.
+   * @param choose           a pair of the ChooseScreen controller and the parent.
+   * @param moreExpensive    a pair of the MultipleChoiceScreen controller and the parent.
+   * @param leaderboard      a pair of the LeaderboardScreen controller and the parent.
+   * @param waitingRoomSP    a pair of the sp WaitingRoomScreen controller and the parent.
+   * @param waitingRoomMP    a pair of the mp WaitingRoomScreen controller and the parent.
+   * @param activityOverview a pair of the activityOverview controller and the parent.
+   * @param activityPopUp    a pair of the ActivityPopUp controller and the parent.
    */
   public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                          Pair<AddQuoteCtrl, Parent> add, Pair<EntryCtrl, Parent> entry,
                          Pair<NamePopupCtrl, Parent> name, Pair<ChooseScreenCtrl, Parent> choose,
-                         Pair<MultipleChoiceCtrl, Parent> moreExpensive,
+                         Pair<QuestionGameCtrl, Parent> moreExpensive,
                          Pair<LeaderboardScreenCtrl, Parent> leaderboard,
                          Pair<WaitingRoomCtrl, Parent> waitingRoomSP,
-                         Pair<MPWaitingRoomCtrl, Parent> waitingRoomMP) {
+                         Pair<MPWaitingRoomCtrl, Parent> waitingRoomMP,
+                         Pair<ActivityOverviewCtrl, Parent> activityOverview,
+                         Pair<ActivityPopUpCtrl, Parent> activityPopUp) {
     this.primaryStage = primaryStage;
     this.overviewCtrl = overview.getKey();
     this.overview = new Scene(overview.getValue());
@@ -98,8 +109,8 @@ public class MainCtrl {
     this.chooseScreenCtrl = choose.getKey();
     this.choose = new Scene(choose.getValue());
 
-    this.moreExpensiveCtrl = moreExpensive.getKey();
-    this.moreExpensive = new Scene(moreExpensive.getValue());
+    this.questionGameCtrl = moreExpensive.getKey();
+    this.questionGame = new Scene(moreExpensive.getValue());
 
     this.leaderboardScreenCtrl = leaderboard.getKey();
     this.leaderboard = new Scene(leaderboard.getValue());
@@ -109,6 +120,12 @@ public class MainCtrl {
 
     this.mpWaitingRoomCtrl = waitingRoomMP.getKey();
     this.waitingRoomMP = new Scene(waitingRoomMP.getValue());
+
+    this.activityCtrl = activityOverview.getKey();
+    this.activityList = new Scene(activityOverview.getValue());
+
+    this.activityPopUpCtrl = activityPopUp.getKey();
+    this.activityPopUp = new Scene(activityPopUp.getValue());
 
     showEntry();
     primaryStage.show();
@@ -157,6 +174,8 @@ public class MainCtrl {
     popup.setScene(name);
     name.setOnKeyPressed(e -> namePopupCtrl.keyPressed(e));
     namePopupCtrl.setNextScreen(nextScreen);
+    namePopupCtrl.initializeName();
+    namePopupCtrl.showErrorText(false);
     popup.show();
   }
 
@@ -182,8 +201,8 @@ public class MainCtrl {
    */
   public void showMoreExpensive(GameEntity.Type type) {
     primaryStage.setTitle("Quizzzz");
-    moreExpensiveCtrl.setType(type);
-    primaryStage.setScene(moreExpensive);
+    questionGameCtrl.setType(type);
+    primaryStage.setScene(questionGame);
   }
 
   /**
@@ -207,6 +226,7 @@ public class MainCtrl {
     primaryStage.setTitle("Match Leaderboard");
     leaderboardScreenCtrl.setMultiplayer(entry);
     primaryStage.setScene(leaderboard);
+    leaderboardScreenCtrl.refreshTop10();
   }
 
   /**
@@ -223,5 +243,36 @@ public class MainCtrl {
   public void showWaitingRoomScreenMP() {
     primaryStage.setTitle("Waiting...");
     primaryStage.setScene(waitingRoomMP);
+    mpWaitingRoomCtrl.startListening();
+  }
+
+  /**
+   * Shows the activity panel scene.
+   */
+  public void showActivityOverview() {
+    activityCtrl.refresh();
+    primaryStage.setTitle("Activity Panel");
+    primaryStage.setScene(activityList);
+  }
+
+  /**
+   * Closes the edit activity popup.
+   */
+  public void closeActivityPopUp() {
+    popup.close();
+  }
+
+  /**
+   * Shows the activity popup.
+   *
+   * @param nextScreen the type of action the admin wants to do
+   * @param act        the activity the admin wants to use
+   */
+  public void showActivityPopUp(Activity act, NextScreen nextScreen) {
+    activityPopUpCtrl.setType(act, nextScreen);
+    activityPopUpCtrl.disableValidator();
+    popup.setTitle("Activity Panel");
+    popup.setScene(activityPopUp);
+    popup.show();
   }
 }

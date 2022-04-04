@@ -52,8 +52,8 @@ public class Main extends Application {
 
     var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
     var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
-    var moreExpensive =
-        FXML.load(MultipleChoiceCtrl.class, "client", "scenes", "MoreExpensiveScreen.fxml");
+    var questionGame =
+        FXML.load(QuestionGameCtrl.class, "client", "scenes", "MoreExpensiveScreen.fxml");
     var entry = FXML.load(EntryCtrl.class, "client", "scenes", "EntryScreen.fxml");
     var choose = FXML.load(ChooseScreenCtrl.class, "client", "scenes", "ChooseScreen.fxml");
     var name = FXML.load(NamePopupCtrl.class, "client", "scenes", "NamePopup.fxml");
@@ -62,12 +62,16 @@ public class Main extends Application {
     var waitingRoomSP =
         FXML.load(WaitingRoomCtrl.class, "client", "scenes", "WaitingRoomScreen.fxml");
     var waitingRoomMP =
-            FXML.load(MPWaitingRoomCtrl.class, "client", "scenes", "MPWaitingRoomScreen.fxml");
+        FXML.load(MPWaitingRoomCtrl.class, "client", "scenes", "MPWaitingRoomScreen.fxml");
+    var activityOverview =
+        FXML.load(ActivityOverviewCtrl.class, "client", "scenes", "ActivityOverviewScreen.fxml");
+    var activityPopUp =
+        FXML.load(ActivityPopUpCtrl.class, "client", "scenes", "ActivityPopUpScreen.fxml");
     primaryStage.setMinWidth(900);
     primaryStage.setMinHeight(408);
 
     var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-    mainCtrl.initialize(primaryStage, overview, add, entry, name, choose, moreExpensive,
-        leaderboard, waitingRoomSP, waitingRoomMP);
+    mainCtrl.initialize(primaryStage, overview, add, entry, name, choose, questionGame,
+        leaderboard, waitingRoomSP, waitingRoomMP, activityOverview, activityPopUp);
   }
 }

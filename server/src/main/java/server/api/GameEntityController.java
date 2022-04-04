@@ -1,16 +1,33 @@
 package server.api;
 
-import commons.*;
+import commons.Answer;
+import commons.GameEntity;
+import commons.LeaderboardEntry;
+import commons.Message;
+import commons.Player;
+import commons.Question;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import server.database.GameEntityRepository;
 import server.database.PlayerRepository;
 import server.database.QuestionRepository;
+import server.services.AnswerService;
 import server.services.LeaderboardService;
 import server.services.QuestionService;
 
@@ -25,6 +42,7 @@ public class GameEntityController {
   private final QuestionService questionService;
   private final QuestionRepository qRepo;
   private final LeaderboardService leaderboardService;
+  private final AnswerService answerService;
 
   /**
    * Constructor for the controller.
@@ -43,6 +61,7 @@ public class GameEntityController {
     this.questionService = questionService;
     this.qRepo = qRepo;
     this.leaderboardService = leaderboardService;
+    this.answerService = new AnswerService(repo, playerRepo);
   }
 
   /**
@@ -74,13 +93,8 @@ public class GameEntityController {
    */
   @GetMapping(path = "/{id}")
   public ResponseEntity<GameEntity> getGameById(@PathVariable("id") long id) {
-    for (long i = 0; i <= repo.findAll().size(); i++) {
-      if (i == id) {
-        return ResponseEntity.ok(repo.getById(id));
-      }
-    }
-    return ResponseEntity.badRequest().build();
-
+    Optional<GameEntity> optional = repo.findById(id);
+    return optional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
   }
 
   /**
@@ -217,13 +231,9 @@ public class GameEntityController {
 
   /**
    * POST request to map a player with an answer.
-   * Checks if the player is actually present in the game.
-   * Checks if the game has started.
-   * For "What's more expensive" the answer is the biggest consumption.
-   * For the Multiple Choice question the logic is a placeholder.
-   * For the Estimation question the logic is a placeholder.
+   * Sends the variables to the answer service to be processed.
+   * Applies different score calculations for different types of questions.
    * The player's score will be updated.
-   * (For now un "ugly" version of checking an answer)
    *
    * @param id     the game's id
    * @param idq    the question number
@@ -233,73 +243,29 @@ public class GameEntityController {
   @PostMapping(path = "/{id}/question/{idQ}")
   public ResponseEntity<Answer> answer(@PathVariable("id") long id, @PathVariable("idQ") long idq,
                                        @RequestBody Player player) {
-    boolean found = false;
-    Player playerDummy = new Player();
-    for (GameEntity game : repo.findAll()) {
-      if (game.getId() == id) {
-        if (!game.getStatus().equals("STARTED")) {
-          return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        for (Player p : game.getPlayers()) {
-          if (Objects.equals(p.getId(), player.getId())) {
-            playerDummy = p;
-            found = true;
-            break;
-          }
-        }
-        if (!found) {
-          return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        Question q = game.getQuestions().get((int) idq - 1);
-        if (q instanceof QuestionMoreExpensive) {
-          int maxim = 0;
-          for (Activity a : q.getActivities()) {
-            if (a.getConsumption_in_wh() > maxim) {
-              maxim = a.getConsumption_in_wh();
-            }
-          }
-          if (Integer.parseInt(player.getSelectedAnswer()) == maxim) {
-            playerDummy.setScore(playerDummy.getScore() + 100);
-            playerRepo.save(playerDummy);
-            return ResponseEntity.ok(
-                new Answer("CORRECT", playerDummy, playerDummy.getScore(), 100));
-          } else {
-            playerDummy.setScore(playerDummy.getScore());
-            playerRepo.save(playerDummy);
-            return ResponseEntity.ok(
-                new Answer("INCORRECT", playerDummy, playerDummy.getScore(), 0));
-          }
-        } else if (q instanceof QuestionMultipleChoice) {
-          if (Integer.parseInt(player.getSelectedAnswer())
-              == q.getActivities().get(Integer.parseInt(player.getSelectedAnswer()) - 1)
-              .getConsumption_in_wh()) {
-            playerDummy.setScore(playerDummy.getScore() + 100);
-            playerRepo.save(playerDummy);
-            return ResponseEntity.ok(
-                new Answer("CORRECT", playerDummy, playerDummy.getScore(), 100));
-          } else {
-            playerDummy.setScore(playerDummy.getScore());
-            playerRepo.save(playerDummy);
-            return ResponseEntity.ok(
-                new Answer("INCORRECT", playerDummy, playerDummy.getScore(), 0));
-          }
-        } else {
-          if (Integer.parseInt(player.getSelectedAnswer())
-              == q.getActivities().get(0).getConsumption_in_wh()) {
-            playerDummy.setScore(playerDummy.getScore() + 100);
-            playerRepo.save(playerDummy);
-            return ResponseEntity.ok(
-                new Answer("CORRECT", playerDummy, playerDummy.getScore(), 100));
-          } else {
-            playerDummy.setScore(playerDummy.getScore());
-            playerRepo.save(playerDummy);
-            return ResponseEntity.ok(
-                new Answer("INCORRECT", playerDummy, playerDummy.getScore(), 0));
-          }
-        }
-      }
+    GameEntity game = answerService.findGame(id).getBody();
+    if (Objects.isNull(game)) {
+      return ResponseEntity.status(answerService.findGame(id).getStatusCode()).build();
     }
-    return ResponseEntity.badRequest().build();
+
+    Player playerDummy = answerService.findPlayer(game, player);
+    if (Objects.isNull(playerDummy)) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+    Question q = game.getQuestions().get((int) idq - 1);
+    playerDummy.setSelectedAnswer(player.getSelectedAnswer());
+    AnswerService.QType type = AnswerService.QType.valueOf(q.getClass().getSimpleName());
+
+    switch (type) {
+      case QuestionEstimation:
+        return answerService.answerE(q, playerDummy);
+      case QuestionMultipleChoice:
+        return answerService.answerMC(q, playerDummy);
+      case QuestionMoreExpensive:
+        return answerService.answerME(q, playerDummy);
+      default:
+        return ResponseEntity.badRequest().build();
+    }
   }
 
   /**
@@ -352,6 +318,40 @@ public class GameEntityController {
     player.setGameId(game.getId());
     playerRepo.save(player);
     game.addPlayer(player);
+    return ResponseEntity.ok(repo.save(game));
+  }
+
+  /**
+   * Method that takes a message from /app/messages and returns it to /topic/messages.
+   *
+   * @param id      the id of the game
+   * @param message the message being sent
+   * @return the same message
+   */
+  @MessageMapping("/messages/{id}") // is /app/messages
+  @SendTo("/topic/messages/{id}")
+  public Message addMessageToGameByID(@Payload Message message, @DestinationVariable Long id) {
+    //call method for showing the name + text on the screen (to be implemented by frontend)
+    //TODO: delete the line below
+    System.out.println(message.getPlayerName() + ": " + message.getText());
+    return message;
+  }
+
+  /**
+   * Method to update list of players.
+   *
+   * @param id      the id of the game.
+   * @param players the list of players
+   * @return the updated game
+   */
+  @PutMapping(path = "/{id}/updatePlayer")
+  public ResponseEntity<GameEntity> updatePlayers(@PathVariable Long id,
+                                                  @RequestBody List<Player> players) {
+    if (!repo.existsById(id)) {
+      return ResponseEntity.badRequest().build();
+    }
+    GameEntity game = repo.getById(id);
+    game.setPlayers(players);
     return ResponseEntity.ok(repo.save(game));
   }
 
