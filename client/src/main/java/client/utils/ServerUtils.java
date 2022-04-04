@@ -18,20 +18,27 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import commons.*;
+import commons.Activity;
+import commons.GameEntity;
+import commons.LeaderboardEntry;
+import commons.Message;
+import commons.Player;
+import commons.Question;
+import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
+import javafx.scene.image.Image;
 import org.glassfish.jersey.client.ClientConfig;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
@@ -55,24 +62,23 @@ public class ServerUtils {
   /**
    * Connect method that sets up a connection with a websocket.
    *
-   * @param url the url to use for the connection
-   * @return the started stomp session
    * @throws RuntimeException      if setting up the connection went wrong
    * @throws IllegalStateException if the stomp session got into a wrong state
    */
-  public StompSession connect(String url) {
+  public void connect() {
+    String url = server.replaceAll("^(http|https)://", "ws://") + "/websocket";
+    System.out.println(url);
     var client = new StandardWebSocketClient();
     var stomp = new WebSocketStompClient(client);
     stomp.setMessageConverter(new MappingJackson2MessageConverter());
     try {
-      return stomp.connect(url, new StompSessionHandlerAdapter() {
+      this.session = stomp.connect(url, new StompSessionHandlerAdapter() {
       }).get();
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
-    } catch (ExecutionException e) {
-      throw new RuntimeException(e);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    throw new IllegalStateException();
   }
 
   /**
@@ -254,10 +260,10 @@ public class ServerUtils {
    */
   public GameEntity getGame() {
     return ClientBuilder.newClient(new ClientConfig()) //
-        .target(server).path("api/game/" + String.valueOf(player.getGameId())) //
+        .target(server).path("api/game/" + player.getGameId()) //
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
-        .get(new GenericType<GameEntity>() {
+        .get(new GenericType<>() {
         });
   }
 
@@ -382,11 +388,11 @@ public class ServerUtils {
   /**
    * Method to send a message.
    *
-   * @param dest  the path to send the message to
-   * @param emoji the name of the emoji to be sent
+   * @param dest the path to send the message to
+   * @param text the text to be sent
    */
-  public void send(String dest, String emoji) {
-    Message message = new Message(emoji, player.getName());
+  public void send(String dest, String text) {
+    Message message = new Message(text, player.getName());
     session.send(dest + "/" + player.getGameId(), message);
   }
 
@@ -400,5 +406,84 @@ public class ServerUtils {
         .target(server).path("api/game/" + getGame().getId() + "/updatePlayer")
         .request()
         .put(Entity.json(players));
+  }
+
+  /**
+   * Method that retrieves the whole list of activities.
+   *
+   * @return a list of added activities inside the DB
+   */
+  public List<Activity> getAllActivities() {
+    return ClientBuilder.newClient(new ClientConfig())
+        .target(server).path("api/activity")
+        .request().get(new GenericType<List<Activity>>() {
+        });
+  }
+
+  /**
+   * Method that adds an activity to the DB.
+   *
+   * @param activity the type activity by the admin.
+   * @return the newly created activity.
+   */
+  public Activity addActivity(Activity activity) {
+    return ClientBuilder.newClient(new ClientConfig()) //
+        .target(server).path("api/activity") //
+        .request(APPLICATION_JSON) //
+        .accept(APPLICATION_JSON) //
+        .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);
+  }
+
+  /**
+   * Method to retrieve an activity by id.
+   *
+   * @param id the id of a wanted activity
+   * @return null if there is no activity or the retrieved activity
+   */
+  public Response getActivityById(String id) {
+    Response act = ClientBuilder.newClient(new ClientConfig())
+        .target(server).path("/api/activity/" + id)
+        .request().get(new GenericType<Response>() {
+        });
+    if (act.getStatus() == 400) {
+      return null;
+    }
+    return act;
+  }
+
+  /**
+   * Method to update an activity.
+   *
+   * @param activity the newly created activity
+   * @return either null if there is no such activity or the updated activity
+   */
+  public Activity updateActivity(Activity activity) {
+    Response r = ClientBuilder.newClient(new ClientConfig())
+        .target(server).path("/api/activity/" + activity.getId())
+        .request().put(Entity.json(activity));
+    if (r.getStatus() == 400) {
+      return null;
+    }
+    return r.readEntity(Activity.class);
+  }
+
+  /**
+   * Gets an image from the backend.
+   *
+   * @param path the path to the image
+   * @return the specified image or a default image if the image doesn't exist
+   */
+  public javafx.scene.image.Image getImage(String path) {
+    Image img;
+    try {
+      img = new javafx.scene.image.Image(
+          server + "api/download/images/" + path);
+      if (img.isError()) {
+        throw new FileNotFoundException();
+      }
+    } catch (Exception e) {
+      img = new javafx.scene.image.Image("client/images/defaultImage.png");
+    }
+    return img;
   }
 }

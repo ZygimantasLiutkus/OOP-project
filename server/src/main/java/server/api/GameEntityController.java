@@ -1,9 +1,15 @@
 package server.api;
 
-import commons.*;
+import commons.Answer;
+import commons.GameEntity;
+import commons.LeaderboardEntry;
+import commons.Message;
+import commons.Player;
+import commons.Question;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +17,13 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import server.database.GameEntityRepository;
 import server.database.PlayerRepository;
 import server.database.QuestionRepository;
@@ -81,13 +93,8 @@ public class GameEntityController {
    */
   @GetMapping(path = "/{id}")
   public ResponseEntity<GameEntity> getGameById(@PathVariable("id") long id) {
-    for (long i = 0; i <= repo.findAll().size(); i++) {
-      if (i == id) {
-        return ResponseEntity.ok(repo.getById(id));
-      }
-    }
-    return ResponseEntity.badRequest().build();
-
+    Optional<GameEntity> optional = repo.findById(id);
+    return optional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
   }
 
   /**
@@ -319,12 +326,14 @@ public class GameEntityController {
    *
    * @param id      the id of the game
    * @param message the message being sent
-   * @return        the same message
+   * @return the same message
    */
   @MessageMapping("/messages/{id}") // is /app/messages
   @SendTo("/topic/messages/{id}")
   public Message addMessageToGameByID(@Payload Message message, @DestinationVariable Long id) {
-    //call method for showing the name + emoji on the screen (to be implemented by frontend)
+    //call method for showing the name + text on the screen (to be implemented by frontend)
+    //TODO: delete the line below
+    System.out.println(message.getPlayerName() + ": " + message.getText());
     return message;
   }
 

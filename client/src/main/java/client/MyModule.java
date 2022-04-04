@@ -41,5 +41,8 @@ public class MyModule implements Module {
     binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
     binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
     binder.bind(CountdownCtrl.class).in(Scopes.SINGLETON);
+    binder.bind(ActivityOverviewCtrl.class).in(Scopes.SINGLETON);
+    binder.bind(ActivityPopUpCtrl.class).in(Scopes.SINGLETON);
+
   }
 }
