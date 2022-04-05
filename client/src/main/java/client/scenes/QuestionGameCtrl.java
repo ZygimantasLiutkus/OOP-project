@@ -325,6 +325,7 @@ public class QuestionGameCtrl {
    * Method to set the selected answer to the first answer.
    */
   public void setSelectedAnswer1() {
+    gracefulExit();
     this.answerTime = getTimeCounter();
     String answer = answer1.getText();
     server.getPlayer().setSelectedAnswer(answer);
@@ -953,8 +954,7 @@ public class QuestionGameCtrl {
     server.send("/app/messages", "disconnected");
     server.session.disconnect();
 
-    messageEmojiList.getItems().clear();
-    messageNameList.getItems().clear();
+    gracefulExit();
 
     cooldown.stop();
     timeline.stop();
@@ -1002,10 +1002,8 @@ public class QuestionGameCtrl {
    * Method to make a graceful game exit by resetting the emoji chat and the jokers.
    */
   public void gracefulExit() {
-    for (int i = 0; i < 7; i++) {
-      messageEmojiList.getItems().remove(0);
-      messageNameList.getItems().remove(0);
-    }
+    messageEmojiList.getItems().clear();
+    messageNameList.getItems().clear();
     pointsUsed = false;
     answerUsed = false;
     timeUsed = false;
