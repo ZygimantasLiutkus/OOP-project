@@ -883,15 +883,15 @@ public class QuestionGameCtrl {
         messageNameList.getItems().remove(i);
       }
     }
-      messageEmojiList.getItems()
-          .add(0, new ImageView(new Image("client/images/left.png")));
-      messageNameList.getItems().add(0, message.getPlayerName());
-      players.removeIf(p -> p.getName().equals(message.getPlayerName()));
     if (message.getText().equals("disconnected")) {
       server.setPlayersFinished(server.getPlayersFinished() + 1);
       if (server.getPlayersFinished() >= server.getGame().getPlayers().size()) {
         mainCtrl.setMPLeaderboard();
       }
+      messageEmojiList.getItems()
+          .add(0, new ImageView(new Image("client/images/left.png")));
+      messageNameList.getItems().add(0, message.getPlayerName());
+      players.removeIf(p -> p.getName().equals(message.getPlayerName()));
     } else if (message.getText().equals("finished")) {
       server.setPlayersFinished(server.getPlayersFinished() + 1);
       if (server.getPlayersFinished() >= server.getGame().getPlayers().size()) {
