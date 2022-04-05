@@ -7,6 +7,7 @@ import commons.Activity;
 import commons.GameEntity;
 import commons.LeaderboardEntry;
 import commons.Message;
+import commons.Player;
 import commons.Question;
 import java.util.HashMap;
 import java.util.List;
@@ -971,6 +972,7 @@ public class QuestionGameCtrl {
       server.changeStatus(dummyGameAborted);
     }
   }
+
   /**
    * Sends a message with the player's name and an indication that the time joker has been used.
    */

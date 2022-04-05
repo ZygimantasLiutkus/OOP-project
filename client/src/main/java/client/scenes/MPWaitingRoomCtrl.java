@@ -109,7 +109,6 @@ public class MPWaitingRoomCtrl implements Initializable {
     questionGameCtrl.players = server.getGame().getPlayers();
     questionGameCtrl.startCommunication();
     questionGameCtrl.startGame();
-    questionGameCtrl.startCommunication();
   }
 
   /**
