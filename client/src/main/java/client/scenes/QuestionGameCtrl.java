@@ -3,7 +3,12 @@ package client.scenes;
 import client.utils.ServerUtils;
 import client.utils.TimerUtils;
 import com.google.inject.Inject;
-import commons.*;
+import commons.Activity;
+import commons.GameEntity;
+import commons.LeaderboardEntry;
+import commons.Message;
+import commons.Player;
+import commons.Question;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +16,11 @@ import java.util.Random;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -36,7 +45,6 @@ public class QuestionGameCtrl {
   public boolean pointsUsed = false;
   public boolean answerUsed = false;
   public boolean timeUsed = false;
-  public boolean pointsDisabled = false;
   public List<Player> players;
   private GameEntity.Type type;
   private int startTime = 15;
@@ -45,6 +53,7 @@ public class QuestionGameCtrl {
   private Timeline timeline;
   private Timeline timeCount;
   private Timeline cooldown;
+  private int answerTime = 0;
 
   @FXML
   private ImageView homeButton;
@@ -123,6 +132,9 @@ public class QuestionGameCtrl {
 
   @FXML
   private Button jokerAnswer;
+
+  @FXML
+  private Button jokerTime;
 
   /**
    * Constructor for QuestionGameCtrl.
@@ -206,6 +218,7 @@ public class QuestionGameCtrl {
    */
   public void sendAnswer() {
     String answer = String.valueOf(question.getActivities().get(0).getConsumption_in_wh());
+    this.textArea.setEditable(false);
     server.getPlayer().setSelectedAnswer(answer);
     this.submitButton.setDisable(true);
     this.submitButton.setVisible(false);
@@ -226,13 +239,23 @@ public class QuestionGameCtrl {
   /**
    * Method to flag the use of a joker.
    */
+  public void useTimer() {
+    timeUsed = true;
+    jokerTime.setDisable(true);
+    jokerTime.setVisible(false);
+    sendJokerTime();
+  }
+
+  /**
+   * Method to flag the use of a joker.
+   */
   public void useAnswerJoker() {
     answerUsed = true;
     jokerAnswer.setVisible(false);
     jokerAnswer.setDisable(true);
-    if (question.getText().equals("Which is more expensive?")) {
+    if (question.getText().contains("Which is more expensive?")) {
       discardExpensive();
-    } else if (question.getText().equals("How much does this activity consume per hour?")) {
+    } else {
       discardMultiple();
     }
   }
@@ -310,6 +333,7 @@ public class QuestionGameCtrl {
    * Method to set the selected answer to the first answer.
    */
   public void setSelectedAnswer1() {
+    this.answerTime = getTimeCounter();
     String answer = answer1.getText();
     server.getPlayer().setSelectedAnswer(answer);
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
@@ -323,6 +347,7 @@ public class QuestionGameCtrl {
    * Method to set the selected answer to the second answer.
    */
   public void setSelectedAnswer2() {
+    this.answerTime = getTimeCounter();
     String answer = answer2.getText();
     server.getPlayer().setSelectedAnswer(answer);
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
@@ -336,6 +361,7 @@ public class QuestionGameCtrl {
    * Method to set the selected answer to the third answer.
    */
   public void setSelectedAnswer3() {
+    this.answerTime = getTimeCounter();
     String answer = answer3.getText();
     server.getPlayer().setSelectedAnswer(answer);
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
@@ -484,6 +510,31 @@ public class QuestionGameCtrl {
     if (startTime <= 3) {
       progressBar.setStyle("-fx-accent: red");
     }
+    if (startTime < 0) {
+      timeRunOut();
+    }
+  }
+
+  /**
+   * Method that disables answer buttons when the time runs out.
+   */
+  public void timeRunOut() {
+    this.submitButton.setVisible(false);
+    this.textArea.setEditable(false);
+    String answer = server.getPlayer().getSelectedAnswer();
+    timeCounter.setVisible(false);
+    if (!answer.equals(answer1.getText())) {
+      answer1.setDisable(true);
+      answer1.setStyle("-fx-opacity: 0.5");
+    }
+    if (!answer.equals(answer2.getText())) {
+      answer2.setDisable(true);
+      answer2.setStyle("-fx-opacity: 0.5");
+    }
+    if (!answer.equals(answer3.getText())) {
+      answer3.setDisable(true);
+      answer3.setStyle("-fx-opacity: 0.5");
+    }
   }
 
   /**
@@ -495,9 +546,11 @@ public class QuestionGameCtrl {
       this.questionNum = 0;
       answerUsed = false;
       pointsUsed = false;
+      timeUsed = false;
     }
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       emojiPane.setVisible(false);
+      jokerTime.setVisible(false);
       emojiButtonPane.setVisible(false);
       messageEmojiList.setVisible(false);
       messageNameList.setVisible(false);
@@ -539,8 +592,6 @@ public class QuestionGameCtrl {
     answer2.setStyle("-fx-opacity: 1");
     answer3.setStyle("-fx-opacity: 1");
 
-    int time = startTime;
-
     boolean answerCorrectness = false;
 
     if (question.getText().equals("How much do you think this activity consumes per hour?")) {
@@ -562,7 +613,7 @@ public class QuestionGameCtrl {
     int points;
     if (!answerCorrectness) {
       addPoints.setText("+0");
-      pointsDisabled = true;
+
     } else {
       //The points are calculated depending on how close you were to the actual answer.
       if (question.getText().equals("How much do you think this activity consumes per hour?")) {
@@ -572,15 +623,15 @@ public class QuestionGameCtrl {
         points = (int) (150 * (1 - percentageOff / 0.3));
       } else {
 
-        points = 10 * (time + 1);
-        if (time == 15) {
+        points = 10 * (answerTime + 1);
+        if (answerTime == 15) {
           points -= 10;
         }
       }
 
-      if (pointsUsed && pointsDisabled == false) {
+      if (pointsUsed) {
         points *= 2;
-        pointsDisabled = true;
+        pointsUsed = false;
       }
       server.getPlayer().setScore(server.getPlayer().getScore() + points);
       addPoints.setText("+" + points);
@@ -642,10 +693,6 @@ public class QuestionGameCtrl {
         jokerAnswer.setDisable(false);
       }
     }
-    if (!pointsDisabled) {
-      jokerPoints.setVisible(true);
-      jokerPoints.setDisable(false);
-    }
   }
 
   /**
@@ -653,6 +700,7 @@ public class QuestionGameCtrl {
    */
   public void nextQuestion() {
     setText();
+    pointsUsed = false;
     resetTimer();
     resetJokers();
     questionNum++;
@@ -710,6 +758,7 @@ public class QuestionGameCtrl {
     this.textPrompt.setDisable(true);
     this.submitButton.setDisable(false);
     this.submitButton.setVisible(true);
+    this.textArea.setEditable(true);
     this.textArea.setDisable(false);
     this.textArea.setVisible(true);
     this.answerText.setVisible(false);
@@ -827,10 +876,15 @@ public class QuestionGameCtrl {
   public void startCommunication() {
     server.connect();
     server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
-      Platform.runLater(() -> {
-        showMessage(message);
-      });
-
+      if (message.getText().equals("time")) {
+        Platform.runLater(() -> {
+          timeJoker(message);
+        });
+      } else {
+        Platform.runLater(() -> {
+          showMessage(message);
+        });
+      }
     });
   }
 
@@ -917,5 +971,37 @@ public class QuestionGameCtrl {
     if (players.size() <= 1) {
       server.changeStatus(dummyGameAborted);
     }
+  }
+
+  /**
+   * Sends a message with the player's name and an indication that the time joker has been used.
+   */
+  public void sendJokerTime() {
+    server.send("/app/messages", "time");
+  }
+
+  /**
+   * Reduces the time for other players.
+   *
+   * @param message the message that was sent by the player that used the joker.
+   */
+  public void timeJoker(Message message) {
+    if (!server.getPlayer().getName().equals(message.getPlayerName()) && getTimeCounter() > 5) {
+      int newTime = startTime / 2;
+      progress /= 2;
+      updateCounter(newTime);
+    }
+
+    if (messageEmojiList.getItems().size() > 6) {
+      for (int i = messageEmojiList.getItems().size() - 1; i > 5; i--) {
+        messageEmojiList.getItems().remove(i);
+        messageNameList.getItems().remove(i);
+      }
+    }
+    ImageView empty = new ImageView();
+    messageEmojiList.getItems().add(0, empty);
+    messageEmojiList.getItems().get(0).setFitWidth(30);
+    messageEmojiList.getItems().get(0).setFitHeight(30);
+    messageNameList.getItems().add(0, "Time joker");
   }
 }

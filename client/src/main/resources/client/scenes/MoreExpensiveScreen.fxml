@@ -189,7 +189,7 @@
                 <VBox fx:id="jokerEl" layoutX="30.0" layoutY="110.0" prefHeight="179.0" prefWidth="106.0" spacing="20.0" AnchorPane.bottomAnchor="110.80000000000001" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="110.0">
                     <children>
                         <Label fx:id="jokerLabel" prefHeight="18.0" prefWidth="70.0" text="Joker cards:" />
-                        <Button fx:id="jokerTime" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" style="-fx-alignment: center;" text="Decrease Time" />
+                        <Button fx:id="jokerTime" mnemonicParsing="false" onMouseClicked="#useTimer" prefHeight="38.0" prefWidth="106.0" style="-fx-alignment: center;" text="Decrease Time" />
                         <Button fx:id="jokerPoints" mnemonicParsing="false" onMouseClicked="#usePointsJoker" prefHeight="38.0" prefWidth="106.0" text="Double Points" />
                         <Button fx:id="jokerAnswer" mnemonicParsing="false" onMouseClicked="#useAnswerJoker" prefHeight="38.0" prefWidth="106.0" text="Discard Answer" />
                     </children>
