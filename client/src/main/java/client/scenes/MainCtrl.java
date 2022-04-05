@@ -141,7 +141,7 @@ public class MainCtrl {
     primaryStage.setOnCloseRequest(event -> {
       event.consume();
       if (primaryStage.getScene().equals(questionGame)) {
-        questionGameCtrl.disconnect();
+        questionGameCtrl.goHomeScreen();
       }
       if (primaryStage.getScene().equals(this.waitingRoomMP)) {
         mpWaitingRoomCtrl.goHome();

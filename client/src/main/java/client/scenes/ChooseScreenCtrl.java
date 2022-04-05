@@ -113,7 +113,7 @@ public class ChooseScreenCtrl {
       }
     };
 
-    SequentialTransition sq = new SequentialTransition(sp, l, mp, cs, cn, a, flash);
+    ParallelTransition sq = new ParallelTransition(sp, l, mp, cs, cn, a, flash);
     sq.setDelay(Duration.millis(1500));
     sq.play();
   }
