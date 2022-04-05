@@ -66,9 +66,6 @@ you can now play with your friends or alone.
 **NOTE:** You can play on your own server. If you do want to do so, just leave **localhost:8080** in the text box after
 you have opened the server, and you will now become your own host.
 
-**NOTE:** When joining a multiplayer lobby, everyone needs to press the button that launches the player list in order to
-be able to start a game.
-
 **NOTE FOR TEACHERS:** The *.json* file that we have used for testing the game was edited (some activities were removed)
 due to long resources links and very high consumptions on the given activities, so it will not be exactly the same as
 the one inside the *Activity Bank*. What we have used can be accessed using this *Google Drive*
