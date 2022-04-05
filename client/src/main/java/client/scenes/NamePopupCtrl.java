@@ -4,6 +4,10 @@ import client.utils.NextScreen;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Player;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,6 +22,7 @@ public class NamePopupCtrl {
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
   private final QuestionGameCtrl multipleCtrl;
+  public FileWriter writer;
 
   private NextScreen nextScreen;
 
@@ -46,6 +51,20 @@ public class NamePopupCtrl {
   }
 
   /**
+   * Initializes the scanner and may potentially create the file.
+   */
+  public void initializeName() {
+    try {
+      Scanner scanner = new Scanner(new File("name.txt"));
+      String name = scanner.nextLine();
+      server.setDummy(new Player(name));
+      nameField.setText(name);
+    } catch (Exception e) {
+      server.setDummy(new Player(""));
+    }
+  }
+
+  /**
    * Saves the entered name of the user.
    */
   public void submit() {
@@ -56,6 +75,15 @@ public class NamePopupCtrl {
     }
 
     server.setDummy(new Player(nameField.getText()));
+    //Overwrite the already existent name inside the .txt
+    try {
+      writer = new FileWriter("name.txt", false);
+      writer.write(nameField.getText());
+      writer.flush();
+      writer.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
     switch (nextScreen) {
       case WaitingRoomScreen:

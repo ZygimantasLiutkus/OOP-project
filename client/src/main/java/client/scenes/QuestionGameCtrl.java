@@ -37,6 +37,7 @@ public class QuestionGameCtrl {
   public boolean answerUsed = false;
   public boolean timeUsed = false;
   public boolean pointsDisabled = false;
+  public List<Player> players;
   private GameEntity.Type type;
   private int startTime = 15;
   private int questionNum = 0;
@@ -825,6 +826,7 @@ public class QuestionGameCtrl {
    * Method that sets up communication for the client.
    */
   public void startCommunication() {
+    server.connect();
     server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
       Platform.runLater(() -> {
         showMessage(message);
@@ -881,14 +883,15 @@ public class QuestionGameCtrl {
         messageNameList.getItems().remove(i);
       }
     }
-
+      messageEmojiList.getItems()
+          .add(0, new ImageView(new Image("client/images/left.png")));
+      messageNameList.getItems().add(0, message.getPlayerName());
+      players.removeIf(p -> p.getName().equals(message.getPlayerName()));
     if (message.getText().equals("disconnected")) {
       server.setPlayersFinished(server.getPlayersFinished() + 1);
       if (server.getPlayersFinished() >= server.getGame().getPlayers().size()) {
         mainCtrl.setMPLeaderboard();
       }
-      messageEmojiList.getItems().add(0, new ImageView());
-      messageNameList.getItems().add(0, message.getPlayerName() + " has " + message.getText());
     } else if (message.getText().equals("finished")) {
       server.setPlayersFinished(server.getPlayersFinished() + 1);
       if (server.getPlayersFinished() >= server.getGame().getPlayers().size()) {
@@ -909,12 +912,6 @@ public class QuestionGameCtrl {
    * Method that disconnects a player from a multiplayer game and notifies the others.
    */
   public void disconnect() {
-    List<Player> players = server.getGame().getPlayers();
-    Player leaving = server.getPlayer();
-    leaving.setSelectedAnswer("0");
-    players.remove(leaving);
-
-    server.updatePlayer(players);
     server.send("/app/messages", "disconnected");
     server.session.disconnect();
 
@@ -926,7 +923,7 @@ public class QuestionGameCtrl {
     timeCount.stop();
     questionNum = 20;
 
-    if (players.isEmpty()) {
+    if (players.size() <= 1) {
       server.changeStatus(dummyGameAborted);
     }
   }

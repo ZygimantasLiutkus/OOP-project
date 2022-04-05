@@ -6,6 +6,11 @@ group members. Add your own name (do not add the names for others!) to the secti
 
 ## Description of project
 
+*Quizzzz* is a single-player & multiplayer quiz game focused on discovering the energy consumption of everyday
+activities in order to bring awareness to the masses of people on the global waste of resources. While this is a fun way
+of playing with friends, either "online or offline", using the *Activity Panel* feature is a great way of educating
+yourself on how resourceful some activities actually are.
+
 ## Group members
 
 | Profile Picture | Name | Email |
@@ -19,7 +24,57 @@ group members. Add your own name (do not add the names for others!) to the secti
 
 ## How to run it
 
+There are 2 main components that are needed in order to be able to play the game: the **server** and the **client**.
+
+Before starting the server, make sure that you have a *.json* file that contains every activity that yow want to have
+featured inside the questions. In order for the file to be read by the computer, create a file called *Activities.json*
+and place it in  **server > src > main > resources**. You can use a pre-made list that was used by the developers when
+creating the game (accessing this *Google Drive* link - 
+https://drive.google.com/file/d/1D6_m38rXbag36BSluRgsEMZvfCHo304d/view?usp=sharing) or create your own one. The list must
+look something like this:
+
+![img_1.png](img_1.png)
+
+If you do not want to add a photo, you can just leave empty brackets inside that field. Though, if you want a more
+aesthetic game experience, after you have entered a file name for the photo, you will need to add it respecting the file
+path that you have submitted. Open **server > src > main > resources > images** and add your photo according to the
+specified image path.
+
+The server is the main "computer" that will host the games and will facilitate playing. For that to be started, you will
+need to run Gradle. You can do this in 2 ways:
+
+- write *./gradlew bootRun* in the terminal
+- manually run the server side with *bootRun* inside the chosen Java IDE - i.e. Quizzzz:server [bootRun] (*Quizzzz*
+  might be different depending on the file name)
+
+From there you will have a running server. What is left to do is to start a client. The client is the actual game where
+you interact with the questions and players. In order to open up a client you can use the terminal, or you can manually
+open it through gradle.
+
+To use the terminal, just enter "./gradlew run". To start it manually you will open a Java IDE and look for the [run]
+button inside the Gradle executable list.
+
+After starting your client (the game itself), you need to connect to a host (
+aka the server). Ask for a friend's IP and type it in the text box. In order to find the IP on Windows, select **Start >
+Settings > Network & internet > Wi-Fi >
+Properties**. Scroll down and look for the **IPv4 address**. On Mac, click the *Apple* logo in the top left corner,
+select **System Preferences > Network > Wi-Fi > Advanced > TCP/IP** and look for **IPv4 Address**. The person that has
+opened the server should look for the IP and those who want to join to his server need to fill up the box with the
+respective IP, along with **:8080** (this is the default port) at the end of the IP. After successfully joining a host,
+you can now play with your friends or alone.
+
+**NOTE:** You can play on your own server. If you do want to do so, just leave **localhost:8080** in the text box after
+you have opened the server, and you will now become your own host.
+
+**NOTE FOR TEACHERS:** The *.json* file that we have used for testing the game was edited (some activities were removed)
+due to long resources links and very high consumptions on the given activities, so it will not be exactly the same as
+the one inside the *Activity Bank*. What we have used can be accessed using this *Google Drive*
+link: https://drive.google.com/file/d/1D6_m38rXbag36BSluRgsEMZvfCHo304d/view?usp=sharing
+
 ## How to contribute to it
+
+If you have used the already pre-made list of activities, you can add new ones manually by editing the file, but you can
+take advantage of the *Admin Panel* feature that is more user-friendly.
 
 ### Use Checkstyle
 

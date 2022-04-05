@@ -105,6 +105,8 @@ public class MPWaitingRoomCtrl implements Initializable {
   public void startMultiPlayer() {
     mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
     timeline.stop();
+    server.session.disconnect();
+    questionGameCtrl.players = server.getGame().getPlayers();
     questionGameCtrl.startCommunication();
     questionGameCtrl.startGame();
   }

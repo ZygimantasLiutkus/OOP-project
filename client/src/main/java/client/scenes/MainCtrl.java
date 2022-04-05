@@ -186,6 +186,8 @@ public class MainCtrl {
     popup.setScene(name);
     name.setOnKeyPressed(e -> namePopupCtrl.keyPressed(e));
     namePopupCtrl.setNextScreen(nextScreen);
+    namePopupCtrl.initializeName();
+    namePopupCtrl.showErrorText(false);
     popup.show();
   }
 
