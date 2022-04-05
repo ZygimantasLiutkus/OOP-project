@@ -57,6 +57,9 @@ public class ChooseScreenCtrl {
     this.namePopupCtrl = namePopupCtrl;
   }
 
+  /**
+   * Animation for the choose screen.
+   */
   public void animate() {
     TranslateTransition labelT = new TranslateTransition(Duration.millis(500), label);
     labelT.setFromY(-160);
