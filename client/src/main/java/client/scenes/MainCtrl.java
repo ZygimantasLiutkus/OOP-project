@@ -57,6 +57,9 @@ public class MainCtrl {
   private MPWaitingRoomCtrl mpWaitingRoomCtrl;
   private Scene waitingRoomMP;
 
+  private CountdownCtrl countdownCtrl;
+  private Scene countdown;
+
   private QuoteOverviewCtrl overviewCtrl;
   private Scene overview;
 
@@ -82,6 +85,7 @@ public class MainCtrl {
    * @param leaderboard      a pair of the LeaderboardScreen controller and the parent.
    * @param waitingRoomSP    a pair of the sp WaitingRoomScreen controller and the parent.
    * @param waitingRoomMP    a pair of the mp WaitingRoomScreen controller and the parent.
+   * @param countdown        a pair of the countdown controller and the parent.
    * @param activityOverview a pair of the activityOverview controller and the parent.
    * @param activityPopUp    a pair of the ActivityPopUp controller and the parent.
    */
@@ -92,8 +96,10 @@ public class MainCtrl {
                          Pair<LeaderboardScreenCtrl, Parent> leaderboard,
                          Pair<WaitingRoomCtrl, Parent> waitingRoomSP,
                          Pair<MPWaitingRoomCtrl, Parent> waitingRoomMP,
+                         Pair<CountdownCtrl, Parent> countdown,
                          Pair<ActivityOverviewCtrl, Parent> activityOverview,
                          Pair<ActivityPopUpCtrl, Parent> activityPopUp) {
+
     this.primaryStage = primaryStage;
     this.overviewCtrl = overview.getKey();
     this.overview = new Scene(overview.getValue());
@@ -122,6 +128,10 @@ public class MainCtrl {
     this.mpWaitingRoomCtrl = waitingRoomMP.getKey();
     this.waitingRoomMP = new Scene(waitingRoomMP.getValue());
 
+
+    this.countdownCtrl = countdown.getKey();
+    this.countdown = new Scene(countdown.getValue());
+
     this.activityCtrl = activityOverview.getKey();
     this.activityList = new Scene(activityOverview.getValue());
 
@@ -131,7 +141,7 @@ public class MainCtrl {
     primaryStage.setOnCloseRequest(event -> {
       event.consume();
       if (primaryStage.getScene().equals(questionGame)) {
-        questionGameCtrl.disconnect();
+        questionGameCtrl.goHomeScreen();
       }
       if (primaryStage.getScene().equals(this.waitingRoomMP)) {
         mpWaitingRoomCtrl.goHome();
@@ -173,6 +183,7 @@ public class MainCtrl {
   public void showEntry() {
     primaryStage.setTitle("Quizzzz");
     primaryStage.setScene(entry);
+    entryCtrl.animate();
     entry.setOnKeyPressed(e -> entryCtrl.keyPressed(e));
   }
 
@@ -204,6 +215,7 @@ public class MainCtrl {
   public void showChooseScreen() {
     primaryStage.setTitle("Choose the game style!");
     primaryStage.setScene(choose);
+    chooseScreenCtrl.animate();
   }
 
   /**
@@ -215,6 +227,17 @@ public class MainCtrl {
     primaryStage.setTitle("Quizzzz");
     questionGameCtrl.setType(type);
     primaryStage.setScene(questionGame);
+  }
+
+  /**
+   * Shows countdows before game.
+   *
+   * @param type the type of game
+   */
+  public void showCountdown(GameEntity.Type type) {
+    primaryStage.setTitle("Quizzzz");
+    primaryStage.setScene(countdown);
+    countdownCtrl.animate(type);
   }
 
   /**
@@ -246,6 +269,7 @@ public class MainCtrl {
    */
   public void showWaitingRoomScreenSP() {
     primaryStage.setTitle("Waiting...");
+    waitingRoomCtrl.animate();
     primaryStage.setScene(waitingRoomSP);
   }
 

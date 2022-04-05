@@ -103,12 +103,12 @@ public class MPWaitingRoomCtrl implements Initializable {
    * Starts the game in multi-player mode.
    */
   public void startMultiPlayer() {
-    mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
+    mainCtrl.showCountdown(GameEntity.Type.MULTIPLAYER);
     timeline.stop();
     server.session.disconnect();
     questionGameCtrl.players = server.getGame().getPlayers();
     questionGameCtrl.startCommunication();
-    questionGameCtrl.startGame();
+
   }
 
   /**
@@ -154,10 +154,10 @@ public class MPWaitingRoomCtrl implements Initializable {
    * Have the ability to leave a multiplayer lobby.
    */
   public void goHome() {
-    List<Player> players = server.getGame().getPlayers();
+    List<Player> players = this.server.getGame().getPlayers();
     players.remove(server.getPlayer());
-    server.updatePlayer(players);
-    server.session.disconnect();
+    this.server.updatePlayer(players);
+    this.server.session.disconnect();
     timeline.stop();
     mainCtrl.showChooseScreen();
   }

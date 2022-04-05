@@ -159,6 +159,7 @@ public class QuestionGameCtrl {
    */
   public void goHomeScreen() {
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
+      cooldown.stop();
       questionNum = 20;
       timeline.stop();
       timeCount.stop();
