@@ -154,10 +154,10 @@ public class MPWaitingRoomCtrl implements Initializable {
    * Have the ability to leave a multiplayer lobby.
    */
   public void goHome() {
-    List<Player> players = server.getGame().getPlayers();
+    List<Player> players = this.server.getGame().getPlayers();
     players.remove(server.getPlayer());
-    server.updatePlayer(players);
-    server.session.disconnect();
+    this.server.updatePlayer(players);
+    this.server.session.disconnect();
     timeline.stop();
     mainCtrl.showChooseScreen();
   }
