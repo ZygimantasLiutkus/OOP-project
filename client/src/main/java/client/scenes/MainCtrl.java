@@ -20,6 +20,7 @@ import client.utils.NextScreen;
 import commons.Activity;
 import commons.GameEntity;
 import commons.LeaderboardEntry;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -127,6 +128,17 @@ public class MainCtrl {
     this.activityPopUpCtrl = activityPopUp.getKey();
     this.activityPopUp = new Scene(activityPopUp.getValue());
 
+    primaryStage.setOnCloseRequest(event -> {
+      event.consume();
+      if (primaryStage.getScene().equals(questionGame)) {
+        questionGameCtrl.disconnect();
+      }
+      if (primaryStage.getScene().equals(this.waitingRoomMP)) {
+        mpWaitingRoomCtrl.goHome();
+      }
+      Platform.exit();
+    });
+
     showEntry();
     primaryStage.show();
 
@@ -174,6 +186,8 @@ public class MainCtrl {
     popup.setScene(name);
     name.setOnKeyPressed(e -> namePopupCtrl.keyPressed(e));
     namePopupCtrl.setNextScreen(nextScreen);
+    namePopupCtrl.initializeName();
+    namePopupCtrl.showErrorText(false);
     popup.show();
   }
 
@@ -241,6 +255,7 @@ public class MainCtrl {
   public void showWaitingRoomScreenMP() {
     primaryStage.setTitle("Waiting...");
     primaryStage.setScene(waitingRoomMP);
+    mpWaitingRoomCtrl.startTimeline();
     mpWaitingRoomCtrl.startListening();
   }
 

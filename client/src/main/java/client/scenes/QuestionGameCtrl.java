@@ -9,6 +9,7 @@ import commons.LeaderboardEntry;
 import commons.Message;
 import commons.Question;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import javafx.animation.Timeline;
@@ -43,6 +44,7 @@ public class QuestionGameCtrl {
   public boolean pointsUsed = false;
   public boolean answerUsed = false;
   public boolean timeUsed = false;
+  public List<Player> players;
   private GameEntity.Type type;
   private int startTime = 15;
   private int questionNum = 0;
@@ -160,6 +162,9 @@ public class QuestionGameCtrl {
       timeline.stop();
       timeCount.stop();
       server.changeStatus(dummyGameAborted);
+    }
+    if (type.equals(GameEntity.Type.MULTIPLAYER)) {
+      disconnect();
     }
     mainCtrl.showChooseScreen();
   }
@@ -868,6 +873,7 @@ public class QuestionGameCtrl {
    * Method that sets up communication for the client.
    */
   public void startCommunication() {
+    server.connect();
     server.registerForMessages("/topic/messages/" + server.getPlayer().getGameId(), message -> {
       if (message.getText().equals("time")) {
         Platform.runLater(() -> {
@@ -930,15 +936,41 @@ public class QuestionGameCtrl {
       }
     }
 
-    messageEmojiList.getItems()
-        .add(0,
-            new ImageView(new Image("client/images/" + message.getText() + "Emoji.png")));
-    messageEmojiList.getItems().get(0).setFitWidth(30);
-    messageEmojiList.getItems().get(0).setFitHeight(30);
+    if (message.getText().equals("disconnected")) {
+      messageEmojiList.getItems()
+          .add(0, new ImageView(new Image("client/images/left.png")));
+      messageNameList.getItems().add(0, message.getPlayerName());
+      players.removeIf(p -> p.getName().equals(message.getPlayerName()));
+    } else {
+      messageEmojiList.getItems()
+          .add(0,
+              new ImageView(new Image("client/images/" + message.getText() + "Emoji.png")));
+      messageEmojiList.getItems().get(0).setFitWidth(30);
+      messageEmojiList.getItems().get(0).setFitHeight(30);
 
-    messageNameList.getItems().add(0, message.getPlayerName());
+      messageNameList.getItems().add(0, message.getPlayerName());
+    }
   }
 
+  /**
+   * Method that disconnects a player from a multiplayer game and notifies the others.
+   */
+  public void disconnect() {
+    server.send("/app/messages", "disconnected");
+    server.session.disconnect();
+
+    messageEmojiList.getItems().clear();
+    messageNameList.getItems().clear();
+
+    cooldown.stop();
+    timeline.stop();
+    timeCount.stop();
+    questionNum = 20;
+
+    if (players.size() <= 1) {
+      server.changeStatus(dummyGameAborted);
+    }
+  }
   /**
    * Sends a message with the player's name and an indication that the time joker has been used.
    */
