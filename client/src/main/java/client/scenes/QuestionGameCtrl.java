@@ -664,7 +664,7 @@ public class QuestionGameCtrl {
    * Checks if the game type is single player and does the associated methods.
    */
   public void cooldownAnswer() {
-    if (questionNum < 2) {
+    if (questionNum < 20) {
       nextQuestion();
     } else {
       String name = server.getPlayer().getName();
