@@ -8,10 +8,11 @@ build:
   script:
     - ./gradlew build
     - ./gradlew AggregateJacocoReport
+    - ./gradlew AggregateCustomJacocoReport
     # preserve coverage information in an easy-to-reach folder
     - mv build/reports/jacoco/aggregate/html ./coverage
     - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
-    - echo `cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total/TestCoverage:/"`
+    - echo `cat build/reports/jacoco/AggregateCustomJacocoReport/html/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total/TestCoverage:/"`
   artifacts:
     paths:
       - ./coverage
