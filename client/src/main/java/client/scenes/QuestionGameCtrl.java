@@ -53,6 +53,7 @@ public class QuestionGameCtrl {
   private Timeline timeline;
   private Timeline timeCount;
   private Timeline cooldown;
+  private Timeline interTime;
   private int answerTime = 0;
 
   @FXML
@@ -150,6 +151,7 @@ public class QuestionGameCtrl {
     this.timeCount = timers.setupCounter(this);
     this.timeline = timers.setupTimeline(this);
     this.cooldown = timers.setupCooldown(this);
+    this.interTime = timers.intermediateTable(this, mainCtrl);
   }
 
   /**
@@ -664,12 +666,12 @@ public class QuestionGameCtrl {
    * Checks if the game type is single player and does the associated methods.
    */
   public void cooldownAnswer() {
-    if (questionNum < 20) {
+    if (questionNum == 10 && type.equals(GameEntity.Type.MULTIPLAYER)) {
+      server.send("/app/messages", "intermediate");
+    } else if (questionNum < 20) {
       nextQuestion();
     } else {
-      String name = server.getPlayer().getName();
-      int points = server.getPlayer().getScore();
-      LeaderboardEntry entry = new LeaderboardEntry(name, points);
+      LeaderboardEntry entry = lbEntry();
       server.changeStatus(dummyGameFinished);
       if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
         entry = server.addLeaderboardEntry(entry);
@@ -679,6 +681,31 @@ public class QuestionGameCtrl {
         mainCtrl.showMPLeaderboard(entry);
       }
     }
+  }
+
+  /**
+   * Method that shows the intermediate table.
+   */
+  public void showIntermediateTable() {
+    server.setPlayersFinished(server.getPlayersFinished() + 1);
+    LeaderboardEntry entry = lbEntry();
+    mainCtrl.showMPLeaderboard(entry);
+    mainCtrl.setMPLeaderboard();
+    if (server.getPlayersFinished() >= server.getGame().getPlayers().size()) {
+      interTime.play();
+      server.setPlayersFinished(0);
+    }
+  }
+
+  /**
+   * Method that creates a leaderboard entry.
+   *
+   * @return a new leaderboard entry.
+   */
+  public LeaderboardEntry lbEntry() {
+    String name = server.getPlayer().getName();
+    int points = server.getPlayer().getScore();
+    return new LeaderboardEntry(name, points);
   }
 
   /**
@@ -882,6 +909,8 @@ public class QuestionGameCtrl {
         Platform.runLater(() -> {
           timeJoker(message);
         });
+      } else if (message.getText().equals("intermediate")) {
+        Platform.runLater(this::showIntermediateTable);
       } else {
         Platform.runLater(() -> {
           showMessage(message);

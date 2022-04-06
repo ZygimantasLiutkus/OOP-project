@@ -12,7 +12,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
@@ -151,8 +155,8 @@ public class LeaderboardScreenCtrl implements Initializable {
    */
   public void setMultiplayer(LeaderboardEntry entry) {
     this.scoreLabel.setText("Scores");
-    this.reconnectButton.setVisible(true);
-    this.homeButton.setVisible(true);
+    this.reconnectButton.setVisible(false);
+    this.homeButton.setVisible(false);
     this.gameType = GameEntity.Type.MULTIPLAYER;
     this.ownEntry = entry;
   }

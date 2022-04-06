@@ -1,6 +1,8 @@
 package client.utils;
 
+import client.scenes.MainCtrl;
 import client.scenes.QuestionGameCtrl;
+import commons.GameEntity;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -71,5 +73,23 @@ public class TimerUtils {
       controller.cooldownAnswer();
     });
     return cooldown;
+  }
+
+  /**
+   * Sets up cooldown for intermediate table.
+   *
+   * @param controller the game controller.
+   * @param mainCtrl   the main game controller.
+   * @return the created timeline.
+   */
+  public Timeline intermediateTable(QuestionGameCtrl controller, MainCtrl mainCtrl) {
+    Timeline interTime = new Timeline();
+    interTime.getKeyFrames().add(new KeyFrame(Duration.millis(10000), e -> {
+    }));
+    interTime.setOnFinished(e -> {
+      mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
+      controller.nextQuestion();
+    });
+    return interTime;
   }
 }
