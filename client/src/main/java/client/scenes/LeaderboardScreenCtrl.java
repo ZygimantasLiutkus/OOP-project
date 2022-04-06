@@ -12,11 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
@@ -166,5 +162,14 @@ public class LeaderboardScreenCtrl implements Initializable {
    */
   public void home() {
     mainCtrl.showChooseScreen();
+  }
+
+  /**
+   * Setter for the text of the score label.
+   *
+   * @param text the text for the score label.
+   */
+  public void setScoreLabel(String text) {
+    this.scoreLabel.setText(text);
   }
 }

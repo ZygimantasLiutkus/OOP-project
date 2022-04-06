@@ -18,13 +18,7 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import commons.Activity;
-import commons.GameEntity;
-import commons.LeaderboardEntry;
-import commons.Message;
-import commons.Player;
-import commons.Question;
-import commons.Quote;
+import commons.*;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
@@ -55,6 +49,7 @@ public class ServerUtils {
 
   // = new Player("test"); for testing purposes. If we want to test client uncomment.
   public StompSession session;
+  public int playersFinished;
   private String server = "http://localhost:8080/";
   private Player player = new Player("");
   private Player dummyPlayer = new Player("");
@@ -200,6 +195,24 @@ public class ServerUtils {
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .post(Entity.entity(leaderboardEntry, APPLICATION_JSON), LeaderboardEntry.class);
+  }
+
+  /**
+   * Getter for the amount of players finished.
+   *
+   * @return the amount of players finished
+   */
+  public int getPlayersFinished() {
+    return this.playersFinished;
+  }
+
+  /**
+   * Setter for the amount of players finished.
+   *
+   * @param playersFinished the new amount of players finished
+   */
+  public void setPlayersFinished(int playersFinished) {
+    this.playersFinished = playersFinished;
   }
 
   /**
