@@ -55,7 +55,8 @@ To use the terminal, just enter "./gradlew run". To start it manually you will o
 button inside the Gradle executable list.
 
 After starting your client (the game itself), you need to connect to a host (
-aka the server). Ask for a friend's IP and type it in the text box. In order to find the IP on Windows, select **Start >
+aka the server). Ask for a friend's IP and type it in the text box. Either port share using any available app online or  
+ask for a public IP. In order to find the IP on Windows, select **Start >
 Settings > Network & internet > Wi-Fi >
 Properties**. Scroll down and look for the **IPv4 address**. On Mac, click the *Apple* logo in the top left corner,
 select **System Preferences > Network > Wi-Fi > Advanced > TCP/IP** and look for **IPv4 Address**. The person that has
