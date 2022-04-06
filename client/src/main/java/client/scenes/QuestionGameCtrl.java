@@ -549,6 +549,7 @@ public class QuestionGameCtrl {
       answerUsed = false;
       pointsUsed = false;
       timeUsed = false;
+      validateJoker = true;
     }
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       emojiPane.setVisible(false);
