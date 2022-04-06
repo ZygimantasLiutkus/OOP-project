@@ -1,6 +1,11 @@
 package server.services;
 
-import commons.*;
+import commons.Activity;
+import commons.Answer;
+import commons.GameEntity;
+import commons.Player;
+import commons.Question;
+import java.util.List;
 import java.util.Objects;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +32,28 @@ public class AnswerService {
     this.playerRepo = playerRepo;
   }
 
+  /**
+   * Updates the score of a player.
+   *
+   * @param gameID the id of the game
+   * @param player the player for which the score needs to be updated
+   * @return answer
+   */
+  public ResponseEntity updateScore(long gameID, Player player) {
+    if (!repo.existsById(gameID)) {
+      return ResponseEntity.badRequest().build();
+    }
+
+    GameEntity game = repo.getById(gameID);
+    List<Player> players = game.getPlayers();
+    for (Player p : players) {
+      if (p.id.equals(player.getId())) {
+        p.setScore(player.getScore());
+      }
+    }
+    game.setPlayers(players);
+    return ResponseEntity.ok().build();
+  }
 
   /**
    * A method to find if a player is in a specific game.

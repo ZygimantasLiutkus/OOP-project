@@ -1,6 +1,5 @@
 package server.api;
 
-import commons.Answer;
 import commons.GameEntity;
 import commons.LeaderboardEntry;
 import commons.Message;
@@ -8,7 +7,6 @@ import commons.Player;
 import commons.Question;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
@@ -241,31 +239,9 @@ public class GameEntityController {
    * @return an answer containing feedback about the submission
    */
   @PostMapping(path = "/{id}/question/{idQ}")
-  public ResponseEntity<Answer> answer(@PathVariable("id") long id, @PathVariable("idQ") long idq,
-                                       @RequestBody Player player) {
-    GameEntity game = answerService.findGame(id).getBody();
-    if (Objects.isNull(game)) {
-      return ResponseEntity.status(answerService.findGame(id).getStatusCode()).build();
-    }
-
-    Player playerDummy = answerService.findPlayer(game, player);
-    if (Objects.isNull(playerDummy)) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
-    Question q = game.getQuestions().get((int) idq - 1);
-    playerDummy.setSelectedAnswer(player.getSelectedAnswer());
-    AnswerService.QType type = AnswerService.QType.valueOf(q.getClass().getSimpleName());
-
-    switch (type) {
-      case QuestionEstimation:
-        return answerService.answerE(q, playerDummy);
-      case QuestionMultipleChoice:
-        return answerService.answerMC(q, playerDummy);
-      case QuestionMoreExpensive:
-        return answerService.answerME(q, playerDummy);
-      default:
-        return ResponseEntity.badRequest().build();
-    }
+  public ResponseEntity answer(@PathVariable("id") long id, @PathVariable("idQ") long idq,
+                               @RequestBody Player player) {
+    return answerService.updateScore(id, player);
   }
 
   /**
