@@ -26,6 +26,7 @@ public class LeaderboardScreenCtrl implements Initializable {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
+  private final QuestionGameCtrl questionGameCtrl;
 
   private ObservableList<LeaderboardEntry> data;
   private LeaderboardEntry ownEntry;
@@ -60,9 +61,11 @@ public class LeaderboardScreenCtrl implements Initializable {
    */
   @Inject
 
-  public LeaderboardScreenCtrl(ServerUtils server, MainCtrl mainCtrl) {
+  public LeaderboardScreenCtrl(ServerUtils server, MainCtrl mainCtrl,
+                               QuestionGameCtrl questionGameCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
+    this.questionGameCtrl = questionGameCtrl;
   }
 
   /**
@@ -166,6 +169,9 @@ public class LeaderboardScreenCtrl implements Initializable {
    */
   public void home() {
     mainCtrl.showChooseScreen();
+    if (gameType.equals(GameEntity.Type.MULTIPLAYER)) {
+      questionGameCtrl.disconnect();
+    }
   }
 
   /**

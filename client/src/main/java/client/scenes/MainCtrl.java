@@ -146,6 +146,9 @@ public class MainCtrl {
       if (primaryStage.getScene().equals(this.waitingRoomMP)) {
         mpWaitingRoomCtrl.goHome();
       }
+      if (primaryStage.getScene().equals(leaderboard)) {
+        leaderboardScreenCtrl.home();
+      }
       Platform.exit();
     });
 
