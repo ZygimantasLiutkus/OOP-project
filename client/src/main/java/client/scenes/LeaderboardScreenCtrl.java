@@ -56,8 +56,9 @@ public class LeaderboardScreenCtrl implements Initializable {
   /**
    * Constructor for LeaderboardScreenCtrl.
    *
-   * @param server   reference to the server the game will run on.
-   * @param mainCtrl reference to the main controller.
+   * @param server           reference to the server the game will run on.
+   * @param mainCtrl         reference to the main controller.
+   * @param questionGameCtrl reference to the questionGame controller.
    */
   @Inject
 
