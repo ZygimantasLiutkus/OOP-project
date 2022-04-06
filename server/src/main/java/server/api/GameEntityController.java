@@ -234,13 +234,11 @@ public class GameEntityController {
    * The player's score will be updated.
    *
    * @param id     the game's id
-   * @param idq    the question number
    * @param player the player that has answered
-   * @return an answer containing feedback about the submission
+   * @return responseEntity
    */
-  @PostMapping(path = "/{id}/question/{idQ}")
-  public ResponseEntity answer(@PathVariable("id") long id, @PathVariable("idQ") long idq,
-                               @RequestBody Player player) {
+  @PostMapping(path = "/{id}/scores")
+  public ResponseEntity answer(@PathVariable("id") long id, @RequestBody Player player) {
     return answerService.updateScore(id, player);
   }
 

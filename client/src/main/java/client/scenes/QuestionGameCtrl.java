@@ -634,7 +634,7 @@ public class QuestionGameCtrl {
         points *= 2;
         pointsUsed = false;
       }
-      server.getPlayer().setScore(server.getPlayer().getScore() + points);
+      server.updateScore(points);
       addPoints.setText("+" + points);
     }
 
@@ -664,7 +664,7 @@ public class QuestionGameCtrl {
    * Checks if the game type is single player and does the associated methods.
    */
   public void cooldownAnswer() {
-    if (questionNum < 20) {
+    if (questionNum < 2) {
       nextQuestion();
     } else {
       String name = server.getPlayer().getName();

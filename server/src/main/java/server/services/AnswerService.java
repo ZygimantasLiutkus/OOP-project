@@ -5,7 +5,6 @@ import commons.Answer;
 import commons.GameEntity;
 import commons.Player;
 import commons.Question;
-import java.util.List;
 import java.util.Objects;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,13 +44,10 @@ public class AnswerService {
     }
 
     GameEntity game = repo.getById(gameID);
-    List<Player> players = game.getPlayers();
-    for (Player p : players) {
-      if (p.id.equals(player.getId())) {
-        p.setScore(player.getScore());
-      }
+    if (!game.getStatus().equals("STARTED")) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
-    game.setPlayers(players);
+    playerRepo.save(player);
     return ResponseEntity.ok().build();
   }
 
