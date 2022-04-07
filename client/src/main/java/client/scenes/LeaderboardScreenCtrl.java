@@ -159,8 +159,8 @@ public class LeaderboardScreenCtrl implements Initializable {
    */
   public void setMultiplayer(LeaderboardEntry entry) {
     this.scoreLabel.setText("Scores");
-    this.reconnectButton.setVisible(false);
-    this.homeButton.setVisible(false);
+    this.reconnectButton.setVisible(true);
+    this.homeButton.setVisible(true);
     this.gameType = GameEntity.Type.MULTIPLAYER;
     this.ownEntry = entry;
   }
@@ -182,5 +182,13 @@ public class LeaderboardScreenCtrl implements Initializable {
    */
   public void setScoreLabel(String text) {
     this.scoreLabel.setText(text);
+  }
+
+  /**
+   * Reconnect back to a game.
+   */
+  public void reconnect() {
+    server.addPlayer();
+    mainCtrl.showWaitingRoomScreenMP();
   }
 }

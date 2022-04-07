@@ -671,7 +671,7 @@ public class QuestionGameCtrl {
   public void cooldownAnswer() {
     if (questionNum == 10 && type.equals(GameEntity.Type.MULTIPLAYER)) {
       server.send("/app/messages", "intermediate");
-    } else if (questionNum < 20) {
+    } else if (questionNum < 1) {
       nextQuestion();
     } else {
       gracefulExit();

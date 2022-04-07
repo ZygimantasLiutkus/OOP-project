@@ -30,7 +30,7 @@ public class MPWaitingRoomCtrl implements Initializable {
   private final MainCtrl mainCtrl;
   private final QuestionGameCtrl questionGameCtrl;
   private ObservableList<String> data;
-  private Timeline timeline;
+  private Timeline timeline = new Timeline();
 
   @FXML
   private Button startButton;
@@ -116,7 +116,7 @@ public class MPWaitingRoomCtrl implements Initializable {
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+    timeline = new Timeline(new KeyFrame(Duration.seconds(0.5), ev -> {
       updateWaitingPlayers();
       if (checkPlayerNo()) {
         startButton.setDisable(false);

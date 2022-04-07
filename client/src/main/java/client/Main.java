@@ -50,8 +50,6 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws IOException {
 
-    var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
-    var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
     var questionGame =
         FXML.load(QuestionGameCtrl.class, "client", "scenes", "MoreExpensiveScreen.fxml");
     var entry = FXML.load(EntryCtrl.class, "client", "scenes", "EntryScreen.fxml");
@@ -73,7 +71,7 @@ public class Main extends Application {
     primaryStage.setMinHeight(408);
 
     var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-    mainCtrl.initialize(primaryStage, overview, add, entry, name, choose, questionGame,
+    mainCtrl.initialize(primaryStage, entry, name, choose, questionGame,
         leaderboard, waitingRoomSP, waitingRoomMP, countdown, activityOverview, activityPopUp);
   }
 }
