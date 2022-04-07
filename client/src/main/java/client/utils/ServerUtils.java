@@ -18,7 +18,13 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import commons.*;
+import commons.Activity;
+import commons.GameEntity;
+import commons.LeaderboardEntry;
+import commons.Message;
+import commons.Player;
+import commons.Question;
+import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
@@ -99,7 +105,7 @@ public class ServerUtils {
       String resp = req.get(new GenericType<>() {
       });
 
-      if (resp.equals("Hello world!")) {
+      if (resp.equals("This is a working game server")) {
         this.server = server;
         return true;
       }
