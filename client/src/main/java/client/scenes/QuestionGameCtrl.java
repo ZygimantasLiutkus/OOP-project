@@ -325,7 +325,6 @@ public class QuestionGameCtrl {
    * Method to set the selected answer to the first answer.
    */
   public void setSelectedAnswer1() {
-    gracefulExit();
     this.answerTime = getTimeCounter();
     String answer = answer1.getText();
     server.getPlayer().setSelectedAnswer(answer);
