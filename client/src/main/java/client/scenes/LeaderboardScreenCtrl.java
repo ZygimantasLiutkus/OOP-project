@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.NextScreen;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.GameEntity;
@@ -188,7 +189,10 @@ public class LeaderboardScreenCtrl implements Initializable {
    * Reconnect back to a game.
    */
   public void reconnect() {
-    server.addPlayer();
-    mainCtrl.showWaitingRoomScreenMP();
+    if (server.addPlayer() != null) {
+      mainCtrl.showWaitingRoomScreenMP();
+    } else {
+      mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
+    }
   }
 }
