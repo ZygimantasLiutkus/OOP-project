@@ -1,6 +1,7 @@
 package commons;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,15 @@ public class MessageTest {
     Message testMessage = new Message("emoji", "player");
     assertEquals("emoji", testMessage.getText());
     assertEquals("player", testMessage.getPlayerName());
+  }
+
+  /**
+   * Test for empty constructor.
+   */
+  @Test
+  void emptyConstr() {
+    Message m = new Message();
+    assertNotNull(m);
   }
 
   /**
