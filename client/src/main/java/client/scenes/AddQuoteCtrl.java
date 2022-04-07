@@ -20,12 +20,9 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Person;
 import commons.Quote;
-import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
 
 /**
  * The controller class of the AddQuote screen.
@@ -62,26 +59,16 @@ public class AddQuoteCtrl {
    */
   public void cancel() {
     clearFields();
-    mainCtrl.showOverview();
+    // mainCtrl.showOverview();
   }
 
   /**
    * Tries to send the quote to the server, clears the fields, shows the overview.
    */
   public void ok() {
-    try {
-      server.addQuote(getQuote());
-    } catch (WebApplicationException e) {
-
-      var alert = new Alert(Alert.AlertType.ERROR);
-      alert.initModality(Modality.APPLICATION_MODAL);
-      alert.setContentText(e.getMessage());
-      alert.showAndWait();
-      return;
-    }
 
     clearFields();
-    mainCtrl.showOverview();
+    //  mainCtrl.showOverview();
   }
 
   /**
@@ -94,7 +81,6 @@ public class AddQuoteCtrl {
     var q = quote.getText();
     return new Quote(p, q);
   }
-
 
   /**
    * Clears all the fields.

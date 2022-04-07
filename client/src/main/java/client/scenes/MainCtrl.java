@@ -163,15 +163,6 @@ public class MainCtrl {
   }
 
   /**
-   * Shows the overview screen.
-   */
-  public void showOverview() {
-    primaryStage.setTitle("Quotes: Overview");
-    primaryStage.setScene(overview);
-    overviewCtrl.refresh();
-  }
-
-  /**
    * Shows the add quote screen.
    */
   public void showAdd() {

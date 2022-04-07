@@ -1,6 +1,5 @@
 package client.scenes;
 
-import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.GameEntity;
 import javafx.animation.Animation;
@@ -19,7 +18,6 @@ import javafx.util.Duration;
  */
 public class CountdownCtrl {
 
-  private final ServerUtils server;
   private final MainCtrl mainCtrl;
   private final QuestionGameCtrl questionGameCtrl;
 
@@ -29,13 +27,11 @@ public class CountdownCtrl {
   /**
    * Constructor of CountdownCtrl.
    *
-   * @param server           reference to the server the game will run on.
    * @param mainCtrl         reference to the main controller.
    * @param questionGameCtrl reference to the question controller.
    */
   @Inject
-  public CountdownCtrl(ServerUtils server, MainCtrl mainCtrl, QuestionGameCtrl questionGameCtrl) {
-    this.server = server;
+  public CountdownCtrl(MainCtrl mainCtrl, QuestionGameCtrl questionGameCtrl) {
     this.mainCtrl = mainCtrl;
     this.questionGameCtrl = questionGameCtrl;
   }
@@ -144,7 +140,6 @@ public class CountdownCtrl {
       public void handle(ActionEvent event) {
         mainCtrl.showMoreExpensive(type);
         questionGameCtrl.startGame();
-        //        mainCtrl.showEntry();
       }
     });
 

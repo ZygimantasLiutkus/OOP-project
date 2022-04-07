@@ -1,6 +1,5 @@
 package client.scenes;
 
-import client.utils.ServerUtils;
 import commons.GameEntity;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -16,9 +15,7 @@ import javax.inject.Inject;
  */
 public class WaitingRoomCtrl {
 
-  private final ServerUtils server;
   private final MainCtrl mainCtrl;
-  private final QuestionGameCtrl multipleCtrl;
 
   private Timeline dots;
 
@@ -31,15 +28,11 @@ public class WaitingRoomCtrl {
   /**
    * Constructor for the Single-player Waiting Room Controller.
    *
-   * @param server       reference to the server the game will run on.
-   * @param mainCtrl     reference to the main controller.
-   * @param multipleCtrl reference to multiple choice controller.
+   * @param mainCtrl reference to the main controller.
    */
   @Inject
-  public WaitingRoomCtrl(ServerUtils server, MainCtrl mainCtrl, QuestionGameCtrl multipleCtrl) {
-    this.server = server;
+  public WaitingRoomCtrl(MainCtrl mainCtrl) {
     this.mainCtrl = mainCtrl;
-    this.multipleCtrl = multipleCtrl;
   }
 
   /**

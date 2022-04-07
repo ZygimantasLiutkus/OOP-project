@@ -22,7 +22,6 @@ import commons.Quote;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -75,14 +74,5 @@ public class QuoteOverviewCtrl implements Initializable {
    */
   public void addQuote() {
     mainCtrl.showAdd();
-  }
-
-  /**
-   * Updates the quote list with the quotes that are stored in the database.
-   */
-  public void refresh() {
-    var quotes = server.getQuotes();
-    data = FXCollections.observableList(quotes);
-    table.setItems(data);
   }
 }
