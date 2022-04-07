@@ -192,7 +192,9 @@ public class LeaderboardScreenCtrl implements Initializable {
     if (server.addPlayer() != null) {
       mainCtrl.showWaitingRoomScreenMP();
     } else {
+      namePopupCtrl.setErrorText("This name is already taken, please choose another name");
       mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
+      namePopupCtrl.showErrorText(true);
     }
   }
 }
