@@ -3,12 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import client.utils.TimerUtils;
 import com.google.inject.Inject;
-import commons.Activity;
-import commons.GameEntity;
-import commons.LeaderboardEntry;
-import commons.Message;
-import commons.Player;
-import commons.Question;
+import commons.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +11,7 @@ import java.util.Random;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -667,6 +658,7 @@ public class QuestionGameCtrl {
     if (questionNum < 20) {
       nextQuestion();
     } else {
+      gracefulExit();
       String name = server.getPlayer().getName();
       int points = server.getPlayer().getScore();
       LeaderboardEntry entry = new LeaderboardEntry(name, points);
@@ -970,8 +962,7 @@ public class QuestionGameCtrl {
     server.send("/app/messages", "disconnected");
     server.session.disconnect();
 
-    messageEmojiList.getItems().clear();
-    messageNameList.getItems().clear();
+    gracefulExit();
 
     cooldown.stop();
     timeline.stop();
@@ -1013,5 +1004,22 @@ public class QuestionGameCtrl {
     messageEmojiList.getItems().get(0).setFitWidth(30);
     messageEmojiList.getItems().get(0).setFitHeight(30);
     messageNameList.getItems().add(0, "Time joker");
+  }
+
+  /**
+   * Method to make a graceful game exit by resetting the emoji chat and the jokers.
+   */
+  public void gracefulExit() {
+    messageEmojiList.getItems().clear();
+    messageNameList.getItems().clear();
+    pointsUsed = false;
+    answerUsed = false;
+    timeUsed = false;
+    jokerPoints.setDisable(false);
+    jokerPoints.setVisible(true);
+    jokerAnswer.setDisable(false);
+    jokerAnswer.setVisible(true);
+    jokerTime.setDisable(false);
+    jokerTime.setVisible(true);
   }
 }
