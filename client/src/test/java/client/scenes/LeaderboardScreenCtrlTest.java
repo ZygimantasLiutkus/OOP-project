@@ -14,6 +14,7 @@ class LeaderboardScreenCtrlTest {
   private TimerUtils timerUtils;
   private MainCtrl mainCtrl;
   private QuestionGameCtrl questionGameCtrl;
+  private NamePopupCtrl nameCtrl;
 
   /**
    * Setup method for the controller.
@@ -24,6 +25,7 @@ class LeaderboardScreenCtrlTest {
     this.mainCtrl = new MainCtrl();
     this.timerUtils = new TimerUtils();
     this.questionGameCtrl = new QuestionGameCtrl(server, timerUtils, mainCtrl);
-    this.leaderboardScreenCtrl = new LeaderboardScreenCtrl(server, mainCtrl, questionGameCtrl);
+    this.leaderboardScreenCtrl = new LeaderboardScreenCtrl(server, mainCtrl, questionGameCtrl,
+        nameCtrl);
   }
 }
