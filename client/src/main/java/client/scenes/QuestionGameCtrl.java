@@ -3,7 +3,12 @@ package client.scenes;
 import client.utils.ServerUtils;
 import client.utils.TimerUtils;
 import com.google.inject.Inject;
-import commons.*;
+import commons.Activity;
+import commons.GameEntity;
+import commons.LeaderboardEntry;
+import commons.Message;
+import commons.Player;
+import commons.Question;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +16,11 @@ import java.util.Random;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -156,6 +165,7 @@ public class QuestionGameCtrl {
       questionNum = 20;
       timeline.stop();
       timeCount.stop();
+      gracefulExit();
       server.changeStatus(dummyGameAborted);
     }
     if (type.equals(GameEntity.Type.MULTIPLAYER)) {
@@ -662,6 +672,7 @@ public class QuestionGameCtrl {
     } else if (questionNum < 20) {
       nextQuestion();
     } else {
+      gracefulExit();
       LeaderboardEntry entry = lbEntry();
       server.changeStatus(dummyGameFinished);
       if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
@@ -1050,5 +1061,11 @@ public class QuestionGameCtrl {
     jokerAnswer.setVisible(true);
     jokerTime.setDisable(false);
     jokerTime.setVisible(true);
+
+    emojiPane.setVisible(true);
+    emojiButtonPane.setVisible(true);
+    messageEmojiList.setVisible(true);
+    messageNameList.setVisible(true);
+    chatLabel.setVisible(true);
   }
 }
