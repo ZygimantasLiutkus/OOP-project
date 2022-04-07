@@ -45,6 +45,7 @@ public class QuestionGameCtrl {
   public boolean pointsUsed = false;
   public boolean answerUsed = false;
   public boolean timeUsed = false;
+  public boolean validateJoker = true;
   public List<Player> players;
   private GameEntity.Type type;
   private int startTime = 15;
@@ -551,6 +552,7 @@ public class QuestionGameCtrl {
       answerUsed = false;
       pointsUsed = false;
       timeUsed = false;
+      validateJoker = true;
     }
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
       emojiPane.setVisible(false);
@@ -633,9 +635,9 @@ public class QuestionGameCtrl {
         }
       }
 
-      if (pointsUsed) {
+      if (pointsUsed && validateJoker) {
         points *= 2;
-        pointsUsed = false;
+        validateJoker = false;
       }
       server.getPlayer().setScore(server.getPlayer().getScore() + points);
       addPoints.setText("+" + points);
@@ -724,6 +726,13 @@ public class QuestionGameCtrl {
         jokerAnswer.setDisable(false);
       }
     }
+    if (pointsUsed) {
+      jokerPoints.setDisable(true);
+      jokerPoints.setVisible(false);
+    } else {
+      jokerPoints.setVisible(true);
+      jokerPoints.setDisable(false);
+    }
   }
 
   /**
@@ -731,7 +740,7 @@ public class QuestionGameCtrl {
    */
   public void nextQuestion() {
     setText();
-    pointsUsed = false;
+    // pointsUsed = false;
     resetTimer();
     resetJokers();
     questionNum++;
