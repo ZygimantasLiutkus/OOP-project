@@ -237,6 +237,18 @@ public class MainCtrl {
   }
 
   /**
+   * Shows intermediate leaderboard.
+   *
+   * @param entry leaderboard entry.
+   */
+  public void showMPIntermediate(LeaderboardEntry entry) {
+    primaryStage.setTitle("Match Leaderboard");
+    leaderboardScreenCtrl.setScoreLabel("Generating scores...");
+    leaderboardScreenCtrl.setIntermediate(entry);
+    primaryStage.setScene(leaderboard);
+  }
+
+  /**
    * Method for revealing the entries of a multiplayer leaderboard.
    */
   public void setMPLeaderboard() {
@@ -291,5 +303,19 @@ public class MainCtrl {
     popup.setTitle("Activity Panel");
     popup.setScene(activityPopUp);
     popup.show();
+  }
+
+  /**
+   * Method to enable leaderboard home buttons.
+   */
+  public void showButtons() {
+    leaderboardScreenCtrl.enableHomeButtons();
+  }
+
+  /**
+   * Method to hide leaderboard home buttons.
+   */
+  public void hideButtons() {
+    leaderboardScreenCtrl.disableHomeButtons();
   }
 }

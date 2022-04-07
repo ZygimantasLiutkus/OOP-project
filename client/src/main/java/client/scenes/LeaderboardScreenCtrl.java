@@ -171,6 +171,19 @@ public class LeaderboardScreenCtrl implements Initializable {
   }
 
   /**
+   * Set intermediate leaderboard.
+   *
+   * @param entry leaderboard entry.
+   */
+  public void setIntermediate(LeaderboardEntry entry) {
+    this.scoreLabel.setText("Scores");
+    this.reconnectButton.setVisible(false);
+    this.homeButton.setVisible(false);
+    this.gameType = GameEntity.Type.MULTIPLAYER;
+    this.ownEntry = entry;
+  }
+
+  /**
    * Returns from the leaderboard screen to the home screen.
    */
   public void home() {
@@ -200,5 +213,21 @@ public class LeaderboardScreenCtrl implements Initializable {
       mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
       nameCtrl.showErrorText(true);
     }
+  }
+
+  /**
+   * Method to show buttons for end leaderboard.
+   */
+  public void enableHomeButtons() {
+    this.reconnectButton.setVisible(true);
+    this.homeButton.setVisible(true);
+  }
+
+  /**
+   * Method to hide buttons for end leaderboard.
+   */
+  public void disableHomeButtons() {
+    this.reconnectButton.setVisible(false);
+    this.homeButton.setVisible(false);
   }
 }

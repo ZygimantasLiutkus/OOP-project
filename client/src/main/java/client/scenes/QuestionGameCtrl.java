@@ -675,6 +675,7 @@ public class QuestionGameCtrl {
       nextQuestion();
     } else {
       gracefulExit();
+      mainCtrl.showButtons();
       LeaderboardEntry entry = lbEntry();
       server.changeStatus(dummyGameFinished);
       if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
@@ -693,7 +694,8 @@ public class QuestionGameCtrl {
   public void showIntermediateTable() {
     server.setPlayersFinished(server.getPlayersFinished() + 1);
     LeaderboardEntry entry = lbEntry();
-    mainCtrl.showMPLeaderboard(entry);
+
+    mainCtrl.showMPIntermediate(entry);
     mainCtrl.setMPLeaderboard();
     if (server.getPlayersFinished() >= server.getGame().getPlayers().size()) {
       interTime.play();
