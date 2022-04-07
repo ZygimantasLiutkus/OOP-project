@@ -3,7 +3,12 @@ package client.scenes;
 import client.utils.ServerUtils;
 import client.utils.TimerUtils;
 import com.google.inject.Inject;
-import commons.*;
+import commons.Activity;
+import commons.GameEntity;
+import commons.LeaderboardEntry;
+import commons.Message;
+import commons.Player;
+import commons.Question;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +16,11 @@ import java.util.Random;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -44,6 +53,7 @@ public class QuestionGameCtrl {
   private Timeline timeline;
   private Timeline timeCount;
   private Timeline cooldown;
+  private Timeline interTime;
   private int answerTime = 0;
 
   @FXML
@@ -141,6 +151,7 @@ public class QuestionGameCtrl {
     this.timeCount = timers.setupCounter(this);
     this.timeline = timers.setupTimeline(this);
     this.cooldown = timers.setupCooldown(this);
+    this.interTime = timers.intermediateTable(this, mainCtrl);
   }
 
   /**
@@ -154,6 +165,7 @@ public class QuestionGameCtrl {
       questionNum = 20;
       timeline.stop();
       timeCount.stop();
+      gracefulExit();
       server.changeStatus(dummyGameAborted);
     }
     if (type.equals(GameEntity.Type.MULTIPLAYER)) {
@@ -655,13 +667,13 @@ public class QuestionGameCtrl {
    * Checks if the game type is single player and does the associated methods.
    */
   public void cooldownAnswer() {
-    if (questionNum < 20) {
+    if (questionNum == 10 && type.equals(GameEntity.Type.MULTIPLAYER)) {
+      server.send("/app/messages", "intermediate");
+    } else if (questionNum < 20) {
       nextQuestion();
     } else {
       gracefulExit();
-      String name = server.getPlayer().getName();
-      int points = server.getPlayer().getScore();
-      LeaderboardEntry entry = new LeaderboardEntry(name, points);
+      LeaderboardEntry entry = lbEntry();
       server.changeStatus(dummyGameFinished);
       if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
         entry = server.addLeaderboardEntry(entry);
@@ -671,6 +683,31 @@ public class QuestionGameCtrl {
         mainCtrl.showMPLeaderboard(entry);
       }
     }
+  }
+
+  /**
+   * Method that shows the intermediate table.
+   */
+  public void showIntermediateTable() {
+    server.setPlayersFinished(server.getPlayersFinished() + 1);
+    LeaderboardEntry entry = lbEntry();
+    mainCtrl.showMPLeaderboard(entry);
+    mainCtrl.setMPLeaderboard();
+    if (server.getPlayersFinished() >= server.getGame().getPlayers().size()) {
+      interTime.play();
+      server.setPlayersFinished(0);
+    }
+  }
+
+  /**
+   * Method that creates a leaderboard entry.
+   *
+   * @return a new leaderboard entry.
+   */
+  public LeaderboardEntry lbEntry() {
+    String name = server.getPlayer().getName();
+    int points = server.getPlayer().getScore();
+    return new LeaderboardEntry(name, points);
   }
 
   /**
@@ -874,6 +911,8 @@ public class QuestionGameCtrl {
         Platform.runLater(() -> {
           timeJoker(message);
         });
+      } else if (message.getText().equals("intermediate")) {
+        Platform.runLater(this::showIntermediateTable);
       } else {
         Platform.runLater(() -> {
           showMessage(message);
@@ -967,6 +1006,7 @@ public class QuestionGameCtrl {
     cooldown.stop();
     timeline.stop();
     timeCount.stop();
+    interTime.stop();
     questionNum = 20;
 
     if (players.size() <= 1) {
@@ -1021,5 +1061,11 @@ public class QuestionGameCtrl {
     jokerAnswer.setVisible(true);
     jokerTime.setDisable(false);
     jokerTime.setVisible(true);
+
+    emojiPane.setVisible(true);
+    emojiButtonPane.setVisible(true);
+    messageEmojiList.setVisible(true);
+    messageNameList.setVisible(true);
+    chatLabel.setVisible(true);
   }
 }

@@ -12,7 +12,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
@@ -22,6 +26,7 @@ public class LeaderboardScreenCtrl implements Initializable {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
+  private final QuestionGameCtrl questionGameCtrl;
 
   private ObservableList<LeaderboardEntry> data;
   private LeaderboardEntry ownEntry;
@@ -51,14 +56,17 @@ public class LeaderboardScreenCtrl implements Initializable {
   /**
    * Constructor for LeaderboardScreenCtrl.
    *
-   * @param server   reference to the server the game will run on.
-   * @param mainCtrl reference to the main controller.
+   * @param server           reference to the server the game will run on.
+   * @param mainCtrl         reference to the main controller.
+   * @param questionGameCtrl reference to the questionGame controller.
    */
   @Inject
 
-  public LeaderboardScreenCtrl(ServerUtils server, MainCtrl mainCtrl) {
+  public LeaderboardScreenCtrl(ServerUtils server, MainCtrl mainCtrl,
+                               QuestionGameCtrl questionGameCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
+    this.questionGameCtrl = questionGameCtrl;
   }
 
   /**
@@ -151,8 +159,8 @@ public class LeaderboardScreenCtrl implements Initializable {
    */
   public void setMultiplayer(LeaderboardEntry entry) {
     this.scoreLabel.setText("Scores");
-    this.reconnectButton.setVisible(true);
-    this.homeButton.setVisible(true);
+    this.reconnectButton.setVisible(false);
+    this.homeButton.setVisible(false);
     this.gameType = GameEntity.Type.MULTIPLAYER;
     this.ownEntry = entry;
   }
@@ -162,6 +170,9 @@ public class LeaderboardScreenCtrl implements Initializable {
    */
   public void home() {
     mainCtrl.showChooseScreen();
+    if (gameType.equals(GameEntity.Type.MULTIPLAYER)) {
+      questionGameCtrl.disconnect();
+    }
   }
 
   /**
