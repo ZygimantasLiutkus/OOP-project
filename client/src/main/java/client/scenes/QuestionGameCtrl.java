@@ -639,7 +639,7 @@ public class QuestionGameCtrl {
         points *= 2;
         validateJoker = false;
       }
-      server.getPlayer().setScore(server.getPlayer().getScore() + points);
+      server.updateScore(points);
       addPoints.setText("+" + points);
     }
 

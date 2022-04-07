@@ -323,6 +323,19 @@ public class ServerUtils {
   }
 
   /**
+   * Method to update the score of a player.
+   *
+   * @param points the points to add to the score of the player
+   */
+  public void updateScore(int points) {
+    this.player.setScore(this.player.getScore() + points);
+    ClientBuilder.newClient(new ClientConfig())
+        .target(server).path("api/game/" + player.getGameId() + "/scores")
+        .request()
+        .post(Entity.json(this.player));
+  }
+
+  /**
    * Setter for the dummy player that only gets a name.
    *
    * @param player the newly created player
