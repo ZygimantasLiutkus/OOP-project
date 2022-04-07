@@ -666,7 +666,7 @@ public class QuestionGameCtrl {
    * Checks if the game type is single player and does the associated methods.
    */
   public void cooldownAnswer() {
-    if (questionNum == 1 && type.equals(GameEntity.Type.MULTIPLAYER)) {
+    if (questionNum == 10 && type.equals(GameEntity.Type.MULTIPLAYER)) {
       server.send("/app/messages", "intermediate");
     } else if (questionNum < 20) {
       nextQuestion();
