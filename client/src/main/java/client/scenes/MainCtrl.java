@@ -60,14 +60,8 @@ public class MainCtrl {
   private CountdownCtrl countdownCtrl;
   private Scene countdown;
 
-  private QuoteOverviewCtrl overviewCtrl;
-  private Scene overview;
-
   private ActivityOverviewCtrl activityCtrl;
   private Scene activityList;
-
-  private AddQuoteCtrl addCtrl;
-  private Scene add;
 
   private ActivityPopUpCtrl activityPopUpCtrl;
   private Scene activityPopUp;
@@ -76,8 +70,6 @@ public class MainCtrl {
    * Initializes the main controller.
    *
    * @param primaryStage     the top level JavaFX container.
-   * @param overview         a pair of the QuoteOverview controller and the parent.
-   * @param add              a pair of the AddQuote controller and the parent.
    * @param entry            a pair of the EntryScreen controller and the parent.
    * @param name             a pair of the NamePopup controller and the parent.
    * @param choose           a pair of the ChooseScreen controller and the parent.
@@ -89,8 +81,8 @@ public class MainCtrl {
    * @param activityOverview a pair of the activityOverview controller and the parent.
    * @param activityPopUp    a pair of the ActivityPopUp controller and the parent.
    */
-  public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-                         Pair<AddQuoteCtrl, Parent> add, Pair<EntryCtrl, Parent> entry,
+  public void initialize(Stage primaryStage,
+                         Pair<EntryCtrl, Parent> entry,
                          Pair<NamePopupCtrl, Parent> name, Pair<ChooseScreenCtrl, Parent> choose,
                          Pair<QuestionGameCtrl, Parent> moreExpensive,
                          Pair<LeaderboardScreenCtrl, Parent> leaderboard,
@@ -101,11 +93,6 @@ public class MainCtrl {
                          Pair<ActivityPopUpCtrl, Parent> activityPopUp) {
 
     this.primaryStage = primaryStage;
-    this.overviewCtrl = overview.getKey();
-    this.overview = new Scene(overview.getValue());
-
-    this.addCtrl = add.getKey();
-    this.add = new Scene(add.getValue());
 
     this.entryCtrl = entry.getKey();
     this.entry = new Scene(entry.getValue());
@@ -160,24 +147,6 @@ public class MainCtrl {
     this.popup.setMinHeight(280);
     this.popup.initModality(Modality.APPLICATION_MODAL);
     this.popup.initOwner(primaryStage);
-  }
-
-  /**
-   * Shows the overview screen.
-   */
-  public void showOverview() {
-    primaryStage.setTitle("Quotes: Overview");
-    primaryStage.setScene(overview);
-    overviewCtrl.refresh();
-  }
-
-  /**
-   * Shows the add quote screen.
-   */
-  public void showAdd() {
-    primaryStage.setTitle("Quotes: Adding Quote");
-    primaryStage.setScene(add);
-    add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
   }
 
   /**
@@ -268,6 +237,18 @@ public class MainCtrl {
   }
 
   /**
+   * Shows intermediate leaderboard.
+   *
+   * @param entry leaderboard entry.
+   */
+  public void showMPIntermediate(LeaderboardEntry entry) {
+    primaryStage.setTitle("Match Leaderboard");
+    leaderboardScreenCtrl.setScoreLabel("Generating scores...");
+    leaderboardScreenCtrl.setIntermediate(entry);
+    primaryStage.setScene(leaderboard);
+  }
+
+  /**
    * Method for revealing the entries of a multiplayer leaderboard.
    */
   public void setMPLeaderboard() {
@@ -322,5 +303,19 @@ public class MainCtrl {
     popup.setTitle("Activity Panel");
     popup.setScene(activityPopUp);
     popup.show();
+  }
+
+  /**
+   * Method to enable leaderboard home buttons.
+   */
+  public void showButtons() {
+    leaderboardScreenCtrl.enableHomeButtons();
+  }
+
+  /**
+   * Method to hide leaderboard home buttons.
+   */
+  public void hideButtons() {
+    leaderboardScreenCtrl.disableHomeButtons();
   }
 }
