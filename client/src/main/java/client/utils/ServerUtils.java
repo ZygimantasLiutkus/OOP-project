@@ -30,12 +30,8 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.net.URL;
 import java.util.List;
 import java.util.function.Consumer;
 import javafx.scene.image.Image;
@@ -68,7 +64,6 @@ public class ServerUtils {
    */
   public void connect() {
     String url = server.replaceAll("^(http|https)://", "ws://") + "/websocket";
-    System.out.println(url);
     var client = new StandardWebSocketClient();
     var stomp = new WebSocketStompClient(client);
     stomp.setMessageConverter(new MappingJackson2MessageConverter());
@@ -115,49 +110,6 @@ public class ServerUtils {
     }
 
     return false;
-  }
-
-  /**
-   * Getting quotes the hard way. Don't use this!
-   *
-   * @throws IOException throws an exception if the connection can't be made
-   */
-  public void getQuotesTheHardWay() throws IOException {
-    var url = new URL(server + "/api/quotes");
-    var is = url.openConnection().getInputStream();
-    var br = new BufferedReader(new InputStreamReader(is));
-    String line;
-    while ((line = br.readLine()) != null) {
-      System.out.println(line);
-    }
-  }
-
-  /**
-   * Gets the quotes from the backend.
-   *
-   * @return a list of quotes
-   */
-  public List<Quote> getQuotes() {
-    return ClientBuilder.newClient(new ClientConfig()) //
-        .target(server).path("api/quotes") //
-        .request(APPLICATION_JSON) //
-        .accept(APPLICATION_JSON) //
-        .get(new GenericType<List<Quote>>() {
-        });
-  }
-
-  /**
-   * Sends a quote to the backend to process.
-   *
-   * @param quote the quote that should be added
-   * @return the quote that was added
-   */
-  public Quote addQuote(Quote quote) {
-    return ClientBuilder.newClient(new ClientConfig()) //
-        .target(server).path("api/quotes") //
-        .request(APPLICATION_JSON) //
-        .accept(APPLICATION_JSON) //
-        .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
   }
 
   /**
@@ -284,21 +236,6 @@ public class ServerUtils {
         .accept(APPLICATION_JSON) //
         .get(new GenericType<>() {
         });
-  }
-
-  /**
-   * Gets the type of the game and gives it to the client.
-   *
-   * @return type of a game
-   */
-  public GameEntity.Type getType() {
-    Long id = player.getGameId();
-    return ClientBuilder.newClient(new ClientConfig())  //
-        .target(server).path("api/game/" + id) //
-        .request(APPLICATION_JSON) //
-        .accept(APPLICATION_JSON) //
-        .get(new GenericType<GameEntity>() {
-        }).getType();
   }
 
   /**

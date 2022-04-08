@@ -130,7 +130,6 @@ public class GameEntityControllerTest {
   public void testGetGameByIDNonexistent() {
     GameEntity game = sut.addPlayerToGame(getPlayer("Bob")).getBody();
     Long id = game.getId() + 2;
-    var test = sut.getGameById(id).getStatusCode();
     assertEquals(BAD_REQUEST, sut.getGameById(id).getStatusCode());
   }
 

@@ -1,6 +1,8 @@
 package server.api;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -101,8 +103,7 @@ public class ActivityControllerTest {
     sut.add(getActivity("A", 1));
     sut.add(getActivity("B", 10));
     nextInt = 1;
-    var actual = sut.getRandom();
-
+    sut.getRandom();
     assertTrue(random.wasCalled);
   }
 
