@@ -1,9 +1,3 @@
-# Starting template
-
-This README will need to contain a description of your project, how to run it, how to set up the development
-environment, and who worked on it. This information can be added throughout the course, except for the names of the
-group members. Add your own name (do not add the names for others!) to the section below.
-
 ## Description of project
 
 *Quizzzz* is a single-player & multiplayer quiz game focused on discovering the energy consumption of everyday
