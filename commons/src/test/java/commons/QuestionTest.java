@@ -3,6 +3,7 @@ package commons;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,7 +121,20 @@ class QuestionTest {
     actList.add(ac);
     Question q = new Question(actList);
     Object test = new Question(actList);
-
     assertEquals(test, q);
+  }
+
+  /**
+   * Test for toString method.
+   */
+  @Test
+  void toStringTest() {
+    Activity a = new Activity("1", "test1", 12, "test");
+    List<Activity> acL = new ArrayList<>();
+    acL.add(a);
+    var actual = new Question(acL).toString();
+    assertTrue(actual.contains(Question.class.getSimpleName()));
+    assertTrue(actual.contains("\n"));
+    assertTrue(actual.contains("title"));
   }
 }

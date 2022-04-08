@@ -33,6 +33,16 @@ public class PlayerTest {
   }
 
   /**
+   * Test for constructor with id and string.
+   */
+  @Test
+  void playerConstructorTest() {
+    Player a = new Player(1L, "answer1");
+    assertEquals(1L, a.getId());
+    assertEquals("answer1", a.getSelectedAnswer());
+  }
+
+  /**
    * Testing to see if 2 players that are the same output the same hash code.
    */
   @Test
