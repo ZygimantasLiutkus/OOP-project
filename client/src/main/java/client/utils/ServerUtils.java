@@ -24,18 +24,13 @@ import commons.LeaderboardEntry;
 import commons.Message;
 import commons.Player;
 import commons.Question;
-import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.net.URL;
 import java.util.List;
 import java.util.function.Consumer;
 import javafx.scene.image.Image;
@@ -55,6 +50,7 @@ public class ServerUtils {
 
   // = new Player("test"); for testing purposes. If we want to test client uncomment.
   public StompSession session;
+  public int playersFinished;
   private String server = "http://localhost:8080/";
   private Player player = new Player("");
   private Player dummyPlayer = new Player("");
@@ -67,7 +63,6 @@ public class ServerUtils {
    */
   public void connect() {
     String url = server.replaceAll("^(http|https)://", "ws://") + "/websocket";
-    System.out.println(url);
     var client = new StandardWebSocketClient();
     var stomp = new WebSocketStompClient(client);
     stomp.setMessageConverter(new MappingJackson2MessageConverter());
@@ -104,7 +99,7 @@ public class ServerUtils {
       String resp = req.get(new GenericType<>() {
       });
 
-      if (resp.equals("Hello world!")) {
+      if (resp.equals("This is a working game server")) {
         this.server = server;
         return true;
       }
@@ -114,49 +109,6 @@ public class ServerUtils {
     }
 
     return false;
-  }
-
-  /**
-   * Getting quotes the hard way. Don't use this!
-   *
-   * @throws IOException throws an exception if the connection can't be made
-   */
-  public void getQuotesTheHardWay() throws IOException {
-    var url = new URL(server + "/api/quotes");
-    var is = url.openConnection().getInputStream();
-    var br = new BufferedReader(new InputStreamReader(is));
-    String line;
-    while ((line = br.readLine()) != null) {
-      System.out.println(line);
-    }
-  }
-
-  /**
-   * Gets the quotes from the backend.
-   *
-   * @return a list of quotes
-   */
-  public List<Quote> getQuotes() {
-    return ClientBuilder.newClient(new ClientConfig()) //
-        .target(server).path("api/quotes") //
-        .request(APPLICATION_JSON) //
-        .accept(APPLICATION_JSON) //
-        .get(new GenericType<List<Quote>>() {
-        });
-  }
-
-  /**
-   * Sends a quote to the backend to process.
-   *
-   * @param quote the quote that should be added
-   * @return the quote that was added
-   */
-  public Quote addQuote(Quote quote) {
-    return ClientBuilder.newClient(new ClientConfig()) //
-        .target(server).path("api/quotes") //
-        .request(APPLICATION_JSON) //
-        .accept(APPLICATION_JSON) //
-        .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
   }
 
   /**
@@ -200,6 +152,24 @@ public class ServerUtils {
         .request(APPLICATION_JSON) //
         .accept(APPLICATION_JSON) //
         .post(Entity.entity(leaderboardEntry, APPLICATION_JSON), LeaderboardEntry.class);
+  }
+
+  /**
+   * Getter for the amount of players finished.
+   *
+   * @return the amount of players finished
+   */
+  public int getPlayersFinished() {
+    return this.playersFinished;
+  }
+
+  /**
+   * Setter for the amount of players finished.
+   *
+   * @param playersFinished the new amount of players finished
+   */
+  public void setPlayersFinished(int playersFinished) {
+    this.playersFinished = playersFinished;
   }
 
   /**
@@ -268,21 +238,6 @@ public class ServerUtils {
   }
 
   /**
-   * Gets the type of the game and gives it to the client.
-   *
-   * @return type of a game
-   */
-  public GameEntity.Type getType() {
-    Long id = player.getGameId();
-    return ClientBuilder.newClient(new ClientConfig())  //
-        .target(server).path("api/game/" + id) //
-        .request(APPLICATION_JSON) //
-        .accept(APPLICATION_JSON) //
-        .get(new GenericType<GameEntity>() {
-        }).getType();
-  }
-
-  /**
    * Method to add a player to the waiting room (single player).
    *
    * @return the data of the respective player
@@ -307,6 +262,19 @@ public class ServerUtils {
         .target(server).path("api/game/" + player.getGameId())
         .request()
         .put(Entity.json(status));
+  }
+
+  /**
+   * Method to update the score of a player.
+   *
+   * @param points the points to add to the score of the player
+   */
+  public void updateScore(int points) {
+    this.player.setScore(this.player.getScore() + points);
+    ClientBuilder.newClient(new ClientConfig())
+        .target(server).path("api/game/" + player.getGameId() + "/scores")
+        .request()
+        .post(Entity.json(this.player));
   }
 
   /**

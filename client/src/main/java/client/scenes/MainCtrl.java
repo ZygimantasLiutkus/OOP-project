@@ -20,6 +20,7 @@ import client.utils.NextScreen;
 import commons.Activity;
 import commons.GameEntity;
 import commons.LeaderboardEntry;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -56,14 +57,11 @@ public class MainCtrl {
   private MPWaitingRoomCtrl mpWaitingRoomCtrl;
   private Scene waitingRoomMP;
 
-  private QuoteOverviewCtrl overviewCtrl;
-  private Scene overview;
+  private CountdownCtrl countdownCtrl;
+  private Scene countdown;
 
   private ActivityOverviewCtrl activityCtrl;
   private Scene activityList;
-
-  private AddQuoteCtrl addCtrl;
-  private Scene add;
 
   private ActivityPopUpCtrl activityPopUpCtrl;
   private Scene activityPopUp;
@@ -72,33 +70,29 @@ public class MainCtrl {
    * Initializes the main controller.
    *
    * @param primaryStage     the top level JavaFX container.
-   * @param overview         a pair of the QuoteOverview controller and the parent.
-   * @param add              a pair of the AddQuote controller and the parent.
    * @param entry            a pair of the EntryScreen controller and the parent.
    * @param name             a pair of the NamePopup controller and the parent.
    * @param choose           a pair of the ChooseScreen controller and the parent.
-   * @param moreExpensive    a pair of the MultipleChoiceScreen controller and the parent.
+   * @param questionGame     a pair of the QuestionGame controller and the parent.
    * @param leaderboard      a pair of the LeaderboardScreen controller and the parent.
    * @param waitingRoomSP    a pair of the sp WaitingRoomScreen controller and the parent.
    * @param waitingRoomMP    a pair of the mp WaitingRoomScreen controller and the parent.
+   * @param countdown        a pair of the countdown controller and the parent.
    * @param activityOverview a pair of the activityOverview controller and the parent.
    * @param activityPopUp    a pair of the ActivityPopUp controller and the parent.
    */
-  public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-                         Pair<AddQuoteCtrl, Parent> add, Pair<EntryCtrl, Parent> entry,
+  public void initialize(Stage primaryStage,
+                         Pair<EntryCtrl, Parent> entry,
                          Pair<NamePopupCtrl, Parent> name, Pair<ChooseScreenCtrl, Parent> choose,
-                         Pair<QuestionGameCtrl, Parent> moreExpensive,
+                         Pair<QuestionGameCtrl, Parent> questionGame,
                          Pair<LeaderboardScreenCtrl, Parent> leaderboard,
                          Pair<WaitingRoomCtrl, Parent> waitingRoomSP,
                          Pair<MPWaitingRoomCtrl, Parent> waitingRoomMP,
+                         Pair<CountdownCtrl, Parent> countdown,
                          Pair<ActivityOverviewCtrl, Parent> activityOverview,
                          Pair<ActivityPopUpCtrl, Parent> activityPopUp) {
-    this.primaryStage = primaryStage;
-    this.overviewCtrl = overview.getKey();
-    this.overview = new Scene(overview.getValue());
 
-    this.addCtrl = add.getKey();
-    this.add = new Scene(add.getValue());
+    this.primaryStage = primaryStage;
 
     this.entryCtrl = entry.getKey();
     this.entry = new Scene(entry.getValue());
@@ -109,8 +103,8 @@ public class MainCtrl {
     this.chooseScreenCtrl = choose.getKey();
     this.choose = new Scene(choose.getValue());
 
-    this.questionGameCtrl = moreExpensive.getKey();
-    this.questionGame = new Scene(moreExpensive.getValue());
+    this.questionGameCtrl = questionGame.getKey();
+    this.questionGame = new Scene(questionGame.getValue());
 
     this.leaderboardScreenCtrl = leaderboard.getKey();
     this.leaderboard = new Scene(leaderboard.getValue());
@@ -121,11 +115,29 @@ public class MainCtrl {
     this.mpWaitingRoomCtrl = waitingRoomMP.getKey();
     this.waitingRoomMP = new Scene(waitingRoomMP.getValue());
 
+
+    this.countdownCtrl = countdown.getKey();
+    this.countdown = new Scene(countdown.getValue());
+
     this.activityCtrl = activityOverview.getKey();
     this.activityList = new Scene(activityOverview.getValue());
 
     this.activityPopUpCtrl = activityPopUp.getKey();
     this.activityPopUp = new Scene(activityPopUp.getValue());
+
+    primaryStage.setOnCloseRequest(event -> {
+      event.consume();
+      if (primaryStage.getScene().equals(questionGame)) {
+        questionGameCtrl.goHomeScreen();
+      }
+      if (primaryStage.getScene().equals(this.waitingRoomMP)) {
+        mpWaitingRoomCtrl.goHome();
+      }
+      if (primaryStage.getScene().equals(leaderboard)) {
+        leaderboardScreenCtrl.home();
+      }
+      Platform.exit();
+    });
 
     showEntry();
     primaryStage.show();
@@ -138,29 +150,12 @@ public class MainCtrl {
   }
 
   /**
-   * Shows the overview screen.
-   */
-  public void showOverview() {
-    primaryStage.setTitle("Quotes: Overview");
-    primaryStage.setScene(overview);
-    overviewCtrl.refresh();
-  }
-
-  /**
-   * Shows the add quote screen.
-   */
-  public void showAdd() {
-    primaryStage.setTitle("Quotes: Adding Quote");
-    primaryStage.setScene(add);
-    add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
-  }
-
-  /**
    * Shows the game entry screen.
    */
   public void showEntry() {
     primaryStage.setTitle("Quizzzz");
     primaryStage.setScene(entry);
+    entryCtrl.animate();
     entry.setOnKeyPressed(e -> entryCtrl.keyPressed(e));
   }
 
@@ -192,17 +187,29 @@ public class MainCtrl {
   public void showChooseScreen() {
     primaryStage.setTitle("Choose the game style!");
     primaryStage.setScene(choose);
+    chooseScreenCtrl.animate();
   }
 
   /**
-   * Shows the multiple choice game screen.
+   * Shows the game screen.
    *
    * @param type the type of the game
    */
-  public void showMoreExpensive(GameEntity.Type type) {
+  public void showQuestionGame(GameEntity.Type type) {
     primaryStage.setTitle("Quizzzz");
     questionGameCtrl.setType(type);
     primaryStage.setScene(questionGame);
+  }
+
+  /**
+   * Shows countdows before game.
+   *
+   * @param type the type of game
+   */
+  public void showCountdown(GameEntity.Type type) {
+    primaryStage.setTitle("Quizzzz");
+    primaryStage.setScene(countdown);
+    countdownCtrl.animate(type);
   }
 
   /**
@@ -224,8 +231,28 @@ public class MainCtrl {
    */
   public void showMPLeaderboard(LeaderboardEntry entry) {
     primaryStage.setTitle("Match Leaderboard");
+    leaderboardScreenCtrl.setScoreLabel("Generating scores...");
     leaderboardScreenCtrl.setMultiplayer(entry);
     primaryStage.setScene(leaderboard);
+  }
+
+  /**
+   * Shows intermediate leaderboard.
+   *
+   * @param entry leaderboard entry.
+   */
+  public void showMPIntermediate(LeaderboardEntry entry) {
+    primaryStage.setTitle("Match Leaderboard");
+    leaderboardScreenCtrl.setScoreLabel("Generating scores...");
+    leaderboardScreenCtrl.setIntermediate(entry);
+    primaryStage.setScene(leaderboard);
+  }
+
+  /**
+   * Method for revealing the entries of a multiplayer leaderboard.
+   */
+  public void setMPLeaderboard() {
+    leaderboardScreenCtrl.setScoreLabel("Scores");
     leaderboardScreenCtrl.refreshTop10();
   }
 
@@ -234,6 +261,7 @@ public class MainCtrl {
    */
   public void showWaitingRoomScreenSP() {
     primaryStage.setTitle("Waiting...");
+    waitingRoomCtrl.animate();
     primaryStage.setScene(waitingRoomSP);
   }
 
@@ -243,6 +271,7 @@ public class MainCtrl {
   public void showWaitingRoomScreenMP() {
     primaryStage.setTitle("Waiting...");
     primaryStage.setScene(waitingRoomMP);
+    mpWaitingRoomCtrl.startTimeline();
     mpWaitingRoomCtrl.startListening();
   }
 
@@ -274,5 +303,19 @@ public class MainCtrl {
     popup.setTitle("Activity Panel");
     popup.setScene(activityPopUp);
     popup.show();
+  }
+
+  /**
+   * Method to enable leaderboard home buttons.
+   */
+  public void showButtons() {
+    leaderboardScreenCtrl.enableHomeButtons();
+  }
+
+  /**
+   * Method to hide leaderboard home buttons.
+   */
+  public void hideButtons() {
+    leaderboardScreenCtrl.disableHomeButtons();
   }
 }

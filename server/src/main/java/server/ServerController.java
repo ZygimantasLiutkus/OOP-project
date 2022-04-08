@@ -6,20 +6,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * An example controller that returns "Hello world" when entering the / path.
+ * A controller that returns "This is a working game server" when entering the / path.
  */
 @Controller
 @RequestMapping("/")
-public class SomeController {
+public class ServerController {
 
   /**
    * The / path of the server.
    *
-   * @return "Hello world!"
+   * @return "This is a working game server"
    */
   @GetMapping("/")
   @ResponseBody
   public String index() {
-    return "Hello world!";
+    return "This is a working game server";
   }
 }

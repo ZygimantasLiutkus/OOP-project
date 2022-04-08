@@ -53,7 +53,8 @@ uncomment this.
 }
 
 #gameBg,
-#entryBg {
+#entryBg,
+#countdownBg {
     -fx-border-width: 0;
     -fx-background-color: #6EB7F5;
 }

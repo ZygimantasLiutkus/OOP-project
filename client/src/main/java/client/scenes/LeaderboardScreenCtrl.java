@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.NextScreen;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.GameEntity;
@@ -26,6 +27,8 @@ public class LeaderboardScreenCtrl implements Initializable {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
+  private final QuestionGameCtrl questionGameCtrl;
+  private final NamePopupCtrl nameCtrl;
 
   private ObservableList<LeaderboardEntry> data;
   private LeaderboardEntry ownEntry;
@@ -55,14 +58,20 @@ public class LeaderboardScreenCtrl implements Initializable {
   /**
    * Constructor for LeaderboardScreenCtrl.
    *
-   * @param server   reference to the server the game will run on.
-   * @param mainCtrl reference to the main controller.
+   * @param server           reference to the server the game will run on.
+   * @param mainCtrl         reference to the main controller.
+   * @param questionGameCtrl reference to the questionGame controller.
+   * @param nameCtrl         reference to the namePopUp controller.
    */
   @Inject
 
-  public LeaderboardScreenCtrl(ServerUtils server, MainCtrl mainCtrl) {
+  public LeaderboardScreenCtrl(ServerUtils server, MainCtrl mainCtrl,
+                               QuestionGameCtrl questionGameCtrl,
+                               NamePopupCtrl nameCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
+    this.questionGameCtrl = questionGameCtrl;
+    this.nameCtrl = nameCtrl;
   }
 
   /**
@@ -162,9 +171,63 @@ public class LeaderboardScreenCtrl implements Initializable {
   }
 
   /**
+   * Set intermediate leaderboard.
+   *
+   * @param entry leaderboard entry.
+   */
+  public void setIntermediate(LeaderboardEntry entry) {
+    this.scoreLabel.setText("Scores");
+    this.reconnectButton.setVisible(false);
+    this.homeButton.setVisible(false);
+    this.gameType = GameEntity.Type.MULTIPLAYER;
+    this.ownEntry = entry;
+  }
+
+  /**
    * Returns from the leaderboard screen to the home screen.
    */
   public void home() {
     mainCtrl.showChooseScreen();
+    if (gameType.equals(GameEntity.Type.MULTIPLAYER)) {
+      questionGameCtrl.disconnect();
+    }
+  }
+
+  /**
+   * Setter for the text of the score label.
+   *
+   * @param text the text for the score label.
+   */
+  public void setScoreLabel(String text) {
+    this.scoreLabel.setText(text);
+  }
+
+  /**
+   * Reconnect back to a game.
+   */
+  public void reconnect() {
+    if (server.addPlayer() != null) {
+      mainCtrl.showWaitingRoomScreenMP();
+    } else {
+      nameCtrl.setErrorText("This name is already taken, please choose another name");
+      mainCtrl.showNamePopup(NextScreen.MPWaitingRoomScreen);
+      nameCtrl.showErrorText(true);
+    }
+  }
+
+  /**
+   * Method to show buttons for end leaderboard.
+   */
+  public void enableHomeButtons() {
+    this.reconnectButton.setVisible(true);
+    this.homeButton.setVisible(true);
+  }
+
+  /**
+   * Method to hide buttons for end leaderboard.
+   */
+  public void disableHomeButtons() {
+    this.reconnectButton.setVisible(false);
+    this.homeButton.setVisible(false);
   }
 }

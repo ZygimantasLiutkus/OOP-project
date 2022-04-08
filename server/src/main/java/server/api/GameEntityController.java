@@ -1,6 +1,5 @@
 package server.api;
 
-import commons.Answer;
 import commons.GameEntity;
 import commons.LeaderboardEntry;
 import commons.Message;
@@ -8,7 +7,6 @@ import commons.Player;
 import commons.Question;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
@@ -236,36 +234,12 @@ public class GameEntityController {
    * The player's score will be updated.
    *
    * @param id     the game's id
-   * @param idq    the question number
    * @param player the player that has answered
-   * @return an answer containing feedback about the submission
+   * @return responseEntity
    */
-  @PostMapping(path = "/{id}/question/{idQ}")
-  public ResponseEntity<Answer> answer(@PathVariable("id") long id, @PathVariable("idQ") long idq,
-                                       @RequestBody Player player) {
-    GameEntity game = answerService.findGame(id).getBody();
-    if (Objects.isNull(game)) {
-      return ResponseEntity.status(answerService.findGame(id).getStatusCode()).build();
-    }
-
-    Player playerDummy = answerService.findPlayer(game, player);
-    if (Objects.isNull(playerDummy)) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
-    Question q = game.getQuestions().get((int) idq - 1);
-    playerDummy.setSelectedAnswer(player.getSelectedAnswer());
-    AnswerService.QType type = AnswerService.QType.valueOf(q.getClass().getSimpleName());
-
-    switch (type) {
-      case QuestionEstimation:
-        return answerService.answerE(q, playerDummy);
-      case QuestionMultipleChoice:
-        return answerService.answerMC(q, playerDummy);
-      case QuestionMoreExpensive:
-        return answerService.answerME(q, playerDummy);
-      default:
-        return ResponseEntity.badRequest().build();
-    }
+  @PostMapping(path = "/{id}/scores")
+  public ResponseEntity answer(@PathVariable("id") long id, @RequestBody Player player) {
+    return answerService.updateScore(id, player);
   }
 
   /**
@@ -331,9 +305,6 @@ public class GameEntityController {
   @MessageMapping("/messages/{id}") // is /app/messages
   @SendTo("/topic/messages/{id}")
   public Message addMessageToGameByID(@Payload Message message, @DestinationVariable Long id) {
-    //call method for showing the name + text on the screen (to be implemented by frontend)
-    //TODO: delete the line below
-    System.out.println(message.getPlayerName() + ": " + message.getText());
     return message;
   }
 

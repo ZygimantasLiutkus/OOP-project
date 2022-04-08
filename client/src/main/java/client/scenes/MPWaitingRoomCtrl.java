@@ -30,7 +30,7 @@ public class MPWaitingRoomCtrl implements Initializable {
   private final MainCtrl mainCtrl;
   private final QuestionGameCtrl questionGameCtrl;
   private ObservableList<String> data;
-  private Timeline timeline;
+  private Timeline timeline = new Timeline();
 
   @FXML
   private Button startButton;
@@ -103,8 +103,12 @@ public class MPWaitingRoomCtrl implements Initializable {
    * Starts the game in multi-player mode.
    */
   public void startMultiPlayer() {
-    mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
-    questionGameCtrl.startGame();
+    mainCtrl.showCountdown(GameEntity.Type.MULTIPLAYER);
+    timeline.stop();
+    server.session.disconnect();
+    questionGameCtrl.players = server.getGame().getPlayers();
+    questionGameCtrl.startCommunication();
+
   }
 
   /**
@@ -112,7 +116,7 @@ public class MPWaitingRoomCtrl implements Initializable {
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+    timeline = new Timeline(new KeyFrame(Duration.seconds(0.5), ev -> {
       updateWaitingPlayers();
       if (checkPlayerNo()) {
         startButton.setDisable(false);
@@ -153,6 +157,8 @@ public class MPWaitingRoomCtrl implements Initializable {
     List<Player> players = this.server.getGame().getPlayers();
     players.remove(server.getPlayer());
     this.server.updatePlayer(players);
+    this.server.session.disconnect();
+    timeline.stop();
     mainCtrl.showChooseScreen();
   }
 }

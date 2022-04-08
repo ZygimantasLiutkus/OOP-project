@@ -31,16 +31,16 @@ public class MyModule implements Module {
    */
   @Override
   public void configure(Binder binder) {
-    binder.bind(AddQuoteCtrl.class).in(Scopes.SINGLETON);
     binder.bind(ChooseScreenCtrl.class).in(Scopes.SINGLETON);
     binder.bind(EntryCtrl.class).in(Scopes.SINGLETON);
     binder.bind(LeaderboardScreenCtrl.class).in(Scopes.SINGLETON);
     binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
     binder.bind(QuestionGameCtrl.class).in(Scopes.SINGLETON);
     binder.bind(NamePopupCtrl.class).in(Scopes.SINGLETON);
-    binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
     binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
+    binder.bind(CountdownCtrl.class).in(Scopes.SINGLETON);
     binder.bind(ActivityOverviewCtrl.class).in(Scopes.SINGLETON);
     binder.bind(ActivityPopUpCtrl.class).in(Scopes.SINGLETON);
+
   }
 }

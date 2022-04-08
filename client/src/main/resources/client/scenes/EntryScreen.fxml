@@ -12,7 +12,7 @@
     <center>
         <AnchorPane fx:id="centralPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="1000.0" stylesheets="@/client/scenes/stylesheet.css" BorderPane.alignment="CENTER">
             <children>
-                <FlowPane layoutX="200.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="200.0" prefWidth="600.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
+                <FlowPane fx:id="centralFlow" layoutX="200.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="200.0" prefWidth="600.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
                     <children>
                         <Label alignment="CENTER" prefHeight="46.0" prefWidth="195.0" text="Enter the IP address of the server you want to play on" textAlignment="CENTER" wrapText="true" />
                         <TextField fx:id="ipField" alignment="CENTER" prefHeight="26.0" prefWidth="195.0" promptText="IP ADDRESS" text="localhost:8080" />
@@ -28,7 +28,7 @@
             <children>
                 <FlowPane layoutX="200.0" layoutY="27.0" prefHeight="103.0" prefWidth="1000.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
                     <children>
-                        <Label alignment="CENTER" prefHeight="60.0" prefWidth="328.0" text="Ask your friend for the IP of the server!&#10;If you want to connect to your local server,&#10;type “localhost:8080”" textAlignment="CENTER" wrapText="true" />
+                        <Label fx:id="bottomLabel" alignment="CENTER" prefHeight="60.0" prefWidth="328.0" text="Ask your friend for the IP of the server!&#10;If you want to connect to your local server,&#10;type “localhost:8080”" textAlignment="CENTER" wrapText="true" />
                     </children>
                 </FlowPane>
             </children>
@@ -39,7 +39,7 @@
             <children>
                 <FlowPane layoutY="40.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="101.0" prefWidth="1000.0" style="-fx-alignment: center;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <children>
-                        <Label text="Quizzzz">
+                        <Label fx:id="titleLabel" text="Quizzzz">
                             <font>
                                 <Font size="40.0" />
                             </font>
