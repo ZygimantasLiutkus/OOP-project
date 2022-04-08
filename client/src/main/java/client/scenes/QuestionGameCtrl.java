@@ -581,6 +581,9 @@ public class QuestionGameCtrl {
       addPoints.setText("+" + points);
     }
 
+    if (pointsUsed) {
+      validateJoker = false;
+    }
     //If someone didn't submit anything and just pressed the button, the answer is automatically 0.
     if (question.getText().equals("How much do you think this activity consumes per hour?")) {
       this.validator.setVisible(false);

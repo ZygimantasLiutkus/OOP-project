@@ -99,7 +99,7 @@ public class ServerUtils {
       String resp = req.get(new GenericType<>() {
       });
 
-      if (resp.equals("Hello world!")) {
+      if (resp.equals("This is a working game server")) {
         this.server = server;
         return true;
       }
