@@ -3,6 +3,7 @@ package commons;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -242,5 +243,16 @@ class GameEntityTest {
     GameEntity a = new GameEntity("STARTED");
     assertNotNull(a);
     assertEquals("STARTED", a.getStatus());
+  }
+
+  /**
+   * Test for toString method.
+   */
+  @Test
+  void toStringTest() {
+    var actual = new GameEntity().toString();
+    assertTrue(actual.contains(GameEntity.class.getSimpleName()));
+    assertTrue(actual.contains("\n"));
+    assertTrue(actual.contains("WAITING"));
   }
 }
