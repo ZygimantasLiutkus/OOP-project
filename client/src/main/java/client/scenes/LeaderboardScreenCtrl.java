@@ -155,6 +155,7 @@ public class LeaderboardScreenCtrl implements Initializable {
     this.homeButton.setVisible(false);
     this.gameType = GameEntity.Type.SINGLEPLAYER;
     this.ownEntry = entry;
+    this.refreshTop10();
   }
 
   /**
@@ -168,6 +169,7 @@ public class LeaderboardScreenCtrl implements Initializable {
     this.homeButton.setVisible(true);
     this.gameType = GameEntity.Type.MULTIPLAYER;
     this.ownEntry = entry;
+    this.refreshTop10();
   }
 
   /**
@@ -181,6 +183,7 @@ public class LeaderboardScreenCtrl implements Initializable {
     this.homeButton.setVisible(false);
     this.gameType = GameEntity.Type.MULTIPLAYER;
     this.ownEntry = entry;
+    this.refreshTop10();
   }
 
   /**
