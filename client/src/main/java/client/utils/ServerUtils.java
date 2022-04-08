@@ -24,7 +24,6 @@ import commons.LeaderboardEntry;
 import commons.Message;
 import commons.Player;
 import commons.Question;
-import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
