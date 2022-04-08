@@ -87,7 +87,7 @@ public class TimerUtils {
     interTime.getKeyFrames().add(new KeyFrame(Duration.millis(10000), e -> {
     }));
     interTime.setOnFinished(e -> {
-      mainCtrl.showMoreExpensive(GameEntity.Type.MULTIPLAYER);
+      mainCtrl.showQuestionGame(GameEntity.Type.MULTIPLAYER);
       controller.nextQuestion();
     });
     return interTime;

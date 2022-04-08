@@ -73,7 +73,7 @@ public class MainCtrl {
    * @param entry            a pair of the EntryScreen controller and the parent.
    * @param name             a pair of the NamePopup controller and the parent.
    * @param choose           a pair of the ChooseScreen controller and the parent.
-   * @param moreExpensive    a pair of the MultipleChoiceScreen controller and the parent.
+   * @param questionGame     a pair of the QuestionGame controller and the parent.
    * @param leaderboard      a pair of the LeaderboardScreen controller and the parent.
    * @param waitingRoomSP    a pair of the sp WaitingRoomScreen controller and the parent.
    * @param waitingRoomMP    a pair of the mp WaitingRoomScreen controller and the parent.
@@ -84,7 +84,7 @@ public class MainCtrl {
   public void initialize(Stage primaryStage,
                          Pair<EntryCtrl, Parent> entry,
                          Pair<NamePopupCtrl, Parent> name, Pair<ChooseScreenCtrl, Parent> choose,
-                         Pair<QuestionGameCtrl, Parent> moreExpensive,
+                         Pair<QuestionGameCtrl, Parent> questionGame,
                          Pair<LeaderboardScreenCtrl, Parent> leaderboard,
                          Pair<WaitingRoomCtrl, Parent> waitingRoomSP,
                          Pair<MPWaitingRoomCtrl, Parent> waitingRoomMP,
@@ -103,8 +103,8 @@ public class MainCtrl {
     this.chooseScreenCtrl = choose.getKey();
     this.choose = new Scene(choose.getValue());
 
-    this.questionGameCtrl = moreExpensive.getKey();
-    this.questionGame = new Scene(moreExpensive.getValue());
+    this.questionGameCtrl = questionGame.getKey();
+    this.questionGame = new Scene(questionGame.getValue());
 
     this.leaderboardScreenCtrl = leaderboard.getKey();
     this.leaderboard = new Scene(leaderboard.getValue());
@@ -191,11 +191,11 @@ public class MainCtrl {
   }
 
   /**
-   * Shows the multiple choice game screen.
+   * Shows the game screen.
    *
    * @param type the type of the game
    */
-  public void showMoreExpensive(GameEntity.Type type) {
+  public void showQuestionGame(GameEntity.Type type) {
     primaryStage.setTitle("Quizzzz");
     questionGameCtrl.setType(type);
     primaryStage.setScene(questionGame);

@@ -138,7 +138,7 @@ public class CountdownCtrl {
        */
       @Override
       public void handle(ActionEvent event) {
-        mainCtrl.showMoreExpensive(type);
+        mainCtrl.showQuestionGame(type);
         questionGameCtrl.startGame();
       }
     });
