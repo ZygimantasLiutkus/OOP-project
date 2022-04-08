@@ -93,8 +93,8 @@ you have opened the server, and you will now become your own host.
 
 **NOTE FOR TEACHERS:** The *.json* file that we have used for testing the game was edited (some activities were removed)
 due to long resources links and very high consumptions on the given activities, so it will not be exactly the same as
-the one inside the *Activity Bank*. What we have used can be accessed using this *Google Drive*
-link: https://drive.google.com/file/d/1D6_m38rXbag36BSluRgsEMZvfCHo304d/view?usp=sharing
+the one inside the *Activity Bank*. What we have used can be accessed using [this *Google Drive*
+link](https://drive.google.com/file/d/1D6_m38rXbag36BSluRgsEMZvfCHo304d/view?usp=sharing)
 
 ## How to contribute to it
 
