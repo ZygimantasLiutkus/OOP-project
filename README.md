@@ -29,11 +29,35 @@ There are 2 main components that are needed in order to be able to play the game
 Before starting the server, make sure that you have a *.json* file that contains every activity that yow want to have
 featured inside the questions. In order for the file to be read by the computer, create a file called *Activities.json*
 and place it in  **server > src > main > resources**. You can use a pre-made list that was used by the developers when
-creating the game (accessing this *Google Drive* link - 
-https://drive.google.com/file/d/1D6_m38rXbag36BSluRgsEMZvfCHo304d/view?usp=sharing) or create your own one. The list must
-look something like this:
+creating the game by accessing [this *Google Drive* link](
+https://drive.google.com/file/d/1D6_m38rXbag36BSluRgsEMZvfCHo304d/view?usp=sharing) or create your own one. The JSON
+file has to be in the following format:
 
-![img_1.png](img_1.png)
+```json
+[
+  {
+    "id": "00-shower",
+    "image_path": "00/shower.png",
+    "title": "Taking a hot shower for 6 minutes",
+    "consumption_in_wh": 4000,
+    "source": "https://www.quora.com/How-can-I-estimate-the-kWh-of-electricity-when-I-take-a-shower"
+  },
+  {
+    "id": "00-smartphone",
+    "image_path": "00/smartphone.png",
+    "title": "Charging your smartphone at night",
+    "consumption_in_wh": 10,
+    "source": "https://9to5mac.com/2021/09/16/iphone-13-battery-life/"
+  },
+  {
+    "id": "...",
+    "image_path": "xx/image.jpg",
+    "title": "other questions follow in a similar way",
+    "consumption_in_wh": 42,
+    "source": "https://cse1105.pages.ewi.tudelft.nl/2021-2022/course-website"
+  }
+]
+```
 
 If you do not want to add a photo, you can just leave empty brackets inside that field. Though, if you want a more
 aesthetic game experience, after you have entered a file name for the photo, you will need to add it respecting the file
@@ -43,7 +67,7 @@ specified image path.
 The server is the main "computer" that will host the games and will facilitate playing. For that to be started, you will
 need to run Gradle. You can do this in 2 ways:
 
-- write *./gradlew bootRun* in the terminal
+- write `./gradlew bootRun` in the terminal
 - manually run the server side with *bootRun* inside the chosen Java IDE - i.e. Quizzzz:server [bootRun] (*Quizzzz*
   might be different depending on the file name)
 
@@ -51,11 +75,11 @@ From there you will have a running server. What is left to do is to start a clie
 you interact with the questions and players. In order to open up a client you can use the terminal, or you can manually
 open it through gradle.
 
-To use the terminal, just enter "./gradlew run". To start it manually you will open a Java IDE and look for the [run]
+To use the terminal, just enter `./gradlew run`. To start it manually you will open a Java IDE and look for the [run]
 button inside the Gradle executable list.
 
 After starting your client (the game itself), you need to connect to a host (
-aka the server). Ask for a friend's IP and type it in the text box. Either port share using any available app online or  
+aka the server). Ask for a friend's IP and type it in the text box. Either port share using any available app online or
 ask for a public IP. In order to find the IP on Windows, select **Start >
 Settings > Network & internet > Wi-Fi >
 Properties**. Scroll down and look for the **IPv4 address**. On Mac, click the *Apple* logo in the top left corner,
@@ -69,8 +93,8 @@ you have opened the server, and you will now become your own host.
 
 **NOTE FOR TEACHERS:** The *.json* file that we have used for testing the game was edited (some activities were removed)
 due to long resources links and very high consumptions on the given activities, so it will not be exactly the same as
-the one inside the *Activity Bank*. What we have used can be accessed using this *Google Drive*
-link: https://drive.google.com/file/d/1D6_m38rXbag36BSluRgsEMZvfCHo304d/view?usp=sharing
+the one inside the *Activity Bank*. What we have used can be accessed using [this *Google Drive*
+link](https://drive.google.com/file/d/1D6_m38rXbag36BSluRgsEMZvfCHo304d/view?usp=sharing)
 
 ## How to contribute to it
 
