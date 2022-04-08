@@ -44,7 +44,6 @@ public class QuestionGameCtrl {
   public GameEntity dummyGameAborted = new GameEntity("ABORTED");
   public boolean pointsUsed = false;
   public boolean answerUsed = false;
-  public boolean timeUsed = false;
   public boolean validateJoker = true;
   public List<Player> players;
   private GameEntity.Type type;
@@ -189,13 +188,6 @@ public class QuestionGameCtrl {
   }
 
   /**
-   * Whenever you press on the type bar the default text gets deleted.
-   */
-  public void deleteText() {
-    textArea.setText("");
-  }
-
-  /**
    * Setter for the question.
    *
    * @param q the question got from the server
@@ -245,7 +237,6 @@ public class QuestionGameCtrl {
    * Method to flag the use of a joker.
    */
   public void useTimer() {
-    timeUsed = true;
     jokerTime.setDisable(true);
     jokerTime.setVisible(false);
     sendJokerTime();
@@ -325,13 +316,6 @@ public class QuestionGameCtrl {
    */
   public void setType(GameEntity.Type type) {
     this.type = type;
-  }
-
-  /**
-   * Method to reset the selected answer by setting it to 0.
-   */
-  public void setSelectedAnswer0() {
-    server.getPlayer().setSelectedAnswer("0");
   }
 
   /**
@@ -422,51 +406,6 @@ public class QuestionGameCtrl {
   }
 
   /**
-   * Getter for answer1.
-   *
-   * @return value of answer1
-   */
-  public String getAnswer1() {
-    return answer1.getText();
-  }
-
-  /**
-   * Getter for answer2.
-   *
-   * @return value of answer2
-   */
-  public String getAnswer2() {
-    return answer2.getText();
-  }
-
-  /**
-   * Getter for answer3.
-   *
-   * @return value of answer3
-   */
-  public String getAnswer3() {
-    return answer3.getText();
-  }
-
-  /**
-   * Getter for the player points .
-   *
-   * @return value of the player points
-   */
-  public String getPlayerPoints() {
-    return playerPoints.getText();
-  }
-
-  /**
-   * Getter for progressbar.
-   *
-   * @return value of progressbar
-   */
-  public double getProgressBar() {
-    return progressBar.getProgress();
-  }
-
-  /**
    * Getter for timer counter.
    *
    * @return value of the timer counter
@@ -551,7 +490,6 @@ public class QuestionGameCtrl {
       this.questionNum = 0;
       answerUsed = false;
       pointsUsed = false;
-      timeUsed = false;
       validateJoker = true;
     }
     if (type.equals(GameEntity.Type.SINGLEPLAYER)) {
@@ -1065,7 +1003,6 @@ public class QuestionGameCtrl {
     messageNameList.getItems().clear();
     pointsUsed = false;
     answerUsed = false;
-    timeUsed = false;
     jokerPoints.setDisable(false);
     jokerPoints.setVisible(true);
     jokerAnswer.setDisable(false);

@@ -20,7 +20,6 @@ class QuestionTest {
    */
   @Test
   void getText() {
-    Activity ac = new Activity("x", "x", 1, "x");
     List<Activity> actList = new ArrayList<>();
     Question q = new Question(actList);
 
@@ -32,7 +31,6 @@ class QuestionTest {
    */
   @Test
   void getId() {
-    Activity ac = new Activity("x", "x", 1, "x");
     List<Activity> actList = new ArrayList<>();
     Question q = new Question(actList);
 
@@ -78,7 +76,6 @@ class QuestionTest {
    */
   @Test
   void setId() {
-    Activity ac = new Activity("x", "x", 1, "x");
     List<Activity> actList = new ArrayList<>();
     Question q = new Question(actList);
 

@@ -21,7 +21,6 @@ public class NamePopupCtrl {
 
   private final ServerUtils server;
   private final MainCtrl mainCtrl;
-  private final QuestionGameCtrl multipleCtrl;
   public FileWriter writer;
 
   private NextScreen nextScreen;
@@ -38,16 +37,13 @@ public class NamePopupCtrl {
   /**
    * Constructor for NamePopupCtrl.
    *
-   * @param server       reference to the server the game will run on.
-   * @param mainCtrl     reference to the main controller.
-   * @param multipleCtrl reference to multiple controller.
+   * @param server   reference to the server the game will run on.
+   * @param mainCtrl reference to the main controller.
    */
   @Inject
-  public NamePopupCtrl(ServerUtils server, MainCtrl mainCtrl,
-                       QuestionGameCtrl multipleCtrl) {
+  public NamePopupCtrl(ServerUtils server, MainCtrl mainCtrl) {
     this.server = server;
     this.mainCtrl = mainCtrl;
-    this.multipleCtrl = multipleCtrl;
   }
 
   /**
